@@ -1,0 +1,17 @@
+.idea/*
+
+/build/bin
+/build/buildlang
+/build/epub
+/build/phingext
+/build/tools
+/build/override.properties
+
+/component/*.xml
+
+/component/language/backend/en-GB
+/component/language/frontend/en-GB
+
+/release
+
+/*/.DS_Store

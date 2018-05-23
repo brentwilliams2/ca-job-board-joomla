@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="0.1" type="plugin" group="system">
+  <name>plg_system_cajobboard</name>
+  <author>Calligraphic Job Board</author>
+  <creationDate>May 2018</creationDate>
+  <copyright>Copyright (C) 2018 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <authorEmail>admin@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <version>0.0.1</version>
+  <description>PLG_SYSTEM_CAJOBBOARD_XML_DESCRIPTION</description>
+  <files>
+    <filename plugin="cajobboard">cajobboard.php</filename>
+    <filename>index.html</filename>
+  </files>
+  <languages>
+    <language tag="en-GB">en-GB.plg_system_cajobboard.ini</language>
+    <language tag="en-GB">en-GB.plg_system_cajobboard.sys.ini</language>
+  </languages>
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+        <field name="search_limit" type="text"
+          default="50"
+          description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+          label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL"
+          size="5"
+        />
+
+        <field name="search_content" type="radio"
+          default="0"
+          description="JFIELD_PLG_SEARCH_ALL_DESC"
+          label="JFIELD_PLG_SEARCH_ALL_LABEL"
+        >
+          <option value="0">JOFF</option>
+          <option value="1">JON</option>
+        </field>
+
+        <field name="search_archived" type="radio"
+          default="0"
+          description="JFIELD_PLG_SEARCH_ARCHIVED_DESC"
+          label="JFIELD_PLG_SEARCH_ARCHIVED_LABEL"
+        >
+          <option value="0">JOFF</option>
+          <option value="1">JON</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+</extension>

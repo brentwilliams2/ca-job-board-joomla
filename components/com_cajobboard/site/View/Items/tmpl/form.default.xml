@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form type="browse" show_header="1" show_filters="1" show_pagination="1" norows_placeholder="COM_TODO_COMMON_NORECORDS">
+  <headerset>
+    <header name="ordering" type="Ordering" label="COM_TODO_ITEMS_ORDERING_LABEL" sortable="true" tdwidth="1%"/>
+    <header name="todo_item_id" type="RowSelect" label="COM_TODO_ITEMS_TODO_ITEM_ID_LABEL" sortable="true" tdwidth="20"/>
+    <header name="title" type="Searchable" label="COM_TODO_ITEMS_TITLE_LABEL"/>
+    <header name="description" type="Searchable" label="COM_TODO_ITEMS_DESCRIPTION_LABEL" sortable="true"/>
+    <header name="due" type="Date" label="COM_TODO_ITEMS_DUE_LABEL" sortable="true"/>
+    <header name="enabled" type="Published" label="COM_TODO_ITEMS_ENABLED_LABEL" sortable="true"/>
+  </headerset>
+  <fieldset name="items">
+    <field name="ordering" type="Ordering" class="input-mini input-sm"/>
+    <field name="todo_item_id" type="SelectRow"/>
+    <field name="title" type="Sortable" url="index.php?option=com_todo&amp;view=Item&amp;id=[ITEM:ID]&amp;[TOKEN]=1"/>
+    <field name="description" type="Editor"/>
+    <field name="due" type="Calendar"/>
+    <field name="enabled" type="Actions"/>
+  </fieldset>
+</form>

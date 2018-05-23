@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fof>
+	<common>
+        <!-- Set up the namespace for concrete, specialised classes -->
+        <container>
+            <option name="factoryClass"><![CDATA[FOF30\Factory\MagicFactory]]></option>
+            <option name="componentNamespace"><![CDATA[Akeeba\Todo]]></option>
+        </container>
+
+        <!-- Set the default view in both frontend and backend to "Items" -->
+		<dispatcher>
+			<option name="defaultView">Items</option>
+		</dispatcher>
+
+        <!-- Enable filters in frontend and backend -->
+		<model name="Items">
+			<config>
+				<option name="contentType">com_todo.item</option>
+			</config>
+			<behaviors merge="1">Tags, Filters</behaviors>
+		</model>
+	</common>
+
+	<frontend>
+		<container>
+			<option name="factoryClass">FOF30\Factory\MagicFactory</option>
+			<option name="scaffolding">0</option>
+			<option name="saveScaffolding">0</option>
+		</container>
+
+		<!-- In the frontend we also want to only show our own items -->
+		<model name="Items">
+			<behaviors merge="1">Own, Enabled, Ordered</behaviors>
+		</model>
+
+	</frontend>
+</fof>

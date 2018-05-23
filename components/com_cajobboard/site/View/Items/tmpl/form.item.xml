@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form validate="true" type="read">
+  <fieldset name="scaffolding" label="COM_TODO_ITEMS_GROUP_BASIC">
+    <field name="title" type="Text" label="COM_TODO_ITEMS_TITLE_LABEL"/>
+    <field name="slug" type="Text" label="COM_TODO_ITEMS_SLUG_LABEL"/>
+    <field name="description" type="Editor" label="COM_TODO_ITEMS_DESCRIPTION_LABEL"/>
+    <field name="due" type="Calendar" label="COM_TODO_ITEMS_DUE_LABEL"/>
+    <field name="enabled" type="Published" label="COM_TODO_ITEMS_ENABLED_LABEL"/>
+  </fieldset>
+</form>
