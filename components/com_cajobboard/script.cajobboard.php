@@ -1,28 +1,29 @@
 <?php
 /**
- * @package		
+ * @package		Calligraphic Job Board
  * @copyright	Copyright (c) 2018 Kevin Brown / Calligraphic
+ * @copyright Copyright (c)2013-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license		GNU General Public License version 2 or later
  */
 
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-class Pkg_TodoInstallerScript
+class Pkg_JobBoardInstallerScript
 {
 	/**
 	 * The name of our package, e.g. pkg_example. Used for dependency tracking.
 	 *
 	 * @var  string
 	 */
-	protected $packageName = 'pkg_todo';
+	protected $packageName = 'pkg_cajobboard';
 
 	/**
 	 * The name of our component, e.g. com_example. Used for dependency tracking.
 	 *
 	 * @var  string
 	 */
-	protected $componentName = 'com_todo';
+	protected $componentName = 'com_cajobboard';
 
 	/**
 	 * The minimum PHP version required to install this extension
@@ -66,8 +67,9 @@ class Pkg_TodoInstallerScript
 	 * tell Joomla! if it should abort the installation.
 	 *
 	 * In here we'll try to install FOF. We have to do that before installing the component since it's using an
-	 * installation script extending FOF's InstallScript class. We can't use a <file> tag in the manifest to install FOF
-	 * since the FOF installation is expected to fail if a newer version of FOF is already installed on the site.
+	 * installation script extending FOF's InstallScript class. We can't use a <file> tag in the Joomla! XML
+	 * manifest to install FOF since the FOF installation is expected to fail if a newer version of FOF is
+   * already installed on the site.
 	 *
 	 * @param   string                     $type    Installation type (install, update, discover_install)
 	 * @param   \JInstallerAdapterPackage  $parent  Parent object

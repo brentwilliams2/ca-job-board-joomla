@@ -15,3 +15,5 @@
 /release
 
 /*/.DS_Store
+
+validate-buildfile-xml.sh

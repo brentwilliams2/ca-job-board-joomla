@@ -1,83 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
-<extension version="3.1" type="template" client="site" method="upgrade">
-    <name>bootstrap4</name>
-    <version>1.10</version>
-    <creationDate>May 2018</creationDate>
-    <author>sniggle.me</author>
-    <authorEmail>jochen@sniggle.me</authorEmail>
-    <copyright>Copyright (C) 2018 sniggle.me. All rights reserved.</copyright>
-    <description>TPL_BOOTSTRAP4_XML_DESCRIPTION</description>
-    <files>
-        <filename>component.php</filename>
-        <filename>error.php</filename>
-        <filename>favicon.ico</filename>
-        <filename>index.php</filename>
-        <filename>templateDetails.xml</filename>
-        <filename>template_preview.png</filename>
-        <filename>template_thumbnail.png</filename>
-        <folder>css</folder>
-        <folder>fonts</folder>
-        <folder>html</folder>
-        <folder>images</folder>
-        <folder>js</folder>
-        <folder>language</folder>
-    </files>
-    <positions>
-        <position>banner</position>
-        <position>debug</position>
-        <position>breadcrumbs</position>
-        <position>sidebar-left</position>
-        <position>sidebar-right</position>
-        <position>navbar-1</position>
-        <position>navbar-2</position>
-        <position>contributors</position>
-        <position>position-6</position>
-        <position>position-7</position>
-        <position>position-8</position>
-        <position>position-9</position>
-        <position>position-10</position>
-        <position>position-11</position>
-        <position>position-12</position>
-        <position>position-13</position>
-        <position>position-14</position>
-        <position>footer</position>
-    </positions>
-    <languages folder="language">
-        <language tag="de-DE">de-DE/de-DE.tpl_bootstrap4.ini</language>
-        <language tag="de-DE">de-DE/de-DE.tpl_bootstrap4.sys.ini</language>
-        <language tag="en-GB">en-GB/en-GB.tpl_bootstrap4.ini</language>
-        <language tag="en-GB">en-GB/en-GB.tpl_bootstrap4.sys.ini</language>
-        <language tag="es-ES">es-ES/es-ES.tpl_bootstrap4.ini</language>
-        <language tag="es-ES">es-ES/es-ES.tpl_bootstrap4.sys.ini</language>
-        <language tag="nl-NL">nl-NL/nl-NL.tpl_bootstrap4.ini</language>
-        <language tag="nl-NL">nl-NL/nl-NL.tpl_bootstrap4.sys.ini</language>
-        <language tag="ru-RU">ru-RU/ru-RU.tpl_bootstrap4.ini</language>
-        <language tag="ru-RU">ru-RU/ru-RU.tpl_bootstrap4.sys.ini</language>
-        <language tag="sk-SK">sk-SK/sk-SK.tpl_bootstrap4.ini</language>
-        <language tag="sk-SK">sk-SK/sk-SK.tpl_bootstrap4.sys.ini</language>
-    </languages>
-    <config>
-        <fields name="params">
-            <fieldset name="advanced">
-                <field name="sitedescription"  type="text" default=""
-					label="JGLOBAL_DESCRIPTION"
-					description="JGLOBAL_SUBHEADING_DESC"
-					filter="string" />
-                <field name="favicon" class="" type="text" default="/templates/bootstrap4/favicon.ico"
-					label="TPL_BOOTSTRAP4_FAVICON"
-					description="TPL_BOOTSTRAP4_FAVICON_DESC" />
-		<field name="fluidContainer"
-					type="radio"
-					label="TPL_BOOTSTRAP4_FLUID_LABEL"
-					description="TPL_BOOTSTRAP4_FLUID_DESC"
-					class="btn-group btn-group-yesno"
-					default="0"
-					>
-					<option value="1">TPL_BOOTSTRAP4_FLUID</option>
-					<option value="0">TPL_BOOTSTRAP4_STATIC</option>
-				</field>
-            </fieldset>
-        </fields>
-    </config>
+<extension version="3.0" type="template" client="site" method="upgrade">
+  <name>tpl_calligraphic</name>
+  <creationDate>May 2018</creationDate>
+  <author>Kevin Brown</author>
+  <authorEmail>kbrown@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <copyright>Copyright (C) 2018 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <version>0.0.1</version>
+  <description>TPL_CALLIGRAPHIC_XML_DESCRIPTION</description>
+
+  <files>
+    <filename>component.php</filename>
+    <filename>error.php</filename>
+
+    <filename>index.html</filename>
+    <filename>index.php</filename>
+
+    <filename>templateDetails.xml</filename>
+
+    <filename>favicon.ico</filename>
+    <filename>template_preview.png</filename>
+    <filename>template_thumbnail.png</filename>
+
+    <folder>_partials</folder>
+    <folder>language</folder>
+  </files>
+
+  <positions>
+    <position>banner</position>
+    <position>icon</position>
+    <position>search</position>
+    <position>H1</position>
+    <position>toolbar</position>
+    <position>header</position>
+    <position>header2</position>
+    <position>left</position>
+    <position>left2</position>
+    <position>left3</position>
+    <position>left4</position>
+    <position>left5</position>
+    <position>right</position>
+    <position>right2</position>
+    <position>right3</position>
+    <position>right4</position>
+    <position>right5</position>
+    <position>breadcrumbs</position>
+    <position>newsflash</position>
+    <position>message</position>
+    <position>component</position>
+    <position>user1</position>
+    <position>user2</position>
+    <position>user3</position>
+    <position>user4</position>
+    <position>user5</position>
+    <position>user6</position>
+    <position>advert1</position>
+    <position>advert2</position>
+    <position>advert3</position>
+    <position>bottom</position>
+    <position>user7</position>
+    <position>user8</position>
+    <position>user9</position>
+    <position>debug</position>
+    <position>footer</position>
+  </positions>
+
+  <media destination="tpl_calligraphic">
+    <folder>css</folder>
+    <folder>fonts</folder>
+    <folder>html</folder>
+    <folder>images</folder>
+    <folder>js</folder>
+  </media>
+
+  <config>
+    <fields name="params">
+      <fieldset name="advanced">
+        <field
+          name="sitedescription" 
+          type="text"
+          default=""
+	        label="JGLOBAL_DESCRIPTION"
+          description="JGLOBAL_SUBHEADING_DESC"
+          filter="string"
+        />
+        <field
+          name="favicon"
+          class=""
+          type="text"
+          default="/templates/calligraphic/favicon.ico"
+          label="TPL_CALLIGRAPHIC_FAVICON"
+          description="TPL_CALLIGRAPHIC_FAVICON_DESC"
+        />
+        <field
+          name="fluidContainer"
+          type="radio"
+          label="TPL_CALLIGRAPHIC_FLUID_LABEL"
+          description="TPL_CALLIGRAPHIC_FLUID_DESC"
+          class="btn-group btn-group-yesno"
+          default="0"
+        >
+          <option value="1">TPL_CALLIGRAPHIC_FLUID</option>
+          <option value="0">TPL_CALLIGRAPHIC_STATIC</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
 </extension>
