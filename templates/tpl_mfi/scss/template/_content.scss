@@ -1,0 +1,40 @@
+/*
+<!-- Begin Main Content Area -->
+<div id="main-section">
+  <div class="padding">
+    <div class="main-content block">
+      <div id="left-column">
+      <div id="right-column">
+      <div id="center-column">
+*/
+
+#main-section a:hover {
+  color: #333;
+}
+
+#main-section {
+  background: #D5D5D5;
+  border: 1px solid #DEDEDE;
+}
+
+.main-content {
+  background: #fff url(../images/main-content-bg.png) 0 0 repeat-x;
+  border: 1px solid #bbb;
+  padding: 10px 10px 0 10px;
+}
+
+.main-content.block {
+  padding: 22px 12px 15px 12px;
+}
+
+.main-content.block1 {
+  margin-top: 5px;
+  padding-top: 10px;
+}
+
+.main-content.block2 {
+  margin-top: 5px;
+  padding-bottom: 15px;
+  padding-top: 10px;
+  position: relative;
+}

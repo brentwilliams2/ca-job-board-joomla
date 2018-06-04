@@ -1,0 +1,29 @@
+div.pagination {
+  clear: both;
+  padding-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.main-page .pagination ul,
+.main-page ul.pagenav {
+  list-style:none;
+  height: 21px;
+  line-height: 21px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-left: 0;
+}
+
+.main-page .pagination ul li,
+.main-page ul.pagenav li {
+  list-style: none; float: left;
+  margin-right: 6px;
+  background: none; padding: 0;
+}
+
+.main-page .pagination ul li a,
+.main-page ul.pagenav li a {
+  display: block;
+  padding: 0 8px;
+}

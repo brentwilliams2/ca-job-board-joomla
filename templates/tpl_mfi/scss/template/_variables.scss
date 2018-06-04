@@ -1,0 +1,12 @@
+/** @format */
+
+@import '../bootstrap/variables';
+
+// was getting errors in sass compiler that this was 
+// unset, but it's defined in bootstrap variables
+$bootstrap-sass-asset-helper: false !default;
+
+/*
+ * Override Bootstrap variables here and/or import a
+ * Bootstrap template file
+ */

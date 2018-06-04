@@ -1,0 +1,43 @@
+// searchmod is now login position
+
+/* Brent BW added the following line to fix the search page formatting */
+#searchForm label {
+  display: inline;
+}
+
+#searchmod {
+  position: absolute;
+  padding: 0px;   /* Brent BW removed padding */
+  margin: 0;
+  top: 0px;   /* Brent BW changed top */
+  right: 5px;   /* Brent BW changed right  */
+  width:400px;  /* Brent BW changed width */
+  overflow: hidden;
+}
+
+#searchmod .inputbox {
+  width: 220px;
+  height: 20px;
+  padding-left: 4px;
+  font-size: 110%;
+  color: #666;
+}
+
+#searchmod .moduletable h3 {
+  display: none;
+}
+
+.module_search div div div {
+  float:right;
+}
+
+#username-lbl,
+#password-lbl {
+  display: block; width: 150px; 
+  margin-top: 10px;
+}
+
+.login fieldset {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

@@ -1,0 +1,30 @@
+#footer {
+  /*Brent BW removed height 
+  height: 75px; */
+  background: url(../images/footer-bg.png) 0 100% repeat-x;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+}
+
+.footer-left {
+  background: url(../images/footer-bl.png) 0px 100% no-repeat;
+  /*Brent BW removed height 
+  height: 75px; */
+  margin-left: -1px;
+}
+
+.footer-right {
+  background: url(../images/footer-br.png) 100% 100% no-repeat;
+  /*Brent BW removed height 
+  height: 75px; */
+  margin-right: -1px;
+}
+
+.footer-mod {
+  padding: 10px;
+  margin: 0;
+}
+
+.footer-mod .moduletable h3 {
+  display: none;
+}

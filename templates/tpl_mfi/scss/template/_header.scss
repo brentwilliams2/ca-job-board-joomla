@@ -1,0 +1,80 @@
+/* From Bootstrap template
+    #top {
+      color: #ddd;
+      font-size: 12px;
+      line-height: 30px;
+      padding-bottom: 4px;
+      padding-top: 4px;
+    }
+
+    #top .container .separator {
+      border-left: 1px solid #CCCCCC;
+      display: inline-block;
+      height: 10px;
+      margin: 0 20px;
+      width: 1px;
+    }
+
+    #brand {
+      float: left;
+      padding-left: 15px;
+      padding-top: 5px;
+    }
+
+    #brand img {
+      padding-bottom: 10px;
+      padding-top: 20px;
+    }
+*/
+
+// Header HTML5 section has the following postions:
+// top, introtext, feature, menu_top, breadcrumbs
+/*
+<div id="header">
+
+*/
+
+#header {
+  background: #ededed url(../images/header-bg.png) 0 0 repeat-x;
+  position: relative;
+  border-top: 1px solid #dedede;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+  min-height: 84px;
+}
+
+// One level deep from <div class="wrapper"> in _container.scss
+#top-banner {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/*
+*  Logo
+*
+*  Uses a conditional on $show_logo to choose between outputting an
+*  an image or outputting module position "icon"
+*/
+img#logo {
+  width: 350px;
+  height: 60px;
+  float: left;
+  margin-top: 15px;
+  margin-left: 15px;
+  display: block;
+}
+
+.bc-blue img#logo {
+  background: url(../images/blue/logo.png) 0 0 no-repeat;
+}
+
+.logo-module {
+  height: 70px;
+  padding: 10px 5px 5px 10px;
+  width: 600px;
+  float: left;
+}
+
+.logo-module .moduletable h3 {
+  display: none;
+}

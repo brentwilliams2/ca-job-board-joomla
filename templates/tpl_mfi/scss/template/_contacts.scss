@@ -1,0 +1,171 @@
+/* Bootstrap template had this
+    .accordion {
+      margin-bottom: 20px;
+    }
+
+    .accordion-group {
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      margin-bottom: 2px;
+    }
+
+    .accordion-heading {
+      border-bottom: 0 none;
+    }
+
+    .accordion-heading .accordion-toggle {
+      display: block;
+      padding: 8px 15px;
+    }
+
+    .accordion-toggle {
+      cursor: pointer;
+    }
+
+    .accordion-inner {
+      border-top: 1px solid #e5e5e5;
+      padding: 9px 15px;
+    }
+
+    .form-horizontal .control-label {
+      padding-top: 5px;
+      text-align: right;
+      width: 160px;
+    }
+
+    .form-horizontal .control-label {
+      margin-bottom: 0;
+      padding-top: 7px;
+      text-align: right;
+    }
+
+    .form-horizontal .form-actions {
+      padding-left: 160px;
+    }
+*/
+
+address {
+  display: inline;
+}
+
+.panel h3 {
+  margin: 5px 0;
+}
+
+.contact-suburb,
+.contact-state,
+.contact-postcode,
+.contact-country {
+  display: block;
+  margin-left: 25px;
+}
+
+.jicons-icons {
+  padding-right: 5px;
+}
+
+.contact-form fieldset {
+  padding: 0;
+  border: 0;
+}
+
+.main-page .contact {
+  padding: 0 5px;
+}
+
+.main-page .contact-category {
+  padding: 0 10px;
+}
+
+.main-page .contact-category  .main-page #adminForm fieldset.filters {
+  border: 0;
+  padding: 0;
+}
+
+.main-page .contact-image {
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.main-page address {
+  font-style: normal;
+  margin: 10px 0;}
+
+.main-page address span {
+  display: block;}
+
+.main-page .contact-address {
+  margin: 20px 0 10px 0;
+  }
+
+.main-page .contact-email div {
+  padding: 2px 0;
+  margin: 0 0 10px 0;
+}
+
+.main-page .contact-email label {
+  width: 17em;
+  float: left;
+}
+
+.main-page span.contact-image {
+  margin-bottom: 10px;
+  overflow: hidden;
+  display: block;
+}
+
+.main-page #contact-textmsg {
+  padding: 2px 0 10px 0;
+}
+
+.main-page #contact-email-copy {
+  float: left;
+  margin-right: 10px;
+}
+
+.main-page .contact .button {
+  float: none !important;
+  clear: left;
+  display: block;
+  margin: 20px 0 0 0;
+}
+
+.main-page dl.tabs {
+  float: left;
+  margin: 50px 0 0 0;
+  z-index: 50;
+  clear: both;
+}
+
+.main-page dl.tabs dt {
+  float: left;padding: 4px 10px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  margin-right: 3px;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.main-page dl.tabs dt.open {
+  background: #F9F9F9;
+  border-bottom: 1px solid #F9F9F9;
+  z-index: 100;
+  color: #000;
+}
+
+.main-page div.current {
+  clear: both;
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  max-width: 500px;
+}
+
+.main-page div.current dd {
+  padding: 0;
+  margin: 0;
+}
+
+.main-page dl#content-pane.tabs {
+  margin: 1px 0 0 0;
+}

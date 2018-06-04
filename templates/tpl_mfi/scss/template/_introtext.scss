@@ -1,0 +1,81 @@
+// showcase is now introtext
+.bc-blue #showcase {
+  background: #0D4E76 url(../images/blue/showcase-bg.png) 0 0 no-repeat;
+}
+
+.bc-blue .showcase-div {
+  background: url(../images/blue/showcase-div.png) 0 0 repeat-x;
+}
+
+.bc-blue #showcase .column-1 {
+  border-right: 1px solid #166C97;
+}
+
+.bc-blue #showcase a {
+  color: #D0F0FF;
+}
+
+.bc-blue #showcase ul.latestnews li {
+  background-color: #083552;
+}
+
+.bc-blue #showcase ul.latestnews li:hover {
+  background-color: #06273C;
+}
+
+#showcase {
+  position: relative;
+  overflow: hidden;
+}
+
+.showcase-div {
+  height: 10px;
+}
+
+#showcase .column-1 {
+  width: 600px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background: url(../images/showcase-overlay1.png) 0 100% repeat-x;
+}
+
+#showcase .column-2 {
+  margin-left: 600px;
+  color: #fff;
+  background: url(../images/showcase-overlay2.png) 0 0 repeat-x;
+}
+
+.wrapper #showcase a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+#showcase .column-2 .moduletable h3,
+#showcase .column-1 .moduletable h3 {
+  margin-top: 0;
+  font-size: 170%;
+  color: #fff;
+  font-weight: normal;
+}
+
+#showcase .column-2 .padding {
+  padding: 20px 20px 15px 20px;
+}
+
+#showcase ul.latestnews {
+  padding-left: 0;
+  list-style: none;
+}
+
+#showcase ul.latestnews li a {
+  margin-top: 2px;
+  font-size: 105%;
+  line-height: 130%;
+  display: block;
+  padding: 4px 4px 4px 18px;
+  background-image: url(../images/li-arrow.png);
+  background-position: 6px 9px;
+  background-repeat: no-repeat;
+}

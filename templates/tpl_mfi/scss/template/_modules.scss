@@ -1,0 +1,467 @@
+/* from Bootstrap template
+    .module-title .title {
+      margin: 0 0 20px;
+      padding-bottom: 9px;
+    }
+
+    // module lists
+    .module-content ul li::before {
+      content:"\e080";
+      font-family: glyphicons halflings;
+    }
+
+    .module-content ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    .module-content ul li {
+      list-style: outside none none;
+      margin: 0;
+      padding: 2px 0;
+    }
+    // end module lists
+
+    // Module tables?
+
+    #fullwidth .moduletable {
+      border: 0;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .black .moduletable {
+      background: none repeat scroll 0 0 #222222;
+      border-color: #222222;
+      color: #AAAAAA;
+    }
+
+    .moduletable {
+      margin-bottom: 20px;
+      padding: 20px 10px;
+    }
+
+    .panel.moduletable {
+    padding: 0
+    }
+
+    .panel .moduletable {
+      box-shadow: none;
+      margin: 0px 10px;
+      padding: 10px;
+    }
+*/
+
+/*Brent BW added module just for spacing purposes */
+#rightmodules .module-banner,
+#rightmodules2 .module-banner,
+#leftmodules .module-banner,
+#leftmodules2 .module-banner,
+#main-section  .module-banner {
+  margin-bottom: 15px;
+}
+
+// Used as class on ids "mainmodules", "bottommodules1", "bottommodules2",
+// "footermodules", "leftmodules", "leftmodules2", "rightmodules", "rightmodules2"
+.spacer .block {float: left;}
+.spacer.w99 .block {width: 99.8%;}
+.spacer.w49 .block {width: 49.8%;}
+.spacer.w33 .block {width: 33.3%;}
+.spacer.w24 .block {width: 24.8%;}
+
+
+// id "bottommodules1" and "bottommodules2" are the positions
+// "content_bottom_1" and "content_bottom_2" now
+#bottommodules2.spacer.w33 .block {width: 33.1%;}
+
+.moduletable h3 {
+  font-size: 150%;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.moduletable {margin-bottom: 10px;}
+
+// id "rightmodules" is a wrapper for position "right2" and "right3"
+// id "sidemenu" and position "right" is between "rightmodules" and "rightmodules2"
+// id "rightmodules2" is a wrapper for position "right4" and "right5"
+#rightmodules .module,
+#rightmodules2 .module,
+#leftmodules .module,
+#leftmodules2 .module,
+#rightmodules .module-title,
+#rightmodules2 .module-title,
+#leftmodules .module-title,
+#leftmodules2 .module-title,
+#rightmodules .module-notitle,
+#rightmodules2 .module-notitle,
+#leftmodules .module-notitle,
+#leftmodules2 .module-notitle,
+#rightmodules .module-menu,
+#rightmodules2 .module-menu {
+  margin-right: 5px;
+  margin-bottom: 15px;
+}
+
+#rightmodules div:first-child.block .module,
+#rightmodules2 div:first-child.block .module,
+#leftmodules div:first-child.block .module,
+#leftmodules2 div:first-child.block .module,
+#rightmodules div:first-child.block .module-title,
+#rightmodules2 div:first-child.block .module-title,
+#leftmodules div:first-child.block .module-title,
+#leftmodules2 div:first-child.block .module-title,
+#rightmodules div:first-child.block .module-notitle,
+#rightmodules2 div:first-child.block .module-notitle,
+#leftmodules div:first-child.block .module-notitle,
+#leftmodules2 div:first-child.block .module-notitle {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+#rightmodules div:last-child.block .module,
+#rightmodules2 div:last-child.block .module,
+#leftmodules div:last-child.block .module,
+#leftmodules2 div:last-child.block .module,
+#rightmodules div:last-child.block .module-title,
+#rightmodules2 div:last-child.block .module-title,
+#leftmodules div:last-child.block .module-title,
+#leftmodules2 div:last-child.block .module-title,
+#rightmodules div:last-child.block .module-notitle,
+#rightmodules2 div:last-child.block .module-notitle,
+#leftmodules div:last-child.block .module-notitle,
+#leftmodules2 div:last-child.block .module-notitle {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+// id "mainmodules" is center column in content
+#mainmodules {padding-bottom: 10px;padding-top: 10px;}
+
+/* Brent BW added the following to fix the myblog module situation */
+#mainmodules {width: 99%;height: auto;}
+
+#mainmodules .module h3 {
+  margin-top: -28px;
+  margin-bottom: 12px;
+  padding-bottom: 0;
+  color: #5D5D5D;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+#mainmodules .module, #mainmodules .module-notitle, #mainmodules .module-title {
+  background: url(../images/module2-tr.png) 100% 0 no-repeat;
+  overflow: hidden;
+  margin-bottom: 15px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+#mainmodules .module div {
+  background: url(../images/module2-tl.png) 0 0 no-repeat;
+}
+
+#mainmodules .module div div {
+  background: url(../images/module2-br.png) 100% 100% no-repeat;
+}
+
+#mainmodules .module div div div {
+  background: url(../images/module2-bl.png) 0 100% no-repeat;
+  padding: 35px 12px 12px 12px;
+}
+
+#mainmodules div:first-child.block .module,
+#mainmodules div:first-child.block .module-notitle,
+#mainmodules div:first-child.block .module-title {
+  margin-left: 0;
+}
+
+#mainmodules div:last-child.block .module,
+#mainmodules div:last-child.block .module-notitle, 
+#mainmodules div:last-child.block .module-title {
+  margin-right: 0;
+}
+
+#main-section .module-title h3 {
+  margin-top: -28px;
+  margin-bottom: 12px;
+  padding-bottom: 0;
+  color: #5D5D5D;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+#main-section .module-title {
+  background: url(../images/module2-tr.png) 100% 0 no-repeat;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+#main-section .module-title div {
+  background: url(../images/module2-tl.png) 0 0 no-repeat;
+}
+
+#main-section .module-title div div {
+  background: url(../images/module2-br.png) 100% 100% no-repeat;
+}
+
+#main-section .module-title div div div {
+  background: url(../images/module2-bl.png) 0 100% no-repeat;
+  padding: 35px 12px 12px 12px;
+}
+
+#main-section .module-notitle h3 {
+  display: none;
+}
+
+#main-section .module-notitle {
+  background: url(../images/module3-tr.png) 100% 0 no-repeat;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+#main-section .module-notitle div {
+  background: url(../images/module3-tl.png) 0 0 no-repeat;
+}
+
+#main-section .module-notitle div div {
+  background: url(../images/module3-br.png) 100% 100% no-repeat;
+}
+
+#main-section .module-notitle div div div {
+  background: url(../images/module3-bl.png) 0 100% no-repeat;
+  padding: 15px 12px 12px 12px;
+}
+
+#left-column .module,
+#right-column .module,
+#left-column .module-menu,
+#right-column .module-menu {
+  background: url(../images/module-tr.png) 100% 0 no-repeat;
+}
+
+#left-column .module div,
+#right-column .module div,
+#left-column .module-menu div,
+#right-column .module-menu div {
+  background: url(../images/module-tl.png) 0 0 no-repeat;
+}
+
+#left-column .module div div,
+#right-column .module div div,
+#left-column .module-menu div div,
+#right-column .module-menu div div {
+  background: url(../images/module-br.png) 100% 100% no-repeat;
+}
+
+#left-column .module div div div,
+#right-column .module div div div,
+#left-column .module-menu div div div,
+#right-column .module-menu div div div {
+  background: url(../images/module-bl.png) 0 100% no-repeat;
+  padding: 45px 12px 12px 12px;
+  margin-bottom: 20px;
+}
+
+#left-column .module div div div div,
+#left-column .module-title div div div div,
+#left-column .module-notitle div div div div,
+#right-column .module div div div div,
+#right-column .module-title div div div div,
+#right-column .module-notitle div div div div,
+#bottommodules1 .module div div div div,
+#bottommodules1 .module-title div div div div,
+#bottommodules1 .module-notitle div div div div,
+#bottommodules2 .module div div div div,
+#mainmodules .module div div div div,
+#left-column .module-menu div div div div,
+#right-column .module-menu div div div div {
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+#left-column .module h3,
+#right-column .module h3,
+#left-column .module-menu h3,
+#right-column .module-menu h3 {
+  font-size: 150%;
+  font-weight: bold;
+  margin-top: -45px;
+  margin-bottom: 18px;
+  margin-left: -5px;
+}
+
+.module-ad h3 {
+  margin: 0 0 4px 0;
+  padding: 0 0 0 2px;
+  text-transform: uppercase;
+  color: #777;
+  font-size: 80%;
+  letter-spacing: 1px;
+}
+
+.module-ad {
+  padding: 0;margin: 0 0 20px 0;
+}
+
+#bottommodules2 div.block {
+  border-left: 2px solid #e0e0e0;
+}
+
+#bottommodules2 div:first-child.block {
+  border-left: 0;
+}
+
+#bottommodules2 div:first-child.block .module {
+  padding-left: 0;
+}
+
+#bottommodules1 div:last-child.block .module,
+#bottommodules1 div:last-child.block .module-title,
+#bottommodules1 div:last-child.block .module-notitle {
+  margin-right: 0;
+}
+
+#bottommodules1 .module {
+  background: url(../images/module-tr.png) 100% 0 no-repeat;
+}
+
+#bottommodules1 .module div {
+  background: url(../images/module-tl.png) 0 0 no-repeat;
+}
+
+#bottommodules1 .module div div {
+  background: url(../images/module-br.png) 100% 100% no-repeat;
+}
+
+#bottommodules1 .module div div div {
+  background: url(../images/module-bl.png) 0 100% no-repeat;
+  padding: 45px 12px 12px 12px;
+}
+
+#bottommodules1 .module h3, #bottommodules2 .module h3 {
+  font-size: 150%;
+  font-weight: bold;
+}
+
+#bottommodules1 .module h3 {
+  margin-top: -40px;
+  margin-bottom: 15px;
+  margin-left: -5px;
+}
+
+#bottommodules2 .module h3 {
+  top: 0;
+  margin-top: 15px;
+  padding-left: 0;
+  margin-left: 0;
+  margin-bottom: 0;
+  position: absolute;
+}
+
+#bottommodules1 .module,
+#bottommodules1 .module-title,
+#bottommodules1 .module-notitle {
+  margin-right: 10px;
+  padding-left: 0;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+#bottommodules1 .module-title,
+#bottommodules1 .module-notitle {
+  margin-top: 14px;
+}
+
+#bottommodules2 .module,
+#bottommodules2 .module-title,
+#bottommodules2 .module-notitle {
+  margin-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  padding-top: 15px;
+}
+
+#footermodules .module h3 {
+  font-weight: bold;
+  color: #666;
+  margin-top: 0;
+}
+
+#footermodules .module {
+  margin-right: 15px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+#footermodules div:last-child.block .module {
+  margin-right: 0;
+}
+
+#mainmodules,
+#bottommodules1,
+#bottommodules2,
+#footermodules,
+#rightmodules,
+#rightmodules2,
+#leftmodules,
+#leftmodules2 {
+  overflow: hidden;
+}
+
+// class="block-surround" is on modules block 2 in main content
+/*
+<div class="main-content block2">
+  <div class="block-surround">
+    <div class="block-surround2">
+      <div class="block-surround3">
+        <div class="block-surround4">
+          <div id="bottommodules2" class="spacer<?php echo $bottommods2_width; ?>">
+*/
+
+.block-surround {
+  background: url(../images/module-tr.png) 100% 0 no-repeat;
+}
+
+.block-surround2 {
+  background: url(../images/module-tl.png) 0 0 no-repeat;
+}
+
+.block-surround3 {
+  background: url(../images/module-br.png) 100% 100% no-repeat;
+}
+
+.block-surround4 {
+  background: url(../images/module-bl.png) 0 100% no-repeat;
+  padding: 34px 12px 0 12px;
+}
+
+.module_user1 h3 {
+  text-align:left;
+  font-size: 150%;
+  font-weight: bold;
+  margin-top: 0;
+  color: #0D507A;
+} 
+
+.module_user1 div div div {
+text-align:center;
+margin-bottom: 10px;
+}
+
+/* Brent BW added all of these styles for the front page columns */
+div.moduletable_centered {
+text-align:center;
+margin-bottom: 10px !important;
+}
+
+div.moduletable_centered h3 {
+  text-align:left;
+  font-size: 150%;
+  font-weight: bold;
+  margin-top: 0;
+  color: #0D507A;
+} 

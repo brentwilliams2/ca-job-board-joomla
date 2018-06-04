@@ -1,0 +1,118 @@
+/* From Bootstrap template
+    .search .phrases .phrases-box .controls label {
+      display: inline-block;
+      margin: 0 20px 20px;
+    }
+
+    .search .only label {
+      display: inline-block;
+      margin: 0 20px 20px;
+    }
+*/
+
+.main-page .display_limit p.counter {
+  width: 200px;
+  float: left;
+}
+
+.main-page .search-results dt,
+.main-page .search-results dd,
+.main-page .search-results dl {
+  display: block;
+}
+
+.main-page .search-results ol li {
+  background: none;
+  padding-left: 0;
+}
+
+.main-page .searchintro {
+  font-weight: normal;
+  margin: 20px 0 20px;
+}
+
+.main-page #searchForm {
+  padding: 0;
+}
+
+.main-page .form-limit {
+  margin: 20px 0 0;
+  text-align: right;
+  padding: 0 10px 0 20px;
+}
+
+.main-page .highlight {
+  font-weight: bold;
+}
+
+.main-page .ordering-box {
+  float: none;
+}
+
+.main-page .phrases-box {
+  float: none;
+  margin-bottom: 10px;
+}
+
+.main-page .ordering-box .inputbox {
+  width: auto !important
+}
+
+.main-page .only,
+.main-page .phrases {
+  margin: 10px 0 0 0px;
+  padding: 15px 0;
+  line-height: 1.3em;
+}
+
+.main-page label.ordering {
+  display: block;
+  margin: 10px 0 10px 0;
+}
+
+.main-page .word {
+  padding: 0;
+}
+
+.main-page .word input {
+  font-weight: bold;
+}
+
+.main-page .word label {
+  font-weight: bold;
+}
+
+.main-page fieldset.only label,
+.main-page fieldset.phrases label {
+  margin: 0 10px 0 0;
+}
+
+.main-page .ordering-box label.ordering {
+  margin: 0 10px 5px 0;float: left;
+}
+
+.main-page form .search label {
+  display: none;
+}
+
+.main-page dl.search-results dt.result-title {
+  padding: 15px 15px 0px 5px;
+  font-weight: bold;
+}
+
+.main-page dl.search-results dd {
+  padding: 2px 15px 2px 5px;
+}
+
+.main-page dl.search-results dd.result-text {
+  padding: 10px 15px 10px 5px;
+  line-height: 1.7em;
+}
+
+.main-page dl.search-results dd.result-created {
+  padding: 2px 15px 15px 5px;
+}
+
+.main-page dl.search-results dd.result-category {
+  padding: 10px 15px 5px 5px;
+}
