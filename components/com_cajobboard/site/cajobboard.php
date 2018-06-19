@@ -1,11 +1,15 @@
 <?php
 /**
- * @package   To-do
- * @copyright Copyright (c)2013-2015 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license   GNU General Public License version 2 or later
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-defined('_JEXEC') or die();
+// no direct access
+defined( '_JEXEC' ) or die;
 
 // Load FOF
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
@@ -13,4 +17,4 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
-$container = FOF30\Container\Container::getInstance('com_todo')->dispatcher->dispatch();
+$container = FOF30\Container\Container::getInstance('com_cajobboard')->dispatcher->dispatch();

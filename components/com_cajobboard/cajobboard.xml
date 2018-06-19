@@ -10,6 +10,8 @@
   <version>0.0.1</version>
   <description>COM_CAJOBBOARD_XML_DESCRIPTION</description>
 
+  <scriptfile>cajobboard.script.php</scriptfile>
+
   <install>
     <sql>
       <file driver="mysql" charset="utf8">sql/com_cajobboard.install.sql</file>
@@ -34,10 +36,7 @@
     <folder>js</folder>
   </media>
 
-  <!-- Site Main File Copy Section -->
-  <!-- Note the folder attribute: This attribute describes the folder
-    to copy FROM in the package to install therefore files copied
-    in this section are copied from /site/ in the package -->
+
   <files folder="site">
     <filename>index.html</filename>
     <filename>cajobboard.php</filename>
@@ -48,14 +47,8 @@
   </files>
 
   <administration>
-    <!-- Administration Menu Section -->
     <menu link='index.php?option=com_cajobboard'>CA Job Board</menu>
-    <!-- Administration Main File Copy Section -->
-    <!-- Note the folder attribute: This attribute describes the folder
-      to copy FROM in the package to install therefore files copied
-      in this section are copied from /admin/ in the package -->
     <files folder="admin">
-      <!-- Admin Main File Copy Section -->
       <filename>access.xml</filename>
       <filename>config.xml</filename>
       <filename>fof.xml</filename>

@@ -9,4 +9,5 @@ return array(
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'GraphQL\\' => array($vendorDir . '/webonyx/graphql-php/src'),
+    'Calligraphic\\JobBoard\\' => array($baseDir . '/src'),
 );

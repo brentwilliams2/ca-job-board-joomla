@@ -1,6 +1,5 @@
-
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.0" type="library" method="upgrade">
+<extension version="3.8" type="library" method="upgrade">
   <name>lib_cajobboard</name>
   <libraryname>calligraphic</libraryname>
   <creationDate>May 2018</creationDate>
@@ -15,8 +14,9 @@
   <files>
     <filename>index.html</filename>
     <filename>cajobboard.php</filename>
-    <filename>manifest.xml</filename>
-    <folder>vendor</folder>
+    <filename>cajobboard.xml</filename>
     <folder>language</folder>
+    <folder>src</folder>
+    <folder>vendor</folder>
   </files>
 </extension>

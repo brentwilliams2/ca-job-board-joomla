@@ -24,6 +24,10 @@ class ComposerStaticInit03b76553bd7ddca752d6cd540a300a52
         array (
             'GraphQL\\' => 8,
         ),
+        'C' => 
+        array (
+            'Calligraphic\\JobBoard\\' => 22,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -38,6 +42,10 @@ class ComposerStaticInit03b76553bd7ddca752d6cd540a300a52
         'GraphQL\\' => 
         array (
             0 => __DIR__ . '/..' . '/webonyx/graphql-php/src',
+        ),
+        'Calligraphic\\JobBoard\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 

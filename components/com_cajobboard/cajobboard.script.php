@@ -7,7 +7,7 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined( '_JEXEC' ) or die;
 
 class Pkg_JobBoardInstallerScript
 {
@@ -30,7 +30,7 @@ class Pkg_JobBoardInstallerScript
 	 *
 	 * @var   string
 	 */
-	protected $minimumPHPVersion = '5.4.0';
+	protected $minimumPHPVersion = '5.6.0';
 
 	/**
 	 * The minimum Joomla! version required to install this extension
