@@ -22,8 +22,8 @@
       <fieldset name="basic">
         <field name="enabled" type="radio"
           default="0"
-          description="PLG_CAJOBBOARD_ENABLED_DESC"
-          label="PLG_CAJOBBOARD_ENABLED_LABEL"
+          description="PLG_SYSTEM_CAJOBBOARD_ENABLED_DESC"
+          label="PLG_SYSTEM_CAJOBBOARD_ENABLED_LABEL"
         >
           <option value="0">JOFF</option>
           <option value="1">JON</option>
