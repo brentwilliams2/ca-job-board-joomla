@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fof>
-	<common>
-        <!-- Set up the namespace for concrete, specialised classes -->
-        <container>
-            <option name="factoryClass"><![CDATA[FOF30\Factory\MagicFactory]]></option>
-            <option name="componentNamespace"><![CDATA[Akeeba\Todo]]></option>
-        </container>
+  <!-- Common settings -->
+	<common></common>
 
-        <!-- Set the default view in both frontend and backend to "Items" -->
+  <backend>
+
+    <!-- Set up the namespace for concrete, specialised classes -->
+    <container>
+      <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard\Admin]]></option>
+      <option name="factoryClass"><![CDATA[FOF30\Factory\MagicFactory]]></option>
+    </container>
+
+    <!-- Set the default view for backend -->
 		<dispatcher>
-			<option name="defaultView">Items</option>
+			<option name="defaultView">items</option>
 		</dispatcher>
 
-        <!-- Enable filters in frontend and backend -->
+    <!-- Model configuration -->
 		<model name="Items">
 			<config>
-				<option name="contentType">com_todo.item</option>
+				<option name="contentType">com_cajobboard.item</option>
 			</config>
+
+      <!-- Behaviour setup. Use merge="1" to merge with already defined behaviours. -->
 			<behaviors merge="1">Tags, Filters</behaviors>
 		</model>
-	</common>
+
+	</backend>
 
 	<frontend>
-		<container>
-			<option name="factoryClass">FOF30\Factory\MagicFactory</option>
-			<option name="scaffolding">0</option>
-			<option name="saveScaffolding">0</option>
-		</container>
 
-		<!-- In the frontend we also want to only show our own items -->
-		<model name="Items">
-			<behaviors merge="1">Own, Enabled, Ordered</behaviors>
-		</model>
+    <!-- Set the default view for frontend -->
+		<dispatcher>
+			<option name="defaultView">items</option>
+		</dispatcher>
+
+		<container>
+      <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard\Site]]></option>
+			<option name="factoryClass"><![CDATA[FOF30\Factory\SwitchFactory]]></option>
+		</container>
 
 	</frontend>
 </fof>

@@ -9,7 +9,7 @@
 // Protect from unauthorized access
 defined( '_JEXEC' ) or die;
 
-class Pkg_JobBoardInstallerScript
+class com_cajobboardInstallerScript
 {
 	/**
 	 * The name of our package, e.g. pkg_example. Used for dependency tracking.

@@ -6,4 +6,30 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
-DROP TABLE IF EXISTS `#__cajobboard_jobpostings`;
+
+
+/* Tables in com_cajobboard.employer.install.sql */
+DROP TABLE IF EXISTS '#__cajobboard_organizations';
+DROP TABLE IF EXISTS '#__cajobboard_organization_employee';
+
+/* Tables in com_cajobboard.jobpostings.install.sql */
+DROP TABLE IF EXISTS `#__cajobboard_job_postings`;
+DROP TABLE IF EXISTS `#__cajobboard_job_occupational_category_group`;
+DROP TABLE IF EXISTS `#__cajobboard_job_occupational_category`;
+DROP TABLE IF EXISTS `#__cajobboard_job_employment_type`;
+
+/* Tables in com_cajobboard.media.install.sql */
+DROP TABLE IF EXISTS '#__cajobboard_media_image';
+
+/* Tables in com_cajobboard.places.install.sql */
+DROP TABLE IF EXISTS '#__cajobboard_places';
+DROP TABLE IF EXISTS '#__cajobboard_places_open_hours';
+
+/* Tables in com_cajobboard.ucm.install.sql */
+DROP TABLE IF EXISTS `#__cajobboard_ucm`;
+
+/* Tables in com_cajobboard.utilities.install.sql */
+DROP TABLE IF EXISTS '#__cajobboard_util_day_of_week';
+DROP TABLE IF EXISTS '#__cajobboard_util_places';
+DROP TABLE IF EXISTS '#__cajobboard_util_address_region';
+DROP TABLE IF EXISTS '#__cajobboard_util_telephone';

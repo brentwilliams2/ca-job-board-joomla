@@ -14,15 +14,15 @@
 
   <install>
     <sql>
-      <file driver="mysql" charset="utf8">sql/com_cajobboard.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.employerreviews.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.jobpostings.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.media.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.organizations.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.places.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.ucm.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.utilities.install.sql</file>
     </sql>
   </install>
-
-  <update>
-    <schemas>
-      <schemapath type="mysql">sql/updates</schemapath>
-    </schemas>
-  </update>
 
   <uninstall>
     <sql>
@@ -30,12 +30,17 @@
     </sql>
   </uninstall>
 
+  <update>
+    <schemas>
+      <schemapath type="mysql">sql/updates</schemapath>
+    </schemas>
+  </update>
+
   <media destination="com_calligraphic" folder="media">
     <folder>css</folder>
     <folder>images</folder>
     <folder>js</folder>
   </media>
-
 
   <files folder="site">
     <filename>index.html</filename>
@@ -47,13 +52,18 @@
   </files>
 
   <administration>
-    <menu link='index.php?option=com_cajobboard'>CA Job Board</menu>
+    <menu link='index.php?option=com_cajobboard'>COM_CAJOBBOARD</menu>
+    <submenu>
+      <menu view="viewname">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
+    </submenu>
+
     <files folder="admin">
       <filename>access.xml</filename>
       <filename>config.xml</filename>
       <filename>fof.xml</filename>
       <filename>index.html</filename>
       <filename>cajobboard.php</filename>
+      <filename>cajobboard.xml</filename>
       <folder>Form</folder>
       <folder>language</folder>
       <folder>sql</folder>
