@@ -12,7 +12,10 @@
 CREATE TABLE IF NOT EXISTS '#__cajobboard_example' (
   'id' BIGINT UNSIGNED NOT NULL AUTO_INCREMENT=0,
   PRIMARY KEY ('id')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 /* Schema.org markup suggested for resumes */
 Person and Postal Address (for "Contact and Social Media Links", use html <section id="contact-details">)

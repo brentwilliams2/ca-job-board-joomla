@@ -10,37 +10,39 @@
  * This table is used to implement table-per-type inheritance for job board tables with common fields
  */
 CREATE TABLE IF NOT EXISTS '#__cajobboard_ucm' (
-  'id' BIGINT UNSIGNED NOT NULL AUTO_INCREMENT=0,
-  'slug' CHAR(50) NOT NULL COMMENT 'alias for SEF URL',
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT=0,
+  slug CHAR(50) NOT NULL COMMENT 'alias for SEF URL',
   /* FOF "magic" fields */
-  'asset_id'	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table for access control purposes',
-  'access' INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level',
-  'enabled' TINYINT(3) NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published',
-  'ordering' BIGINT(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'order this record should appear in for sorting',
-  'created_on' DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Timestamp of record creation, auto-filled by save()',
-  'created_by' INT(11) NOT NULL DEFAULT '0' COMMENT 'user ID who created the record, auto-filled by save()',
-  'modified_on' DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Timestamp of record modification, auto-filled by save(), touch()',
-  'modified_by' INT(11) NOT NULL DEFAULT '0' COMMENT 'user ID who modified the record, auto-filled by save(), touch()',
-  'locked_on' DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'timestamp of record locking, auto-filled by lock(), unlock()',
-  'locked_by' INT(11) NOT NULL DEFAULT '0' COMMENT 'user ID who locked the record, auto-filled by lock(), unlock()',
+  asset_id'	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table for access control purposes',
+  access INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level',
+  enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
+  ordering BIGINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
+  created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
+  created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
+  modified_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
+  modified_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
+  locked_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
+  locked_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock()',
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  'publish_up' DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'date and time to change the state to published, schema.org alias is datePosted',
-  'publish_down' DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'date and time to change the state to unpublished',
-  'version' INT(10) UNSIGNED NOT NULL DEFAULT '1' COMMENT '',
-  'ordering' INT(11) NOT NULL DEFAULT '0' COMMENT '',
-  'metadata' JSON COMMENT 'JSON encoded metadata field for this item',
-  'metakey' MEDIUMTEXT NOT NULL COMMENT 'meta keywords for this item',
-  'metadesc' MEDIUMTEXT NOT NULL COMMENT '',
-  'xreference' VARCHAR(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.',
-  'params' MEDIUMTEXT NOT NULL COMMENT 'JSON encoded parameters for the content item.',
-  'language' CHAR(7) NOT NULL COMMENT 'The language code for the article or * for all languages.',
-  'cat_id' INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
-  'hits' INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
-  'featured' TINYINT(4) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
+  publish_up DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_down DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to unpublished.',
+  version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
+  ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
+  metadata JSON COMMENT 'JSON encoded metadata field for this item.',
+  metakey MEDIUMTEXT NOT NULL COMMENT 'Meta keywords for this item.',
+  metadesc MEDIUMTEXT NOT NULL COMMENT 'Meta descriptionfor this item.',
+  xreference VARCHAR(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.',
+  params MEDIUMTEXT NOT NULL COMMENT 'JSON encoded parameters for the content item.',
+  language CHAR(7) NOT NULL COMMENT 'The language code for the article or * for all languages.',
+  cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
+  hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
+  featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   INDEX ucm_slug_index (slug),
-  PRIMARY KEY ('id')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
-
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 /*
  * Create content type for this table, mapping fields to the UCM standard fields for history feature

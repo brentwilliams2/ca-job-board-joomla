@@ -12,7 +12,10 @@
 CREATE TABLE IF NOT EXISTS '#__cajobboard_example' (
   'id' BIGINT UNSIGNED NOT NULL AUTO_INCREMENT=0,
   PRIMARY KEY ('id')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
  /**
  * Telephone number table
@@ -20,7 +23,10 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_example' (
 CREATE TABLE IF NOT EXISTS '#__cajobboard_util_telephone' (
   'telephone' CHAR(16) NOT NULL COMMENT 'The telephone number',
   PRIMARY KEY ('telephone')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 
 /**
@@ -30,7 +36,10 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_util_day_of_week' (
   /* SCHEMA: https://schema.org/DayOfWeek */
   'day' CHAR(16) NOT NULL,
   PRIMARY KEY ('day')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
  /**
  * Region table (states or equivelant entity, e.g. CA)
@@ -39,7 +48,10 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_util_address_region' (
   'address_region' CHAR(32) NOT NULL COMMENT 'The name of the region, e.g. California'
   'address_region_abbr' VARCHAR(6) NOT NULL COMMENT 'The abbreviation for the region, e.g. CA'
   PRIMARY KEY ('address_region')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 /**
  * Initial days of the week

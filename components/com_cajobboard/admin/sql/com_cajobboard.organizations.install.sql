@@ -9,13 +9,16 @@
  /**
  * Organization Type table
  */
-CREATE TABLE IF NOT EXISTS '#__cajobboard_organization_type' (
+CREATE TABLE IF NOT EXISTS '#__cajobboard_organizationtypes' (
 /* @TODO: Should this use ItemList for the enumeration values? Utilities has tables with similar question */
   /* SCHEMA: Thing */
   'name' CHAR(16) COMMENT 'The type of organization, e.g. Employer, Recruiter, etc.',
   'description' VARCHAR(255),
   PRIMARY KEY ('name'),
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 
  /**
@@ -23,9 +26,9 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_organization_type' (
  *
  * Uses schema https://schema.org/Organization
  */
-CREATE TABLE IF NOT EXISTS '#__cajobboard_organization' (
+CREATE TABLE IF NOT EXISTS '#__cajobboard_organizations' (
   /* Use Calligraphic unified content model (UCM) table for common record metadata */
-  'organization_id' BIGINT UNSIGNED NOT NULL,  /* FK to #__cajobboard_ucm(id) */
+  'cajobboard_organization_id' BIGINT UNSIGNED NOT NULL,  /* FK to #__cajobboard_ucm(id) */
   /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
   'organizationType' CHAR(16) COMMENT 'The type of organization e.g. Employer, Recruiter, etc.' /* FK from #__cajobboard_organization_type */
   /* SCHEMA: Thing */
@@ -48,7 +51,7 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_organization' (
 
   /***** employee  Person  Someone working for this organization. Supersedes employees. FK from user table */
 
-  
+
   'memberOf'	Organization or ProgramMembership	COMMENT 'An Organization (or ProgramMembership) to which this Person or Organization belongs.'
   'numberOfEmployees' QuantitativeValue	COMMENT 'The number of employees in an organization e.g. business.' /* QuantitativeValue has properties like value, minValue, maxValue, unitCode for unit of measurement */
 
@@ -59,7 +62,10 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_organization' (
 
   PRIMARY KEY ('id'),
   /* FOREIGN KEY (ucm_id) REFERENCES #__cajobboard_ucm(id), */
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 
 
@@ -72,4 +78,7 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_organization_employee' (
   PRIMARY KEY ('employer_id', 'employee_id'),
   /* FOREIGN KEY (employer_id) REFERENCES#__cajobboard_employer(ucm_id), */
   /* @TODO: Reference to Joomla user table FOREIGN KEY (employee_id) REFERENCES #__cajobboard_ucm(id), */
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;

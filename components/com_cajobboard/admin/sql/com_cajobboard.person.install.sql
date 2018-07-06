@@ -12,7 +12,10 @@
 CREATE TABLE IF NOT EXISTS '#__cajobboard_example' (
   'id' bigint unsigned NOT NULL AUTO_INCREMENT=0,
   PRIMARY KEY ('id')
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 Person
 

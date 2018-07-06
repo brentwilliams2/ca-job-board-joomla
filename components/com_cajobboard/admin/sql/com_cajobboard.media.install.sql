@@ -36,7 +36,10 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_media_image' (
   /* FOREIGN KEY (image_id) REFERENCES #__cajobboard_ucm(id), */
   /* FOREIGN KEY (about) REFERENCES #__cajobboard_ucm(id), */
   /* FOREIGN KEY (content_location) REFERENCES #__cajobboard_places(places_id) */
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
  /**
  * Join table for image media
@@ -47,4 +50,7 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_media_image_join' (
   PRIMARY KEY ('id'),
   /* FOREIGN KEY (id) REFERENCES #__cajobboard_ucm(id), */
   /* FOREIGN KEY (image_id) REFERENCES #__cajobboard_media_image(image_id) */
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;

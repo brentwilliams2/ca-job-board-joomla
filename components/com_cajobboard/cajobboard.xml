@@ -18,8 +18,10 @@
       <file driver="mysql" charset="utf8">sql/com_cajobboard.jobpostings.install.sql</file>
       <file driver="mysql" charset="utf8">sql/com_cajobboard.media.install.sql</file>
       <file driver="mysql" charset="utf8">sql/com_cajobboard.organizations.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.person.install.sql</file>
       <file driver="mysql" charset="utf8">sql/com_cajobboard.places.install.sql</file>
-      <file driver="mysql" charset="utf8">sql/com_cajobboard.ucm.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.resumes.install.sql</file>
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.reviews.install.sql</file>
       <file driver="mysql" charset="utf8">sql/com_cajobboard.utilities.install.sql</file>
     </sql>
   </install>

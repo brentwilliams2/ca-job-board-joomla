@@ -37,7 +37,10 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_places' (
   /* FOREIGN KEY (address_region) REFERENCES #__cajobboard_util_address_region(address_region), */
   /* FOREIGN KEY (telephone) REFERENCES #__cajobboard_util_telephone(telephone), */
   /* FOREIGN KEY (logo) REFERENCES  #__cajobboard_media_image(image_id) */
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
 
 
 /**
@@ -53,4 +56,7 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_places_open_hours' (
   PRIMARY KEY ('id'),
   /* FOREIGN KEY (places_id) REFERENCES #__cajobboard_places(places_id), */
   /* FOREIGN KEY (day_of_week) REFERENCES #__cajobboard_util_day_of_week(day) */
-) ENGINE=innoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
