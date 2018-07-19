@@ -1,0 +1,398 @@
+<?php
+/**
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
+ */
+
+// no direct access
+defined( '_JEXEC' ) or die;
+
+include_once JPATH_LIBRARIES . '/fof30/include.php';
+
+use Joomla\CMS\Component\Router\RouterBase;
+
+/*
+* Job Board Router
+*/
+class CajobboardRouter extends RouterBase {
+  /*
+   *  View aliases that should be routed
+   *
+   *  This method provides a way to find the correct view name for nested paths, e.g. /ats/dashboard
+   *  and allows the path segments to be translated, and also for the translated view path arrays to be cached.
+   */
+  public static function getViewAliases () {
+    // Get current IETF language tag, e.g. en-US
+    $lang = JFactory::getLanguage()>getTag();
+
+    // Get the global \Controller object
+    $cache = JFactory::getCache('calligraphic_route');
+
+    // Storing cached translated view aliases in 'calligraphic_route' namespace by language tag
+    $cachedViewAliases = $cache->get($lang);
+
+    if($cachedViewAliases) return $cachedViewAliases;
+
+    // Add view aliases here. Use 'default' key (for zero additional segments case)
+    // if segment can have zero or more additional segments.
+    $viewAliases = array(
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_API') => 'Api',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS') => array(
+        'default' => 'Ats',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_DASHBOARD') => 'ApplicantTracking::Dashboard',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_INTERVIEW') => 'ApplicantTracking::Interview',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_INTERVIEWS') => 'ApplicantTracking::Interviews',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_TO_DO_TASKS') => 'Tasks',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_ACTIVITY_STREAM') => 'ApplicantTracking::ActivityStream',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_SCHEDULING') => 'scheduling',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_SCORECARD') => 'ScoreCards',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_ATS_SCORECARDS') => 'ScoreCards',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_APPLICATION') => 'Applications',
+        JText::_('COM_CAJOBBOARD_VIEW_ALIAS_APPLICATIONS') => 'Applications',
+      ),
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_AWARD') => 'Awards',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_AWARDS') => 'Awards',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_COUPON') => 'Coupon',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_COUPONS') => 'Coupons',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_HELP') => 'Help',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_JOB_SEEKER_REFERENCE') => 'References',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_JOB_SEEKER_REFERENCES') => 'References',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_PRICING') => 'PriceList',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_QUESTIONNAIRE') => 'Questionnaires',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_QUESTIONNAIRES') => 'Questionnaires',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RECOMMENDATION') => 'Recommendation',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RECOMMENDATIONS') => 'Recommendations',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RESUME') => 'Resume',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RESUMES') => 'Resumes',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_REVIEW') => 'EmployerReview',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_REVIEWS') => 'EmployerReviews',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_SCORECARD') => 'ScoreCard',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_SCORECARDS') => 'ScoreCards',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_SHOPPING_CART') => 'ShoppingCart',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_SUBSCRIPTION') => 'Subscription',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_SUBSCRIPTIONS') => 'Subscriptions',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RESUME_ALERTS') => 'ResumeAlerts',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_JOB_ALERTS') => 'JobSeekerJobAlert',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_CANDIDATE_PROFILE') => 'JobSeekerProfile',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_CANDIDATES') => 'JobSeekerProfiles',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_JOB_SEEKER_PANEL') => 'JobSeekerPanel',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_CONNECTOR_PROFILE') => 'Connector',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_CONNNECTORS') => 'Connnectors',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_CONNECTOR_PANEL') => 'ConnectorPanel',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RECRUITER_PROFILE') => 'RecruiterProfile',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RECRUITERS') => 'RecruiterProfiles',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_RECRUITER_PANEL') => 'RecruiterPanel',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_EMPLOYER_PROFILE') => 'Employer',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_EMPLOYERS') => 'Employers',
+      JText::_('COM_CAJOBBOARD_VIEW_ALIAS_EMPLOYER_PANEL') => 'EmployerPanel'
+    );
+
+    // Save the view aliases with resolved translation string to cache for the current language settings
+    $cache->store($viewAliases, $lang);
+
+    return $viewAliases;
+  }
+
+  /*
+   * Find the ID from the content item alias
+   *
+   *  New Joomla! router uses separate function for each view, with method signature getViewnameId($segment, $query)
+   */
+  private function getID($model, $alias) {
+    $db =& JFactory::getDBO();
+    $query = $db->getQuery(true)
+      ->select($db->quoteName($pkColumn)) // @TODO Get the primary key column name from the model
+      ->from($model)
+      ->where($db->quoteName($aliasColumn) . ' = ' . $db->quote($alias)); // @TODO Get the alias key column name from the model
+    $db->setQuery($query);
+    return $db->loadResult();
+  }
+
+  /*
+   * Find the content item alias from the ID
+   *
+   * New Joomla! router uses separate function for each view, with method signature getViewnameSegment($id, $query)
+   */
+  private function getAlias($model, $id) {
+    $db =& JFactory::getDBO();
+    $query = $db->getQuery(true)
+      ->select($db->quoteName($aliasColumn)) // @TODO Get the alias key column name from the model
+      ->from($model)
+      ->where($db->quoteName($pkColumn) . ' = ' . $id); // @TODO Get the primary key column name from the model
+    $db->setQuery($query);
+    return $db->loadResult();
+  }
+
+
+  /*
+   * Recursive function to walk through URL segments after the menu alias, and determine if
+   * they are in the view aliases array of predefined paths to an MVC triad. If they are
+   * not, the segments then are either a region/city pair for job post listings or an
+   * invalid route into the component.
+   *
+   *
+   */
+  private static function getView($remainingSegments, $viewAlias, $hasValidView = false) {
+    $currentSegment = array_shift($remainingSegments);
+    $currentValue = array_key_exists($currentSegment, $viewAlias) ? $viewAlias[$currentSegment] : false;
+    $count = count($remainingSegments);
+
+    if (!$currentValue && !$hasValidView) return array(null);
+
+    if (is_string($currentValue) && empty($remainingSegments)) return array($currentValue);
+
+    if (!$currentValue && $hasValidView && $count = 1) return array($hasValidView, $currentSegment);
+
+    if (!$currentValue && $count > 1) return JError::raiseError(404, JText::_("COM_CAJOBBOARD_PAGE_NOT_FOUND"));
+
+    if ($currentValue && !empty($remainingSegments)) return self::getView($remainingSegments, $currentValue, $currentSegment);
+
+    return JError::raiseError(404, JText::_("COM_CAJOBBOARD_PAGE_NOT_FOUND"));
+  }
+
+  /*
+   * Parse Route
+   *
+   * Method to decode the URL from the request for the Job Board component.
+   *
+   * Joomla! will parse a URL like the following before calling us:
+   *   http://www.example.com/example-menu-item/20/1 (the 'example-menu-item' is the menu alias)
+   *
+   * Joomla core will call this parse method and pass something like:
+   *   $segments = [20, 1];
+   *
+   * This method needs to return a dictionary like:
+   *   ['view' => 'article', 'id' => 1, 'catid' => 20]
+   *
+   * @param   array  $segments  The segments of the URL to parse.
+   *
+   * @return  array  The URL attributes to be used by the application.
+   */
+  public function parse(&$segments)
+  {
+    // Get the active menu item.
+    $app = JFactory::getApplication();
+    $menu = $app->getMenu();
+    $item = $menu->getActive();
+    $params = JComponentHelper::getParams('com_weblinks');
+    $advanced = $params->get('sef_advanced_link', 0);
+
+
+
+    // Example router: https://github.com/joomla-extensions/weblinks/blob/master/src/components/com_weblinks/router.php
+
+    // If there are no segments, return the home page view
+    if(!$segments) return array('view' => 'HomePage');
+
+    return self::getView($segments, $this->viewAliases);
+
+
+    // JError::raiseError(404, JText::_("COM_CAJOBBOARD_PAGE_NOT_FOUND"));
+
+
+   /* $vars = array();
+
+    // Check if the first segment is a ViewAlias, and if so return URL attributes
+    $vars['view'] = '';
+    $vars['id'] = '';
+
+    // Check if the first segment is a Region, and if so return URL attributes
+    $vars['view'] = '';
+    $vars['id'] = '';
+
+    // If the first segment is not a ViewAlias or Region, route to a content page
+    $vars = array(
+      'option' => 'com_content',
+      'view' => 'article',
+      'id' = '' // @TODO Need to lookup the id from the alias in the content database
+    );*/
+
+    return $vars;
+  }
+
+
+
+  /*
+  * Build route
+  *
+  * Method to encode a response URL for the Job Board component. May be called
+  * from anywhere in the site that wants to embed a link into the job board.
+  *
+  * Unset the id, view and any other url variables you want and set the alias
+  *
+  * Joomla! core will build the segments into a URL like so:
+  *   http://www.example.com/example-menu-item/20/1 (the 'example-menu-item' is the menu alias)
+  *
+  * @param   array  &$query  An array of URL arguments, e.g. ['view' => 'article', 'id' => 1, 'catid' => 20]
+  *
+  * @return  array  The URL arguments to use to assemble the subsequent URL, e.g. $segments = [20, 1];
+  */
+  public function build(&$query)
+  {
+    $segments = array();
+
+    // Get a menu item based on Itemid or currently active
+    $app = JFactory::getApplication();
+    $menu = $app->getMenu();
+    $params = JComponentHelper::getParams('com_cajobboard');
+    $advanced = $params->get('sef_advanced_link', 0);
+
+    // We need a menu item.  Either the one specified in the query, or the current active one if none specified
+    if (empty($query['Itemid']))
+    {
+      $menuItem = $menu->getActive();
+    }
+    else
+    {
+      $menuItem = $menu->getItem($query['Itemid']);
+    }
+
+    $mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+    $mId = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
+
+		if (isset($query['view']))
+		{
+			$view = $query['view'];
+			if (empty($query['Itemid']) || empty($menuItem) || $menuItem->component != 'com_weblinks')
+			{
+				$segments[] = $query['view'];
+      }
+
+			// We need to keep the view for forms since they never have their own menu item
+			if ($view != 'form')
+			{
+				unset($query['view']);
+			}
+    }
+
+		// Are we dealing with an weblink that is attached to a menu item?
+		if (isset($query['view']) && ($mView == $query['view']) and (isset($query['id'])) and ($mId == (int) $query['id']))
+		{
+			unset($query['view']);
+			unset($query['catid']);
+			unset($query['id']);
+			return $segments;
+    }
+
+		if (isset($view) and ($view == 'category' or $view == 'weblink'))
+		{
+			if ($mId != (int) $query['id'] || $mView != $view)
+			{
+				if ($view == 'weblink' && isset($query['catid']))
+				{
+					$catid = $query['catid'];
+				}
+				elseif (isset($query['id']))
+				{
+					$catid = $query['id'];
+        }
+
+				$menuCatid = $mId;
+				$categories = JCategories::getInstance('Weblinks');
+        $category = $categories->get($catid);
+
+				if ($category)
+				{
+					// TODO Throw error that the category either not exists or is unpublished
+					$path = $category->getPath();
+					$path = array_reverse($path);
+					$array = array();
+					foreach ($path as $id)
+					{
+						if ((int) $id == (int) $menuCatid)
+						{
+							break;
+						}
+						if ($advanced)
+						{
+							list($tmp, $id) = explode(':', $id, 2);
+						}
+						$array[] = $id;
+					}
+					$segments = array_merge($segments, array_reverse($array));
+        }
+
+				if ($view == 'weblink')
+				{
+					if ($advanced)
+					{
+						list($tmp, $id) = explode(':', $query['id'], 2);
+					}
+					else
+					{
+						$id = $query['id'];
+					}
+					$segments[] = $id;
+				}
+      }
+
+			unset($query['id']);
+			unset($query['catid']);
+    }
+
+		if (isset($query['layout']))
+		{
+			if (!empty($query['Itemid']) && isset($menuItem->query['layout']))
+			{
+				if ($query['layout'] == $menuItem->query['layout'])
+				{
+					unset($query['layout']);
+				}
+			}
+			else
+			{
+				if ($query['layout'] == 'default')
+				{
+					unset($query['layout']);
+				}
+			}
+    }
+
+    $total = count($segments);
+
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = str_replace(':', '-', $segments[$i]);
+		}
+
+    return $segments;
+  }
+}
+
+/**
+ * Legacy Job Board router parse function
+ *
+ * @param   array  $segments  The segments of the URL to parse.
+ *
+ * @return  array  The URL attributes to be used by the application.
+ *
+ * Note. These functions are proxies for the new router interface for old SEF extensions.
+ *
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function CajobboardParseRoute($segments)
+{
+	$router = new CajobboardRouter;
+	return $router->parse($segments);
+}
+
+/**
+ * Legacy Job Board router build function
+ *
+ * @param   array  &$query  An array of URL arguments
+ *
+ * @return  array  The URL arguments to use to assemble the subsequent URL.
+ *
+ * Note. These functions are proxies for the new router interface for old SEF extensions.
+ *
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function CajobboardBuildRoute(&$query)
+{
+	$router = new CajobboardRouter;
+	return $router->build($query);
+}

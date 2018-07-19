@@ -68,30 +68,21 @@ use JLoader;
 class JobPostings extends \FOF30\Model\DataModel
 {
 	/**
-	 * Public constructor. Adds behaviours and sets up the behaviours and the relations
+	 * Public constructor. Adds and configure behaviours, and set up relations.
 	 *
 	 * @param   Container  $container
 	 * @param   array      $config
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    // Override behaviours set in the model
     $config['behaviours'] = ['Filters', 'Access', 'Assets', 'Enabled', 'ContentHistory'];
 
     parent::__construct($container, $config);
 
-    // override default table names and primary key id so we can use camelCase names
+    // Override default table names and primary key id so we can use camelCase names
     $this->tableName = "#__cajobboard_job_postings";
     $this->idFieldName = "job_posting_id";
-
-		// Add the filtering behaviour
-    $this->addBehaviour('Filters');
-
-    // Set the backlisted filters
-		$this->blacklistFilters([
-			'publish_up',
-			'publish_down',
-		  'created_on',
-    ]);
 
     // Set up relations
     $this->belongsTo('job_location', 'Places', 'job_location');
@@ -100,7 +91,23 @@ class JobPostings extends \FOF30\Model\DataModel
     $this->belongsTo('occupational_category', 'JobPostingOccupationalCategories', 'occupational_category');
   }
 
+// check method needs to verify that a SEF-friendly URL 'alias' or 'slug' is URL safe. The alias may
+// be auto generated from the title, or entered by the user.
+// The 'slug' is used to quickly find table rows from the router: it uses the 'alias', a colon, and the record id
+// like '1:about-us'. The reason to use it is build-in Joomla! methods automatically strip the slug part off,
+// such as the JInput::int filter.
+function check()
+{
+    jimport('joomla.filter.output');
+    if (empty($this->alias))
+    {
+	    $this->alias = $this->title;
+    }
+    $this->alias = JFilterOutput::stringURLSafe($this->alias);
 
+    /* All your other checks */
+    return true;
+}
 
 
   protected function onBeforeDoSomething()
