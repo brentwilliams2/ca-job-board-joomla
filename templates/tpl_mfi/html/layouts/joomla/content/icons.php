@@ -1,16 +1,18 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package     Calligraphic Job Board
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-defined('JPATH_BASE') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
-$canEdit = $displayData['params']->get('access-edit');
-
+  $canEdit = $displayData['params']->get('access-edit');
 ?>
 
 <div class="icons">
@@ -18,27 +20,31 @@ $canEdit = $displayData['params']->get('access-edit');
 
 		<?php if ($canEdit || $displayData['params']->get('show_print_icon') || $displayData['params']->get('show_email_icon')) : ?>
 			<div class="btn-group pull-right">
-				<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"> <span class="fa fa-gear"></span> <span class="fa fa-caret-down"></span> </a>
-				<?php // Note the actions class is deprecated. Use dropdown-menu instead. ?>
+				<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+          <span class="fa fa-gear"></span>
+          <span class="fa fa-caret-down"></span>
+        </a>
+
 				<ul class="dropdown-menu">
-					<?php if ($displayData['params']->get('show_print_icon')) : ?>
-						<li class="print-icon"> <?php echo JHtml::_('icon.content_print_popup', $displayData['item'], $displayData['params']); ?> </li>
+  				<?php if ($displayData['params']->get('show_print_icon')) : ?>
+						<li class="print-icon"> <?php echo JHtml::_('icon.print_popup', $displayData['item'], $displayData['params']); ?> </li>
 					<?php endif; ?>
+
 					<?php if ($displayData['params']->get('show_email_icon')) : ?>
-						<li class="email-icon"> <?php echo JHtml::_('icon.content_email', $displayData['item'], $displayData['params']); ?> </li>
+						<li class="email-icon"> <?php echo JHtml::_('icon.email', $displayData['item'], $displayData['params']); ?> </li>
 					<?php endif; ?>
+
 					<?php if ($canEdit) : ?>
-						<li class="edit-icon"> <?php echo JHtml::_('icon.content_edit', $displayData['item'], $displayData['params']); ?> </li>
+						<li class="edit-icon"> <?php echo JHtml::_('icon.edit', $displayData['item'], $displayData['params']); ?> </li>
 					<?php endif; ?>
 				</ul>
+
 			</div>
 		<?php endif; ?>
 
 	<?php else : ?>
-
 		<div class="pull-right">
 			<?php echo JHtml::_('icon.print_screen', $displayData['item'], $displayData['params']); ?>
 		</div>
-
 	<?php endif; ?>
 </div>

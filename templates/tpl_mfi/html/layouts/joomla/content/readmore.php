@@ -1,19 +1,24 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package     Calligraphic Job Board
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-$params = $displayData['params'];
-$item = $displayData['item'];
+  // no direct access
+  defined('_JEXEC') or die;
+
+  $params = $displayData['params'];
+  $item = $displayData['item'];
 ?>
 
 <p class="readmore">
 	<a class="btn btn-default" href="<?php echo $displayData['link']; ?>" itemprop="url">
-		<i class="fa fa-chevron-right"></i> 
+		<i class="fa fa-chevron-right"></i>
 		<?php if (!$params->get('access-view')) :
 			echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
 		elseif ($readmore = $item->alternative_readmore) :

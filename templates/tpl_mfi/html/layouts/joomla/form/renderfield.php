@@ -1,13 +1,16 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package     Calligraphic Job Board
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
 /**
  * Layout variables
@@ -17,19 +20,17 @@ defined('_JEXEC') or die;
  * 	$input           : (string) The input field html code
  */
 
-?>
-
-<?php
-if (!empty($displayData['options']['showonEnabled']))
-{
-	JHtml::_('jquery.framework');
-	JHtml::_('script', 'jui/cms.js', false, true);
-}
+  if (!empty($displayData['options']['showonEnabled']))
+  {
+    JHtml::_('jquery.framework');
+    JHtml::_('script', 'jui/cms.js', false, true);
+  }
 ?>
 
 <div class="control-group <?php echo $displayData['options']['class']; ?>" <?php echo $displayData['options']['rel']; ?>>
 	<?php if (empty($displayData['options']['hiddenLabel'])) : ?>
 		<div class="control-label"><?php echo $displayData['label']; ?></div>
 	<?php endif; ?>
+
 	<div class="controls"><?php echo $displayData['input']; ?></div>
 </div>

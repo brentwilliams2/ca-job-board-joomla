@@ -31,7 +31,6 @@ function compileSassFile(src, dest)
 		.pipe(sass({precision: 8}))
 		.pipe(gulp.dest(dest))
     .pipe(cleanCSS({ compatibility: 'ie8' }))
-    .pipe(sourcemaps.write('./'))
 		.pipe(rename(function (path) {
 			path.basename += '.min';
     }))
@@ -55,7 +54,6 @@ function compileJavascript(src) {
     .pipe(plumber({ errorHandler: onError }))
     .pipe(sourcemaps.init())
 		.pipe(concat('template.js'))
-		.pipe(gulp.dest('./js'))
 		.pipe(uglify())
 		.pipe(rename(function (path) {
 			path.basename += '.min';

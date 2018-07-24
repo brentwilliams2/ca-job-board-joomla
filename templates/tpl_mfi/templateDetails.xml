@@ -2,7 +2,7 @@
 <!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "https://www.joomla.org/xml/dtd/2.5/template-install.dtd">
 
 <extension version="3.5" type="template" method="upgrade">
-	<name>Multi-Family Insiders</name>
+	<name>mfi</name>
 	<creationDate>August 2018</creationDate>
 	<author>Kevin Brown</author>
 	<copyright>Copyright © 2018 Calligraphic</copyright>
@@ -23,6 +23,7 @@
 		<folder>images</folder>
 		<folder>includes</folder>
 		<folder>js</folder>
+    <folder>language</folder>
 		<folder>scss</folder>
 		<filename>component.php</filename>
 		<filename>error.php</filename>
@@ -65,28 +66,27 @@
 					<option value="4">4</option>
 					<option value="5">5</option>
 				</field>
+
 				<!-- SHOW FRONTPAGE-->
 				<field name="frontpageshow" type="radio" class="btn-group" default="1" label="Show FrontPage Articles" description="Show FrontPage Articles">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
+
 				<!-- MODERNIZR-->
 				<field name="modernizr" type="radio" class="btn-group" default="0" label="Modernizr" description="Enable JavaScript modernizr.js in head">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
+
 				<!-- FONT-AWESOME -->
 				<field name="fontawesome" type="radio" class="btn-group" default="0" label="Font Awesome" description="Enable Font Awesome for better icons in Bootstrap">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
+
 				<!-- PIE-->
 				<field name="pie" type="radio" class="btn-group" default="0" label="PIE" description="Enable PIE (CSS3 for IE 9+8)">
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-				</field>
-				<!-- MATERIAL DESIGN-->
-				<field name="headroom" type="radio" class="btn-group" default="0" label="Headroom" description="Enable Headroom (slide header out of view on scroll down)">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>

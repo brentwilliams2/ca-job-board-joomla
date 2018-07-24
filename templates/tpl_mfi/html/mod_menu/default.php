@@ -1,16 +1,20 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  mod_menu
+ * @package     Calligraphic Job Board
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
-// Note. It is important to remove spaces between elements.
+  // Note. It is important to remove spaces between elements.
 ?>
+
 <?php // The menu class is deprecated. Use nav instead. ?>
 <ul class="nav menu<?php echo $class_sfx;?>"<?php
 	$tag = '';

@@ -22,9 +22,8 @@
   $rightcolgrid = ($this->countModules('right') == 0) ? 0 :	$this->params->get('rightColumnWidth', 3);
 
   // Add javascript files
-  $doc->addScript('templates/' . $this->template . '/js/jui/jquery-migrate.min.js');
 	$doc->addScript('templates/' . $this->template . '/js/holder.js');
-  if ($headroom == 1) $doc->addScript('templates/' . $this->template . '/js/headroom.min.js');
+  // $doc->addScript('templates/' . $this->template . '/js/headroom.min.js');
 	if ($modernizr == 1) $doc->addScript($tpath . '/js/modernizr-2.8.3.js');
 
   // Add Stylesheets

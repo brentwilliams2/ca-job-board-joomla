@@ -1,19 +1,20 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package     Calligraphic Job Board
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
-$button = $displayData;
+  $button = $displayData;
 
-?>
-<?php if ($button->get('name')) : ?>
-	<?php
+  if ($button->get('name')) :
 		$class    = ($button->get('class')) ? $button->get('class') : null;
 		$class	 .= ($button->get('modal')) ? ' modal-button' : null;
 		$href     = ($button->get('link')) ? ' href="' . JUri::base() . $button->get('link') . '"' : null;
@@ -21,6 +22,7 @@ $button = $displayData;
 		$title    = ($button->get('title')) ? $button->get('title') : $button->get('text');
 	?>
 	<a class="<?php echo $class; ?>" title="<?php echo $title; ?>" <?php echo $href . $onclick; ?> rel="<?php echo $button->get('options'); ?>">
-		<i class="fa fa-<?php echo $button->get('name'); ?>"></i> <?php echo $button->get('text'); ?>
+		<i class="fa fa-<?php echo $button->get('name'); ?>"></i>
+    <?php echo $button->get('text'); ?>
 	</a>
 <?php endif;

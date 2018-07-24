@@ -40,7 +40,8 @@
   JHtml::_('bootstrap.framework');
 
   // Logo file or site title param
-  if ($params->get('logo_file')) { ?>
+  if ($params->get('logo_file'))
+  {
     <a href="<?php  echo $this->params->get('logo_link')   ?>">
       <img
         style="width:<?php  echo $this->params->get('logo_width') ?>px; height:<?php  echo $this->params->get('logo_height') ?>px; "
@@ -48,7 +49,7 @@
         alt="Logo"
       />
     </a>
-  <?php }
+  }
   elseif ($params->get('sitetitle'))
   {
     $logo = '<span class="site-title" title="' . $sitename . '">' . htmlspecialchars($params->get('sitetitle')) . '</span>';

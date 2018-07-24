@@ -1,20 +1,28 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package     Calligraphic Job Board
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
  */
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
-$doTask = $displayData['doTask'];
-$class  = $displayData['class'];
-$text   = $displayData['text'];
-$name   = $displayData['name'];
+  $doTask = $displayData['doTask'];
+  $class  = $displayData['class'];
+  $text   = $displayData['text'];
+  $name   = $displayData['name'];
 ?>
-<button onclick="<?php echo $doTask; ?>" class="btn btn-default btn-sm modal" data-toggle="modal" data-target="#modal-<?php echo $name; ?>">
+<button
+  onclick="<?php echo $doTask; ?>"
+  class="btn btn-default btn-sm modal"
+  data-toggle="modal"
+  data-target="#modal-<?php echo $name; ?>"
+>
 	<i class="<?php echo $class; ?>"></i>
 	<?php echo $text; ?>
 </button>
