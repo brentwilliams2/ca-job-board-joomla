@@ -1,3 +1,3 @@
 #!/bin/sh
 
-umount /var/www/html/CMS/joomla/templates/mfi
+umount /var/www/joomla/templates/multi-familyinsiders

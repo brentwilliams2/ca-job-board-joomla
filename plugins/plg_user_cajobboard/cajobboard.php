@@ -8,8 +8,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
+
 // no direct access
 defined('_JEXEC') or die;
+
 use Joomla\Utilities\ArrayHelper;
 
 
@@ -28,7 +30,7 @@ class PlgUserCajobboard extends JPlugin
 	 * @since  1.0
 	 */
   protected $autoloadLanguage = true;
-  
+
 	/**
 	 * Constructor
 	 *
@@ -42,10 +44,10 @@ class PlgUserCajobboard extends JPlugin
 		parent::__construct($subject, $config);
 		JFormHelper::addFieldPath(__DIR__ . '/field');
   }
-  
+
 	/**
 	 * Runs on content preparation
-   * 
+   *
    * Called after the data for a JForm has been retrieved. It can be used
    * to modify the data for a JForm object in memory before rendering.
 	 *
@@ -90,10 +92,10 @@ class PlgUserCajobboard extends JPlugin
 
 		return true;
   }
-  
+
 	/**
 	 * Adds additional fields to the user editing form
-   * 
+   *
    * Called before a JForm is rendered. It can be used to modify the JForm object in memory
    * before rendering. For example, use JForm->loadFile() to add fields or JForm->removeField()to remove fields.
    * Or use JForm->setFieldAttribute() or other JForm methods to modify fields for the form.
@@ -124,7 +126,7 @@ class PlgUserCajobboard extends JPlugin
 			// Add the profile fields to the form.
 			JForm::addFormPath(dirname(__FILE__).'/profiles');
 			$form->loadFile('profile', false);
-	
+
 			// Toggle whether the something field is required.
 			if ($this->params->get('profile-require_something', 1) > 0) {
 				$form->setFieldAttribute('something', 'required', $this->params->get('profile-require_something') == 2, 'cajobboard');
@@ -133,25 +135,25 @@ class PlgUserCajobboard extends JPlugin
 			}
 		}
 
-		//In this example, we treat the frontend registration and the back end user create or edit as the same. 
+		//In this example, we treat the frontend registration and the back end user create or edit as the same.
 		elseif ($form->getName()=='com_users.registration' || $form->getName()=='com_users.user' )
-		{		
+		{
 			// Add the registration fields to the form.
 			JForm::addFormPath(dirname(__FILE__).'/profiles');
 			$form->loadFile('profile', false);
-			
+
 			// Toggle whether the something field is required.
 			if ($this->params->get('register-require_something', 1) > 0) {
 				$form->setFieldAttribute('something', 'required', $this->params->get('register-require_something') == 2, 'cajobboard');
 			} else {
 				$form->removeField('something', 'cajobboard');
 			}
-		}	
+		}
   }
-  
+
 	/**
 	 * Method is called before user data is stored in the database
-   * 
+   *
    * This event is triggered before an update of a user record. The old and new user
    * parameters are provided; commonly-used members are: username, name, email, password,
    * password_clear. Returning false aborts the save.
@@ -171,10 +173,10 @@ class PlgUserCajobboard extends JPlugin
 
 		return true;
   }
-  
+
 	/**
 	 * Saves user profile data
-   * 
+   *
    * This event is triggered after an update of a user record, or when a new
    * user has been stored in the database.
 	 *
@@ -218,13 +220,13 @@ class PlgUserCajobboard extends JPlugin
 
 		return true;
   }
-  
+
 	/**
 	 * Remove all user profile information for the given user ID after user is deleted
 	 *
 	 * @param   array    $user     An associative array of the columns in the user table
 	 * @param   boolean  $success  True if the deletion was successful
-	 * @param   string   $msg      JError object if delete failed 
+	 * @param   string   $msg      JError object if delete failed
 	 *
 	 * @return  boolean
 	 */

@@ -1,170 +1,51 @@
-/* From Bootstrap template
-    select,
-    textarea,
-    input[type="text"],
-    input[type="password"],
-    input[type="datetime"],
-    input[type="datetime-local"],
-    input[type="date"],
-    input[type="month"],
-    input[type="time"],
-    input[type="week"],
-    input[type="number"],
-    input[type="email"],
-    input[type="url"],
-    input[type="search"],
-    input[type="tel"],
-    input[type="color"],
-    .uneditable-input {
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #ddd;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-      color: #555;
-      display: inline-block;
-      font-size: 100%;
-      height: 34px;
-      line-height: 1.42857;
-      min-width: 100px;
-      padding: 6px 12px;
-      transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-      width: 100%;
-    }
+//
+// Forms
+// --------------------------------------------------
 
-    // Like a fieldset in Bootstrap v2, seems to have changed
-    // to form-group in v3
-    .control-group {
-      margin-bottom: 15px;
-    }
-    .control-group input[type="checkbox"] {
-      width: 10px!important;
-    }
-
-    .checkbox label,
-    .radio label {
-      padding-left: 20px;
-      padding-right: 10px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    label,
-    input,
-    button,
-    select,
-    textarea {
-      font-size: 12px;
-      font-weight: normal;
-      line-height: 26px;
-      font-family: arial;
-    }
-
-    label,
-    select,
-    button,
-    input[type="button"],
-    input[type="reset"],
-    input[type="submit"],
-    input[type="radio"],
-    input[type="checkbox"] {
-      cursor: pointer;
-    }
-
-    .control-group input,
-    .control-group textarea,
-    .control-group .uneditable-input {
-      width: 100% !important;
-    }
-    .contact-form .control-group input,
-    .contact-form .control-group textarea,
-    .contact-form .control-group .uneditable-input {
-      width: inherit;
-    }
-
-    input,
-    textarea,
-    .uneditable-input {
-      width: 220px;
-    }
-
-    .input-append .add-on:last-child,
-    .input-append .btn:last-child,
-    .input-append .btn-group:last-child > .dropdown-toggle {
-      border-radius: 0 3px 3px 0;
-    }
-
-    .input-append .add-on,
-    .input-append .btn,
-    .input-append .btn-group {
-      margin-left: -1px;
-    }
-
-    .input-append .add-on,
-    .input-append .btn,
-    .input-append .btn-group > .dropdown-toggle,
-    .input-prepend .add-on,
-    .input-prepend .btn,
-    .input-prepend .btn-group > .dropdown-toggle {
-      border-radius: 0;
-      vertical-align: top;
-    }
-
-    .checkbox label,
-    .radio label {
-      padding-left: 20px;
-      padding-right: 10px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    label,
-    input,
-    button,
-    select,
-    textarea {
-      font-size: 13px;
-      font-weight: normal;
-      line-height: 18px;
-      font-family: arial;
-    }
-
-    label,
-    select,
-    button,
-    input[type="button"],
-    input[type="reset"],
-    input[type="submit"],
-    input[type="radio"],
-    input[type="checkbox"] {
-      cursor: pointer
-    }
-
-    .control-group input,
-    .control-group textarea,
-    .control-group .uneditable-input {
-      width: 100% !important
-    },
-
-    .contact-form .control-group input,
-    .contact-form .control-group textarea,
-    .contact-form .control-group .uneditable-input {
-      width: 100%;
-    }
-    .email-copy-input {
-      float: left
-    }
-    .control-group .control-label {
-      padding-top: 7px;
-      padding-bottom: 7px;
-    }
-*/
-
-form {
-  margin: 0;padding: 0;
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  /*  float: left;
+    position: relative !important;
+    margin-left: 0 !important;*/
+}
+.checkbox label, .radio label {
+    padding-left: 20px;
+    padding-right: 10px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+label,
+input,
+button,
+select,
+textarea {
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    font-family: arial;
+}
+label,
+select,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+input[type="radio"],
+input[type="checkbox"] {
+	cursor: pointer
+}
+.control-group input, .control-group textarea, .control-group .uneditable-input{/*width: 100% !important */}
+.contact-form .control-group input, .contact-form .control-group textarea, .contact-form .control-group .uneditable-input {
+    width: 100%;
+}
+.email-copy-input {
+	float: left
+}
+.control-group .control-label {
+    padding-top: 7px;
+    padding-bottom: 7px;
 }

@@ -1,0 +1,41 @@
+{
+  "name": "mfi-emplate",
+  "version": "1.2.2",
+  "description": "Bootstrap 3 template for MFI",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/calligraphic/ca-job-board-joomla.git"
+  },
+  "keywords": [
+    "joomla",
+    "template",
+    "twitter",
+    "bootstrap3",
+    "bootstrap"
+  ],
+  "author": "Kevin Brown <kbrown@calligraphic.design>",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/calligraphic/ca-job-board-joomla.git/issues"
+  },
+  "homepage": "https://github.com/calligraphic/ca-job-board-joomla#readme",
+  "devDependencies": {
+    "beepbeep": "^1.2.0",
+    "browser-sync": "^2.24.6",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-concat": "^2.6.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^4.1.0",
+    "xml2js": "^0.4.16"
+  }
+}
