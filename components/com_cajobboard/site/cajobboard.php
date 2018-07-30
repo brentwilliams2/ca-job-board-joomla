@@ -18,3 +18,6 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 }
 
 $container = FOF30\Container\Container::getInstance('com_cajobboard')->dispatcher->dispatch();
+
+// HMVC variant for controllers
+// FOFDispatcher::getTmpInstance('com_cajobboard')->dispatch();

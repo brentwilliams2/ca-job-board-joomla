@@ -15,8 +15,6 @@
   include 'includes/params.php';
 
   $notFrontPage = $menu->getActive() !== $menu->getDefault();
-
-  JError::raiseError ('500', 'Testing the error page on a 500 server error');
 ?>
 
 <!DOCTYPE html>

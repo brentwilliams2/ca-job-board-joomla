@@ -195,7 +195,7 @@
     <phingcall target="archive">
         <property name="extension.name" value="${plugin.name}" />
     </phingcall>
-    
+
     <phingcall target="clean" />
   </target>
 
@@ -214,7 +214,7 @@
     <phingcall target="archive">
         <property name="extension.name" value="${library.name}" />
     </phingcall>
-    
+
     <phingcall target="clean" />
   </target>
 
@@ -227,13 +227,14 @@
     <copy todir="${build.dir}/${template.name}" haltonerror="false">
       <fileset dir="templates/${template.name}">
         <include name="**/*"/>
+        <exclude name="node_modules/**"/>
       </fileset>
     </copy>
 
     <phingcall target="archive">
         <property name="extension.name" value="${template.name}" />
     </phingcall>
-    
+
     <phingcall target="clean" />
   </target>
 

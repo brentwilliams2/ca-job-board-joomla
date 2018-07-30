@@ -1,0 +1,24 @@
+; Calligraphic
+; Copyright (C) 2018 calligraphic.design. All rights reserved.
+; License GNU General Public License version 2 or later; see LICENSE.txt, see LICENSE.php
+; Note : All ini files need to be saved as UTF-8
+;
+; Back-end system translation strings
+;
+
+; sys language file displays the translated name of the extension in many Joomla! managers.
+; Set here to avoid overhead in managers of loading all complete language files.
+COM_CAJOBBOARD="Calligraphic Job Board"
+
+; <description> field in manifest.xml / componentname.xml file.
+; Used when editing the extension in administration screens.
+COM_CAJOBBOARD_XML_DESCRIPTION="Calligraphic Job Board Joomla Extension"
+
+; Component submenu names set in manifest.xml / componentname.xml file. Uses COM_MYCOMPONENT
+; (at top here) key for main menu text. These are the menu items that show in the drop-down
+; list for the "Components" menu item in the administration interface.
+COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS="Something!"
+
+; Used in Menu Manager for view options in adding a new menu item
+COM_CAJOBBOARD_VIEW_JOBPOSTING_TITLE="Job Posting"
+COM_CAJOBBOARD_VIEW_JOBPOSTINGS_TITLE="Job Postings"
