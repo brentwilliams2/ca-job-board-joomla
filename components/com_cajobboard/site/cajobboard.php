@@ -1,5 +1,7 @@
 <?php
 /**
+ * Front-end entry file for FOF component
+ *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design

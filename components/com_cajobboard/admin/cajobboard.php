@@ -1,5 +1,7 @@
 <?php
 /**
+ * Back-end entry file for FOF component
+ *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
@@ -17,7 +19,10 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
-$container = FOF30\Container\Container::getInstance('com_cajobboard')->dispatcher->dispatch();
+$container = FOF30\Container\Container::getInstance('com_cajobboard', array(
+	'scaffolding' => true,
+	'saveScaffolding' => true,
+))->dispatcher->dispatch();
 
 // HMVC variant for controllers
 // FOFDispatcher::getTmpInstance('com_cajobboard')->dispatch();

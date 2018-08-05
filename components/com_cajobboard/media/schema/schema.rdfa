@@ -1,0 +1,48 @@
+<!--
+  This is a Schema.org external extension for BLS occupational categories
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/OccupationalCategoryBLS">
+  <span class="h" property="rdfs:label">OccupationalCategoryBLS</span>
+  <span property="rdfs:comment">BLS O*NET-SOC taxonomy for occupational categories</span>
+  <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/occupationalCategory">occupationalCategory</a></span>
+  <span>Source:  <a property="dc:source" href="https://www.onetcenter.org/taxonomy.html">BLS O*NET-SOC occupational category taxonomy</a></span>
+
+  <!-- 'title' property for BLS occupational categories-->
+  <div typeof="rdf:Property" resource="https://schema.org/title">
+    <span class="h" property="rdfs:label">title</span>
+    <span property="rdfs:comment">The title of the occupational category.</span>
+    <span>Domain: <a property="https://schema.org/domainIncludes" href="https://calligraphic.design/schema/OccupationalCategoryBLS">OccupationalCategoryBLS</a></span>
+    <span>Range: <a property="https://schema.org/rangeIncludes" href="https://schema.org/Text">Text</a></span>
+  </div>
+
+  <!-- 'code' property for BLS occupational categories-->
+  <div typeof="rdf:Property" resource="https://schema.org/title">
+    <span class="h" property="rdfs:label">code</span>
+    <span property="rdfs:comment">BLS code specifying this job category.</span>
+    <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/propertyID">propertyID</a></span>
+    <span>Domain: <a property="https://schema.org/domainIncludes" href="https://calligraphic.design/schema/OccupationalCategoryBLS">OccupationalCategoryBLS</a></span>
+    <span>Range: <a property="https://schema.org/rangeIncludes" href="https://schema.org/Text">Text</a></span>
+  </div>
+
+  <!-- 'group' property for BLS occupational categories-->
+  <div typeof="rdf:Property" resource="https://schema.org/title">
+    <span class="h" property="rdfs:label">group</span>
+    <span property="rdfs:comment">Group this occupational category should be shown under e.g. office staff.</span>
+    <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/category">category</a></span>
+    <span>Domain: <a property="https://schema.org/domainIncludes" href="https://calligraphic.design/schema/OccupationalCategoryBLS">OccupationalCategoryBLS</a></span>
+    <span>Range: <a property="https://schema.org/rangeIncludes" href="https://schema.org/Text">Text</a></span>
+  </div>
+</div>
+
+
+<!--
+  This is a Schema.org external extension for types of employment
+
+  Used to enumerate types of employment, e.g. "full-time", "part-time", "contract", "temporary", "seasonal", "internship"
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/EmploymentType">
+  <span class="h" property="rdfs:label">employmentType</span>
+  <span property="rdfs:comment">The type of employment.</span>
+  <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/Thing">Thing</a></span>
+  <span>Source:  <a property="dc:source" href="http://schema.org/employmentType">employmentType</a></span>
+</div>

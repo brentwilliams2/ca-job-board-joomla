@@ -9,10 +9,6 @@
 ; Shows in Joomla header of component. Duplicated in the system language file.
 COM_CAJOBBOARD="Calligraphic Job Board"
 
-
-
-
-
 ; Shows in Joomla header on edit view, after above text
 COM_CAJOBBOARD_TITLE_ITEMS_EDIT="Item"
 
@@ -56,14 +52,31 @@ COM_CAJOBBOARD_ITEMS_GROUP_DESCRIPTION="Description"
 COM_CAJOBBOARD_ITEMS_GROUP_DESCRIPTION_DESC="Enter an optional long description for the to-do item"
 COM_CAJOBBOARD_ITEMS_GROUP_PERMISSIONS="Permissions"
 
+; Job Category model validation error messages
+COM_CAJOBBOARD_JOB_CATEGORY_ERR_TITLE="Job Category requires a title"
+COM_CAJOBBOARD_JOB_CATEGORY_ERR_CODE="Job Category requires a BLS job code"
+COM_CAJOBBOARD_JOB_CATEGORY_ERR_GROUP="Job Category requires a job group to show it under"
+
+; Job Category Group model validation error messages
+COM_CAJOBBOARD_JOB_CATEGORY_ERR_DESCRIPTION="Job Category requires a description of the group of job categories"
+COM_CAJOBBOARD_JOB_CATEGORY_ERR_URL="Job broup requires a link to schema for occupational category, e.g. wikipedia page on Management"
+COM_CAJOBBOARD_JOB_CATEGORY_ERR_GROUP="Job Category requires a name this occupational category should be shown under e.g. office staff"
+
+; Job Category Group model validation error messages
+COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_TITLE="Employment Type requires a title for the type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)"
+COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_DESCRIPTION="Employment Type requires a description about the type of employment"
+COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_URL="Employment Type requires a link to schema for the type of employment, e.g. wikipedia page on Full Time"
+
+; Job Posting model validation error messages
+COM_CAJOBBOARD_JOB_POSTING_ERR_TITLE="Job Postings requires a title"
 
 
+; Translation strings for Joomla! views directory, used in menu manager
 
+; Job Postings views manifest.xml file
+COM_CAJOBBOARD_JOB_POSTINGS_MENU_TITLE="Job Postings"
+COM_CAJOBBOARD_JOB_POSTINGS_MENU_DESC="Menu Items for Job Postings"
 
-COM_CAJOBBOARD_SELECTSTATE="O - Select Status -"
-
-
-
-COM_CAJOBBOARD_ITEM_EDIT_TOOLTIP="X Edit this item"
-
-
+; Job Postings views tmpl/default.xml file
+COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_TITLE="Job Postings List"
+COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_DESC="List of Job Postings"

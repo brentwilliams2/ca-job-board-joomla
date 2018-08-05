@@ -19,15 +19,21 @@
   </media>
 
   <administration>
-    <menu link='index.php?option=com_cajobboard'>COM_CAJOBBOARD</menu>
+    <!-- Text strings are appended to the component menu link, e.g. index.php?option=com_cajobboard&view=controlpanel -->
+    <menu view="controlpanel">COM_CAJOBBOARD</menu>
     <submenu>
+      <menu view="controlpanel">COM_CAJOBBOARD_SUBMENU_CONTROLPANEL</menu>
       <menu view="jobpostings">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
     </submenu>
 
     <files folder="admin">
+      <folder>Controller</folder>
+      <folder>Dispatcher</folder>
       <folder>Form</folder>
       <folder>language</folder>
+      <folder>Model</folder>
       <folder>sql</folder>
+      <folder>Toolbar</folder>
       <folder>View</folder>
       <folder>ViewTemplate</folder>
       <filename>access.xml</filename>
@@ -39,8 +45,11 @@
   </administration>
 
   <files folder="site">
+    <folder>Controller</folder>
+    <folder>Dispatcher</folder>
     <folder>language</folder>
     <folder>Model</folder>
+    <folder>Toolbar</folder>
     <folder>View</folder>
     <folder>views</folder>
     <folder>ViewTemplate</folder>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+@package AkeebaSubs
+@copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+@license GNU General Public License version 3, or later
+-->
+<metadata>
+	<layout title="COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_TITLE">
+		<message>
+				<![CDATA[COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_TITLE</name>
+		<description>COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_DESC</description>
+	</state>
+</metadata>
