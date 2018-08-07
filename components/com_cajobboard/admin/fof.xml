@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fof>
   <!-- Common settings -->
-	<common></common>
+	<common>
+    <container>
+      <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard]]></option>
+    </container>
+  </common>
 
   <!-- Administrator settings -->
   <backend>
-    <!-- Set up the namespace for concrete, specialised classes -->
     <container>
-      <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard\Admin]]></option>
       <option name="factoryClass"><![CDATA[FOF30\Factory\MagicFactory]]></option>
     </container>
 	</backend>
@@ -15,10 +17,8 @@
   <!-- Site settings -->
 	<frontend>
 		<container>
-      <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard\Site]]></option>
 			<option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
       <option name="scaffolding">0</option>
 		</container>
 	</frontend>
-
 </fof>

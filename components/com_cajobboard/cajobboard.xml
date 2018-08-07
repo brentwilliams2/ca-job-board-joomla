@@ -20,10 +20,10 @@
 
   <administration>
     <!-- Text strings are appended to the component menu link, e.g. index.php?option=com_cajobboard&view=controlpanel -->
-    <menu view="controlpanel">COM_CAJOBBOARD</menu>
+    <menu view="ControlPanel">COM_CAJOBBOARD</menu>
     <submenu>
-      <menu view="controlpanel">COM_CAJOBBOARD_SUBMENU_CONTROLPANEL</menu>
-      <menu view="jobpostings">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
+      <menu view="ControlPanel">COM_CAJOBBOARD_SUBMENU_CONTROLPANEL</menu>
+      <menu view="JobPostings">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
     </submenu>
 
     <files folder="admin">

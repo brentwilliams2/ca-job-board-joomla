@@ -69,14 +69,3 @@ COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_URL="Employment Type requires a link to schem
 
 ; Job Posting model validation error messages
 COM_CAJOBBOARD_JOB_POSTING_ERR_TITLE="Job Postings requires a title"
-
-
-; Translation strings for Joomla! views directory, used in menu manager
-
-; Job Postings views manifest.xml file
-COM_CAJOBBOARD_JOB_POSTINGS_MENU_TITLE="Job Postings"
-COM_CAJOBBOARD_JOB_POSTINGS_MENU_DESC="Menu Items for Job Postings"
-
-; Job Postings views tmpl/default.xml file
-COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_TITLE="Job Postings List"
-COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_DESC="List of Job Postings"

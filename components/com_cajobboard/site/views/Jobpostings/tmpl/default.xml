@@ -10,8 +10,4 @@
 				<![CDATA[COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_DESC]]>
 		</message>
 	</layout>
-	<state>
-		<name>COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_TITLE</name>
-		<description>COM_CAJOBBOARD_JOB_POSTINGS_DEFAULT_LAYOUT_DESC</description>
-	</state>
 </metadata>

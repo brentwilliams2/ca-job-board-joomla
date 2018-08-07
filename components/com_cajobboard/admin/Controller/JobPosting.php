@@ -23,10 +23,8 @@ use Calligraphic\Cajobboard\Admin\Controller\Mixin;
 // no direct access
 defined('_JEXEC') or die;
 
-class JobPostings extends DataController
+class JobPosting extends DataController
 {
-  use Mixin\PredefinedTaskList;
-
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
 	 *

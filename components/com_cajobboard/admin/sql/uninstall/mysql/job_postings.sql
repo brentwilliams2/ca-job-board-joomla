@@ -10,6 +10,6 @@
 
 /* Tables in com_cajobboard.jobpostings.install.sql */
 DROP TABLE IF EXISTS `#__cajobboard_job_postings`;
-DROP TABLE IF EXISTS `#__cajobboard_job_occupational_category_group`;
-DROP TABLE IF EXISTS `#__cajobboard_job_occupational_category`;
-DROP TABLE IF EXISTS `#__cajobboard_job_employment_type`;
+DROP TABLE IF EXISTS `#__cajobboard_job_occupational_category_groups`;
+DROP TABLE IF EXISTS `#__cajobboard_job_occupational_categories`;
+DROP TABLE IF EXISTS `#__cajobboard_job_employment_types`;

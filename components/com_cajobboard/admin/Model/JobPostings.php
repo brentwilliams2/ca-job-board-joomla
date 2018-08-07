@@ -131,7 +131,7 @@ class JobPostings extends DataModel
     //$this->belongsTo('hiringOrganization', 'Organizationss@com_cajobboard', 'hiring_organization', 'organization_id');
 
     // many-to-one FK to  #__cajobboard_job_employment_types
-    $this->belongsTo('employmentType', 'Organizationss@com_cajobboard', 'employment_type', 'job_employment_type_id');
+    $this->belongsTo('employmentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');
 
     // many-to-one FK to #__cajobboard_job_occupational_categories
     $this->belongsTo('occupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
