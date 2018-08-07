@@ -59,13 +59,13 @@
 
   <install>
     <sql>
-      <file>sql/install.mysql.utf8.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/job_postings.sql</file>
     </sql>
   </install>
 
   <uninstall>
     <sql>
-      <file>sql/uninstall.mysql.utf8.sql</file>
+      <file driver="mysql" charset="utf8">sql/uninstall/mysql/job_postings.sql</file>
     </sql>
   </uninstall>
 
