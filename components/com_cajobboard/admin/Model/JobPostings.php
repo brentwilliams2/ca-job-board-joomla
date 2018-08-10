@@ -1,6 +1,6 @@
 <?php
 /**
- * Job Posting Model
+ * Admin Job Posting Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -25,7 +25,6 @@ use FOF30\Model\DataModel;
  *
  * Fields:
  *
- * @property string   $title
  * @property int      $job_posting_id             Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
  * FOF "magic" fields

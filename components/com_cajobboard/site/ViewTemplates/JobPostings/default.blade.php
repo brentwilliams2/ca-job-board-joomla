@@ -1,6 +1,6 @@
 <?php
  /**
-  * Job Postings Edit View Template
+  * Job Postings Browse View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -18,12 +18,25 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  $item = $this->getItem();
-
-  // @TODO: Need Database field for employer's requisition / job number and EEO statement
+  $items = $this->getItems();
 ?>
 
-@section('edit-view')
-  <h1>$item variable in item.blade.php:</h1>
-  <?php print_r($item); ?>
-@stop
+@section('header')
+    <h1>This is the browse view header</h1>
+@show
+
+@section('sidebar')
+  <p>This is the browse view sidebar</p>
+@show
+
+@section('item')
+  @foreach ($items as $item)
+    @include('site:com_cajobboard/JobPostings/default_item', array('item' => $item))
+  @endforeach
+@show
+
+@section('footer')
+  <p>This is the browse view footer</p>
+@show
+
+

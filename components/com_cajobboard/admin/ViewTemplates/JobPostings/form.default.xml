@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form type="browse" show_header="1" show_filters="1" show_pagination="1" norows_placeholder="COM_CAJOBBOARD_COMMON_NORECORDS">
+  <headerset>
+    <header name="ordering" type="Ordering" label="COM_CAJOBBOARD_JOBPOSTINGS_ORDERING_LABEL" sortable="true" tdwidth="1%"/>
+    <header name="job_posting_id" type="RowSelect" label="COM_CAJOBBOARD_JOBPOSTINGS_JOB_POSTING_ID_LABEL" sortable="true" tdwidth="20"/>
+    <header name="access" type="AccessLevel" label="COM_CAJOBBOARD_JOBPOSTINGS_ACCESS_LABEL" sortable="true"/>
+    <header name="enabled" type="Published" label="COM_CAJOBBOARD_JOBPOSTINGS_ENABLED_LABEL" sortable="true"/>
+    <header name="publish_up" type="Date" label="COM_CAJOBBOARD_JOBPOSTINGS_PUBLISH_UP_LABEL" sortable="true"/>
+    <header name="publish_down" type="Date" label="COM_CAJOBBOARD_JOBPOSTINGS_PUBLISH_DOWN_LABEL" sortable="true"/>
+    <header name="version" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_VERSION_LABEL" sortable="true"/>
+    <header name="metadata" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_METADATA_LABEL" sortable="true"/>
+    <header name="metakey" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_METAKEY_LABEL" sortable="true"/>
+    <header name="metadesc" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_METADESC_LABEL" sortable="true"/>
+    <header name="xreference" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_XREFERENCE_LABEL" sortable="true"/>
+    <header name="params" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_PARAMS_LABEL" sortable="true"/>
+    <header name="language" type="Language" label="COM_CAJOBBOARD_JOBPOSTINGS_LANGUAGE_LABEL" sortable="true"/>
+    <header name="cat_id" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_CAT_ID_LABEL" sortable="true"/>
+    <header name="hits" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_HITS_LABEL" sortable="true"/>
+    <header name="featured" type="Field" label="COM_CAJOBBOARD_JOBPOSTINGS_FEATURED_LABEL" sortable="true"/>
+    <header name="title" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_TITLE_LABEL"/>
+    <header name="disambiguating_description" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_DISAMBIGUATING_DESCRIPTION_LABEL" sortable="true"/>
+    <header name="description" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_DESCRIPTION_LABEL" sortable="true"/>
+    <header name="education_requirements" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_EDUCATION_REQUIREMENTS_LABEL" sortable="true"/>
+    <header name="experience_requirements" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_EXPERIENCE_REQUIREMENTS_LABEL" sortable="true"/>
+    <header name="incentive_compensation" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_INCENTIVE_COMPENSATION_LABEL" sortable="true"/>
+    <header name="job_benefits" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_JOB_BENEFITS_LABEL" sortable="true"/>
+    <header name="qualifications" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_QUALIFICATIONS_LABEL" sortable="true"/>
+    <header name="responsibilities" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_RESPONSIBILITIES_LABEL" sortable="true"/>
+    <header name="skills" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_SKILLS_LABEL" sortable="true"/>
+    <header name="special_commitments" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_SPECIAL_COMMITMENTS_LABEL" sortable="true"/>
+    <header name="work_hours" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_WORK_HOURS_LABEL" sortable="true"/>
+    <header name="job_location" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_JOB_LOCATION_LABEL" sortable="true"/>
+    <header name="relevant_occupation_name" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_RELEVANT_OCCUPATION_NAME_LABEL" sortable="true"/>
+    <header name="base_salary__max_value" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__MAX_VALUE_LABEL" sortable="true"/>
+    <header name="base_salary__value" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__VALUE_LABEL" sortable="true"/>
+    <header name="base_salary__min_value" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__MIN_VALUE_LABEL" sortable="true"/>
+    <header name="base_salary__currency" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__CURRENCY_LABEL" sortable="true"/>
+    <header name="base_salary__duration" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__DURATION_LABEL" sortable="true"/>
+    <header name="hiring_organization" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_HIRING_ORGANIZATION_LABEL" sortable="true"/>
+    <header name="employment_type" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_EMPLOYMENT_TYPE_LABEL" sortable="true"/>
+    <header name="occupational_category" type="Searchable" label="COM_CAJOBBOARD_JOBPOSTINGS_OCCUPATIONAL_CATEGORY_LABEL" sortable="true"/>
+  </headerset>
+
+  <fieldset name="items">
+    <field name="ordering" type="Ordering" class="input-mini input-sm"/>
+    <field name="job_posting_id" type="SelectRow"/>
+    <field name="access" type="AccessLevel"/>
+    <field name="enabled" type="Actions"/>
+    <field name="publish_up" type="Calendar"/>
+    <field name="publish_down" type="Calendar"/>
+    <field name="version" type="Number"/>
+    <field name="metadata" type="Integer"/>
+    <field name="metakey" type="Text"/>
+    <field name="metadesc" type="Text"/>
+    <field name="xreference" type="Text"/>
+    <field name="params" type="Text"/>
+    <field name="language" type="Language"/>
+    <field name="cat_id" type="Number"/>
+    <field name="hits" type="Number"/>
+    <field name="featured" type="Checkbox"/>
+    <field name="title" type="Sortable" url="index.php?option=com_cajobboard&amp;view=JobPosting&amp;id=[ITEM:ID]&amp;[TOKEN]=1"/>
+    <field name="disambiguating_description" type="Text"/>
+    <field name="description" type="Editor"/>
+    <field name="education_requirements" type="Text"/>
+    <field name="experience_requirements" type="Text"/>
+    <field name="incentive_compensation" type="Text"/>
+    <field name="job_benefits" type="Text"/>
+    <field name="qualifications" type="Text"/>
+    <field name="responsibilities" type="Text"/>
+    <field name="skills" type="Text"/>
+    <field name="special_commitments" type="Text"/>
+    <field name="work_hours" type="Text"/>
+    <field name="job_location" type="Number"/>
+    <field name="relevant_occupation_name" type="Text"/>
+    <field name="base_salary__max_value" type="Number"/>
+    <field name="base_salary__value" type="Number"/>
+    <field name="base_salary__min_value" type="Number"/>
+    <field name="base_salary__currency" type="Text"/>
+    <field name="base_salary__duration" type="Text"/>
+    <field name="hiring_organization" type="Number"/>
+    <field name="employment_type" type="Number"/>
+    <field name="occupational_category" type="Number"/>
+  </fieldset>
+</form>

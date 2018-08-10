@@ -8,7 +8,35 @@
   <copyright>Copyright (c) 2018 Calligraphic. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
   <version>0.0.1</version>
-  <description>COM_CAJOBBOARD_XML_DESCRIPTION</description>
+
+  <description><![CDATA[<table width="100%" class="adminlist">
+	<thead>
+		<tr>
+			<!--<td colspan="3" style="text-align: center;" align="center"><img style='vertical-align: middle;' src='media/com_cajobboard/images/calliraphic_logo.png'></td>-->
+		</tr>
+		<tr>
+			<td colspan="1" align="right" width="33%" style="font-weight: bold; padding-right: 15px; text-align: right;">Version:</td>
+			<td colspan="2" align="left">0.0.1</td>
+		</tr>
+		<tr>
+			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">Release Date:</td>
+			<td colspan="2" align="left">August 2018</td>
+		</tr>
+		<tr>
+			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">Author:</td>
+			<td colspan="2" align="left"><a href="www.calligraphic.design"></a>Calligraphic Design</a></td>
+		</tr>
+		<tr>
+			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">Copyright:</td>
+			<td colspan="2" align="left" style="width: 375px;">&copy;&nbsp;2018 Calligraphic Design, All rights reserved.</td>
+		</tr>
+		<tr>
+			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">License:</td>
+			<td colspan="2" align="left">GNU General Public License</td>
+		</tr>
+		<tr><td colspan="3" style="padding-bottom: 15px;">&nbsp;</td></tr>
+	</thead>
+ </table>]]></description>
 
   <scriptfile>script.cajobboard.php</scriptfile>
 
@@ -21,6 +49,7 @@
   <administration>
     <!-- Text strings are appended to the component menu link, e.g. index.php?option=com_cajobboard&view=controlpanel -->
     <menu view="ControlPanel">COM_CAJOBBOARD</menu>
+
     <submenu>
       <menu view="ControlPanel">COM_CAJOBBOARD_SUBMENU_CONTROLPANEL</menu>
       <menu view="JobPostings">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
@@ -60,6 +89,9 @@
   <install>
     <sql>
       <file driver="mysql" charset="utf8">sql/install/mysql/job_postings.sql</file>
+
+      <!-- remove sample data in prouction -->
+      <file driver="mysql" charset="utf8">sql/com_cajobboard.sample_data.mysql.utf8.sql</file>
     </sql>
   </install>
 

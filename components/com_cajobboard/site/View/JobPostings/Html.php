@@ -10,30 +10,44 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Site\View;
+namespace Calligraphic\Cajobboard\Site\View\JobPostings;
 
-// Framework classes
-use JUri;
-
-// Models accessed in this view class
-use Calligraphic\Cajobboard\Site\Model\JobPostings;
+use FOF30\Container\Container;
+use JFactory;
 
 // no direct access
 defined('_JEXEC') or die;
 
+if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 class Html extends \FOF30\View\DataView\Html
 {
- /*
-  * Actions to take before list view is executed
-  */
+	/**
+	 * Overridden. Load view-specific language file.
+	 *
+	 * @param   Container $container
+	 * @param   array     $config
+	 */
+	public function __construct(Container $container, array $config = array())
+	{
+    parent::__construct($container, $config);
+
+    // We're breaking up language files into view-specific language files for maintainability
+    $lang = JFactory::getLanguage();
+    $lang->load('job_postings', PATH_ADMINISTRATOR . DS . 'components' . DS . 'com_cajobboard' . DS . 'language', $lang->getTag(), true);
+  }
+
+  /*
+   * Actions to take before list view is executed
+   */
 	protected function onBeforeBrowse()
 	{
     parent::onBeforeBrowse();
   }
 
- /*
-  * Actions to take before item view is executed
-  */
+  /*
+   * Actions to take before item view is executed
+   */
 	protected function onBeforeRead()
 	{
 		parent::onBeforeRead();

@@ -19,10 +19,7 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
-$container = FOF30\Container\Container::getInstance('com_cajobboard', array(
-	'scaffolding' => true,
-	'saveScaffolding' => true,
-))->dispatcher->dispatch();
+$container = FOF30\Container\Container::getInstance('com_cajobboard')->dispatcher->dispatch();
 
 // HMVC variant for controllers
 // FOFDispatcher::getTmpInstance('com_cajobboard')->dispatch();

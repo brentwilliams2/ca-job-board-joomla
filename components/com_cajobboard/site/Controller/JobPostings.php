@@ -25,8 +25,6 @@ defined('_JEXEC') or die;
 
 class JobPostings extends DataController
 {
-  use Mixin\PredefinedTaskList;
-
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
 	 *
@@ -39,7 +37,6 @@ class JobPostings extends DataController
 
     $this->predefinedTaskList = ['browse', 'read', 'save', 'apply'];
 
-    // @TODO: How is akeeba subs handling cacheable tasks?
 		// $this->cacheableTasks = ['read', 'browse'];
   }
 
@@ -58,7 +55,7 @@ class JobPostings extends DataController
     }
 
     // Do something special if a privileged user
-    $jobPostingsModel = $this->getModel();
+    // $jobPostingsModel = $this->getModel();
 
 		// Does the user have core.manage access?
     $isAdmin = $user->authorise('core.manage', 'com_cajobboard');

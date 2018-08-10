@@ -21,7 +21,4 @@
   $item = $this->getItem();
 ?>
 
-@section('edit-view')
-  <h1>$item variable in form.blade.php:</h1>
-  <?php print_r($item); ?>
-@stop
+
