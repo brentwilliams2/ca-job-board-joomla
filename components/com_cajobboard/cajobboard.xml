@@ -12,7 +12,7 @@
   <description><![CDATA[<table width="100%" class="adminlist">
 	<thead>
 		<tr>
-			<!--<td colspan="3" style="text-align: center;" align="center"><img style='vertical-align: middle;' src='media/com_cajobboard/images/calliraphic_logo.png'></td>-->
+			<!--<td colspan="3" style="text-align: center;" align="center"><img style='vertical-align: middle;' src='media/com_cajobboard/images/calligraphic_logo.png'></td>-->
 		</tr>
 		<tr>
 			<td colspan="1" align="right" width="33%" style="font-weight: bold; padding-right: 15px; text-align: right;">Version:</td>
@@ -44,6 +44,7 @@
     <folder>css</folder>
     <folder>images</folder>
     <folder>js</folder>
+    <folder>schema</folder>
   </media>
 
   <administration>
@@ -53,6 +54,13 @@
     <submenu>
       <menu view="ControlPanel">COM_CAJOBBOARD_SUBMENU_CONTROLPANEL</menu>
       <menu view="JobPostings">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
+      <menu view="Applications">COM_CAJOBBOARD_SUBMENU_APPLICATIONS</menu>
+      <menu view="Resumes">COM_CAJOBBOARD_SUBMENU_RESUMES</menu>
+      <menu view="Employers">COM_CAJOBBOARD_SUBMENU_EMPLOYERS</menu>
+      <menu view="Job Seekers">COM_CAJOBBOARD_SUBMENU_JOBSEEKERS</menu>
+      <menu view="Recruiters">COM_CAJOBBOARD_SUBMENU_RECRUITERS</menu>
+      <menu view="Subscriptions">COM_CAJOBBOARD_SUBMENU_SUBSCRIPTIONS</menu>
+      <menu view="Miscellaneous">COM_CAJOBBOARD_SUBMENU_MISCELLANEOUS</menu>
     </submenu>
 
     <files folder="admin">
@@ -64,7 +72,7 @@
       <folder>sql</folder>
       <folder>Toolbar</folder>
       <folder>View</folder>
-      <folder>ViewTemplate</folder>
+      <folder>ViewTemplates</folder>
       <filename>access.xml</filename>
       <filename>cajobboard.php</filename>
       <filename>config.xml</filename>
@@ -81,7 +89,7 @@
     <folder>Toolbar</folder>
     <folder>View</folder>
     <folder>views</folder>
-    <folder>ViewTemplate</folder>
+    <folder>ViewTemplates</folder>
     <filename>cajobboard.php</filename>
     <filename>index.html</filename>
   </files>
