@@ -17,8 +17,6 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
-// use JFactory;
-// use JText;
 
 /**
  * Model class description
@@ -74,7 +72,10 @@ use FOF30\Model\DataModel;
  * @property int      $base_salary__min_value     The minimum salary of the job or of an employee in an EmployeeRole.
  * @property string   $base_salary__currency      Use ISO 4217 currency format e.g. USD.
  * SCHEMA: JobPosting (baseSalary) -> MonetaryAmount (additionalType) -> Duration
- * @property string   $base_salary__duration      Use ISO 8601 duration format, e.g. P2W for bi-weekly.
+ * @property string   $base_salary__duration      Period of time salary applies to, e.g. per hour, annual salary, etc. Use ISO 8601 duration format, e.g. P2W for bi-weekly.
+ * SCHEMA: Thing
+ * @property string   $identifier                  Internal identifier used by the employer for this job posting.
+ * @property string   $sameAs                      URL of the job posting on the employer\s website.
  * SCHEMA: https://calligraphic.design/schema/EmploymentType
  * @property int      $employmentType             Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
@@ -151,5 +152,5 @@ class JobPostings extends DataModel
 		parent::check();
 
     return $this;
-	}
+  }
 }

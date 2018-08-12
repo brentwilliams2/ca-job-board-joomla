@@ -30,9 +30,11 @@
 @show
 
 @section('item')
-  @foreach ($items as $item)
-    @include('site:com_cajobboard/JobPostings/default_item', array('item' => $item))
-  @endforeach
+  <div class="container-fluid">
+    @foreach ($items as $item)
+      @include('site:com_cajobboard/JobPostings/default_item', array('item' => $item))
+    @endforeach
+  </div>
 @show
 
 @section('footer')

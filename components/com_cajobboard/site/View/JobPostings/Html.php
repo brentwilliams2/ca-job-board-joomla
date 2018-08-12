@@ -34,7 +34,7 @@ class Html extends \FOF30\View\DataView\Html
 
     // We're breaking up language files into view-specific language files for maintainability
     $lang = JFactory::getLanguage();
-    $lang->load('job_postings', PATH_ADMINISTRATOR . DS . 'components' . DS . 'com_cajobboard' . DS . 'language', $lang->getTag(), true);
+    $lang->load('job_postings', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
   }
 
   /*
