@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Calligraphic Job Board
- * @subpackage  User.cajobboard
+ * @subpackage  User Plugin User.cajobboard
  * @version     0.1 May 1, 2018
  * @author      Calligraphic, LLC http://www.calligraphic.design
  * @copyright   Copyright (C) 2018 Calligraphic, LLC
@@ -13,6 +13,10 @@
 defined('_JEXEC') or die;
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use \JException;
 
 
 // @TODO: Should the different profiles (employer, job seeker, recruiter) have different profile plugins?
@@ -21,7 +25,7 @@ use Joomla\Utilities\ArrayHelper;
 /**
  * Custom user profile plugin.
  */
-class PlgUserCajobboard extends JPlugin
+class PlgUserCajobboard extends CMSPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -29,7 +33,23 @@ class PlgUserCajobboard extends JPlugin
 	 * @var    boolean
 	 * @since  1.0
 	 */
+
+  // Autoload language files in all clients, handled by JPlugin constructor
   protected $autoloadLanguage = true;
+
+  // EAV table holding extended user profile information
+  protected $profile_table = '#__user_profiles';
+
+  // Key to store user extended profile information in EAV table
+  protected $profile_key = 'cajobboard';
+
+  // Valid forms for onContentPrepareData() and onContentPrepareForm() methods to work on
+  protected $validForms = array(
+    'com_users.profile',
+    'com_users.registration',
+    'com_users.user',
+    'com_admin.profile'
+  );
 
 	/**
 	 * Constructor
@@ -39,10 +59,11 @@ class PlgUserCajobboard extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(& $subject, $config)
+	public function __construct(&$subject, $config)
 	{
-		parent::__construct($subject, $config);
-		JFormHelper::addFieldPath(__DIR__ . '/field');
+    parent::__construct($subject, $config);
+
+		FormHelper::addFieldPath(__DIR__ . '/field');
   }
 
 	/**
@@ -60,34 +81,42 @@ class PlgUserCajobboard extends JPlugin
 	 */
 	public function onContentPrepareData($context, $data)
 	{
-		// Check we are manipulating a valid form.
-		if (!in_array($context, array('com_users.profile','com_users.registration','com_users.user','com_admin.profile'))){
-			return true;
-		}
+    // Return if we aren't manipulating a valid form.
+    if (!in_array($context, $this->validForms)) return true;
 
+    // Set user id to guest if not set in form data
 		$userId = isset($data->id) ? $data->id : 0;
 
-		// Load the profile data from the database.
-		$db = JFactory::getDbo();
-		$db->setQuery(
-			'SELECT profile_key, profile_value FROM #__user_profiles' .
-			' WHERE user_id = '.(int) $userId .
-			' AND profile_key LIKE \'cajobboard.%\'' .
-			' ORDER BY ordering'
-		);
-		$results = $db->loadRowList();
+    $db = Factory::getDbo();
+
+    // Load the profile data from the user profile table for this profile plug
+    $query = $db->getQuery(true)
+      ->select($db->quoteName(array('profile_key', 'profile_value')))
+      ->from($db->quoteName($this->profile_table))
+      ->where($db->quoteName('user_id') . " = " . (int) $userId)
+      ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $this->profile_key . '.%\''))
+      ->order('ordering ASC');
+
+    // Get an indexed array of indexed arrays from the profile records returned by the query
+		$results = $db->setQuery($query)->loadRowList();
 
 		// Check for a database error.
 		if ($db->getErrorNum()) {
-			$this->_subject->setError($db->getErrorMsg());
+      $this->_subject->setError($db->getErrorMsg());
+
 			return false;
 		}
 
-		// Merge the profile data.
-		$data->cajobboard = array();
-		foreach ($results as $v) {
-			$k = str_replace('cajobboard.', '', $v[0]);
-			$data->cajobboard[$k] = json_decode($v[1], true);
+    $data->{$this->profile_key} = array();
+
+    // Merge the profile data into the form data object.
+		foreach ($results as $value) {
+      // Remove the profile key from the attribute value for this EAV field,
+      //  e.g. normalize "profile.address1" to "address1"
+      $key = str_replace($this->profile_key . '.', '', $value[0]);
+
+      // Get the attribute's value as a JSON string.
+			$data->{$this->profile_key}[$key] = json_decode($value[1], true);
 		}
 
 		return true;
@@ -109,46 +138,20 @@ class PlgUserCajobboard extends JPlugin
 	 */
 	public function onContentPrepareForm(JForm $form, $data)
 	{
-		// Load user_profile plugin language
-		$lang = JFactory::getLanguage();
-		$lang->load('plg_user_cajobboard', JPATH_ADMINISTRATOR);
-
-		if (!($form instanceof JForm)) {
+    // Only work on forms
+    if (!($form instanceof JForm)) {
 			$this->_subject->setError('JERROR_NOT_A_FORM');
 			return false;
-		}
-		// Check we are manipulating a valid form.
-		if (!in_array($form->getName(), array('com_users.profile', 'com_users.registration','com_users.user','com_admin.profile'))) {
-			return true;
-		}
-		if ($form->getName()=='com_users.profile')
-		{
-			// Add the profile fields to the form.
-			JForm::addFormPath(dirname(__FILE__).'/profiles');
-			$form->loadFile('profile', false);
+    }
 
-			// Toggle whether the something field is required.
-			if ($this->params->get('profile-require_something', 1) > 0) {
-				$form->setFieldAttribute('something', 'required', $this->params->get('profile-require_something') == 2, 'cajobboard');
-			} else {
-				$form->removeField('something', 'cajobboard');
-			}
-		}
+    // Return if we aren't manipulating a valid form.
+    if (!in_array($form->getName(), $this->validForms)) return true;
 
-		//In this example, we treat the frontend registration and the back end user create or edit as the same.
-		elseif ($form->getName()=='com_users.registration' || $form->getName()=='com_users.user' )
-		{
-			// Add the registration fields to the form.
-			JForm::addFormPath(dirname(__FILE__).'/profiles');
-			$form->loadFile('profile', false);
+    // Add the profile fields to the form.
+    JForm::addFormPath(dirname(__FILE__).'/profiles');
+    $form->loadFile('profile', false);
 
-			// Toggle whether the something field is required.
-			if ($this->params->get('register-require_something', 1) > 0) {
-				$form->setFieldAttribute('something', 'required', $this->params->get('register-require_something') == 2, 'cajobboard');
-			} else {
-				$form->removeField('something', 'cajobboard');
-			}
-		}
+    return true;
   }
 
 	/**
@@ -189,34 +192,56 @@ class PlgUserCajobboard extends JPlugin
 	 */
 	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
-		$userId	= JArrayHelper::getValue($data, 'id', 0, 'int');
+		$userId	= ArrayHelper::getValue($data, 'id', 0, 'int');
 
-		if ($userId && $result && isset($data['cajobboard']) && (count($data['cajobboard'])))
-		{
-			try
-			{
-				$db = JFactory::getDbo();
-				$db->setQuery('DELETE FROM #__user_profiles WHERE user_id = '.$userId.' AND profile_key LIKE \'cajobboard.%\'');
-				if (!$db->query()) {
-					throw new Exception($db->getErrorMsg());
-				}
+		if ($userId && $result && isset($data->{$this->profile_key}) && (count($data->{$this->profile_key}))) try
+    {
+      $db = Factory::getDbo();
 
-				$tuples = array();
-				$order	= 1;
-				foreach ($data['cajobboard'] as $k => $v) {
-					$tuples[] = '('.$userId.', '.$db->quote('cajobboard.'.$k).', '.$db->quote(json_encode($v)).', '.$order++.')';
-				}
+      // Delete profile keys for this user first, for database engine-independent implementation
+      $query = $db->getQuery(true)
+        ->delete($db->quoteName($profile_table))
+        ->where($db->quoteName('user_id') . " = " . $userId)
+        ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $this->profile_key . '.%\''));
 
-				$db->setQuery('INSERT INTO #__user_profiles VALUES '.implode(', ', $tuples));
-				if (!$db->query()) {
-					throw new Exception($db->getErrorMsg());
-				}
-			}
-			catch (JException $e) {
-				$this->_subject->setError($e->getMessage());
-				return false;
-			}
-		}
+      $db
+        ->setQuery($query)
+        ->execute();
+
+      // Handle internal error in database server
+      if (!$db) throw new Exception($db->getErrorMsg());
+
+      $tuples = array();
+      $order	= 1;
+
+      // Add the profile key to each attribute value, e.g. normalize "address1" to "profile.address1" and JSON-encoded value
+      foreach ($data->{$this->profile_key} as $key => $value) {
+        $tuples[] = '(' . $userId . ', ' . $db->quote($this->profile_key . '.' . $key) . ', ' . $db->quote(json_encode($value)) . ', ' . $order++ . ')';
+      }
+
+      // Columns to insert in the profiles table, matching our tuples built above
+      $columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
+
+      // Query to add new additional profile records to database for this user
+      $query = $db->getQuery(true)
+        ->insert($db->quoteName($this->profile_table))
+        ->columns($db->quoteName($columns))
+        ->values(implode(',', $tuples));
+
+      $db
+        ->setQuery($query)
+        ->execute();
+
+      // Handle internal error in database server
+      if (!$db) throw new Exception($db->getErrorMsg());
+    }
+    // Handle connection error to database server
+    catch (JException $e)
+    {
+      $this->_subject->setError($e->getMessage());
+
+      return false;
+    }
 
 		return true;
   }
@@ -232,32 +257,36 @@ class PlgUserCajobboard extends JPlugin
 	 */
 	public function onUserAfterDelete($user, $success, $msg)
 	{
-		if (!$success) {
-			return false;
-		}
+    // Don't delete profile attributes and values for this user if deleting the user failed
+		if (!$success) return false;
 
-		$userId	= JArrayHelper::getValue($user, 'id', 0, 'int');
+		$userId	= ArrayHelper::getValue($user, 'id', 0, 'int');
 
-		if ($userId)
+		if ($userId) try
 		{
-			try
-			{
-				$db = JFactory::getDbo();
-				$db->setQuery(
-					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-					" AND profile_key LIKE 'cajobboard.%'"
-				);
+      $db = Factory::getDbo()
 
-				if (!$db->query()) {
-					throw new Exception($db->getErrorMsg());
-				}
-			}
-			catch (JException $e)
-			{
-				$this->_subject->setError($e->getMessage());
-				return false;
-			}
-		}
+      // Query to delete profile records for this user from database
+      $query = $db->getQuery(true)
+        ->getQuery(true)
+        ->delete($db->quoteName($profile_table))
+        ->where($db->quoteName('user_id') . " = " . $userId)
+        ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $this->profile_key . '.%\''));
+
+      $db
+        ->setQuery($query)
+        ->execute();
+
+      // Handle internal error in database server
+      if (!$db) throw new Exception($db->getErrorMsg());
+    }
+    // Handle connection error to database server
+    catch (JException $e)
+    {
+      $this->_subject->setError($e->getMessage());
+
+      return false;
+    }
 
 		return true;
 	}

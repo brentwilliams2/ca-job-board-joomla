@@ -57,13 +57,3 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places_images` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-
-
-
-/**
- * Sample Place-Images join table data
- */
-INSERT INTO `#__cajobboard_places_images` (photo, image_object_id) VALUES
-  (1, 2),
-  (1, 2);

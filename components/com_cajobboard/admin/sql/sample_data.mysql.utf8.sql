@@ -246,3 +246,10 @@ INSERT INTO `#__cajobboard_places` (
   1,
   9
 )
+
+/**
+ * Sample Place-Images join table data
+ */
+INSERT INTO `#__cajobboard_places_images` (photo, image_object_id) VALUES
+  (1, 2),
+  (2, 1);

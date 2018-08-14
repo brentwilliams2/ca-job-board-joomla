@@ -5,114 +5,173 @@
 			name="calligraphic"
 			label="PLG_USER_CAJOBBOARD_SLIDER_LABEL"
 		>
+
 			<field
-				name="address1"
+				name="role_name"
 				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS1_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_ADDRESS1_DESC"
-				id="address1"
+				label="PLG_USER_CAJOBBOARD_FIELD_ROLE_NAME_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_ROLE_NAME_DESC"
+				id="role-name"
+				filter="string"
+				size="30"
+        default="PLG_USER_CAJOBBOARD_ROLE_JOB_SEEKER"
+			>
+        <option value="PLG_USER_CAJOBBOARD_ROLE_JOB_SEEKER">PLG_USER_CAJOBBOARD_ROLE_JOB_SEEKER</option>
+        <option value="PLG_USER_CAJOBBOARD_ROLE_EMPLOYER">PLG_USER_CAJOBBOARD_ROLE_EMPLOYER</option>
+        <option value="PLG_USER_CAJOBBOARD_ROLE_RECRUITER">PLG_USER_CAJOBBOARD_ROLE_RECRUITER</option>
+        <option value="PLG_USER_CAJOBBOARD_ROLE_CONNECTOR">PLG_USER_CAJOBBOARD_ROLE_CONNECTOR</option>
+      </field>
+
+			<field
+				name="given_name"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_GIVEN_NAME_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_GIVEN_NAME_DESC"
+				id="given-name"
 				filter="string"
 				size="30"
 			/>
 
 			<field
-				name="address2"
+				name="additional_name"
 				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS2_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_ADDRESS2_DESC"
-				id="address2"
+				label="PLG_USER_CAJOBBOARD_FIELD_ADDL_NAME_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_ADDL_NAME_DESC"
+				id="additional-name"
 				filter="string"
 				size="30"
 			/>
 
 			<field
-				name="city"
+				name="family_name"
 				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_CITY_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_CITY_DESC"
-				id="city"
+				label="PLG_USER_CAJOBBOARD_FIELD_FAMILY_NAME_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_FAMILY_NAME_DESC"
+				id="family-name"
 				filter="string"
 				size="30"
 			/>
 
 			<field
-				name="region"
+				name="job_title"
 				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_REGION_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_REGION_DESC"
+				label="PLG_USER_CAJOBBOARD_FIELD_JOB_TITLE_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_JOB_TITLE_DESC"
+				id="job_title"
+				filter="string"
+				size="30"
+			/>
+
+			<field
+				name="works_for"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_WORKS_FOR_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_WORKS_FOR_DESC"
+				id="works_for"
+				filter="string"
+				size="30"
+			/>
+
+			<field
+				name="description"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_DESCRIPTION_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_DESCRIPTION_DESC"
+				id="description"
+				filter="string"
+				size="30"
+			/>
+
+			<field
+				name="image"
+				type="file"
+				label="PLG_USER_CAJOBBOARD_FIELD_IMAGE_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_IMAGE_DESC"
+				id="image"
+				size="30"
+        accept="image/*"
+			/>
+
+			<field
+				name="address__street_address"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__STREET_ADDRESS_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__STREET_ADDRESS_DESC"
+				id="street-address"
+				filter="string"
+				size="30"
+			/>
+
+			<field
+				name="address__locality"
+				type="region"
+				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__LOCALITY_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__LOCALITY_DESC"
+				id="locality"
+				filter="string"
+				size="30"
+			/>
+
+			<field
+				name="address_region"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__REGION_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__REGION_DESC"
 				id="region"
 				filter="string"
 				size="30"
 			/>
 
 			<field
-				name="country"
+				name="address__postal_code"
 				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_COUNTRY_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_COUNTRY_DESC"
-				id="country"
-				filter="string"
-				size="30"
-			/>
-
-			<field
-				name="postal_code"
-				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_POSTAL_CODE_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_POSTAL_CODE_DESC"
+				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__POSTAL_CODE_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_POSTAL_CODEADDRESS__POSTAL_CODE_DESC"
 				id="postal_code"
 				filter="string"
-				size="30"
+				size="10"
 			/>
 
 			<field
-				name="phone"
-				type="tel"
-				label="PLG_USER_CAJOBBOARD_FIELD_PHONE_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_PHONE_DESC"
-				id="phone"
+				name="address__address_country"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__COUNTRY_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_ADDRESS__COUNTRY_DESC"
+				id="country"
 				filter="string"
+				size="2"
+        default="US"
+			/>
+
+			<field
+				name="telephone"
+				type="tel"
+				label="PLG_USER_CAJOBBOARD_FIELD_TELEPHONE_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_TELEPHONE_DESC"
+				id="telephone"
+				filter="tel"
 				size="30"
 			/>
 
 			<field
-				name="website"
+				name="fax_number"
+				type="text"
+				label="PLG_USER_CAJOBBOARD_FIELD_FAX_NUMBER_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_FAX_NUMBER_DESC"
+				id="fax-number"
+				filter="tel"
+				size="30"
+			/>
+
+			<field
+				name="main_entity_of_page"
 				type="url"
-				label="PLG_USER_CAJOBBOARD_FIELD_WEB_SITE_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_WEB_SITE_DESC"
-				id="website"
+				label="PLG_USER_CAJOBBOARD_FIELD_MAIN_ENTITY_OF_PAGE_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_MAIN_ENTITY_OF_PAGE_DESC"
+				id="main-entity-of-page"
 				filter="url"
 				size="30"
-			/>
-
-			<field
-				name="favoritebook"
-				type="text"
-				label="PLG_USER_CAJOBBOARD_FIELD_FAVORITE_BOOK_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_FAVORITE_BOOK_DESC"
-				filter="string"
-				size="30"
-			/>
-
-			<field
-				name="aboutme"
-				type="textarea"
-				label="PLG_USER_CAJOBBOARD_FIELD_ABOUT_ME_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_ABOUT_ME_DESC"
-				cols="30"
-				rows="5"
-				filter="safehtml"
-			/>
-
-			<field
-				name="dob"
-				type="dob"
-				label="PLG_USER_CAJOBBOARD_FIELD_DOB_LABEL"
-				description="PLG_USER_CAJOBBOARD_FIELD_DOB_DESC"
-				info="PLG_USER_CAJOBBOARD_SPACER_DOB"
-				translateformat="true"
-				showtime="false"
-				filter="server_utc"
+        default="http://www.example.com"
 			/>
 
 			<field

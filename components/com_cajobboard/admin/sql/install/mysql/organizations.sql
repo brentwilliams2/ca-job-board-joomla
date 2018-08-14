@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   /* SCHEMA: Organization */
   legalName VARCHAR(255) COMMENT 'The official name of the employer.',
   email VARCHAR(320) COMMENT 'RFC 3696 Email address.',
-  telephone VARCHAR(24) COMMENT 'The E.164 PSTN telephone number.',
+  telephone TEXT COMMENT 'The E.164 PSTN telephone number.',
   faxNumber	VARCHAR(24) COMMENT 'The E.164 PSTN fax number.',
   numberOfEmployees VARCHAR(16)	COMMENT 'The number of employees in an organization e.g. business.', /* Can also be a QuantitativeValue, which has properties like value, minValue, maxValue, unitCode for unit of measurement */
   location BIGINT UNSIGNED COMMENT 'Where the organization is located', /* FK to Places */
@@ -79,17 +79,15 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   memberOf Organization COMMENT 'An Organization (or ProgramMembership) to which this Person or Organization belongs.',
   parentOrganization Organization COMMENT 'The larger organization that this organization is a subOrganization of, if any.',
 
-
-  /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
-  organization_type BIGINT UNSIGNED COMMENT 'The type of organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_type */
-
   /* SCHEMA: Thing */
   name CHAR(255) COMMENT 'The name of this organization.',
   disambiguatingDescription TEXT COMMENT 'A short description of the employer, for example to use on listing pages.',
   description TEXT COMMENT 'A description of the item.',
   url VARCHAR(2083) COMMENT 'URL of employer\'s website.',
-
   image BIGINT UNSIGNED COMMENT	'Images of the employer.', /* FK to images table */
+
+  /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
+  organization_type BIGINT UNSIGNED COMMENT 'The type of organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_type */
 
   PRIMARY KEY (id)
 )

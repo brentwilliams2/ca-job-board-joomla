@@ -22,40 +22,52 @@ use JLoader;
 /**
  * Model class for Akeeba Subscriptions user data
  *
- * @property  int		  $akeebasubs_user_id
- * @property  int		  $user_id
- * @property  int		  $isbusiness
- * @property  string	$businessname
- * @property  string	$occupation
- * @property  string	$vatnumber
- * @property  int		  $viesregistered
- * @property  string	$taxauthority
- * @property  string	$address1
- * @property  string	$address2
- * @property  string	$city
- * @property  string	$state
- * @property  string	$zip
- * @property  string	$country
- * @property  array		$params // not in @method list
+ * Fields:
+ *
+ * @property  int     $id
+ * @property  string  $name
+ * @property  string  $username
+ * @property  string  $email
+ * @property  string  $password
+ * @property  bool    $block
+ * @property  bool    $sendEmail
+ * @property  string  $registerDate
+ * @property  string  $lastvisitDate
+ * @property  string  $activation
+ * @property  string  $params
+ * @property  string  $lastResetTime
+ * @property  int     $resetCount
+ * @property  string  $otpKey
+ * @property  string  $otep
+ * @property  bool    $requireReset
+ *
+ * Filters:
+ *
+ * @method  $this  id()             id(int $v)
+ * @method  $this  name()           name(string $v)
+ * @method  $this  username()       username(string $v)
+ * @method  $this  email()          email(string $v)
+ * @method  $this  password()       password(string $v)
+ * @method  $this  block()          block(bool $v)
+ * @method  $this  sendEmail()      sendEmail(bool $v)
+ * @method  $this  registerDate()   registerDate(string $v)
+ * @method  $this  lastvisitDate()  lastvisitDate(string $v)
+ * @method  $this  activation()     activation(string $v)
+ * @method  $this  lastResetTime()  lastResetTime(string $v)
+ * @method  $this  resetCount()     resetCount(int $v)
+ * @method  $this  otpKey()         otpKey(string $v)
+ * @method  $this  otep()           otep(string $v)
+ * @method  $this  requireReset()   requireReset(bool $v)
+ * @method  $this  search()         search(string $userInfoToSearch)
+ *
+ * // Need to figure out User Notes
  * @property  string	$notes
+ *
+ *
  * @property  int		  $needs_logout
  *
- * @property-read  JoomlaUsers		  $user
+ * @property-read  JoomlaUsers		  $User
  *
- * @method  $this  akeebasubs_user_id()  akeebasubs_user_id(int $v)
- * @method  $this  user_id()             user_id(int $v)
- * @method  $this  isbusiness()          isbusiness(bool $v)
- * @method  $this  businessname()        businessname(string $v)
- * @method  $this  occupation()          occupation(string $v)
- * @method  $this  vatnumber()           vatnumber(string $v)
- * @method  $this  viesregistered()      viesregistered(bool $v)
- * @method  $this  taxauthority()        taxauthority(string $v)
- * @method  $this  address1()            address1(string $v)
- * @method  $this  address2()            address2(string $v)
- * @method  $this  city()                city(string $v)
- * @method  $this  state()               state(string $v)
- * @method  $this  zip()                 zip(string $v)
- * @method  $this  country()             country(string $v)
  * @method  $this  notes()               notes(string $v)
  * @method  $this  needs_logout()        needs_logout(bool $v)
  *
@@ -65,6 +77,49 @@ use JLoader;
  * @method  $this  email()               email(string $v)
  * @method  $this  search()              search(string $v)
  *
+ *
+ *
+ *
+ * Properties from user_profiles EAV table
+ *
+ * SCHEMA: Thing
+ *
+ * @property  string	$description TEXT COMMENT 'A description of this person.',
+ * @property  int		  $image BIGINT UNSIGNED COMMENT 'An image or avatar for this person.'  FK to ImageObjects table
+ * @property  string	$mainEntityOfPage VARCHAR(2083) COMMMENT 'A homepage or website belonging to this person.'
+ *
+ * SCHEMA: Person
+ *
+ * @property  string	$givenName Text 'Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.',
+ * @property  string	$additionalName 	Text 	'An additional name for a Person, can be used for a middle name.',
+ * @property  string	$familyName Text 'Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.',
+
+* $telephone = array(
+  *  'default' => 'value'
+  * );
+
+ * @property  string	$telephone TEXT 'A telephone number for this person.',
+ * @property  string	$faxNumber VARCHAR(30) COMMENT 'A fax number for this person.',
+
+ * SCHEMA: Person (address) -> PostalAddress
+ *
+ * @property  string	$address__street_address VARCHAR(255) COMMENT 'The street address, e.g. 1600 Amphitheatre Pkwy',
+ * @property  string	$address__address_locality VARCHAR(50) COMMENT 'The locality, e.g. Mountain View',
+* @property  int		  $address_region BIGINT UNSIGNED NOT NULL COMMENT 'The name of the region, e.g. California',  FK to #__cajobboard_util_address_region(address_region)
+ * @property  string	$address__postal_code VARCHAR(12) COMMENT 'The postal code, e.g. 94043',
+ * @property  string	$address__address_country VARCHAR(2) COMMENT 'The two-letter ISO 3166-1 alpha-2 country code',
+
+ * @property  string	$jobTitle Text 'The job title of the person (for example, Financial Manager).'
+
+ * SCHEMA: Thing (subjectOf) -> OrganizationRole ( roleName )
+ * @property  string	$roleName 'The type of user, e.g. job seeker, employer, recruiter, or connector.'
+
+ * This needs validation somehow, don't want people to be arbitrarily ad that they work for somebody without that organization's agreement
+ * worksFor Organization 'Organizations that the person works for.'  M:M FK to Organizations. Could use for Recruiters.
+ *
+ * geo
+ * params
+ *
  */
 class Persons extends DataModel
 {
@@ -73,23 +128,16 @@ class Persons extends DataModel
    */
 	public function __construct(Container $container, array $config = array())
 	{
+		$config['tableName'] = '#__users';
+    $config['idFieldName'] = 'id';
+
     parent::__construct($container, $config);
 
 		// Load the Filters behaviour
     $this->addBehaviour('Filters');
 
-    // Added automatically when you use the has() method
-    $this->addBehaviour('RelationFilters');
-
-    $this->hasOne('user', 'FrameworkUsers@com_cajobboard', 'user_id', 'id');
-
-    $this->hasMany('subscriptions', 'Subscriptions', 'user_id', 'user_id');
-
-    // Eager load framework user table
-    $this->with(['user']);
-
-		// Not NULL fields which do accept 0 values should not be part of auto-checks
-		$this->fieldsSkipChecks = ['isbusiness', 'viesregistered', 'needs_logout'];
+		// Do not run automatic value validation of data before saving it.
+		$this->autoChecks = false;
   }
 
 	/**

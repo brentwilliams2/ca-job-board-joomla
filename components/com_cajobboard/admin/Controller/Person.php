@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Job Posting Controller
+ * Administrator Person Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -18,12 +18,12 @@ use FOF30\Controller\DataController;
 use FOF30\View\Exception\AccessForbidden;
 
 // Component classes
-use Calligraphic\Cajobboard\Admin\Model\Users;
+
 
 // no direct access
 defined('_JEXEC') or die;
 
-class JobPosting extends DataController
+class Person extends DataController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
