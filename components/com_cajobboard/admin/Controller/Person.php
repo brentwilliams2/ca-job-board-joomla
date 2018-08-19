@@ -33,57 +33,47 @@ class Person extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    $this->modelName = 'Persons';
+
+    $this->predefinedTaskList = ['browse', 'read', 'edit', 'save'];
+
     parent::__construct($container, $config);
   }
 
 	/*
-	 * Runs before the browse task.
+	 * Override browse task.
 	 */
-	protected function onBeforeBrowse()
+	protected function browse()
 	{
   }
 
 	/*
-	 * Runs before the read task.
+	 * Override read task.
 	 */
-	protected function onBeforeRead()
+	protected function read()
 	{
   }
 
   /*
-   *
+   * Override edit task.
    */
-	protected function onBeforeEdit()
+	protected function edit()
 	{
     $user_id = $this->input->getInt('user_id', 0);
 
-		// Try to load a User record based on the Joomla! user ID
-		if ($user_id)
-		{
-			/** @var Users $model */
-      $model = $this->getModel()->savestate(false);
-
-      $item = $model->user_id($user_id)->firstOrNew();
-
-      $model->bind($item->getData());
-
-			// If the User record was not found, ???
-			if (!$model->getId())
-			{
-        $url = 'index.php?option=com_cajobboard&view=User';
-        $this->setRedirect($url);
-				$this->redirect();
-			}
-		}
+		// @TODO Call core com_users routine to save a user, and call plugin tasks
 	}
 
 	/*
-	 * Performs auth checks before saving subscription data
+	 * Override save task. Saves the incoming data and then returns to the Browse task.
 	 *
 	 * @return bool
 	 */
-	protected function onBeforeSave()
+	protected function save()
 	{
+    $user_id = $this->input->getInt('user_id', 0);
+
+		// @TODO Call core com_users routine to save a user, and call plugin tasks
   }
 }
 

@@ -20,7 +20,7 @@ use FOF30\Model\DataModel;
 use JLoader;
 
 /**
- * Model class for Akeeba Subscriptions user data
+ * Model class for Job Board users
  *
  * Fields:
  *
@@ -58,71 +58,146 @@ use JLoader;
  * @method  $this  otpKey()         otpKey(string $v)
  * @method  $this  otep()           otep(string $v)
  * @method  $this  requireReset()   requireReset(bool $v)
- * @method  $this  search()         search(string $userInfoToSearch)
  *
- * // Need to figure out User Notes
- * @property  string	$notes
- *
- *
- * @property  int		  $needs_logout
- *
- * @property-read  JoomlaUsers		  $User
- *
- * @method  $this  notes()               notes(string $v)
- * @method  $this  needs_logout()        needs_logout(bool $v)
- *
- * @method  $this  block()               block(bool $v)
- * @method  $this  username()            username(string $v)
- * @method  $this  name()                name(string $v)
- * @method  $this  email()               email(string $v)
- * @method  $this  search()              search(string $v)
- *
- *
- *
- *
- * Properties from user_profiles EAV table
- *
- * SCHEMA: Thing
- *
- * @property  string	$description TEXT COMMENT 'A description of this person.',
- * @property  int		  $image BIGINT UNSIGNED COMMENT 'An image or avatar for this person.'  FK to ImageObjects table
- * @property  string	$mainEntityOfPage VARCHAR(2083) COMMMENT 'A homepage or website belonging to this person.'
- *
- * SCHEMA: Person
- *
- * @property  string	$givenName Text 'Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.',
- * @property  string	$additionalName 	Text 	'An additional name for a Person, can be used for a middle name.',
- * @property  string	$familyName Text 'Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.',
-
-* $telephone = array(
-  *  'default' => 'value'
-  * );
-
- * @property  string	$telephone TEXT 'A telephone number for this person.',
- * @property  string	$faxNumber VARCHAR(30) COMMENT 'A fax number for this person.',
-
- * SCHEMA: Person (address) -> PostalAddress
- *
- * @property  string	$address__street_address VARCHAR(255) COMMENT 'The street address, e.g. 1600 Amphitheatre Pkwy',
- * @property  string	$address__address_locality VARCHAR(50) COMMENT 'The locality, e.g. Mountain View',
-* @property  int		  $address_region BIGINT UNSIGNED NOT NULL COMMENT 'The name of the region, e.g. California',  FK to #__cajobboard_util_address_region(address_region)
- * @property  string	$address__postal_code VARCHAR(12) COMMENT 'The postal code, e.g. 94043',
- * @property  string	$address__address_country VARCHAR(2) COMMENT 'The two-letter ISO 3166-1 alpha-2 country code',
-
- * @property  string	$jobTitle Text 'The job title of the person (for example, Financial Manager).'
-
- * SCHEMA: Thing (subjectOf) -> OrganizationRole ( roleName )
- * @property  string	$roleName 'The type of user, e.g. job seeker, employer, recruiter, or connector.'
-
- * This needs validation somehow, don't want people to be arbitrarily ad that they work for somebody without that organization's agreement
- * worksFor Organization 'Organizations that the person works for.'  M:M FK to Organizations. Could use for Recruiters.
- *
- * geo
- * params
- *
+ * @TODO: enable user notes outside of core Joomla system
  */
 class Persons extends DataModel
 {
+  // User Profile Properties - SCHEMA: Thing
+
+  /*
+  * A description of this person.
+  *
+  * @var string
+  */
+  protected $description;
+
+  /*
+  * An image or avatar for this person, FK to ImageObjects table.
+  *
+  * @var int
+  */
+  protected $image;
+
+  /*
+  * A homepage or website belonging to this person.
+  *
+  * @var string
+  */
+  protected $mainEntityOfPage;
+
+  // User Profile Properties - SCHEMA: Person
+
+  /*
+  * Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
+  *
+  * @var string
+  */
+  protected $givenName;
+
+  /*
+  * An additional name for a Person, can be used for a middle name.
+  *
+  * @var string
+  */
+  protected $additionalName;
+
+  /*
+  * Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
+  *
+  * @var string
+  */
+  protected $familyName;
+
+  /*
+  * A telephone number for this person. Associate array, key is type of number (mobile, home, etc.).
+  *
+  * @var array
+  */
+  protected $telephone = array();
+
+  /*
+  * A fax number for this person.
+  *
+  * @var string
+  */
+  protected $faxNumber;
+
+  /*
+  * Organizations that the person works for, M:M FK to Organizations. Could use for Recruiters.
+  *
+  * @var \Calligraphic\Cajobboard\Admin\Model\Organization
+  */
+  protected $WorksFor;
+
+  /*
+  * The job title of the person (for example, Financial Manager).
+  *
+  * @var string
+  */
+  protected $jobTitle;
+
+  // User Profile Properties - SCHEMA: Person (address) -> PostalAddress
+
+  /*
+  *
+  * The street address of the person, e.g. 1600 Amphitheatre Pkwy.
+  *
+  * @var string
+  */
+  protected $address__street_address;
+
+ /*
+  *
+  * The locality or city of the person, e.g. San Francisco.
+  *
+  * @var string
+  */
+  protected $address__locality;
+
+
+  /*
+  *
+  * The region or state of the person, e.g. California, FK to AddressRegions
+  *
+  * @var string
+  */
+  protected $address_region;
+
+  /*
+  * The postal code of the person, e.g. 94043.
+  *
+  * @var string
+  */
+  protected $address__postal_code;
+
+  /*
+  * The two-letter ISO 3166-1 alpha-2 country code of the person
+  *
+  * @var string
+  */
+  protected $address__address_country;
+
+  // User Profile Properties - SCHEMA: Thing (subjectOf) -> OrganizationRole (roleName)
+
+  /*
+  * The type of user, e.g. job seeker, employer, recruiter, or connector.
+  *
+  * @var string
+  */
+  protected $roleName;
+
+  // User Profile Properties - SCHEMA: Thing (additionalType) -> Geo(longitude, latitude)
+
+  /*
+  * The (longitude, latitude) geographic coordinates of the user, FK to #__cajobboard_user_geo
+  *
+  * @var array
+  */
+  protected $geo = array();
+
+  use Mixin\JsonData;
+
   /*
    * Overridden constructor
    */
@@ -137,7 +212,9 @@ class Persons extends DataModel
     $this->addBehaviour('Filters');
 
 		// Do not run automatic value validation of data before saving it.
-		$this->autoChecks = false;
+    $this->autoChecks = false;
+
+    // M:M between $WorksFor and Organization
   }
 
 	/**
@@ -173,6 +250,7 @@ class Persons extends DataModel
 		}
   }
 
+
 	/**
 	 * Build the SELECT query for returning records.
 	 *
@@ -183,167 +261,134 @@ class Persons extends DataModel
 	 */
 	public function onAfterBuildQuery(\JDatabaseQuery $query, $overrideLimits = false)
 	{
+    $userProfileFields = this->getUserProfile();
+
+
+
     $db = $this->getDbo();
 
-    // search functionality was in here, as well as in FrameworkUsers
+    // Apply custom filters here, e.g.:
+    /*
+      $username = $this->getState('username', null, 'string');
+      if ($username)
+      {
+        $this->whereHas('user', function(\JDatabaseQuery $subQuery) use($username, $db) {
+          $subQuery->where($db->qn('username') . ' LIKE ' . $db->q('%' . $username . '%'));
+        });
+      }
+    */
+
+    // Add faceted search functionality here
   }
 
-	/**
-	 * Returns the merged data from the Akeeba Subscriptions' user parameters, the Joomla! user data and the Joomla!
-	 * user profile data.
-	 *
-	 * @param   int  $user_id  The user ID to load, null to use the alredy loaded user
-	 *
-	 * @return  object
-	 */
-	public function getMergedData($user_id = null)
-	{
-		if (is_null($user_id))
-		{
-			$user_id = $this->getState('user_id', $this->user_id);
-		}
-    $this->find(['user_id' => $user_id]);
 
-		// Get a legacy data set from the user parameters
-    $userRow = $this->user;
+  /*
+   *  Method to load the extended profile fields managed by plg_user_cajobboard for a user into the model
+   *
+   * @param   int       $userId   The ID of the user to load extended profile fields for
+   *
+	 * @return  bool True on success.
+   */
+  public function getUserProfile ($userId = null)
+  {
+    // EAV table holding extended user profile information
+    protected $profile_table = '#__user_profiles';
 
-		if (empty($this->user_id) || !is_object($userRow))
-		{
-			/** @var JoomlaUsers $userRow */
-			$userRow = $this->container->factory->model('JoomlaUsers')->tmpInstance();
-			$userRow->find($user_id);
-		}
-		// Decode user parameters
-    $params = $userRow->params;
+    // Key to store user extended profile information in EAV table
+    protected $profile_key = 'cajobboard';
 
-		if (!($userRow->params instanceof \JRegistry))
-		{
-      JLoader::import('joomla.registry.registry');
+    $user = JFactory::getUser();
 
-			$params = new \JRegistry($userRow->params);
-		}
-    $businessname = $params->get('business_name', '');
+    // Don't do anything if guest user
+    if (!$userId && $user->id == 0) return;
 
-		$nativeData = array(
-			'isbusiness'     => empty($businessname) ? 0 : 1,
-			'businessname'   => $params->get('business_name', ''),
-			'occupation'     => $params->get('occupation', ''),
-			'vatnumber'      => $params->get('vat_number', ''),
-			'viesregistered' => 0,
-			'taxauthority'   => '',
-			'address1'       => $params->get('address', ''),
-			'address2'       => $params->get('address2', ''),
-			'city'           => $params->get('city', ''),
-			'state'          => $params->get('state', ''),
-			'zip'            => $params->get('zip', ''),
-			'country'        => $params->get('country', ''),
-			'params'         => array()
+    // Use user id from state if not passed to function
+		if (!$userId) $userID = $user->id;
+
+    $db = JFactory::getDbo();
+
+    // Load the profile data from the user profile table for this user
+    $query = $db->getQuery(true)
+      ->select($db->quoteName(array('profile_key', 'profile_value')))
+      ->from($db->quoteName($profile_table, 'profiles'))
+      ->where($db->quoteName('user_id') . " = " . (int) $userId)
+      ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $profile_key . '.%\''))
+      ->order('ordering ASC');
+
+    // Get an indexed array of indexed arrays from the profile records returned by the query
+    try {
+      $db->setQuery($query);
+      $results = $db->loadRowList();
+    }
+    catch (Exception $e)
+    {
+      JLog::add('Database error in class Persons, method getUserProfile: ' . $e->getMessage(), JLog::ERROR, 'database');
+
+      // Don't show the user a server error if there was an error in the database query
+      throw new Exception(JText::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
+    }
+
+    $normalizedProfileKey = array(
+      'description' => 'description',
+      'main_entity_of_page' => 'mainEntityOfPage',
+      'given_name' => 'givenName',
+      'additional_name' => 'additionalName',
+      'family_name' => 'familyName',
+      'telephone' => 'telephone',
+      'fax_number' => 'faxNumber',
+      'job_title' => 'jobTitle',
+      'address__street_address' => 'address__street_address',
+      'address__locality' => 'address__locality',
+      'address__postal_code' => 'address__postal_code',
+      'address__address_country' => 'address__address_country',
+      'address_region' => 'address_region',
+      'role_name' => 'roleName',
+      'geo' => 'geo',
+      'image' => 'image',
+      'works_for' => 'WorksFor'
     );
 
-    $userData = $userRow->toArray();
+    // Merge the profile data
+		foreach ($results as $value) {
+      // Remove the profile key from the attribute value for this EAV field,
+      //  e.g. normalize "profile.address1" to "address1"
+      $key = str_replace($profile_key . '.', '', $value[0]);
 
-    $myData = $nativeData;
-
-		foreach (array('name', 'username', 'email') as $key)
-		{
-			$myData[$key] = $userData[$key];
-    }
-
-    $myData['email2'] = $userData['email'];
-
-    unset($userData);
-
-    if (($user_id > 0) && ($this->user_id == $user_id))
-
-		{
-      $myData = array_merge($myData, $this->toArray());
-
-			if (is_string($myData['params']))
-			{
-        $myData['params'] = json_decode($myData['params'], true);
-
-				if (is_null($myData['params']))
-				{
-					$myData['params'] = array();
-				}
-			}
+      // Get the attribute's value as a JSON string.
+      if (array_key_exists ($profile_key , $normalizedProfileKey))
+      {
+        $this->{$normalizedProfileKey[$profile_key]} = json_decode($value[1], true);
+      }
+      else
+      {
+        JLog::add('User profile key not in list, class Persons method getUserProfile(): ' . $profile_key, JLog::ERROR, 'user-profile-error');
+      }
 		}
-		else
-		{
-      $taxParameters = $this->container->factory->model('TaxHelper')->tmpInstance()->getTaxDefiningParameters($myData);
 
-			$taxData = array(
-				'isbusiness' => $taxParameters['vies'] ? 1 : 0,
-				'city'       => $taxParameters['city'],
-				'state'      => $taxParameters['state'],
-				'country'    => $taxParameters['country'],
-				'params'     => array()
-      );
+    // Get the relations data
 
-			$myData = array_merge($myData, $taxData);
-    }
+    ->select($db->quoteName('profile_key'))
+    ->select($db->quoteName('profile_value'))
+    ->select($db->quoteName('db_images.image'))
+    ->select($db->quoteName('db_images.thumbnail', 'image_thumbnail'))
+    ->select($db->quoteName('db_images.caption', 'image_caption'))
+    ->select($db->quoteName('db_images.height', 'image_height'))
+    ->select($db->quoteName('db_images.width', 'image_width'))
+    ->select($db->quoteName('db_regions.name', 'address_region'))
+    ->select($db->quoteName('db_geo', 'geo'))
+    ->from($db->quoteName($profile_table, 'profiles'))
+    ->leftJoin($db->quoteName('#__cajobboard_image_objects', 'db_images') . ' ON (' . $db->quoteName('profiles.user_id') . ' = ' . $db->quoteName('db_images.image_object_id') . ')')
+    ->leftJoin($db->quoteName('#__cajobboard_address_regions', 'db_regions') . ' ON (' . $db->quoteName('profiles.user_id') . ' = ' . $db->quoteName('db_regions.address_region_id') . ')')
+    ->leftJoin($db->quoteName('#__cajobboard_person_geos', 'db_geo') . ' ON (' . $db->quoteName('profiles.user_id') . ' = ' . $db->quoteName('db_geo.person_geo_id') . ')')
+    'WorksFor', works_for //  M:M FK to Organizations
+    ->where($db->quoteName('b.username') . ' LIKE \'a%\'')
+    ->order($db->quoteName('a.created') . ' DESC');
 
-		// Finally, merge data coming from the plugins. Note that the
-		// plugins only run when a new subscription is in progress, not
-		// every time the user data loads.
-    $this->container->platform->importPlugin('akeebasubs');
 
-    $jResponse = $this->container->platform->runPlugins('onAKUserGetData', array((object)$myData));
-
-		if (is_array($jResponse) && !empty($jResponse))
-		{
-			foreach ($jResponse as $pResponse)
-			{
-				if (!is_array($pResponse))
-				{
-					continue;
-				}
-				if (empty($pResponse))
-				{
-					continue;
-				}
-				if (array_key_exists('params', $pResponse))
-				{
-					if (!empty($pResponse['params']))
-					{
-						foreach ($pResponse['params'] as $k => $v)
-						{
-							$myData['params'][$k] = $v;
-						}
-					}
-					unset($pResponse['params']);
-				}
-				foreach ($pResponse as $k => $v)
-				{
-					if (!empty($v))
-					{
-						$myData[$k] = $v;
-					}
-				}
-			}
-		}
-		if (!isset($myData['params']))
-		{
-			$myData['params'] = array();
-		}
-    $myData['params'] = (object)$myData['params'];
-
-		return (object)$myData;
+    return true;
   }
-
-  /*
-   * Convert params string from record to JRegistry object
-   */
-	protected function getParamsAttribute($value)
-	{
-		return $value;
-  }
-
-  /*
-   * Convert JRegistry params object to string before updating
-   */
-	protected function setParamsAttribute($value)
-	{
-		return $value;
-	}
 }
+
+
+
+

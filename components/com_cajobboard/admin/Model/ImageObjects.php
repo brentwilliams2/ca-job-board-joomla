@@ -42,8 +42,8 @@ use FOF30\Model\DataModel;
  * @property  Object	$contentLocation   Place depicted or described in the image, FK to #__cajobboard_places
  *
  * SCHEMA: Thing
- * @property  string	$name               A name for this image
- * @property  string	$ description       A long description of this image
+ * @property  string	$name              A name for this image
+ * @property  string	$description       A long description of this image
  */
 class ImageObjects extends \FOF30\Model\DataModel
 {
@@ -70,7 +70,7 @@ class ImageObjects extends \FOF30\Model\DataModel
      * Set up relations
      */
 
-    // many-to-one FK to  #__cajobboard_places
+    // Place depicted or described in the image, many-to-one FK to  #__cajobboard_places
     $this->belongsTo('contentLocation', 'Places@com_cajobboard', 'content_location', 'place_id');
   }
 }

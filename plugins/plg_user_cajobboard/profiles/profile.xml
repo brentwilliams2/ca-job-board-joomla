@@ -175,6 +175,14 @@
 			/>
 
 			<field
+				name="geo"
+				type="geo"
+				label="PLG_USER_CAJOBBOARD_FIELD_GEO_LABEL"
+				description="PLG_USER_CAJOBBOARD_FIELD_GEO_DESC"
+				id="geo-coordinates"
+			/>
+
+			<field
 				name="tos"
 				type="tos"
 				label="PLG_USER_CAJOBBOARD_FIELD_TOS_LABEL"
@@ -185,6 +193,8 @@
 				<option value="1">PLG_USER_CAJOBBOARD_OPTION_AGREE</option>
 				<option value="0">JNO</option>
 			</field>
+
+
 		</fieldset>
 	</fields>
 </form>

@@ -98,14 +98,17 @@ class PlgUserCajobboard extends CMSPlugin
       ->order('ordering ASC');
 
     // Get an indexed array of indexed arrays from the profile records returned by the query
-		$results = $db->setQuery($query)->loadRowList();
+    try {
+      $db->setQuery($query);
+      $results = $db->loadRowList();
+    }
+    catch (Exception $e)
+    {
+      JLog::add('Database error in plugin User, method onContentPrepareData: ' . $e->getMessage(), JLog::ERROR, 'database');
 
-		// Check for a database error.
-		if ($db->getErrorNum()) {
-      $this->_subject->setError($db->getErrorMsg());
-
-			return false;
-		}
+      // Don't show the user a server error if there was an error in the database query
+      throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+    }
 
     $data->{$this->profile_key} = array();
 
@@ -172,7 +175,9 @@ class PlgUserCajobboard extends CMSPlugin
 	 */
 	public function onUserBeforeSave($user, $isnew, $data)
 	{
-		// Do any validation here, return false on validation failure.
+    // Do any validation here, return false on validation failure.
+
+    // @TODO Need to validate worksFor, don't want people to be arbitrarily ad that they work for somebody without that organization's agreement
 
 		return true;
   }
@@ -194,7 +199,7 @@ class PlgUserCajobboard extends CMSPlugin
 	{
 		$userId	= ArrayHelper::getValue($data, 'id', 0, 'int');
 
-		if ($userId && $result && isset($data->{$this->profile_key}) && (count($data->{$this->profile_key}))) try
+		if ($userId && $result && isset($data->{$this->profile_key}) && (count($data->{$this->profile_key})))
     {
       $db = Factory::getDbo();
 
@@ -204,12 +209,16 @@ class PlgUserCajobboard extends CMSPlugin
         ->where($db->quoteName('user_id') . " = " . $userId)
         ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $this->profile_key . '.%\''));
 
-      $db
-        ->setQuery($query)
-        ->execute();
+      try {
+        $db->setQuery($query)->execute();
+      }
+      catch (Exception $e)
+      {
+        JLog::add('Database error in plugin User, method onUserAfterSave, delete keys routine: ' . $e->getMessage(), JLog::ERROR, 'database');
 
-      // Handle internal error in database server
-      if (!$db) throw new Exception($db->getErrorMsg());
+        // Don't show the user a server error if there was an error in the database query
+        throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+      }
 
       $tuples = array();
       $order	= 1;
@@ -228,19 +237,16 @@ class PlgUserCajobboard extends CMSPlugin
         ->columns($db->quoteName($columns))
         ->values(implode(',', $tuples));
 
-      $db
-        ->setQuery($query)
-        ->execute();
+      try {
+        $db->setQuery($query)->execute();
+      }
+      catch (Exception $e)
+      {
+        JLog::add('Database error in plugin User, method onUserAfterSave, insert keys routine: ' . $e->getMessage(), JLog::ERROR, 'database');
 
-      // Handle internal error in database server
-      if (!$db) throw new Exception($db->getErrorMsg());
-    }
-    // Handle connection error to database server
-    catch (JException $e)
-    {
-      $this->_subject->setError($e->getMessage());
-
-      return false;
+        // Don't show the user a server error if there was an error in the database query
+        throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+      }
     }
 
 		return true;
@@ -262,7 +268,7 @@ class PlgUserCajobboard extends CMSPlugin
 
 		$userId	= ArrayHelper::getValue($user, 'id', 0, 'int');
 
-		if ($userId) try
+		if ($userId)
 		{
       $db = Factory::getDbo()
 
@@ -273,20 +279,16 @@ class PlgUserCajobboard extends CMSPlugin
         ->where($db->quoteName('user_id') . " = " . $userId)
         ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $this->profile_key . '.%\''));
 
-      $db
-        ->setQuery($query)
-        ->execute();
+      try {
+        $db->setQuery($query)->execute();
+      }
+      catch (Exception $e)
+      {
+        JLog::add('Database error in plugin User, method onUserAfterDelete, delete keys routine: ' . $e->getMessage(), JLog::ERROR, 'database');
 
-      // Handle internal error in database server
-      if (!$db) throw new Exception($db->getErrorMsg());
-    }
-    // Handle connection error to database server
-    catch (JException $e)
-    {
-      $this->_subject->setError($e->getMessage());
-
-      return false;
-    }
+        // Don't show the user a server error if there was an error in the database query
+        throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+      }
 
 		return true;
 	}
