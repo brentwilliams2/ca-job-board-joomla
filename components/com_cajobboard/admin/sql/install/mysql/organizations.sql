@@ -61,27 +61,22 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
 
   /* SCHEMA: Organization */
-  legalName VARCHAR(255) COMMENT 'The official name of the employer.',
+  legal_name VARCHAR(255) COMMENT 'The official name of the employer.',
   email VARCHAR(320) COMMENT 'RFC 3696 Email address.',
   telephone TEXT COMMENT 'The E.164 PSTN telephone number.',
-  faxNumber	VARCHAR(24) COMMENT 'The E.164 PSTN fax number.',
-  numberOfEmployees VARCHAR(16)	COMMENT 'The number of employees in an organization e.g. business.', /* Can also be a QuantitativeValue, which has properties like value, minValue, maxValue, unitCode for unit of measurement */
+  fax_number	VARCHAR(24) COMMENT 'The E.164 PSTN fax number.',
+  number_of_employees VARCHAR(16)	COMMENT 'The number of employees in an organization e.g. business.', /* Can also be a QuantitativeValue, which has properties like value, minValue, maxValue, unitCode for unit of measurement */
   location BIGINT UNSIGNED COMMENT 'Where the organization is located', /* FK to Places */
   logo BIGINT UNSIGNED COMMENT 'An associated logo.',  /* FK to ImageObjects table */
-
-
-  contactPoint ContactPoint COMMENT 'A contact point for a person or organization. Supersedes contactPoints.', /* contactPoint duplicates a lot of info here (email, telephone, faxNumber) and adds hoursAvailable */
-  diversityPolicy	CreativeWork	COMMENT 'Statement on diversity policy of the employer.', /* FK to diversity_policies table */
-  employee  Person  COMMENT 'Someone working for this organization. Supersedes employees.', /* FK to user table */
-  aggregateRating	AggregateRating	COMMENT 'The overall rating, based on a collection of reviews or ratings, of the item.', /* FK to employer_reviews table */
-  review Review	COMMENT 'A review of the item. Supersedes reviews.'
-
-  memberOf Organization COMMENT 'An Organization (or ProgramMembership) to which this Person or Organization belongs.',
-  parentOrganization Organization COMMENT 'The larger organization that this organization is a subOrganization of, if any.',
+  /* @TODO: contact_point ContactPoint COMMENT 'A contact point for a person or organization.' */
+  diversity_policy BIGINT UNSIGNED COMMENT 'Statement on diversity policy of the employer.', /* FK to diversity_policies table */
+  aggregate_rating BIGINT UNSIGNED COMMENT 'The overall rating, based on a collection of reviews or ratings, of the item.', /* FK to employer_reviews table */
+  member_of BIGINT UNSIGNED COMMENT 'An Organization (or ProgramMembership) to which this Person or Organization belongs.', /* FK to organizations_organizations join table */
+  parent_organization BIGINT UNSIGNED COMMENT 'The larger organization that this organization is a subOrganization of, if any.', /* FK to organizations table */
 
   /* SCHEMA: Thing */
   name CHAR(255) COMMENT 'The name of this organization.',
-  disambiguatingDescription TEXT COMMENT 'A short description of the employer, for example to use on listing pages.',
+  disambiguating_description TEXT COMMENT 'A short description of the employer, for example to use on listing pages.',
   description TEXT COMMENT 'A description of the item.',
   url VARCHAR(2083) COMMENT 'URL of employer\'s website.',
   image BIGINT UNSIGNED COMMENT	'Images of the employer.', /* FK to images table */
@@ -89,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
   organization_type BIGINT UNSIGNED COMMENT 'The type of organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_type */
 
-  PRIMARY KEY (id)
+  PRIMARY KEY (organization_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
@@ -98,23 +93,36 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
  /**
  * Organization - Employee join table
  */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_organization_employee` (
-  employer_id BIGINT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_employees` (
+  id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
+  organization_id BIGINT UNSIGNED NOT NULL,
   employee_id BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY (employer_id, employee_id),
-  /* @TODO: Reference to Joomla user table FOREIGN KEY (employee_id) REFERENCES #__cajobboard_ucm(id), */
+  PRIMARY KEY (id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
  /**
- * Join table for organizations and image objects
+ * Organizations - ImageObjects join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_images` (
   id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
   image BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__organizations',
   image_object_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__cajobboard_image_objects',
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+ /**
+ * Organization - Organization join table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_organizations` (
+  id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
+  organization_id BIGINT UNSIGNED NOT NULL,
+  member_of_organization_id BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (id)
 )
   ENGINE=innoDB
@@ -201,16 +209,16 @@ VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Job Postings',
+  'Organizations',
   /* type_alias */
-  'com_cajobboard.jobpostings',
+  'com_cajobboard.organizations',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_job_postings",
-      "key":"job_posting_id",
-      "type":"JobPosting",
-      "prefix":"JobPostingsTable",
+      "dbtable":"#__cajobboard_organizations",
+      "key":"organization_id",
+      "type":"Organization",
+      "prefix":"OrganizationsTable",
       "config":"array()"
     },
     "common":{
@@ -226,7 +234,7 @@ VALUES(
   '{
     "common":{
         "core_content_item_id":"job_posting_id",
-        "core_title":"title",
+        "core_title":"name",
         "core_state":"enabled",
         "core_alias":"slug",
         "core_created_time":"created_on",
@@ -242,41 +250,34 @@ VALUES(
         "core_metakey":"metakey",
         "core_metadesc":"metadesc",
         "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
+        "core_images":"logo",
+        "core_urls":"url",
         "core_version":"version",
         "core_ordering":"null",
-        "core_catid":"occupational_category",
+        "core_catid":"organization_type",
         "core_xreference":"xreference",
         "asset_id":"asset_id"
     },
     "special":{
-        "disambiguating_description":"disambiguating_description",
-        "education_requirements":"education_requirementst",
-        "experience_requirements":"experience_requirements",
-        "incentive_compensation":"incentive_compensation",
-        "job_benefits":"job_benefits",
-        "qualifications":"qualifications",
-        "responsibilities":"responsibilities",
-        "skills":"skills",
-        "special_commitments":"special_commitments",
-        "work_hours":"work_hours",
-        "job_location":"job_location",
-        "relevant_occupation_name":"relevant_occupation_name",
-        "base_salary__max_value":"base_salary__max_value",
-        "base_salary__value":"base_salary__value",
-        "base_salary__min_value":"base_salary__min_value",
-        "base_salary__currency":"base_salary__currency",
-        "base_salary__duration":"base_salary__duration",
-        "hiring_organization":"hiring_organization",
-        "employment_type":"employment_type"
+        "legal_name": "legal_name",
+        "email": "email",
+        "telephone": "telephone",
+        "fax_number": "fax_number",
+        "number_of_employees": "number_of_employees",
+        "location": "location",
+        "diversity_policy": "diversity_policy",
+        "aggregate_rating": "aggregate_rating",
+        "member_of": "member_of",
+        "parent_organization": "parent_organization",
+        "disambiguating_description": "disambiguating_description",
+        "image": "image"
     }
   }',
   /* router */
   '',
   /* content_history_options */
   '{
-    "formFile":"administrator\\/components\\/com_cajobboard\\/Model\\/Form\\/jobposting.xml",
+    "formFile":"administrator\\/components\\/com_cajobboard\\/Form\\/organization.xml",
     "hideFields":[
       "asset_id",
       "version",

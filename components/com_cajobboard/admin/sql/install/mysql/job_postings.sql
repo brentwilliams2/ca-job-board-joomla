@@ -374,7 +374,7 @@ VALUES(
   '',
   /* content_history_options */
   '{
-    "formFile":"administrator\\/components\\/com_cajobboard\\/Model\\/Form\\/jobposting.xml",
+    "formFile":"administrator\\/components\\/com_cajobboard\\/Form\\/jobposting.xml",
     "hideFields":[
       "asset_id",
       "version",

@@ -7,11 +7,11 @@
  */
 
  /**
- * Diversity policies table
+ * Employer Aggregate Ratings table
  */
-CREATE TABLE IF NOT EXISTS '#__cajobboard_diversity_policies' (
+CREATE TABLE IF NOT EXISTS '#__cajobboard_employer_aggregate_ratings' (
   /* UCM (unified content model) properties for internal record metadata */
-  diversity_policies_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  employer_aggregate_rating_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
@@ -40,11 +40,16 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_diversity_policies' (
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
 
-  /* SCHEMA: */
+  /* SCHEMA: EmployerAggregateRating */
+  item_reviewed 	INT UNSIGNED COMMENT 'The employer whose reviews and ratings are being aggregated for.', /* FK to #__cajobboard_organizations */
+  rating_count 	INT COMMENT 'The count of total number of ratings.',
+  review_count 	INT COMMENT 'The count of total number of reviews.',
 
-  PRIMARY KEY ('id')
+  /* SCHEMA: Rating */
+  rating_value   INT COMMENT 'The average rating for this employer. Default worstRating 1 and bestRating 5 assumed.',
+
+  PRIMARY KEY (employer_aggregate_rating_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-

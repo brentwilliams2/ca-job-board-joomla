@@ -21,10 +21,13 @@ use FOF30\Model\DataModel;
 /**
  * Model class for Job Board Diversity Policies
  *
- * @property  array		$
- * @property  string	$
- * @property  int		  $
- *
+ * @property  string	$title
+ * @property  string	$introtext
+ * @property  string	$fulltext
+ * @property  string	$created_by_alias  An alias to display instead of the name of the user who created the article
+ * @property  string	$images  e.g. {"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}
+ * @property  string	$urls  e.g. {"urla":null,"urlatext":"","targeta":"","urlb":null,"urlbtext":"","targetb":"","urlc":null,"urlctext":"","targetc":""}
+ * @property  string	$attribs  e.g. {"show_title":"","link_titles":"","show_intro":"","info_block_position":"0","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_layout":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":""}
  */
 class DiversityPolicies extends DataModel
 {
@@ -33,9 +36,30 @@ class DiversityPolicies extends DataModel
    */
 	public function __construct(Container $container, array $config = array())
 	{
+    // override default table names and primary key id
+    $this->tableName = "#__content";
+    $this->idFieldName = "id";
+
+    // Define a contentType to enable the Tags behaviour
+    $config['contentType'] = 'com_cajobboard.diversity_policies';
+
+    // Map FOF magic fields to com_content table fields
+    $config['aliasFields'] = array(
+      'diversity_policy_id' => 'id',
+      'slug' => 'alias',
+      'enabled' => 'state',
+      'cat_id' => 'catid',
+      'created_on' => 'created',
+      'modified_on' => 'modified',
+      'locked_by' => 'checked_out',
+      'locked_on' => 'checked_out_time'
+    );
+
     parent::__construct($container, $config);
 
-		// Load the Filters behaviour
+    // Add behaviours to the model
+    $this->addBehaviour('Language');
+    $this->addBehaviour('Tags');
     $this->addBehaviour('Filters');
   }
 
@@ -65,49 +89,4 @@ class DiversityPolicies extends DataModel
 
     // search functionality was in here, as well as in FrameworkUsers
   }
-}
-
-
-
-JLoader::register('ContentHelperRoute', JPATH_BASE . '/components/com_content/helpers/route.php');
-
-$attribs          = array();
-$attribs['class'] = 'modal';
-$attribs['rel']   = '{handler: \'iframe\', size: {x:800, y:500}}';
-
-$db    = JFactory::getDbo();
-
-$query = $db->getQuery(true);
-
-$query
-  ->select('id, alias, catid, language')
-  ->from('#__content')
-  ->where('id = ' . $tosArticle);
-
-$db->setQuery($query);
-
-$article = $db->loadObject();
-
-if (JLanguageAssociations::isEnabled())
-{
-  $tosAssociated = JLanguageAssociations::getAssociations('com_content', '#__content', 'com_content.item', $tosArticle);
-}
-
-$currentLang = JFactory::getLanguage()->getTag();
-
-if (isset($tosAssociated) && $currentLang !== $article->language && array_key_exists($currentLang, $tosAssociated))
-{
-  $url = ContentHelperRoute::getArticleRoute(
-    $tosAssociated[$currentLang]->id,
-    $tosAssociated[$currentLang]->catid,
-    $tosAssociated[$currentLang]->language
-  );
-
-  $link = JHtml::_('link', JRoute::_($url . '&tmpl=component'), $text, $attribs);
-}
-else
-{
-  $slug = $article->alias ? ($article->id . ':' . $article->alias) : $article->id;
-  $url  = ContentHelperRoute::getArticleRoute($slug, $article->catid, $article->language);
-  $link = JHtml::_('link', JRoute::_($url . '&tmpl=component'), $text, $attribs);
 }

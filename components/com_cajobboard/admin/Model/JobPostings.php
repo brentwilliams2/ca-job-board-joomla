@@ -125,10 +125,10 @@ class JobPostings extends DataModel
      */
 
     // many-to-one FK to  #__cajobboard_places
-    //$this->belongsTo('jobLocation', 'Places@com_cajobboard', 'job_location', 'place_id');
+    $this->belongsTo('jobLocation', 'Places@com_cajobboard', 'job_location', 'place_id');
 
     // many-to-one FK to  #__cajobboard_organizations
-    //$this->belongsTo('hiringOrganization', 'Organizationss@com_cajobboard', 'hiring_organization', 'organization_id');
+    $this->belongsTo('hiringOrganization', 'Organizations@com_cajobboard', 'hiring_organization', 'organization_id');
 
     // many-to-one FK to  #__cajobboard_job_employment_types
     $this->belongsTo('employmentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');

@@ -72,12 +72,40 @@ class Persons extends DataModel
   */
   protected $description;
 
-  /*
+ /*
   * An image or avatar for this person, FK to ImageObjects table.
   *
   * @var int
   */
   protected $image;
+
+ /*
+  * A thumbnail image or avatar for this person, FK to ImageObjects table.
+  *
+  * @var int
+  */
+  protected $imageThumbnail;
+
+ /*
+  * A caption for the image or avatar of this person, FK to ImageObjects table.
+  *
+  * @var int
+  */
+  protected $imageCaption;
+
+ /*
+  * The height of the image or avatar for this person, FK to ImageObjects table.
+  *
+  * @var int
+  */
+  protected $imageHeight;
+
+ /*
+  * The width of the image or avatar for this person, FK to ImageObjects table.
+  *
+  * @var int
+  */
+  protected $imageWidth;
 
   /*
   * A homepage or website belonging to this person.
@@ -128,7 +156,7 @@ class Persons extends DataModel
   *
   * @var \Calligraphic\Cajobboard\Admin\Model\Organization
   */
-  protected $WorksFor;
+  protected $worksFor;
 
   /*
   * The job title of the person (for example, Financial Manager).
@@ -154,7 +182,6 @@ class Persons extends DataModel
   * @var string
   */
   protected $address__locality;
-
 
   /*
   *
@@ -263,8 +290,6 @@ class Persons extends DataModel
 	{
     $userProfileFields = this->getUserProfile();
 
-
-
     $db = $this->getDbo();
 
     // Apply custom filters here, e.g.:
@@ -285,11 +310,12 @@ class Persons extends DataModel
   /*
    *  Method to load the extended profile fields managed by plg_user_cajobboard for a user into the model
    *
-   * @param   int       $userId   The ID of the user to load extended profile fields for
+   * @param   int       $userId      The ID of the user to load extended profile fields for
+   * @param   array     $joins       Array of which joins to do (ALL, NONE, IMAGE, ADDRESS, GEO, WORKSFOR)
    *
 	 * @return  bool True on success.
    */
-  public function getUserProfile ($userId = null)
+  public function getUserProfile ($userId = null, $joins = array('ALL'))
   {
     // EAV table holding extended user profile information
     protected $profile_table = '#__user_profiles';
@@ -312,8 +338,7 @@ class Persons extends DataModel
       ->select($db->quoteName(array('profile_key', 'profile_value')))
       ->from($db->quoteName($profile_table, 'profiles'))
       ->where($db->quoteName('user_id') . " = " . (int) $userId)
-      ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $profile_key . '.%\''))
-      ->order('ordering ASC');
+      ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $profile_key . '.%\''));
 
     // Get an indexed array of indexed arrays from the profile records returned by the query
     try {
@@ -341,11 +366,7 @@ class Persons extends DataModel
       'address__locality' => 'address__locality',
       'address__postal_code' => 'address__postal_code',
       'address__address_country' => 'address__address_country',
-      'address_region' => 'address_region',
-      'role_name' => 'roleName',
-      'geo' => 'geo',
-      'image' => 'image',
-      'works_for' => 'WorksFor'
+      'role_name' => 'roleName'
     );
 
     // Merge the profile data
@@ -354,41 +375,117 @@ class Persons extends DataModel
       //  e.g. normalize "profile.address1" to "address1"
       $key = str_replace($profile_key . '.', '', $value[0]);
 
-      // Get the attribute's value as a JSON string.
-      if (array_key_exists ($profile_key , $normalizedProfileKey))
+      // Get the attribute's value.
+      if (array_key_exists ($key , $normalizedProfileKey))
       {
-        $this->{$normalizedProfileKey[$profile_key]} = json_decode($value[1], true);
+        $this->{$normalizedProfileKey[$key]} = $value[1];
       }
       else
       {
-        JLog::add('User profile key not in list, class Persons method getUserProfile(): ' . $profile_key, JLog::ERROR, 'user-profile-error');
+        JLog::add('User profile key not in list, class Persons method getUserProfile(): ' . $key, JLog::ERROR, 'user-profile-error');
       }
 		}
 
-    // Get the relations data
+    // Get the relations data. We're joining on the users table, since it's always going to return a user record.
+    // add array parameter to choose which joins to do: ALL, NONE, IMAGE, ADDRESS, GEO, WORKSFOR
+    if (!in_array ('NONE', $joins))
+    {
+      //
+      $profileVars = array(
+        'address_region' => isset($results['address_region']) && (in_array('ADDRESS', $joins) || array_key_exists ('ALL', $joins)) ? $results['address_region'] : NULL,
+        'geo' => isset($results['geo']) && (in_array('GEO', $joins) || array_key_exists ('ALL', $joins)) ? $results['geo'] : NULL,
+        'image' => isset($results['image']) && (in_array ('IMAGE', $joins) || array_key_exists ('ALL', $joins)) ? $results['image'] : NULL,
+        'worksFor' => isset($results['works_for']) && (in_array('WORKSFOR', $joins) || array_key_exists ('ALL', $joins)) ? $results['works_for'] : NULL
+      );
 
-    ->select($db->quoteName('profile_key'))
-    ->select($db->quoteName('profile_value'))
-    ->select($db->quoteName('db_images.image'))
-    ->select($db->quoteName('db_images.thumbnail', 'image_thumbnail'))
-    ->select($db->quoteName('db_images.caption', 'image_caption'))
-    ->select($db->quoteName('db_images.height', 'image_height'))
-    ->select($db->quoteName('db_images.width', 'image_width'))
-    ->select($db->quoteName('db_regions.name', 'address_region'))
-    ->select($db->quoteName('db_geo', 'geo'))
-    ->from($db->quoteName($profile_table, 'profiles'))
-    ->leftJoin($db->quoteName('#__cajobboard_image_objects', 'db_images') . ' ON (' . $db->quoteName('profiles.user_id') . ' = ' . $db->quoteName('db_images.image_object_id') . ')')
-    ->leftJoin($db->quoteName('#__cajobboard_address_regions', 'db_regions') . ' ON (' . $db->quoteName('profiles.user_id') . ' = ' . $db->quoteName('db_regions.address_region_id') . ')')
-    ->leftJoin($db->quoteName('#__cajobboard_person_geos', 'db_geo') . ' ON (' . $db->quoteName('profiles.user_id') . ' = ' . $db->quoteName('db_geo.person_geo_id') . ')')
-    'WorksFor', works_for //  M:M FK to Organizations
-    ->where($db->quoteName('b.username') . ' LIKE \'a%\'')
-    ->order($db->quoteName('a.created') . ' DESC');
+      $query = $db->getQuery(true)->select($db->quoteName('users.id');
 
+      // SELECT statement from Images table
+      if ($profileVars['image'])
+      {
+        $query
+          ->select($db->quoteName('db_images.image'))
+          ->select($db->quoteName('db_images.thumbnail', 'image_thumbnail'))
+          ->select($db->quoteName('db_images.caption', 'image_caption'))
+          ->select($db->quoteName('db_images.height', 'image_height'))
+          ->select($db->quoteName('db_images.width', 'image_width'));
+      }
+
+      // SELECT statement from Regions table
+      if ($profileVars['address_region'])
+      {
+        $query->select($db->quoteName('db_regions.name', 'address_region'));
+      }
+
+      // SELECT statement from Geo table
+      if ($profileVars['geo'])
+      {
+        $query->select($db->quoteName('db_geos', 'geo'));
+      }
+
+      // SELECT statement from Organizations table
+      if ($profileVars['worksFor'])
+      {
+        $query->select($db->quoteName('db_organizations.name', 'organization_name'));
+      }
+
+      // FROM statement
+      $query->from($db->quoteName('#__users', 'users'));
+
+      // LEFT JOIN statement from Images table
+      if ($profileVars['image'])
+      {
+        $query->leftJoin($db->quoteName('#__cajobboard_image_objects', 'db_images') . ' ON (' . $db->quoteName($profileVars['image']) . ' = ' . $db->quoteName('db_images.image_object_id') . ')');
+      }
+
+      // LEFT JOIN statement from Regions table
+      if ($profileVars['address_region'])
+      {
+        $query->leftJoin($db->quoteName('#__cajobboard_address_regions', 'db_regions') . ' ON (' . $db->quoteName($profileVars['address_region']) . ' = ' . $db->quoteName('db_regions.address_region_id') . ')');
+      }
+
+      // LEFT JOIN statement from Geo table
+      if ($profileVars['geo'])
+      {
+        $query->leftJoin($db->quoteName('#__cajobboard_person_geos', 'db_geos') . ' ON (' . $db->quoteName($profileVars['geo']) . ' = ' . $db->quoteName('db_geos.person_geo_id') . ')');
+      }
+
+      // LEFT JOIN statement from Organizations table
+      if ($profileVars['worksFor'])
+      {
+        'WorksFor', works_for //  M:M FK to Organizations user_id organizations_id
+        $query
+          ->leftJoin($db->quoteName('#__cajobboard_persons_organizations', 'db_persons_organizations') . ' ON (' . $db->quoteName(db_persons_organizations.organization_id) . ' = ' . $db->quoteName($profileVars['worksFor']) . ')')
+          ->leftJoin($db->quoteName('#__cajobboard_organizations', 'db_organizations') . ' ON (' . $db->quoteName('db_organizations.organization_id') . ' = ' . $db->quoteName('db_persons_organizations.organization_id') . ')');
+      }
+
+      // WHERE statement
+      $query->where($db->quoteName('users.id') . " = " . (int) $userId);
+
+      try {
+        $db->setQuery($query);
+        $joinResults = $db->loadAssoc();
+      }
+      catch (Exception $e)
+      {
+        JLog::add('Database error in class Persons, method getUserProfile, load join tables: ' . $e->getMessage(), JLog::ERROR, 'database');
+
+        // Don't show the user a server error if there was an error in the database query
+        throw new Exception(JText::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
+      }
+    }
+
+    $this->image = $joinResults['image'];
+    $this->imageThumbnail = $joinResults['image_thumbnail'];
+    $this->imageCaption = $joinResults['image_caption'];
+    $this->imageHeight = $joinResults['image_height'];
+    $this->imageWidth = $joinResults['image_width'];
+    $this->address_region = $joinResults['address_region'];
+    $this->geo = $joinResults['geo'];
+    $this->worksFor = $joinResults['worksFor'];
 
     return true;
   }
 }
-
-
 
 

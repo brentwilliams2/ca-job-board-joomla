@@ -11,11 +11,11 @@
  */
 CREATE TABLE IF NOT EXISTS '#__cajobboard_reviews' (
   /* UCM (unified content model) properties for internal record metadata */
-  organization_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  review_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
-  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
+  asset_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level.',
   enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
   created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
@@ -40,53 +40,18 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_reviews' (
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
 
-  /* SCHEMA: */
+  /* SCHEMA: Review */
+  item_reviewed INT UNSIGNED COMMENT 'The employer being reviewed/rated.', /* FK to #__cajobboard_organizations */
+  review_body TEXT COMMENT 'The actual body of the review.',
 
+  /* SCHEMA: Review(reviewRating) -> Rating(ratingValue) */
+  rating_value INT COMMENT 'The rating for the content. Default worstRating 1 and bestRating 5 assumed.',
 
-  PRIMARY KEY ('id')
+  /* SCHEMA: CreateWork */
+  author INT UNSIGNED COMMENT 'The author of this content or rating.', /* FK to #__users */
+
+  PRIMARY KEY (review_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-/*
-Joomla!
-
-jos_content_rating
-
-+--------------+------------------+------+-----+
-| Field        | Type             | Null | Key |
-+--------------+------------------+------+-----+
-| content_id   | int(11)          | NO   | PRI |
-| rating_sum   | int(10) unsigned | NO   |     |
-| rating_count | int(10) unsigned | NO   |     |
-| lastip       | varchar(50)      | NO   |     |
-+--------------+------------------+------+-----+
-*/
-
-
-Review  A review of an item
-
-itemReviewed 	Thing 	The item that is being reviewed/rated.
-reviewAspect 	Text 	  This Review or Rating is relevant to this part or facet of the itemReviewed.
-reviewBody 	  Text 	  The actual body of the review.
-reviewRating  Rating  The rating given in this review. Note that reviews can themselves be rated. The reviewRating applies to rating given by the review. The aggregateRating property applies to the review itself, as a creative work.
-
-AggregateRating   The average rating based on multiple ratings or reviews.
-
-itemReviewed 	Thing 	  The item that is being reviewed/rated.
-ratingCount 	Integer 	The count of total number of ratings.
-reviewCount 	Integer 	The count of total number of reviews.
-
-pending extension to AggregateRating: EmployerAggregateRating  An aggregate rating of an Organization related to its role as an employer.
-
-no new properties
-
-Rating    A rating is an evaluation on a numeric scale, such as 1 to 5 stars.
-
-author 	    Organization or Person	The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
-bestRating    Number or Text        The highest value allowed in this rating system. If bestRating is omitted, 5 is assumed.
-ratingValue   Number or Text	      The rating for the content.
-reviewAspect	Text                  This Review or Rating is relevant to this part or facet of the itemReviewed.
-worstRating	  Number or Text	      The lowest value allowed in this rating system. If worstRating is omitted, 1 is assumed.
-
