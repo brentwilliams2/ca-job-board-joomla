@@ -9,7 +9,7 @@
  /**
  * Employer Aggregate Ratings table
  */
-CREATE TABLE IF NOT EXISTS '#__cajobboard_employer_aggregate_ratings' (
+CREATE TABLE IF NOT EXISTS `#__cajobboard_employer_aggregate_ratings` (
   /* UCM (unified content model) properties for internal record metadata */
   employer_aggregate_rating_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',

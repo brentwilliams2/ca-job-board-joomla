@@ -9,7 +9,7 @@
  /**
  * Reviews table
  */
-CREATE TABLE IF NOT EXISTS '#__cajobboard_reviews' (
+CREATE TABLE IF NOT EXISTS `#__cajobboard_reviews` (
   /* UCM (unified content model) properties for internal record metadata */
   review_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',

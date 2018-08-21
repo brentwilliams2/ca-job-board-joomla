@@ -19,7 +19,6 @@
     <folder>profiles</folder>
   </files>
 
-  <config>
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_content/models/fields">
@@ -58,6 +57,4 @@
 			</fieldset>
 		</fields>
 	</config>
-</extension>
-  </config>
 </extension>

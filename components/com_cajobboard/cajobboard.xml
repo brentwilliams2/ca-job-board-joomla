@@ -97,18 +97,14 @@
 
   <install>
     <sql>
+      <file driver="mysql" charset="utf8">sql/install/mysql/employer_aggregate_ratings.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/image_objects.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/job_postings.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/employer_reviews.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/media.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/organizations.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/person.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/persons.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/places.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/resumes.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/reviews.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/utilities.sql</file>
-
-      <!-- remove sample data in prouction -->
-      <file driver="mysql" charset="utf8">sql/sample_data.mysql.utf8.sql</file>
     </sql>
   </install>
 

@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
  * Organization - Employee join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_employees` (
-  id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   organization_id BIGINT UNSIGNED NOT NULL,
   employee_id BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (id)
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_employees` (
  * Organizations - ImageObjects join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_images` (
-  id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   image BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__organizations',
   image_object_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__cajobboard_image_objects',
   PRIMARY KEY (id)
@@ -120,9 +120,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_images` (
  * Organization - Organization join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_organizations` (
-  id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
-  organization_id BIGINT UNSIGNED NOT NULL,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   member_of_organization_id BIGINT UNSIGNED NOT NULL,
+  organization_id BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (id)
 )
   ENGINE=innoDB
@@ -197,9 +197,6 @@ INSERT INTO `#__cajobboard_organization_types` (itemListElement, itemListOrderTy
  *        targetColumn:  The column in the target table to use in the SQL query JOIN statement. For example, "id".
  *        displayColumn: The column in the target table to display in the Preview or Compare pop-up window. For example, "name" or "title".
  */
-
-/* `table` field in Joomla! is VARCHAR(255), and too narrow for this entry. https://github.com/joomla/joomla-cms/issues/21395 */
-ALTER TABLE `#__content_types` MODIFY `table` VARCHAR(2048);
 
 /*
  * Job Postings content type for history component

@@ -122,9 +122,9 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
   (
     'media:com_example/images/persons/88545549392290bb7d136dbbbd13ec04.png',
     'media:com_example/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.png',
-    'Sabra Crowden',
-    'Dummy Captions',
-    'Sabra Crowden',
+    'Employer Tom',
+    'Employer Tom\'s Captions',
+    'Employer Tom',
     3,
     400,
     400
@@ -132,9 +132,9 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
   (
     'media:com_example/images/persons/7295dba823ca6605f115a385517f8073.png',
     'media:com_example/images/persons/thumbs/thumb.ca1feedd1c5ebc4ec3d32964a40642d3.png',
-    'Kerry Aigner',
-    'Dummy Caption',
-    'Kerry Aigner',
+    'Employer Janice',
+    'Employer Janice\'s Caption',
+    'Employer Janice',
     4,
     400,
     400
@@ -142,9 +142,9 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
   (
     'media:com_example/images/persons/48ceeada3a22ff130bb42b8bddf673f0.png',
     'media:com_example/images/persons/thumbs/thumb.f67f07e99b25686480177eead4185f6b.png',
-    'Jenise Fernando',
-    'Dummy Caption',
-    'Jenise Fernando',
+    'Job Seeker Tim',
+    'Job Seeker Tim\'s Caption',
+    'Job Seeker Tim',
     5,
     256,
     256
@@ -152,9 +152,9 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
   (
     'media:com_example/images/persons/d3cce8929e3a0525b453360a0d79f46c.gif',
     'media:com_example/images/persons/thumbs/thumb.bcc2ff3d300a59cb3ef3b6cd742fbebc.gif',
-    'Columbus Hathorn',
-    'Dummy Caption',
-    'Columbus Hathorn',
+    'Job Seeker Susan',
+    'Job Seeker Susan\'s Caption',
+    'Job Seeker Susan',
     6,
     500,
     500
@@ -162,15 +162,13 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
   (
     'media:com_example/images/persons/03079f1f0a7d5740404768bb5c051f75.jpg',
     'media:com_example/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.jpg',
-    'Eldridge Raiford',
-    'Dummy Caption',
-    'Eldridge Raiford',
+    'Recruiter Tony',
+    'Recruiter Tony\'s Caption',
+    'Recruiter Tony',
     7,
     900,
     900
   ),
-
-
   (
     'media:com_example/images/organizations/9ce203d4cf9b44218b864f51e82c8ed4.jpg',
     'media:com_example/images/organizations/thumbs/6407e2d6b58b00a69162f875cc25dc35.jpg',
@@ -190,12 +188,13 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     2,
     234,
     134
-  )
+  );
 
 /**
  * Sample Place data
  */
 INSERT INTO `#__cajobboard_places` (
+  slug,
   name,
   description,
   branch_code,
@@ -213,6 +212,7 @@ INSERT INTO `#__cajobboard_places` (
   photo
 ) VALUES
 (
+  'circus-circus-las-vegas',
   'Circus Circus',
   'A family favorite Las Vegas residential complex.',
   'LV-101',
@@ -230,6 +230,7 @@ INSERT INTO `#__cajobboard_places` (
   8
 ),
 (
+  'bellagio-las-vegas',
   'Bellagio Las Vegas',
   'Inspired by the villages of Europe',
   '1234',
@@ -245,7 +246,7 @@ INSERT INTO `#__cajobboard_places` (
   'M-F 9 to 5',
   1,
   9
-)
+);
 
 /**
  * Sample Place-Images join table data
@@ -253,3 +254,284 @@ INSERT INTO `#__cajobboard_places` (
 INSERT INTO `#__cajobboard_places_images` (photo, image_object_id) VALUES
   (1, 2),
   (2, 1);
+
+/**
+ * Sample Organization table data
+ */
+INSERT INTO `#__cajobboard_organizations` (
+  slug,
+  legal_name,
+  email,
+  telephone,
+  fax_number,
+  number_of_employees,
+  location,
+  logo,
+  diversity_policy,
+  aggregate_rating,
+  member_of,
+  parent_organization,
+  name,
+  disambiguating_description,
+  description,
+  url,
+  image,
+  organization_type
+) VALUES
+(
+  'elite-property-management',
+  'Elite Property Management, Inc.',
+  'admin@elite-property.test',
+  '1-800-555-1212',
+  '702-555-0000',
+  '5000',
+  '1',
+  '8',
+  '8',
+  '1',
+  '1',
+  '1',
+  'Elite Property West',
+  'Elite can be the best job of your life!',
+  'Founded in 1995, Elite Property Management is a family owned and operated business with headquarters in Virginia Beach, Virginia.',
+  'http://elite-property.test',
+  '1',
+  '3'
+),
+(
+  'action-property-management',
+  'Action Property Management, LLC',
+  'admin@action-property.text',
+  '1-800-222-1234',
+  '702-555-7890',
+  '40',
+  '2',
+  '9',
+  '9',
+  '2',
+  '2',
+  '2',
+  'Action Property',
+  'Action Property is a Gold-Star employer. Join us!',
+  'At Action Property, exceptional, personalized living comes full of amenities with none of the stress of homeownership. We do it through the programs we offer, a commitment to local neighborhoods and innovative green living opportunities. Our award-winning apartments are managed and staffed by award-winning teams. Residents rent with us, and stay with us, because our life\'s work is helping people feel at home, over and over again. Building and maintaining strong relationships with our residents, employees, investors and partners matters to us. We\'ve got the depth of experience and financial foundation to provide stability and peace of mind to our renters.',
+  'http://action-property.text',
+  '2',
+  '4'
+);
+
+/**
+ * Sample Organization - Employee join table data
+ */
+INSERT INTO `#__cajobboard_organizations_employees` (
+  organization_id,
+  employee_id
+) VALUES
+  ('1', '131'),
+  ('2', '132');
+
+/**
+ * Sample Organizations - ImageObjects join table data
+ */
+INSERT INTO `#__cajobboard_organizations_images` (
+  image, /* FK to #__organizations */
+  image_object_id
+) VALUES
+  ('1', '1'),
+  ('2', '2');
+
+/**
+ * Sample Organization - Organization join table data
+ */
+INSERT INTO `#__cajobboard_organizations_organizations` (
+  member_of_organization_id,
+  organization_id
+) VALUES
+  ('1', '1'),
+  ('2', '2');
+
+/**
+ * Sample Reviews table data
+ */
+INSERT INTO `#__cajobboard_reviews` (
+  slug,
+  item_reviewed, /* FK to #__cajobboard_organizations */
+  review_body,
+  rating_value,
+  author /* FK to #__users */
+) VALUES
+  (
+    'Elite Property Management',
+    '1',
+    'This was a good work environment for a period of time but after a new supervisor started he made it confrontational and hostile. The onsite management was always nice and we never had any issues and got along just fine. After realizing that the supervisor was not going anywhere and neither was my career I moved on.',
+    '4',
+    '133'
+  ),
+  (
+    'Action Property Management',
+    '2',
+    'Great Benefits! Good Pay!<br />I have been with Action for 1 year and 3 months today. I enjoy coming to work everyday. Our work is very appreciated. We are learning new things all the time. My manager is great and gives us much credit for what we do. Our company is very proactive in us staying abreast of all Fair Housing Laws. Education is key in this business. I enjoyed this company very much.',
+    '5',
+    '134'
+  );
+
+/**
+ * Sample User Geo table data
+ */
+INSERT INTO `#__cajobboard_person_geos` (geo) VALUES
+  (ST_GEOMFROMTEXT('POINT(115.1632 36.1478)')),
+  (ST_GEOMFROMTEXT('POINT(115.1775 36.1388)')),
+  (ST_GEOMFROMTEXT('POINT(115.1482 36.1398)')),
+  (ST_GEOMFROMTEXT('POINT(115.1932 36.1428)')),
+  (ST_GEOMFROMTEXT('POINT(115.1332 36.1458)')),
+  (ST_GEOMFROMTEXT('POINT(115.1242 36.1237)'));
+
+/**
+ * Sample Persons - Organizations join table data (Recruiters and Connectors)
+ */
+INSERT INTO `#__cajobboard_persons_organizations` (
+  user_id,
+  organization_id
+) VALUES
+  ('131', '1'),
+  ('132', '2');
+
+/**
+ * Sample User Profiles table data
+ */
+INSERT INTO `#__user_profiles` (user_id, profile_key, profile_value) VALUES
+  ('131', 'cajobboard.description', 'I’ve learned I don’t know anything.  Have also learned that people will pay for what I know.  Life is good.'),
+  ('131', 'cajobboard.main_entity_of_page', 'http://www.centurycommunications.com'),
+  ('131', 'cajobboard.given_name', 'Tom'),
+  ('131', 'cajobboard.additional_name', 'Yuki'),
+  ('131', 'cajobboard.family_name', 'Whobrey'),
+  ('131', 'cajobboard.telephone', '602-277-4385'),
+  ('131', 'cajobboard.fax_number', '602-953-6360'),
+  ('131', 'cajobboard.job_title', 'HR Director'),
+  ('131', 'cajobboard.address__street_address', '73 State Road 434 E	Phoenix	'),
+  ('131', 'cajobboard.address__locality', 'Maricopa'),
+  ('131', 'cajobboard.address__postal_code', '85013'),
+  ('131', 'cajobboard.address__address_country', 'US'),
+  ('131', 'cajobboard.role_name', 'Employer'),
+  ('131', 'cajobboard.image', '3'),
+  ('131', 'cajobboard.address_region', '3'),
+  ('131', 'cajobboard.geo', '8'),
+  ('131', 'cajobboard.worksFor', '1'),
+  ('132', 'cajobboard.description', 'Living one day at a time, with a fresh baked cookie. Okay.  And with a coffee.  And maybe some chocolate. But I promise to take my vitamins.'),
+  ('132', 'cajobboard.main_entity_of_page', 'http://www.boltonwilburesq.com'),
+  ('132', 'cajobboard.given_name', 'Janice'),
+  ('132', 'cajobboard.additional_name', 'Fletcher'),
+  ('132', 'cajobboard.family_name', 'Flosi'),
+  ('132', 'cajobboard.telephone', '931-313-9635'),
+  ('132', 'cajobboard.fax_number', '931-235-7959'),
+  ('132', 'cajobboard.job_title', 'Human Resources Manager'),
+  ('132', 'cajobboard.address__street_address', '69734 E Carrillo St'),
+  ('132', 'cajobboard.address__locality', 'Warren'),
+  ('132', 'cajobboard.address__postal_code', '37110'),
+  ('132', 'cajobboard.address__address_country', 'US'),
+  ('132', 'cajobboard.role_name', 'Employer'),
+  ('132', 'cajobboard.image', '4'),
+  ('132', 'cajobboard.address_region', '42'),
+  ('132', 'cajobboard.geo', '7'),
+  ('132', 'cajobboard.worksFor', '2'),
+  ('133', 'cajobboard.description', 'Nerdfighter.  Determined dreamer.  Has ambitions to be crazy cat lady if marrying various celebrity crushes proves impossible.'),
+  ('133', 'cajobboard.main_entity_of_page', 'http://www.tmbyxbeecompanypc.com'),
+  ('133', 'cajobboard.given_name', 'Tim'),
+  ('133', 'cajobboard.additional_name', 'Gladys'),
+  ('133', 'cajobboard.family_name', 'Rim'),
+  ('133', 'cajobboard.telephone', '414-661-9598'),
+  ('133', 'cajobboard.fax_number', '414-377-2880'),
+  ('133', 'cajobboard.job_title', 'Maintenance Technician'),
+  ('133', 'cajobboard.address__street_address', '322 New Horizon Blvd'),
+  ('133', 'cajobboard.address__locality', 'Milwaukee'),
+  ('133', 'cajobboard.address__postal_code', '53207'),
+  ('133', 'cajobboard.address__address_country', 'US'),
+  ('133', 'cajobboard.role_name', 'Job Seeker'),
+  ('133', 'cajobboard.image', '5'),
+  ('133', 'cajobboard.address_region', '49'),
+  ('133', 'cajobboard.geo', '1'),
+  ('133', 'cajobboard.worksFor', 'NULL'),
+  ('134', 'cajobboard.description', 'Insert pretentious crap about myself here.'),
+  ('134', 'cajobboard.main_entity_of_page', 'http://www.farmersinsurancegroup.com'),
+  ('134', 'cajobboard.given_name', 'Susan'),
+  ('134', 'cajobboard.additional_name', 'Bette'),
+  ('134', 'cajobboard.family_name', 'Nicka'),
+  ('134', 'cajobboard.telephone', '313-288-7937'),
+  ('134', 'cajobboard.fax_number', '313-341-4470'),
+  ('134', 'cajobboard.job_title', 'Leasing Agent'),
+  ('134', 'cajobboard.address__street_address', '1 State Route 27 Taylor'),
+  ('134', 'cajobboard.address__locality', 'Wayne'),
+  ('134', 'cajobboard.address__postal_code', '48180'),
+  ('134', 'cajobboard.address__address_country', 'US'),
+  ('134', 'cajobboard.role_name', 'Job Seeker'),
+  ('134', 'cajobboard.image', '6'),
+  ('134', 'cajobboard.address_region', '22'),
+  ('134', 'cajobboard.geo', '2'),
+  ('134', 'cajobboard.worksFor', 'NULL'),
+  ('135', 'cajobboard.description', '90% of your problems can be solved by marketing.  Solving the other 10% just requires good procrastination skills.'),
+  ('135', 'cajobboard.main_entity_of_page', 'http://www.postboxservicesplus.com'),
+  ('135', 'cajobboard.given_name', 'Tony'),
+  ('135', 'cajobboard.additional_name', 'Meaghan'),
+  ('135', 'cajobboard.family_name', 'Garufi'),
+  ('135', 'cajobboard.telephone', '815-828-2147'),
+  ('135', 'cajobboard.fax_number', '815-426-5657'),
+  ('135', 'cajobboard.job_title', 'Recruitment Specialist'),
+  ('135', 'cajobboard.address__street_address', '394 Manchester Blvd	Rockford'),
+  ('135', 'cajobboard.address__locality', 'Winnebago'),
+  ('135', 'cajobboard.address__postal_code', '61109	'),
+  ('135', 'cajobboard.address__address_country', 'US'),
+  ('135', 'cajobboard.role_name', 'Recruiter'),
+  ('135', 'cajobboard.image', '7'),
+  ('135', 'cajobboard.address_region', '13'),
+  ('135', 'cajobboard.geo', '3'),
+  ('135', 'cajobboard.worksFor', '1'),
+  ('136', 'cajobboard.description', 'I’m really a giant cupcake.  Afraid of roller coasters and dry ice'),
+  ('136', 'cajobboard.main_entity_of_page', 'http://www.sportenart.com'),
+  ('136', 'cajobboard.given_name', 'Amy'),
+  ('136', 'cajobboard.additional_name', 'Mattie'),
+  ('136', 'cajobboard.family_name', 'Poquette'),
+  ('136', 'cajobboard.telephone', '610-545-3615'),
+  ('136', 'cajobboard.fax_number', '610-492-4643'),
+  ('136', 'cajobboard.job_title', 'Director of Recruiting'),
+  ('136', 'cajobboard.address__street_address', '6 S 33rd St	Aston'),
+  ('136', 'cajobboard.address__locality', 'Delaware'),
+  ('136', 'cajobboard.address__postal_code', '19014'),
+  ('136', 'cajobboard.address__address_country', 'US'),
+  ('136', 'cajobboard.role_name', 'Recruiter'),
+  ('136', 'cajobboard.image', 'NULL'),
+  ('136', 'cajobboard.address_region', '38'),
+  ('136', 'cajobboard.geo', '4'),
+  ('136', 'cajobboard.worksFor', '2'),
+  ('137', 'cajobboard.description', 'Coffee-Drinker, eReader Addict, Mom, Blogger.  I’m very busy and important'),
+  ('137', 'cajobboard.main_entity_of_page', 'http://www.internationaleyeletsinc.com'),
+  ('137', 'cajobboard.given_name', 'Mike'),
+  ('137', 'cajobboard.additional_name', 'Allene'),
+  ('137', 'cajobboard.family_name', 'Iturbide'),
+  ('137', 'cajobboard.telephone', '913-413-4604'),
+  ('137', 'cajobboard.fax_number', '913-645-8918'),
+  ('137', 'cajobboard.job_title', 'Secretary'),
+  ('137', 'cajobboard.address__street_address', '7219 Woodfield Rd	Overland Park'),
+  ('137', 'cajobboard.address__locality', 'Johnson'),
+  ('137', 'cajobboard.address__postal_code', '66204'),
+  ('137', 'cajobboard.address__address_country', 'US'),
+  ('137', 'cajobboard.role_name', 'Connector'),
+  ('137', 'cajobboard.image', 'NULL'),
+  ('137', 'cajobboard.address_region', '16'),
+  ('137', 'cajobboard.geo', '5'),
+  ('137', 'cajobboard.worksFor', '1'),
+  ('138', 'cajobboard.description', 'Buddy, can you paradigm?'),
+  ('138', 'cajobboard.main_entity_of_page', 'http://www.rapidtradingintl.com'),
+  ('138', 'cajobboard.given_name', 'Julie'),
+  ('138', 'cajobboard.additional_name', 'Alisha'),
+  ('138', 'cajobboard.family_name', 'Slusarski'),
+  ('138', 'cajobboard.telephone', '907-231-4722'),
+  ('138', 'cajobboard.fax_number', '907-335-6568'),
+  ('138', 'cajobboard.job_title', 'Trainer'),
+  ('138', 'cajobboard.address__street_address', '1048 Main St'),
+  ('138', 'cajobboard.address__locality', 'Fairbanks'),
+  ('138', 'cajobboard.address__postal_code', '99708'),
+  ('138', 'cajobboard.address__address_country', 'US'),
+  ('138', 'cajobboard.role_name', 'Connector'),
+  ('138', 'cajobboard.image', 'NULL'),
+  ('138', 'cajobboard.address_region', '2'),
+  ('138', 'cajobboard.geo', '6'),
+  ('138', 'cajobboard.worksFor', '2');

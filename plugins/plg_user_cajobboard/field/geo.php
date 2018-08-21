@@ -37,6 +37,6 @@ class JFormFieldGeo extends JFormFieldRadio
 	protected function getLabel()
 	{
 
-		return $label;
+		return '@TODO';
 	}
 }

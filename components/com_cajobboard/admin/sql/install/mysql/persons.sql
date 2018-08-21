@@ -24,11 +24,11 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_person_geos` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
- /**
+/**
  * Join table for persons and organizations
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_persons_organizations` (
-  id BIGINT UNSIGNED NOT NULL COMMENT 'Surrogate primary key',
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   user_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__users',
   organization_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__cajobboard_organizations',
   PRIMARY KEY (id)

@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
 
   /* SCHEMA: Thing */
   identifier CHAR(255) COMMENT 'Internal identifier used by the employer for this job posting.',
-  sameAs VARCHAR(2083) COMMMENT 'URL of the job posting on the employer\s website',
+  sameAs VARCHAR(2083) COMMENT 'URL of the job posting on the employer\'s website',
 
   /* SCHEMA: https://calligraphic.design/schema/EmploymentType */
   employment_type BIGINT UNSIGNED NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).', /* FK to #__cajobboard_job_employment_types(job_employment_type_id) */
@@ -287,9 +287,6 @@ INSERT INTO `#__cajobboard_job_occupational_categories` (`code`, ordering, `grou
  *        targetColumn:  The column in the target table to use in the SQL query JOIN statement. For example, "id".
  *        displayColumn: The column in the target table to display in the Preview or Compare pop-up window. For example, "name" or "title".
  */
-
-/* `table` field in Joomla! is VARCHAR(255), and too narrow for this entry. https://github.com/joomla/joomla-cms/issues/21395 */
-ALTER TABLE `#__content_types` MODIFY `table` VARCHAR(2048);
 
 /*
  * Job Postings content type for history component
