@@ -1,9 +1,14 @@
 #!/bin/sh
-# Run watch.sh shell script whenever a file in project directory is changed
+# Run sync.h shell script whenever a file in project directory is changed
 
-DIRECTORY_TO_OBSERVE="/var/www/html/work/ca-job-board-joomla/components/com_cajobboard"
-while true
-do
-  inotifywait -r -e modify,move,create,delete $DIRECTORY_TO_OBSERVE && /bin/bash ./sync.sh 
-  echo "something"
+SCSS_SOURCE="$CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/media/scss"
+CSS_DEST="$CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/media/css"
+
+# Watcher for SASS files
+if [ "$CA_ENV" = "dev" ]; then
+  /usr/local/bin/sass --watch $SCSS_SOURCE:$CSS_DEST &
+fi
+
+while true; do
+  inotifywait -r -e modify,move,create,delete $CA_DIRECTORY_TO_OBSERVE && /bin/bash ./sync.sh
 done

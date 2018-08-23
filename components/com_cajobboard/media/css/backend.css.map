@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AAAA;;;;;;;;;GASG",
+"sources": ["../scss/backend.scss"],
 "names": [],
 "file": "backend.css"
 }
