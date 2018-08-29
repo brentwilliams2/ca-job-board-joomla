@@ -57,7 +57,7 @@
       <menu view="Applications">COM_CAJOBBOARD_SUBMENU_APPLICATIONS</menu>
       <menu view="Resumes">COM_CAJOBBOARD_SUBMENU_RESUMES</menu>
       <menu view="Employers">COM_CAJOBBOARD_SUBMENU_EMPLOYERS</menu>
-      <menu view="Job Seekers">COM_CAJOBBOARD_SUBMENU_JOBSEEKERS</menu>
+      <menu view="JobSeekers">COM_CAJOBBOARD_SUBMENU_JOBSEEKERS</menu>
       <menu view="Recruiters">COM_CAJOBBOARD_SUBMENU_RECRUITERS</menu>
       <menu view="Subscriptions">COM_CAJOBBOARD_SUBMENU_SUBSCRIPTIONS</menu>
       <menu view="Miscellaneous">COM_CAJOBBOARD_SUBMENU_MISCELLANEOUS</menu>

@@ -22,15 +22,18 @@
 ?>
 
 @section('header')
-    <h1>This is the browse view header</h1>
+    <h1></h1>
 @show
 
 @section('sidebar')
-  <p>This is the browse view sidebar</p>
+  <p></p>
 @show
 
 @section('item')
   <div class="container-fluid">
+
+    {{-- @each('site:com_cajobboard/JobPostings/default_item', $this->items, 'item', 'text|COM_CAJOBBOARD_JOB_POSTINGS_NO_JOB_POSTS_FOUND') --}}
+
     @foreach ($items as $item)
       @include('site:com_cajobboard/JobPostings/default_item', array('item' => $item))
     @endforeach
@@ -38,7 +41,7 @@
 @show
 
 @section('footer')
-  <p>This is the browse view footer</p>
+  <p></p>
 @show
 
 

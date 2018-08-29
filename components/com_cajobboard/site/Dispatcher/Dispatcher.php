@@ -29,8 +29,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		// $myParam   = $this->container->params->get('param_name', 3);
 		// $this->container->renderer->setOption('param_name', $myParam);
 
-		// Load common CSS and JavaScript
-		$this->container->template->addCSS('media://com_cajobboard/css/backend.css', $this->container->mediaVersion);
-		$this->container->template->addJS('media://com_cajobboard/js/backend.js', false, false, $this->container->mediaVersion);
+    // Load common CSS and JavaScript
+    // @TODO Change to minified versions via 'dev' and 'prod' tags
+		$this->container->template->addCSS('media://com_cajobboard/css/frontend.css');
+		$this->container->template->addJS('media://com_cajobboard/js/frontend.js', true, false);
 	}
 }

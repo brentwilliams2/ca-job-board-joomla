@@ -62,8 +62,8 @@ INSERT INTO `#__cajobboard_job_postings` (
   'P2W',
   '3',
   '4',
-  '42',
-  '42'
+  '1',
+  '1'
 ),
 (
   'maintenance-technician-1',
@@ -91,8 +91,8 @@ INSERT INTO `#__cajobboard_job_postings` (
   'P1H',
   '3',
   '4',
-  '42',
-  '42'
+  '2',
+  '2'
 );
 
 /**

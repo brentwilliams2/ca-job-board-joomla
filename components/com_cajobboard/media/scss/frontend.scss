@@ -1,0 +1,30 @@
+/**
+ * Front-end styles
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+//-----------------------------------------------------------------------------
+ // Core variables and mixins from template
+ //-----------------------------------------------------------------------------
+@import "../../../../templates/tpl_mfi/scss/variables";
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - list view - default.blade.php
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - list view item - default_item.blade.php
+//-----------------------------------------------------------------------------
+.job-posting-list-item {};
+
+.employer-logo-container {};
+
+.job-posting-list-item-main-container {};
+
+

@@ -17,6 +17,18 @@
 	$app = JFactory::getApplication();
   $doc = JFactory::getDocument();
 
+  // Variables
+	$menu = $app->getMenu();
+	$active = $app->getMenu()->getActive();
+	$pageclass = $params->get('pageclass_sfx');
+	$tpath = $this->baseurl . '/templates/' . $this->template;
+
+  // Parameter
+	$frontpageshow = $this->params->get('frontpageshow', 0);
+	$modernizr = $this->params->get('modernizr');
+	$fontawesome = $this->params->get('fontawesome');
+	$pie = $this->params->get('pie');
+
 	// Column widths
 	$leftcolgrid = ($this->countModules('left') == 0) ? 0 :	$this->params->get('leftColumnWidth', 3);
   $rightcolgrid = ($this->countModules('right') == 0) ? 0 :	$this->params->get('rightColumnWidth', 3);
@@ -31,18 +43,6 @@
 	$doc->addStyleSheet('templates/' . $this->template . '/css/icons.css');
 	$doc->addStyleSheet('templates/' . $this->template . '/css/template.min.css');
   if ($fontawesome == 1) $doc->addStyleSheet($tpath . '/css/font-awesome.min.css');
-
-  // Variables
-	$menu = $app->getMenu();
-	$active = $app->getMenu()->getActive();
-	$pageclass = $params->get('pageclass_sfx');
-	$tpath = $this->baseurl . '/templates/' . $this->template;
-
-  // Parameter
-	$frontpageshow = $this->params->get('frontpageshow', 0);
-	$modernizr = $this->params->get('modernizr');
-	$fontawesome = $this->params->get('fontawesome');
-	$pie = $this->params->get('pie');
 
   // Generator tag
 	$this->setGenerator(null);

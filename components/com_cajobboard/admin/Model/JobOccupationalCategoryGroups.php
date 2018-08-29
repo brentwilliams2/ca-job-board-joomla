@@ -17,8 +17,9 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
-use JFactory;
-use JText;
+use JLog;
+
+JLog::add('Job Occupational Category Groups model called', JLog::DEBUG, 'cajobboard');
 
 /**
  * Model class description

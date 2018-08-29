@@ -12,4 +12,4 @@ rsync -arvzh $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/admin/ $CA_DIREC
 rsync -arvzh $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/site/ $CA_DIRECTORY_TO_JOOMLA/components/com_cajobboard
 
 # Sync media component files
-rsync -arvh $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/media $CA_DIRECTORY_TO_JOOMLA/media/com_cajobboard
+rsync -arvh $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/media/ $CA_DIRECTORY_TO_JOOMLA/media/com_cajobboard

@@ -1,5 +1,5 @@
 /**
- * Back-end styles
+ * Backend Javascript
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -7,5 +7,3 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
-/*# sourceMappingURL=backend.css.map */

@@ -13,13 +13,20 @@
 // no direct access
 defined( '_JEXEC' ) or die;
 
+use FOF30\Container\Container;
+use FOF30\Autoloader\Autoloader;
+
 // Load FOF
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
 {
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
-$container = FOF30\Container\Container::getInstance('com_cajobboard')->dispatcher->dispatch();
+// Load custom class paths
+include_once JPATH_COMPONENT_ADMINISTRATOR . '/Helpers/Autoloader.php';
+
+// Dispatch the application
+$container = Container::getInstance('com_cajobboard')->dispatcher->dispatch();
 
 // HMVC variant for controllers
 // FOFDispatcher::getTmpInstance('com_cajobboard')->dispatch();

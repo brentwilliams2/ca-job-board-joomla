@@ -16,6 +16,7 @@ namespace Calligraphic\Cajobboard\Site\Controller;
 use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 use FOF30\View\Exception\AccessForbidden;
+use JLog;
 
 // Component classes
 use Calligraphic\Cajobboard\Admin\Controller\Mixin;
@@ -40,11 +41,24 @@ class JobPostings extends DataController
 		// $this->cacheableTasks = ['read', 'browse'];
   }
 
-	/**
-	 * Runs before the browse task.
-	 */
-	protected function onBeforeBrowse()
-	{
+    /**
+   * Override default task
+   *
+   * @return  void
+   */
+  protected function onBeforeDefault()
+  {
+    JLog::add('onBeforeDefault in JobPostings site controller', JLog::DEBUG, 'cajobboard');
+  }
+
+
+  /**
+   * Override default browse task (list view) to remove functionality calling XML forms
+   *
+   * @return  void
+   */
+  public function browse()
+  {
 		// Determine if user logged in
     $user = $this->container->platform->getUser();
 
@@ -68,50 +82,34 @@ class JobPostings extends DataController
 		{
 			//$jobPostingsModel->user_id($user->id);
     }
+
+    if (empty($this->layout))
+    {
+      $this->layout = 'default';
+    }
+
+    // Display the view
+    $this->display(in_array('browse', $this->cacheableTasks), $this->cacheParams);
   }
+
 
 	/**
 	 * Runs before the read task.
 	 */
 	protected function onBeforeRead()
 	{
-    // @TODO:
   }
 
+
 	/**
-	 * Performs auth checks before saving subscription data
+	 *
 	 *
 	 * @return bool
 	 */
 	protected function onBeforeSave()
 	{
-    $user = $this->container->platform->getUser();
-
-		// Guest user, go away!
-		if ($user->guest)
-		{
-			return false;
-		}
-
-		return true;
   }
 
-  /**
-	 * Performs auth checks before saving subscription data
-	 *
-	 * @return bool
-	 */
-	public function save()
-	{
-		// CSRF prevention
-		if ($this->csrfProtection)
-		{
-			$this->csrfProtection();
-    }
-
-    // how to redirect:
-		// $this->setRedirect(\JRoute::_('index.php?option=com_akeebasubs&view=Subscription&id=' . $subId, false), $msg, $msgType);
-  }
 
 	/**
 	 * Registers page-identifying parameters to the application object. This is used by the Joomla! caching system to

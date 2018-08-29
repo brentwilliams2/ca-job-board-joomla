@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Person Controller
+ * Administrator Employer Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -23,7 +23,7 @@ use FOF30\View\Exception\AccessForbidden;
 // no direct access
 defined('_JEXEC') or die;
 
-class Person extends DataController
+class Recruiter extends DataController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -76,7 +76,3 @@ class Person extends DataController
 		// @TODO Call core com_users routine to save a user, and call plugin tasks
   }
 }
-
-
-
-

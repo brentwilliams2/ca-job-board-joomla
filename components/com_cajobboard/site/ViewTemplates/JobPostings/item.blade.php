@@ -21,6 +21,8 @@
   $item = $this->getItem();
 
   // @TODO: Need Database field for employer's requisition / job number and EEO statement
+
+  // $dashboardID = $componentParams->get('dashboardID');
 ?>
 
 @section('header')

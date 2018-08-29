@@ -17,7 +17,9 @@ defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use JLog;
 
+JLog::add('Employer Aggregate Ratings model called', JLog::DEBUG, 'cajobboard');
 /**
  * Model class for Job Board Employer_Aggregate_Ratings
  *

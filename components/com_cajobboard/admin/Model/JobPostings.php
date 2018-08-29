@@ -16,7 +16,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
+use Calligraphic\Cajobboard\Admin\Repository\JobPostingRepository;
+use JRegistry;
+use JLog;
 
 /**
  * Model class description
@@ -85,7 +87,7 @@ use FOF30\Model\DataModel;
  *
  * @method  $this  myField() typehint
  */
-class JobPostings extends DataModel
+class JobPostings extends JobPostingRepository
 {
   // Needed for content history component
   public $typeAlias = 'com_cajobboard.jobpostings';
@@ -136,6 +138,29 @@ class JobPostings extends DataModel
     // many-to-one FK to #__cajobboard_job_occupational_categories
     $this->belongsTo('occupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
   }
+
+  /**
+	 * Overloaded bind function
+	 *
+	 * @param       array           named array
+	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
+   *
+	 * @since 1.0
+	 */
+	public function bind($array, $ignore = '')
+	{
+		if (isset($array['params']) && is_array($array['params']))
+		{
+			// Convert the params field to a string.
+      $parameter = new JRegistry;
+
+      $parameter->loadArray($array['params']);
+
+			$array['params'] = (string)$parameter;
+    }
+
+		return parent::bind($array, $ignore);
+	}
 
 	/**
 	 * Perform checks on data for validity

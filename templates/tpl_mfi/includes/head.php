@@ -14,6 +14,10 @@
 
   JHtml::_('jquery.framework');
   JHtml::_('bootstrap.framework');
+
+  // Set viewport recommended by Bootstrap for responsive CSS
+  $document = JFactory::getDocument();
+  $document->setMetaData('viewport', 'width=device-width, initial-scale=1');
 ?>
 
 <head>
