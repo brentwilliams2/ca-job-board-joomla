@@ -39,6 +39,8 @@ class Html extends \FOF30\View\DataView\Html
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    $config['template_path'] = $container->thisPath . '/ViewTemplates/JobPostings';
+
     parent::__construct($container, $config);
 
     // Using view-specific language files for maintainability
@@ -51,56 +53,91 @@ class Html extends \FOF30\View\DataView\Html
 
   /*
    * Actions to take before list view is executed
+   *
+   * @return  void
    */
 	protected function onBeforeBrowse()
 	{
+    JLog::add('onBeforeBrowse() in Html View called', JLog::DEBUG, 'cajobboard');
+
 		// Create the lists object
     $this->lists = new \stdClass();
-    
+
 		// Load the model
 		/** @var DataModel $model */
     $model = $this->getModel();
-    
+
 		// We want to persist the state in the session
     $model->savestate(1);
-    
+
     // Assign items to the view
     $eagerLoadModels = array(
-      'hiringOrganization'
+      'hiringOrganization',
+      'Places'
     );
 
-		$this->items = $model->with($eagerLoadModels)->get(false);
+    // Load and populate state in the model, with eager-loaded models
+    $this->items = $model->with($eagerLoadModels)->get(false);
+
     $this->itemCount = $model->count();
 
 		// Display limits
     $displayLimit = $this->componentParams->get('job_postings_pagination_limit', 20);
-    
+
 		$this->lists->limitStart = $model->getState('limitstart', 0, 'int');
     $this->lists->limit = $model->getState('limit', $displayLimit, 'int');
-    
+
 		$model->limitstart = $this->lists->limitStart;
     $model->limit = $this->lists->limit;
-    
+
     // Ordering information
     // @TODO Set options for ordering by date posted. Provide parameter to show "featured" postings
     //       on every page. Reorder to show "featured" postings first. Maybe on 'relevant_occupation_name' field
 		$this->lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
     $this->lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
-    
+
 		if ($this->lists->order_Dir)
 		{
 			$this->lists->order_Dir = strtolower($this->lists->order_Dir);
     }
-    
+
 		// Pagination
     $this->pagination = new \JPagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
   }
 
   /*
    * Actions to take before item view is executed
+   *
+   * @return  void
    */
 	protected function onBeforeRead()
 	{
+    JLog::add('onBeforeRead() in Html View called', JLog::DEBUG, 'cajobboard');
+
     parent::onBeforeRead();
-	}
+  }
+
+	/**
+	 * Executes before rendering the page for the add task.
+   *
+   * @return  void
+	 */
+	protected function onBeforeAdd()
+	{
+    JLog::add('onBeforeAdd() in Html View called', JLog::DEBUG, 'cajobboard');
+
+    parent::onBeforeAdd();
+  }
+
+	/**
+	 * Executes before rendering the page for the Edit task.
+   *
+   * @return  void
+	 */
+	protected function onBeforeEdit()
+	{
+    JLog::add('onBeforeEdit() in Html View called', JLog::DEBUG, 'cajobboard');
+
+    parent::onBeforeEdit();
+  }
 }

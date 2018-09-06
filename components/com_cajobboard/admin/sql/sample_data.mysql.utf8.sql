@@ -100,8 +100,8 @@ INSERT INTO `#__cajobboard_job_postings` (
  */
 INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, caption, content_location, height, width) VALUES
   (
-    'media:com_example/images/places/266e84d61e29d12a36860f68879320de.jpg',
-    'media:com_example/images/places/thumbs/10003e84a62ba007664ca4ec4ffdb930.jpg',
+    'media://com_cajobboard/images/places/266e84d61e29d12a36860f68879320de.jpg',
+    'media://com_cajobboard/images/places/thumbs/10003e84a62ba007664ca4ec4ffdb930.jpg',
     'Bellagio Properties',
     'The headquarters of Bellagio Properties',
     'Bellagio Properties',
@@ -110,8 +110,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     760
   ),
   (
-    'media:com_example/images/places/36a86d9f88f24294925f827d9485da77.jpg',
-    'media:com_example/images/places/thumbs/407ff4303f5bf177766b96f99d1cc938.jpg',
+    'media://com_cajobboard/images/places/36a86d9f88f24294925f827d9485da77.jpg',
+    'media://com_cajobboard/images/places/thumbs/407ff4303f5bf177766b96f99d1cc938.jpg',
     'Circus Circus',
     'The headquarters of Bellagio Properties',
     'Circus Circus',
@@ -120,8 +120,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     194
   ),
   (
-    'media:com_example/images/persons/88545549392290bb7d136dbbbd13ec04.png',
-    'media:com_example/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.png',
+    'media://com_cajobboard/images/persons/88545549392290bb7d136dbbbd13ec04.png',
+    'media://com_cajobboard/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.png',
     'Employer Tom',
     'Employer Tom\'s Captions',
     'Employer Tom',
@@ -130,8 +130,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     400
   ),
   (
-    'media:com_example/images/persons/7295dba823ca6605f115a385517f8073.png',
-    'media:com_example/images/persons/thumbs/thumb.ca1feedd1c5ebc4ec3d32964a40642d3.png',
+    'media://com_cajobboard/images/persons/7295dba823ca6605f115a385517f8073.png',
+    'media://com_cajobboard/images/persons/thumbs/thumb.ca1feedd1c5ebc4ec3d32964a40642d3.png',
     'Employer Janice',
     'Employer Janice\'s Caption',
     'Employer Janice',
@@ -140,8 +140,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     400
   ),
   (
-    'media:com_example/images/persons/48ceeada3a22ff130bb42b8bddf673f0.png',
-    'media:com_example/images/persons/thumbs/thumb.f67f07e99b25686480177eead4185f6b.png',
+    'media://com_cajobboard/images/persons/48ceeada3a22ff130bb42b8bddf673f0.png',
+    'media://com_cajobboard/images/persons/thumbs/thumb.f67f07e99b25686480177eead4185f6b.png',
     'Job Seeker Tim',
     'Job Seeker Tim\'s Caption',
     'Job Seeker Tim',
@@ -150,8 +150,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     256
   ),
   (
-    'media:com_example/images/persons/d3cce8929e3a0525b453360a0d79f46c.gif',
-    'media:com_example/images/persons/thumbs/thumb.bcc2ff3d300a59cb3ef3b6cd742fbebc.gif',
+    'media://com_cajobboard/images/persons/d3cce8929e3a0525b453360a0d79f46c.gif',
+    'media://com_cajobboard/images/persons/thumbs/thumb.bcc2ff3d300a59cb3ef3b6cd742fbebc.gif',
     'Job Seeker Susan',
     'Job Seeker Susan\'s Caption',
     'Job Seeker Susan',
@@ -160,8 +160,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     500
   ),
   (
-    'media:com_example/images/persons/03079f1f0a7d5740404768bb5c051f75.jpg',
-    'media:com_example/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.jpg',
+    'media://com_cajobboard/images/persons/03079f1f0a7d5740404768bb5c051f75.jpg',
+    'media://com_cajobboard/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.jpg',
     'Recruiter Tony',
     'Recruiter Tony\'s Caption',
     'Recruiter Tony',
@@ -170,8 +170,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     900
   ),
   (
-    'media:com_example/images/organizations/9ce203d4cf9b44218b864f51e82c8ed4.jpg',
-    'media:com_example/images/organizations/thumbs/6407e2d6b58b00a69162f875cc25dc35.jpg',
+    'media://com_cajobboard/images/organizations/9ce203d4cf9b44218b864f51e82c8ed4.jpg',
+    'media://com_cajobboard/images/organizations/thumbs/6407e2d6b58b00a69162f875cc25dc35.jpg',
     'Elite Property Management',
     'Nobody does it better.',
     'Elite Property Management',
@@ -180,8 +180,8 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     136
   ),
   (
-    'media:com_example/images/organizations/458b8334edf54c056392276cbf18ae4e.jpg',
-    'media:com_example/images/organizations/thumbs/f9a399dfb8f45c1013b8e03ba05a81e9.jpg',
+    'media://com_cajobboard/images/organizations/458b8334edf54c056392276cbf18ae4e.jpg',
+    'media://com_cajobboard/images/organizations/thumbs/f9a399dfb8f45c1013b8e03ba05a81e9.jpg',
     'Action Property Management',
     'An easier way home',
     'Action Property Management',
@@ -226,8 +226,8 @@ INSERT INTO `#__cajobboard_places` (
   '89109',
   'US',
   'M-F 9 to 5',
-  2,
-  8
+  8,
+  2
 ),
 (
   'bellagio-las-vegas',
@@ -244,8 +244,8 @@ INSERT INTO `#__cajobboard_places` (
   '89109',
   'US',
   'M-F 9 to 5',
-  1,
-  9
+  9,
+  1
 );
 
 /**

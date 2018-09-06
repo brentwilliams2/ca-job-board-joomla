@@ -16,11 +16,11 @@
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_job_occupational_category_groups` (
   job_occupational_category_group_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
+  `group` CHAR(96) NOT NULL COMMENT 'Name for this group of occupational categories, e.g. office staff',
   /* SCHEMA: Thing */
   description TEXT NOT NULL COMMENT 'Occupational category group description',
   url VARCHAR(2083) NOT NULL COMMENT 'link to schema for occupational category, e.g. wikipedia page on Management',
-  /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
-  `group` CHAR(96) NOT NULL COMMENT 'Group this occupational category should be shown under e.g. office staff',
   /* SQL DDL */
   PRIMARY KEY (job_occupational_category_group_id)
 )
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_occupational_categories` (
   /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
   title CHAR(96) NOT NULL COMMENT 'occupational category title',
  	`code` CHAR(10) NOT NULL DEFAULT '0' COMMENT 'BLS code specifying this job category',
-  `group` BIGINT UNSIGNED NOT NULL COMMENT 'group this occupational category should be shown under e.g. office staff', /* FK to #__cajobboard_job_occupational_category_group(job_occupational_category_group_id) */
+  `group` BIGINT UNSIGNED NOT NULL COMMENT 'Group this occupational category should be shown under e.g. office staff', /* FK to #__cajobboard_job_occupational_category_group(job_occupational_category_group_id) */
   /* SQL DDL */
   PRIMARY KEY (job_occupational_category_id),
   UNIQUE KEY (title),
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
 
   /* SCHEMA: Thing */
   identifier CHAR(255) COMMENT 'Internal identifier used by the employer for this job posting.',
-  sameAs VARCHAR(2083) COMMENT 'URL of the job posting on the employer\'s website',
+  same_as VARCHAR(2083) COMMENT 'URL of the job posting on the employer\'s website',
 
   /* SCHEMA: https://calligraphic.design/schema/EmploymentType */
   employment_type BIGINT UNSIGNED NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).', /* FK to #__cajobboard_job_employment_types(job_employment_type_id) */

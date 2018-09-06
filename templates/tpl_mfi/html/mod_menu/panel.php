@@ -115,7 +115,8 @@
 			}
 			elseif ($item->type == 'alias')
 			{
-				$aliasToId = $item->params->get('aliasoptions');
+        $aliasToId = $item->params->get('aliasoptions');
+
 				if (count($path) > 0 && $aliasToId == $path[count($path) - 1])
 				{
 					$class .= ' active';

@@ -15,18 +15,22 @@ defined( '_JEXEC' ) or die;
 
 $autoloader = FOF30\Autoloader\Autoloader::getInstance();
 
-// Register Admin Repository namespace
+// Add Admin Repository namespace
 $adminRepositoryNamespace = 'Calligraphic\\Cajobboard\\Admin\\Repository\\';
 
 if (!$autoloader->hasMap($adminRepositoryNamespace))
 {
-  $autoloader->addMap($adminRepositoryNamespace, __DIR__ . '/Repository');
+  $autoloader->addMap($adminRepositoryNamespace, JPATH_COMPONENT_ADMINISTRATOR . '/Repository');
 }
 
-// Register Site Repository namespace
+// Add Site Repository namespace
 $siteRepositoryNamespace = 'Calligraphic\\Cajobboard\\Site\\Repository\\';
 
 if (!$autoloader->hasMap($siteRepositoryNamespace))
 {
-  $autoloader->addMap($siteRepositoryNamespace, __DIR__ . '/Repository');
+  $autoloader->addMap($siteRepositoryNamespace, JPATH_COMPONENT_SITE . '/Repository');
 }
+
+// Register modified autoload function. PHP will run through multiple autoload functions in the
+// sequence they were added, so it doesn't matter that \FOF30 namespace is duplicated here
+$autoloader->register(false);

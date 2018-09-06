@@ -58,7 +58,7 @@ class JobOccupationalCategories extends DataModel
     $config['idFieldName'] = 'job_occupational_category_id';
 
     // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.jobcategories';
+    $config['contentType'] = 'com_cajobboard.job_categories';
 
     parent::__construct($container, $config);
 

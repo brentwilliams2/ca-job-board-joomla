@@ -270,7 +270,7 @@ class PlgUserCajobboard extends CMSPlugin
 
 		if ($userId)
 		{
-      $db = Factory::getDbo()
+      $db = Factory::getDbo();
 
       // Query to delete profile records for this user from database
       $query = $db->getQuery(true)
@@ -289,6 +289,7 @@ class PlgUserCajobboard extends CMSPlugin
         // Don't show the user a server error if there was an error in the database query
         throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
       }
+    }
 
 		return true;
 	}

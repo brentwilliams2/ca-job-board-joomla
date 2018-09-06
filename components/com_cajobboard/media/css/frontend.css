@@ -7,5 +7,12 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
+.job-posting-list-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px; }
 
 /*# sourceMappingURL=frontend.css.map */

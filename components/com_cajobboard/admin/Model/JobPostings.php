@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
+use FOF30\Model\DataModel;
 use FOF30\Container\Container;
 use Calligraphic\Cajobboard\Admin\Repository\JobPostingRepository;
 use JRegistry;
@@ -87,7 +88,7 @@ use JLog;
  *
  * @method  $this  myField() typehint
  */
-class JobPostings extends JobPostingRepository
+class JobPostings extends DataModel
 {
   // Needed for content history component
   public $typeAlias = 'com_cajobboard.jobpostings';
@@ -160,9 +161,9 @@ class JobPostings extends JobPostingRepository
     }
 
 		return parent::bind($array, $ignore);
-	}
+  }
 
-	/**
+  /**
 	 * Perform checks on data for validity
 	 *
 	 * @return  static  Self, for chaining

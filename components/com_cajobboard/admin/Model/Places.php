@@ -56,11 +56,14 @@ class Places extends \FOF30\Model\DataModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    parent::__construct($container, $config);
-
     // override default table names and primary key id
     $this->tableName = "#__cajobboard_places";
     $this->idFieldName = "place_id";
+
+    // Define a contentType to enable the Tags behaviour
+    $config['contentType'] = 'com_cajobboard.places';
+
+    parent::__construct($container, $config);
 
     // Add behaviours to the model
     $this->addBehaviour('Language');

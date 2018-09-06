@@ -38,17 +38,7 @@ class JobPostings extends DataController
 
     $this->predefinedTaskList = ['browse', 'read', 'save', 'apply'];
 
-		// $this->cacheableTasks = ['read', 'browse'];
-  }
-
-    /**
-   * Override default task
-   *
-   * @return  void
-   */
-  protected function onBeforeDefault()
-  {
-    JLog::add('onBeforeDefault in JobPostings site controller', JLog::DEBUG, 'cajobboard');
+    // $this->cacheableTasks = ['read', 'browse'];
   }
 
 
@@ -59,6 +49,8 @@ class JobPostings extends DataController
    */
   public function browse()
   {
+JLog::add('Site JobPostings controller called, in browse() method', JLog::DEBUG, 'cajobboard');
+
 		// Determine if user logged in
     $user = $this->container->platform->getUser();
 
@@ -72,7 +64,7 @@ class JobPostings extends DataController
     // $jobPostingsModel = $this->getModel();
 
 		// Does the user have core.manage access?
-    $isAdmin = $user->authorise('core.manage', 'com_cajobboard');
+    //$isAdmin = $user->authorise('core.manage', 'com_cajobboard');
 
 		if ($isAdmin)
 		{
@@ -92,53 +84,43 @@ class JobPostings extends DataController
     $this->display(in_array('browse', $this->cacheableTasks), $this->cacheParams);
   }
 
-
 	/**
-	 * Runs before the read task.
-	 */
-	protected function onBeforeRead()
-	{
-  }
-
-
-	/**
+	 * Single record read. The id set in the request is passed to the model and
+	 * then the item layout is used to render the result.
 	 *
+	 * @return  void
 	 *
-	 * @return bool
+	 * @throws ItemNotFound When the item is not found
 	 */
-	protected function onBeforeSave()
+	public function read()
 	{
-  }
+		// Load the model
+		/** @var DataModel $model */
+		$model = $this->getModel()->savestate(false);
 
-
-	/**
-	 * Registers page-identifying parameters to the application object. This is used by the Joomla! caching system to
-	 * get the unique identifier of a page and decide its caching status (cached, not cached, cache expired).
-	 *
-	 * @param array $urlparams
-	 */
-	protected function registerUrlParams($urlparams = array())
-	{
-    // Called from onBeforeRead task in akeeba Subscriptions controller
-    $app = \JFactory::getApplication();
-
-    $registeredurlparams = null;
-
-		if (!empty($app->registeredurlparams))
+		// If there is no record loaded, try loading a record based on the id passed in the input object
+		if (!$model->getId())
 		{
-			$registeredurlparams = $app->registeredurlparams;
+			$ids = $this->getIDsFromRequest($model, true);
+
+			if ($model->getId() != reset($ids))
+			{
+				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
+				throw new ItemNotFound(\JText::_($key), 404);
+			}
 		}
-		else
-		{
-			$registeredurlparams = new \stdClass;
-    }
 
-		foreach ($urlparams as $key => $value)
+		// Set the layout to item, if it's not set in the URL
+		if (empty($this->layout))
 		{
-			// Add your safe url parameters with variable type as value {@see JFilterInput::clean()}.
-			$registeredurlparams->$key = $value;
-    }
+			$this->layout = 'item';
+		}
+		elseif ($this->layout == 'default')
+		{
+			$this->layout = 'item';
+		}
 
-		$app->registeredurlparams = $registeredurlparams;
+		// Display the view
+		$this->display(in_array('read', $this->cacheableTasks), $this->cacheParams);
 	}
 }

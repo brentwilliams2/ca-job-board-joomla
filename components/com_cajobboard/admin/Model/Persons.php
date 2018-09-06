@@ -235,6 +235,10 @@ class Persons extends DataModel
 		$config['tableName'] = '#__users';
     $config['idFieldName'] = 'id';
 
+
+    // Define a contentType to enable the Tags behaviour
+    $config['contentType'] = 'com_cajobboard.persons';
+
     parent::__construct($container, $config);
 
 		// Load the Filters behaviour
@@ -290,7 +294,7 @@ class Persons extends DataModel
 	 */
 	public function onAfterBuildQuery(\JDatabaseQuery $query, $overrideLimits = false)
 	{
-    $userProfileFields = this->getUserProfile();
+    $userProfileFields = $this->getUserProfile();
 
     $db = $this->getDbo();
 
@@ -320,10 +324,10 @@ class Persons extends DataModel
   public function getUserProfile ($userId = null, $joins = array('ALL'))
   {
     // EAV table holding extended user profile information
-    protected $profile_table = '#__user_profiles';
+    $profile_table = '#__user_profiles';
 
     // Key to store user extended profile information in EAV table
-    protected $profile_key = 'cajobboard';
+    $profile_key = 'cajobboard';
 
     $user = JFactory::getUser();
 
@@ -343,7 +347,8 @@ class Persons extends DataModel
       ->andWhere($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'' . $profile_key . '.%\''));
 
     // Get an indexed array of indexed arrays from the profile records returned by the query
-    try {
+    try
+    {
       $db->setQuery($query);
       $results = $db->loadRowList();
     }
@@ -355,7 +360,8 @@ class Persons extends DataModel
       throw new Exception(JText::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
     }
 
-    $normalizedProfileKey = array(
+    $normalizedProfileKey = array
+    (
       'description' => 'description',
       'main_entity_of_page' => 'mainEntityOfPage',
       'given_name' => 'givenName',
@@ -386,7 +392,10 @@ class Persons extends DataModel
       {
         JLog::add('User profile key not in list, class Persons method getUserProfile(): ' . $key, JLog::ERROR, 'user-profile-error');
       }
-		}
+    }
+
+    // Base select query, without any joins
+    $query = $db->getQuery(true)->select($db->quoteName('users.id'));
 
     // Get the relations data. We're joining on the users table, since it's always going to return a user record.
     // add array parameter to choose which joins to do: ALL, NONE, IMAGE, ADDRESS, GEO, WORKSFOR
@@ -400,8 +409,6 @@ class Persons extends DataModel
         'worksFor' => isset($results['works_for']) && (in_array('WORKSFOR', $joins) || array_key_exists ('ALL', $joins)) ? $results['works_for'] : NULL
       );
 
-      $query = $db->getQuery(true)->select($db->quoteName('users.id');
-
       // SELECT statement from Images table
       if ($profileVars['image'])
       {
@@ -412,7 +419,6 @@ class Persons extends DataModel
           ->select($db->quoteName('db_images.height', 'image_height'))
           ->select($db->quoteName('db_images.width', 'image_width'));
       }
-
       // SELECT statement from Regions table
       if ($profileVars['address_region'])
       {
@@ -455,7 +461,6 @@ class Persons extends DataModel
       // LEFT JOIN statement from Organizations table
       if ($profileVars['worksFor'])
       {
-        'WorksFor', works_for //  M:M FK to Organizations user_id organizations_id
         $query
           ->leftJoin($db->quoteName('#__cajobboard_persons_organizations', 'db_persons_organizations') . ' ON (' . $db->quoteName(db_persons_organizations.organization_id) . ' = ' . $db->quoteName($profileVars['worksFor']) . ')')
           ->leftJoin($db->quoteName('#__cajobboard_organizations', 'db_organizations') . ' ON (' . $db->quoteName('db_organizations.organization_id') . ' = ' . $db->quoteName('db_persons_organizations.organization_id') . ')');
@@ -475,19 +480,17 @@ class Persons extends DataModel
         // Don't show the user a server error if there was an error in the database query
         throw new Exception(JText::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
       }
-    }
 
-    $this->image = $joinResults['image'];
-    $this->imageThumbnail = $joinResults['image_thumbnail'];
-    $this->imageCaption = $joinResults['image_caption'];
-    $this->imageHeight = $joinResults['image_height'];
-    $this->imageWidth = $joinResults['image_width'];
-    $this->address_region = $joinResults['address_region'];
-    $this->geo = $joinResults['geo'];
-    $this->worksFor = $joinResults['worksFor'];
+      $this->image = $joinResults['image'];
+      $this->imageThumbnail = $joinResults['image_thumbnail'];
+      $this->imageCaption = $joinResults['image_caption'];
+      $this->imageHeight = $joinResults['image_height'];
+      $this->imageWidth = $joinResults['image_width'];
+      $this->address_region = $joinResults['address_region'];
+      $this->geo = $joinResults['geo'];
+      $this->worksFor = $joinResults['worksFor'];
+    }
 
     return true;
   }
 }
-
-

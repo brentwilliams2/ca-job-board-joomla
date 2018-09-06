@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Job Posting Controller
+ * Site Job Posting Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,7 +10,7 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Controller;
+namespace Calligraphic\Cajobboard\Site\Controller;
 
 // Framework classes
 use FOF30\Container\Container;
@@ -36,6 +36,6 @@ class JobPosting extends DataController
 	{
     parent::__construct($container, $config);
 
-JLog::add('Admin JobPosting controller called, in constructor', JLog::DEBUG, 'cajobboard');
+JLog::add('Site JobPosting controller called, in constructor', JLog::DEBUG, 'cajobboard');
   }
 }

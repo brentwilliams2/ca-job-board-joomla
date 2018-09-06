@@ -21,10 +21,11 @@
 //-----------------------------------------------------------------------------
 // JobPostings ViewTemplate - list view item - default_item.blade.php
 //-----------------------------------------------------------------------------
-.job-posting-list-item {};
-
-.employer-logo-container {};
-
-.job-posting-list-item-main-container {};
-
-
+.job-posting-list-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}

@@ -14,7 +14,7 @@
   use FOF30\Utils\FEFHelper\BrowseView;
   use FOF30\Utils\SelectOptions;
   use JUri;
-  use Jlog;
+  //use Jlog;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -29,41 +29,45 @@
   // @sprintf('STRING_WITH_NUMBERS_IN_IT', $num1, $num2, $num3)
   // STRING_WITH_NUMBERS_IN_IT="First %d, second %d, third %d"
 
-  JLog::add($item->hiringOrganization->legal_name, JLog::DEBUG, 'cajobboard');
+  $job_id         = $item->job_posting_id;
+  $job_title      = $item->title;
+  $logo_source    = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
+  $logo_caption   = $item->jobLocation->Logo->caption;
+
 ?>
 
 {{--
   #1 - Employer Logo, link to Employer Profile
 --}}
 @section('employer_logo')
-  <span>Logo</span>
   <a href="#">
-    <img class="media-object" src="" alt="">
+    <img class="media-object" src="{{{ $logo_source }}}" alt="{{{ $logo_caption }}}">
   </a>
   <p>{{-- $item->hiringOrganization --}}</p>
-@endsection
+@overwrite
 
 {{--
   #2 - Job Title
 --}}
 @section('job_title')
-  {{{ $item->title }}}
-@endsection
+  <a href="@route('index.php?option=com_cajobboard&view=JobPosting&id='. (int) $job_id)">
+    {{{ $job_title }}}
+  </a>
+@overwrite
 
 {{--
-  #3 - Job Tag, e.g. "New!" or "Featured"
+  #3 - Job Tag, e.g. "New!" or "Featured" -- from parameters for item, or Joomla! tags?
 --}}
 @section('job_tag')
   <span>Job Tag</span>
-@endsection
+@overwrite
 
 {{--
   #4 - Name of Employer
 --}}
 @section('employer_name')
-  <span>Employer Name</span>
-  <p>{{-- $item->hiringOrganization --}}</p>
-@endsection
+  <span>{{{ $item->hiringOrganization->legal_name }}}</span>
+@overwrite
 
 {{--
   #5 - Job Location, link to map slider via Javascript
@@ -71,14 +75,14 @@
 @section('job_location')
   <p>Location</p>
   <p>{{-- $item->jobLocation --}}</p>
-@endsection
+@overwrite
 
 {{--
   #6 - Short Description of Job
 --}}
 @section('job_description')
   {{ $item->disambiguating_description }}
-@endsection
+@overwrite
 
 {{--
   #7 - "Save Job" Button
@@ -87,7 +91,7 @@
   <button type="button" class="btn btn-primary">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
   </button>
-@endsection
+@overwrite
 
 {{--
   #8 - "Email Job" Button
@@ -96,7 +100,7 @@
   <button type="button" class="btn btn-primary">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
   </button>
-@endsection
+@overwrite
 
 {{--
   #9 - "Report Job" Button
@@ -105,21 +109,21 @@
   <button type="button" class="btn btn-warning">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
   </button>
-@endsection
+@overwrite
 
 {{--
   #10 - Job Rating, e.g. 1-5 stars and link to Reviews page
 --}}
 @section('job_rating')
   <span>Job Rating</span>
-@endsection
+@overwrite
 
 {{--
   #11 - Job Reviews, e.g. number of reviews and link to Reviews page
 --}}
 @section('job_reviews')
   <span>Job Reviews</span>
-@endsection
+@overwrite
 
 {{--
   #12 - "Quick Apply" Button
@@ -128,7 +132,7 @@
   <button type="button" class="btn btn-primary">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_QUICK_APPLY_BUTTON_LABEL')
   </button>
-@endsection
+@overwrite
 
 {{--
   #13 - Date Job Posted, format adjustable in parameters
@@ -137,7 +141,7 @@
   <span>Date Posted</span>
   <p>{{-- $item->created_on --}}</p>
   <p>{{-- $item->modified_on --}}</p>
-@endsection
+@overwrite
 
 {{--
   #14 - Job Hours, e.g. Part-Time, Full-Time
@@ -145,14 +149,14 @@
 @section('job_hours')
   <span>Hours</span>
   <p>{{-- $item->employmentType --}}</p>
-@endsection
+@overwrite
 
 {{--
   #15 - Benefits, e.g. "Includes medical and dental insurance"
 --}}
 @section('job_benefits')
   <span>Benefits</span>
-@endsection
+@overwrite
 
 {{--
   #16 - Pay, e.g. "$14 - $15 Per Hour"
@@ -163,17 +167,17 @@
   <p>{{-- $item->base_salary__value --}}</p>
   <p>{{-- $item->base_salary__min_value --}}</p>
   <p>{{-- $item->base_salary__duration --}}  {{-- P0H1 per hour, P1D per day, P1W per week, P2W biweekly, P1M per month, P1Y annually --}}
-@endsection
+@overwrite
 
 {{--
   #17 - Tag Line, e.g. "Earn Extra Cash"
 --}}
 @section('tag_line')
   <span>Tag Line</span>
-@endsection
+@overwrite
 
 {{-- Responsive container for desktop and mobile --}}
-<div class="job-posting-list-item wrapper">{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
+<div class="job-posting-list-item">{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
 
   {{-- sm, md, and large screens only: #1 Employer Logo --}}
   <div class="employer-logo-container col-md-2 hidden-xs">
@@ -181,7 +185,7 @@
   </div>
 
   {{-- Main container --}}
-  <div class="job-posting-list-item-main-container col-md-10 col-xs-12"> 
+  <div class="job-posting-list-item-main-container col-md-10 col-xs-12">
 
     {{-- #2 Job Title, #3 Job Tag, #7 "Save Job" Button, #12 "Quick Apply" Button  --}}
     <div class="row">
@@ -322,10 +326,10 @@
     </div>
 
     {{-- sm and xs screens: Save modal --}}
-    <div 
+    <div
       class="modal fade hidden-lg hidden-md"
       id="save-job-{{ $this->job_posting_id }}"
-      tabindex="-1" 
+      tabindex="-1"
       role="dialog"
       aria-labelledby="@lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_MODAL_ARIA_LABEL')"
     >
@@ -354,9 +358,7 @@
         </div>{{-- End modal content --}}
       </div>{{-- End modal dialog --}}
     </div>{{-- End save modal --}}
-  
+
   </div>{{-- End main container --}}
+  <div class="clearfix"></div>
 </div>{{-- End responsive container --}}
-
-
-

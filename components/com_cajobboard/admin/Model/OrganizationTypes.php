@@ -54,7 +54,7 @@ class OrganizationTypes extends \FOF30\Model\DataModel
     $this->idFieldName = "organization_type_id";
 
     // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.organizationaltypes';
+    $config['contentType'] = 'com_cajobboard.organizational_types';
 
     parent::__construct($container, $config);
 

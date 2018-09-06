@@ -14,6 +14,7 @@
   use FOF30\Utils\FEFHelper\BrowseView;
   use FOF30\Utils\SelectOptions;
   use JUri;
+  use JLog;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -22,7 +23,7 @@
 ?>
 
 @section('header')
-    <h1></h1>
+  <h1></h1>
 @show
 
 @section('sidebar')
@@ -31,12 +32,7 @@
 
 @section('item')
   <div class="container-fluid">
-
-    {{-- @each('site:com_cajobboard/JobPostings/default_item', $this->items, 'item', 'text|COM_CAJOBBOARD_JOB_POSTINGS_NO_JOB_POSTS_FOUND') --}}
-
-    @foreach ($items as $item)
-      @include('site:com_cajobboard/JobPostings/default_item', array('item' => $item))
-    @endforeach
+    @each('site:com_cajobboard/JobPostings/default_item', $items, 'item', 'text|COM_CAJOBBOARD_JOB_POSTINGS_NO_JOB_POSTS_FOUND')
   </div>
 @show
 

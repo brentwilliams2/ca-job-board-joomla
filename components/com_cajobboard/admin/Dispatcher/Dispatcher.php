@@ -16,6 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Dispatcher;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
+use Jlog;
 
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
@@ -24,9 +25,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
-		// Renderer options (0=none, 1=frontend, 2=backend, 3=both)
-		// $myParam   = $this->container->params->get('param_name', 3);
-		// $this->container->renderer->setOption('param_name', $myParam);
+		JLog::add('onBeforeDispatch: $task: ' . $this->input->getCmd('task'), JLog::DEBUG, 'cajobboard');
 
 		// Load common CSS and JavaScript
 		$this->container->template->addCSS('media://com_cajobboard/css/backend.css', $this->container->mediaVersion);
