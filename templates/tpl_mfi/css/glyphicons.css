@@ -1,0 +1,31 @@
+/*
+Errno::EACCES: Permission denied @ apply2files - .sass-cache/2881127b5f9426d5f8b7dca277a44262b0bf4bed/glyphicons.scssc
+
+Backtrace:
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/filesystem.rb:26:in `unlink'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/filesystem.rb:26:in `_retrieve'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/base.rb:63:in `retrieve'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:25:in `block in retrieve'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:24:in `each'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:24:in `each_with_index'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:24:in `retrieve'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/engine.rb:407:in `_to_tree'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/engine.rb:307:in `render_with_sourcemap'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `each'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin.rb:82:in `update_stylesheets'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:51:in `process_result'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/exec/base.rb:50:in `parse'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/exec/base.rb:18:in `parse!'
+/var/lib/gems/2.5.0/gems/sass-3.5.7/bin/sass:13:in `<top (required)>'
+/usr/local/bin/sass:23:in `load'
+/usr/local/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Errno::EACCES: Permission denied @ apply2files - .sass-cache/2881127b5f9426d5f8b7dca277a44262b0bf4bed/glyphicons.scssc"; }

@@ -26,7 +26,8 @@
   // Parameter
 	$frontpageshow = $this->params->get('frontpageshow', 0);
 	$modernizr = $this->params->get('modernizr');
-	$fontawesome = $this->params->get('fontawesome');
+  $fontawesome = $this->params->get('fontawesome');
+  $glyphicons = $this->params->get('glyphicons');
 	$pie = $this->params->get('pie');
 
 	// Column widths
@@ -43,6 +44,7 @@
 	$doc->addStyleSheet('templates/' . $this->template . '/css/icons.css');
 	$doc->addStyleSheet('templates/' . $this->template . '/css/template.min.css');
   if ($fontawesome == 1) $doc->addStyleSheet($tpath . '/css/font-awesome.min.css');
+  if ($glyphicons == 1) $doc->addStyleSheet($tpath . '/css/glyphicons.min.css');
 
   // Generator tag
 	$this->setGenerator(null);

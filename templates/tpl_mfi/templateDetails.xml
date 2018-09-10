@@ -53,13 +53,28 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="leftColumnWidth" type="list" default="3" label="Left Column Width" description="Choose a width for your left column">
+        <!-- LEFT COLUMN WIDTH-->
+				<field
+          name="leftColumnWidth"
+          type="list"
+          default="3"
+          label="TPL_MFI_PARAMS_LEFT_COLUMN_WIDTH_LABEL"
+          description="TPL_MFI_PARAMS_LEFT_COLUMN_WIDTH_DESC"
+        >
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
 					<option value="5">5</option>
 				</field>
-				<field name="rightColumnWidth" type="list" default="3" label="Right Column Width" description="Choose a width for your right column">
+
+        <!-- RIGHT COLUMN WIDTH-->
+				<field
+          name="rightColumnWidth"
+          type="list"
+          default="3"
+          label="TPL_MFI_PARAMS_RIGHT_COLUMN_WIDTH_LABEL"
+          description="TPL_MFI_PARAMS_RIGHT_COLUMN_WIDTH_DESC"
+        >
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
@@ -67,60 +82,173 @@
 				</field>
 
 				<!-- SHOW FRONTPAGE-->
-				<field name="frontpageshow" type="radio" class="btn-group" default="1" label="Show FrontPage Articles" description="Show FrontPage Articles">
+				<field
+          name="frontpageshow"
+          type="radio"
+          class="btn-group"
+          default="1"
+          label="TPL_MFI_PARAMS_SHOW_FRONT_PAGE_LABEL"
+          description="TPL_MFI_PARAMS_SHOW_FRONT_PAGE_DESC"
+        >
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
 
 				<!-- MODERNIZR-->
-				<field name="modernizr" type="radio" class="btn-group" default="0" label="Modernizr" description="Enable JavaScript modernizr.js in head">
+				<field
+          name="modernizr"
+          type="radio"
+          class="btn-group"
+          default="0"
+          label="TPL_MFI_PARAMS_MODERNIZR_LABEL"
+          description="TPL_MFI_PARAMS_MODERNIZR_DESC"
+        >
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
 
-				<!-- FONT-AWESOME -->
-				<field name="fontawesome" type="radio" class="btn-group" default="0" label="Font Awesome" description="Enable Font Awesome for better icons in Bootstrap">
+				<!-- GLYPHICONS -->
+				<field name="glyphicons"
+          type="radio"
+          class="btn-group"
+          default="0"
+          label="TPL_MFI_PARAMS_LOAD_GLYPHICONS_LABEL"
+          description="TPL_MFI_PARAMS_LOAD_GLYPHICONS_DESC"
+        >
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+  				<!-- FONT-AWESOME -->
+				<field
+          name="fontawesome"
+          type="radio"
+          class="btn-group"
+          default="1"
+          label="TPL_MFI_PARAMS_LOAD_FONTAWESOME_LABEL"
+          description="TPL_MFI_PARAMS_LOAD_FONTAWESOME_DESC"
+        >
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
 
 				<!-- PIE-->
-				<field name="pie" type="radio" class="btn-group" default="0" label="PIE" description="Enable PIE (CSS3 for IE 9+8)">
+				<field
+          name="pie"
+          type="radio"
+          class="btn-group"
+          default="0"
+          label="TPL_MFI_PARAMS_PIE_LABEL"
+          description="TPL_MFI_PARAMS_PIE_DESC"
+        >
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
 			</fieldset>
 
 			<!-- LOGO-->
-			<fieldset  name="logo" type="upload_func" label="Logo">
-        <field name="logo_file" type="media" label="Select your logo:"></field>
-        <field name="logo_link" type="text" label="Logo link:"  description="Example: http://www.calligraphic.design" default="index.php"></field>
-        <field name="logo_width" type="text" label="Logo width:" description="Example: 90" default="173"></field>
-        <field name="logo_height" type="text" label="Logo height:" description="Example: 90" default="26"></field>
+			<fieldset
+        name="logo"
+        type="upload_func"
+        label="Logo"
+      >
+        <field
+          name="logo_file"
+          type="media"
+          label="TPL_MFI_PARAMS_LOGO_FILE_LABEL"
+          description="TPL_MFI_PARAMS_LOGO_FILE_DESC"
+        />
+
+        <field
+          name="logo_link"
+          type="text"
+          label="TPL_MFI_PARAMS_LOGO_LINK_LABEL"
+          description="TPL_MFI_PARAMS_LOGO_LINK_DESC"
+          default="index.php"
+        />
+
+        <field
+          name="logo_width"
+          type="text"
+          label="TPL_MFI_PARAMS_LOGO_WIDTH_LABEL"
+          description="TPL_MFI_PARAMS_LOGO_WIDTH_DESC"
+          default="173"
+        />
+
+        <field
+          name="logo_height"
+          type="text"
+          label="TPL_MFI_PARAMS_LOGO_HEIGHT_LABEL"
+          description="TPL_MFI_PARAMS_LOGO_HEIGHT_DESC"
+          default="26"
+        />
 			</fieldset>
 
 			<!-- GOOGLE FONTS-->
 			<fieldset name="Font" label="Fonts">
-        <field name="googleFont" type="radio" class="btn-group btn-group-yesno"	default="0"	label="Google Font for Headings" description="Google Font for H1, H2, H3, etc">
+        <field
+          name="googleFont"
+          type="radio"
+          class="btn-group btn-group-yesno"
+          default="0"
+          label="TPL_MFI_PARAMS_LOAD_GOOGLE_FONT_LABEL"
+          description="TPL_MFI_PARAMS_LOAD_GOOGLE_FONT_DESC"
+        >
           <option value="1">JYES</option>
           <option value="0">JNO</option>
         </field>
 
-        <field name="googleFontName" class="" type="text" default="Open+Sans" label="Font Name" description="Font Name" showon="googleFont:1" />
+        <field
+          name="googleFontName"
+          class=""
+          type="text"
+          default="Open+Sans"
+          label="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_LABEL"
+          description="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_DESC"
+          showon="googleFont:1"
+        />
 
-        <field name="bodyFont" class="btn-group btn-group-yesno" type="radio" default="0" label="Google Font for Body" description="Google Font for Body">
+        <field
+          name="bodyFont"
+          class="btn-group btn-group-yesno"
+          type="radio"
+          default="0"
+          label="TPL_MFI_PARAMS_GOOGLE_BODY_FONT_LABEL"
+          description="TPL_MFI_PARAMS_GOOGLE_BODY_FONT_DESC"
+        >
           <option value="1">JYES</option>
           <option value="0">JNO</option>
         </field>
 
-        <field name="bodyFontName" type="text"  default="Open+Sans" label="Font Name" description="Font Name" showon="bodyFont:1"/>
+        <field
+          name="bodyFontName"
+          type="text"
+          default="Open+Sans"
+          label="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_LABEL"
+          description="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_DESC"
+          showon="bodyFont:1"
+        />
 
-        <field name="navigationFont" class="btn-group btn-group-yesno" type="radio" default="0" label="Google Font for Menu" description="Google Font for Menu">
+        <field
+          name="navigationFont"
+          class="btn-group btn-group-yesno"
+          type="radio"
+          default="0"
+          label="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_LABEL"
+          description="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_DESC"
+        >
           <option value="1">JYES</option>
           <option value="0">JNO</option>
         </field>
 
-        <field name="navigationFontname" type="text" default="Open+Sans" label="Font Name" description="Font Name" showon="navigationFont:1"/>
+        <field
+          name="navigationFontname"
+          type="text"
+          default="Open+Sans"
+          label="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_NAME_LABEL"
+          description="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_NAME_DESC"
+          showon="navigationFont:1"
+        />
       </fieldset>
 
 		</fields>

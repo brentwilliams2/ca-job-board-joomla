@@ -49,7 +49,7 @@ class JobPostings extends DataController
    */
   public function browse()
   {
-JLog::add('Site JobPostings controller called, in browse() method', JLog::DEBUG, 'cajobboard');
+JLog::add('XYZ Site JobPostings controller called, in browse() method', JLog::DEBUG, 'cajobboard');
 
 		// Determine if user logged in
     $user = $this->container->platform->getUser();

@@ -113,15 +113,13 @@ class JobPostings extends DataModel
 		$config['tableName'] = '#__cajobboard_job_postings';
     $config['idFieldName'] = 'job_posting_id';
 
-    // Define a contentType to enable the Tags behaviour
+        // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.jobpostings';
 
-    parent::__construct($container, $config);
-
     // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
+    $config['behaviours'] = array('Filters', 'Language', 'Tags');
+
+    parent::__construct($container, $config);
 
     /*
      * Set up relations

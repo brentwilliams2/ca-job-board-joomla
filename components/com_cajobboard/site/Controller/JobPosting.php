@@ -36,6 +36,50 @@ class JobPosting extends DataController
 	{
     parent::__construct($container, $config);
 
-JLog::add('Site JobPosting controller called, in constructor', JLog::DEBUG, 'cajobboard');
+    $this->predefinedTaskList = ['browse', 'read'];
+  }
+
+
+	/**
+	 * Runs before executing a task in the controller, overriden to keep from ACL check
+   * with no area set. Seems like bug inController triggerEvent() method
+	 *
+	 * @param   string  $task  The task to execute
+	 *
+	 * @return  bool
+	 */
+	public function onBeforeExecute($task)
+	{
+    // Do any ACL? This runs for *any* task, even public ones
+		return true;
+  }
+
+
+	/**
+	 * Overriden to keep public views having ACL checks ran (should just use Joomla! access control).
+	 *
+	 * @param   string  $area  The task being checked for ACL
+	 *
+	 * @return  bool
+	 */
+  protected function checkACL($area)
+  {
+     return ($area == 'read') ? true : parent::checkACL($area);
+  }
+
+
+	/**
+	 * Runs before executing a task in the controller, overriden to keep from ACL check
+   * with no area set. Seems like bug inController triggerEvent() method
+	 *
+	 * @param   string  $task  The task to execute
+	 *
+	 * @return  bool
+	 */
+	public function onBeforeRead()
+	{
+    // Do any ACL? This runs for *any* task, even public ones
+    JLog::add('Job Posting Controller, onBeforeRead()', JLog::DEBUG, 'cajobboard');
+		return true;
   }
 }

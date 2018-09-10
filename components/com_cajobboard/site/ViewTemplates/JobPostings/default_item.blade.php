@@ -33,25 +33,30 @@
   $job_title      = $item->title;
   $logo_source    = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
   $logo_caption   = $item->jobLocation->Logo->caption;
+  $employer_id    = $item->hiringOrganization->organization_id;
+  $tags = new \JHelperTags;
+  $tags->getItemTags('com_cajobboard.jobpostings', $this->item->id);
 
+
+  // @TODO "Share this" social media button on job
 ?>
 
 {{--
   #1 - Employer Logo, link to Employer Profile
 --}}
 @section('employer_logo')
-  <a href="#">
-    <img class="media-object" src="{{{ $logo_source }}}" alt="{{{ $logo_caption }}}">
+  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employer_id)">
+    <img src="{{{ $logo_source }}}" alt="{{{ $logo_caption }}}">
   </a>
-  <p>{{-- $item->hiringOrganization --}}</p>
+  <p>{{-- $ --}}</p>
 @overwrite
 
 {{--
   #2 - Job Title
 --}}
 @section('job_title')
-  <a href="@route('index.php?option=com_cajobboard&view=JobPosting&id='. (int) $job_id)">
-    {{{ $job_title }}}
+  <a class="job-title" href="@route('index.php?option=com_cajobboard&view=JobPosting&task=read&id='. (int) $job_id)">
+    <span>{{{ $job_title }}}</span>
   </a>
 @overwrite
 
@@ -59,14 +64,22 @@
   #3 - Job Tag, e.g. "New!" or "Featured" -- from parameters for item, or Joomla! tags?
 --}}
 @section('job_tag')
-  <span>Job Tag</span>
+  <?php if ($tags->itemTags) : ?>
+    <?php foreach ($tags->itemTags as $key => $tag) : ?>
+        <span class="job-title-tag"><?php echo $tag->title; ?></span>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <span class="job-title-tag">Great!</span>
+  <?php endif; ?>
 @overwrite
 
 {{--
   #4 - Name of Employer
 --}}
 @section('employer_name')
-  <span>{{{ $item->hiringOrganization->legal_name }}}</span>
+  <a class="employer-name" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employer_id)">
+    <span>{{{ $item->hiringOrganization->legal_name }}}</span>
+  </a>
 @overwrite
 
 {{--
@@ -88,25 +101,119 @@
   #7 - "Save Job" Button
 --}}
 @section('save_job')
-  <button type="button" class="btn btn-primary">
+  <button type="button" class="btn btn-primary btn-xs btn-job-posting" data-toggle="modal" data-target="#save-job-{{ $job_id }}">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
   </button>
 @overwrite
 
 {{--
+  #7 - "Save Job" Modal Form
+--}}
+@section('save_job_modal')
+  <div class="save-job-modal modal fade" id="save-job-{{ $job_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_MODAL_TITLE')
+          </h4>
+        </div>
+        <div class="modal-body">
+          @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_MODAL_DESCRIPTION')
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            @lang('COM_CAJOBBOARD_CLOSE_BUTTON_LABEL')
+          </button>
+          <button type="button" class="btn btn-primary">
+            @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+@overwrite
+
+Change "save" button to "saved" and a link to saved jobs page
+
+**Indeed's save button:
+
+Save jobs and view them from any computer.
+
+You must sign in to save jobs: Sign in - Create account (it's free)
+
+**Muse save button pops up a sign up dialog:
+
+Sign up to join The Muse
+
+- Connect with Google
+- Connect with Linkedin
+- Connect with Facebook
+
+or
+
+- Sign up with email
+
+By signing up, you agree to The Muse Terms of Use and Privacy Policy
+
+-- Sign in to your existing account.
+
+(no feedback on saved job, but shows logged in status on page)
+
+**Monster takes you to a registration page, and has add'l:
+
+Create your Account
+
+Already have a Monster account? Sign in
+
+-- Continue with Facebook
+
+-- Sign up with Google
+
+* We'll never share your email with anyone else.
+
+OR
+
+email
+
+password
+
+Must use 8-20 characters and one number or symbol.
+
+Email me career-related Monster updates and job opportunities. Yes No
+
+Monster will automatically email job postings that are relevant to you. You can unsubscribe on the Manage Saved Searches page or with the opt-out link in the email.
+
+By continuing you agree to Monster's Privacy Policy, Terms of Use and use of cookies.
+
+
+{{--
   #8 - "Email Job" Button
 --}}
 @section('email_job')
-  <button type="button" class="btn btn-primary">
+  <button type="button" class="btn btn-primary btn-xs">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
   </button>
 @overwrite
+
+**Indeed:
+
+Your email
+
+Email to send to
+
+captcha
+JFactory::getApplication()->get('captcha');
+"site_language":"0", // Whether users can select front-end language preference when registering
+
+"email this job to yourself or a friend"
+
 
 {{--
   #9 - "Report Job" Button
 --}}
 @section('report_job')
-  <button type="button" class="btn btn-warning">
+  <button type="button" class="btn btn-warning btn-xs">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
   </button>
 @overwrite
@@ -129,7 +236,7 @@
   #12 - "Quick Apply" Button
 --}}
 @section('quick_apply')
-  <button type="button" class="btn btn-primary">
+  <button type="button" class="btn btn-primary btn-xs">
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_QUICK_APPLY_BUTTON_LABEL')
   </button>
 @overwrite
@@ -286,6 +393,7 @@
       <div class="col-md-3">
         {{-- #7 "Save Job" Button --}}
         @yield('save_job')
+        @yield('save_job_modal')
       </div>
 
       <div class="col-md-3">

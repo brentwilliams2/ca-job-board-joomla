@@ -23,6 +23,20 @@
 ?>
 
 @section('header')
+  {{--
+    First row of input boxes for searches:
+      job title
+      location
+
+    Second row of combo box searches:
+      job type search box (part-time, etc.)
+      date posted search box (last day, last week, etc.)
+      easy apply included / easy apply only
+      salary range (glassdoor has nice histogram graph and option for "include jobs with no salary data")
+      more: modal with drop downs for distance, ratings, city, industry, company, size
+
+    Create job alert button
+  --}}
   <h1></h1>
 @show
 
