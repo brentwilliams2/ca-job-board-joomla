@@ -1,0 +1,6 @@
+* Commit Message: <type>(<scope>): <subject>
+* type is one of: feat, fix, docs, style, refactor, perf, test, or chore
+<body>
+
+<footer>
+* footer contains any information about breaking changes and references GitHub issues that this commit closes
