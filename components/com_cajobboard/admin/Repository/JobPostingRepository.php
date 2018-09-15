@@ -95,23 +95,23 @@ class JobPostingRepository extends DataModel
 
   /*
    * From save() method:
-   * 
+   *
    * Special note if you are using a custom buildQuery with JOINs or field aliases:
-   * 
+   *
    * You will need to override the recordDataToDatabaseData method. Make sure that you _remove_ or rename any fields
    * which do not exist in the table defined in $this->tableName. Otherwise Joomla! will not know how to insert /
    * update the data on the table and will throw an Exception denoting a database error. It is generally a BAD idea
    * using JOINs instead of relations. If unsure, use relations.
-   * 
+   *
    * From bind() method:
-   * 
+   *
 	 * Special note if you are using a custom buildQuery with JOINs or field aliases:
 	 * You will need to use addKnownField to let FOF know that the fields from your JOINs and the aliased fields should
 	 * be bound to the record data. If you are using aliased fields you may also want to override the
 	 * databaseDataToRecordData method. Generally, it is a BAD idea using JOINs instead of relations.
-   * 
+   *
    * From addKnownFields() method:
-   * 
+   *
    * Adds a known field to the DataModel. This is only necessary if you are using a custom buildQuery with JOINs or
 	 * field aliases. Please note that you need to make further modifications for bind() and save() to work in this
 	 * case. Please refer to the documentation blocks of these methods for more information. It is generally considered
@@ -122,16 +122,16 @@ class JobPostingRepository extends DataModel
 	 * If you do not feel confident with debugging FOF code STOP WHATEVER YOU'RE DOING and rethink your Model. Why are
 	 * you using a JOIN? If you want to filter the records by a field found in another table you can still use
 	 * relations and whereHas with a callback.
-   * 
+   *
    * From canDelete() method:
-   * 
+   *
    * Generic check for whether dependencies exist for this object in the db schema. This method is NOT used by
 	 * default. If you want to use it you will have to override your delete(), trash() or forceDelete() method,
 	 * or create an onBeforeDelete and/or onBeforeTrash event handler. Takes $join parameter: Any joins to foreign
    * table, used to determine if dependent records exist
-   * 
+   *
    * from recordDataToDatabaseData():
-   * 
+   *
 	 * If you are using custom knownFields to cater for table JOINs you need to override this method and _remove_ the
 	 * fields which do not belong to the table you are saving to. It's generally a bad idea using JOINs instead of
 	 * relations. You have been warned!
@@ -148,7 +148,7 @@ class JobPostingRepository extends DataModel
 	{
 		// Get a "select all" query
     $db = $this->getDbo();
-    
+
     // Set overriden browse view query
     $query = $db
       ->getQuery(true)
@@ -198,10 +198,7 @@ class JobPostingRepository extends DataModel
       // many-to-one FK to  #__cajobboard_organizations
       $this->belongsTo('hiringOrganization', 'Organizations@com_cajobboard', 'hiring_organization', 'organization_id');
 
-
-
-      
-  
+      // Need to add '#__cajobboard_saved_jobs' join table with 'saved' key per job
 
 
 
@@ -215,7 +212,11 @@ class JobPostingRepository extends DataModel
 
 
 
-      
+
+
+
+
+
     // Run the "before build query" hook and behaviours
     $this->triggerEvent('onBeforeBuildQuery', array(&$query, $overrideLimits));
 
@@ -232,7 +233,7 @@ class JobPostingRepository extends DataModel
 
     return $query;
   }
-  
+
 
 
 	/**
@@ -244,17 +245,17 @@ class JobPostingRepository extends DataModel
 	public function recordDataToDatabaseData()
 	{
     $copy = array_merge($this->recordData);
-    
+
 		foreach ($copy as $name => $value)
 		{
       $method = $this->container->inflector->camelize('set_' . $name . '_attribute');
-      
+
 			if (method_exists($this, $method))
 			{
 				$copy[$name] = $this->{$method}($value);
 			}
     }
-    
+
 		return $copy;
 	}
 
@@ -283,7 +284,7 @@ class JobPostingRepository extends DataModel
   * Necessary because PHP can't do runtime typecasts for class properties
   * and alternative syntax to construct array is ugly.
   */
-  private function getKnownFieldsArray() 
+  private function getKnownFieldsArray()
   {
     return array(
       'job_posting_id' => (object) [

@@ -49,6 +49,9 @@ class Html extends \FOF30\View\DataView\Html
 
     // Get component parameters
     $this->componentParams = \JComponentHelper::getParams('com_cajobboard');
+
+    // Load javascript file for Job Posting views
+    $this->addJavascriptFile('media://com_cajobboard/js/jobPostings.js');
   }
 
   /*

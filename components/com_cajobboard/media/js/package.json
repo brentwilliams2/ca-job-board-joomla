@@ -1,0 +1,14 @@
+{
+  "name": "calligraphic-job-board-joomla",
+  "version": "0.0.1",
+  "description": "",
+  "main": "frontend.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Kevin Brown",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "babel-eslint": "^9.0.0"
+  }
+}

@@ -35,8 +35,10 @@
   $logo_caption   = $item->jobLocation->Logo->caption;
   $employer_id    = $item->hiringOrganization->organization_id;
   $tags = new \JHelperTags;
-  $tags->getItemTags('com_cajobboard.jobpostings', $this->item->id);
+  $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
 
+  // @TODO set $saved to $this->saved field after the saved job join table is added to repository, and update in #7 "Saved Job" button
+  $saved = false;
 
   // @TODO "Share this" social media button on job
 ?>
@@ -101,121 +103,81 @@
   #7 - "Save Job" Button
 --}}
 @section('save_job')
-  <button type="button" class="btn btn-primary btn-xs btn-job-posting" data-toggle="modal" data-target="#save-job-{{ $job_id }}">
-    @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
-  </button>
+  @if ( $userId == 0 )
+    {{-- Guest user. Only a singleton login / register modal included on page. --}}
+    <button type="button" class="btn btn-primary btn-md btn-job-posting guest-save-job-button" data-toggle="modal" data-target="#login-or-register-modal">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
+    </button>
+
+  @elseif ( !$saved )
+    {{-- Logged-in user, job hasn't been saved --}}
+    <button type="button" id="registered-save-job-button-{{{ $job_id }}}" class="btn btn-primary btn-md btn-job-posting save-job-button">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
+    </button>
+    {{-- Hidden success button to show after saved --}}
+    {{-- @TODO: Add hyperlink to saved jobs list view --}}
+    <button type="button" id="job-saved-button-{{{ $job_id }}}" class="btn btn-primary btn-md btn-job-posting job-saved-button hidden" disabled="disabled">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_JOB_SAVED_BUTTON_LABEL')
+    </button>
+  @else
+    {{-- Logged-in user, job has already been saved --}}
+    {{-- @TODO: Add hyperlink to saved jobs list view --}}
+    <button type="button" class="btn btn-primary btn-md btn-job-posting job-saved-button" disabled="disabled">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_JOB_SAVED_BUTTON_LABEL')
+    </button>
+  @endif
 @overwrite
-
-{{--
-  #7 - "Save Job" Modal Form
---}}
-@section('save_job_modal')
-  <div class="save-job-modal modal fade" id="save-job-{{ $job_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">
-            @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_MODAL_TITLE')
-          </h4>
-        </div>
-        <div class="modal-body">
-          @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_MODAL_DESCRIPTION')
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            @lang('COM_CAJOBBOARD_CLOSE_BUTTON_LABEL')
-          </button>
-          <button type="button" class="btn btn-primary">
-            @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-@overwrite
-
-Change "save" button to "saved" and a link to saved jobs page
-
-**Indeed's save button:
-
-Save jobs and view them from any computer.
-
-You must sign in to save jobs: Sign in - Create account (it's free)
-
-**Muse save button pops up a sign up dialog:
-
-Sign up to join The Muse
-
-- Connect with Google
-- Connect with Linkedin
-- Connect with Facebook
-
-or
-
-- Sign up with email
-
-By signing up, you agree to The Muse Terms of Use and Privacy Policy
-
--- Sign in to your existing account.
-
-(no feedback on saved job, but shows logged in status on page)
-
-**Monster takes you to a registration page, and has add'l:
-
-Create your Account
-
-Already have a Monster account? Sign in
-
--- Continue with Facebook
-
--- Sign up with Google
-
-* We'll never share your email with anyone else.
-
-OR
-
-email
-
-password
-
-Must use 8-20 characters and one number or symbol.
-
-Email me career-related Monster updates and job opportunities. Yes No
-
-Monster will automatically email job postings that are relevant to you. You can unsubscribe on the Manage Saved Searches page or with the opt-out link in the email.
-
-By continuing you agree to Monster's Privacy Policy, Terms of Use and use of cookies.
-
 
 {{--
   #8 - "Email Job" Button
+
+  Javascript links a singleton modal into all buttons
 --}}
 @section('email_job')
-  <button type="button" class="btn btn-primary btn-xs">
-    @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
-  </button>
+  @if ( $userId == 0 )
+    {{-- Guest user. Only a singleton login / register modal included on page. --}}
+    <button type="button" class="btn btn-primary btn-md btn-job-posting guest-email-job-button" data-toggle="modal" data-target="#login-or-register-modal">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
+    </button>
+  @else
+    {{-- Logged-in user, show modal for emailing a job --}}
+    <button
+      type="button"
+      id="email-job-button-{{{ $job_id }}}"
+      class="btn btn-primary btn-xs email-job-button registered-email-job-button"
+      data-toggle="modal"
+      data-target="#email-a-job-modal"
+      data-jobid="{{{ $job_id }}}"
+    >
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
+    </button>
+  @endif
 @overwrite
-
-**Indeed:
-
-Your email
-
-Email to send to
-
-captcha
-JFactory::getApplication()->get('captcha');
-"site_language":"0", // Whether users can select front-end language preference when registering
-
-"email this job to yourself or a friend"
-
 
 {{--
   #9 - "Report Job" Button
+
+  Javascript links a singleton modal into all buttons
 --}}
 @section('report_job')
-  <button type="button" class="btn btn-warning btn-xs">
-    @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
-  </button>
+  @if ( $userId == 0 )
+    {{-- Guest user. Only a singleton login / register modal included on page. --}}
+    <button type="button" class="btn btn-primary btn-md btn-job-posting guest-email-job-button" data-toggle="modal" data-target="#login-or-register-modal">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
+    </button>
+  @else
+    {{-- Logged-in user, show modal for emailing a job --}}
+    <button
+      type="button"
+      id="report-job-button-{{{ $job_id }}}"
+      class="btn btn-primary btn-xs email-job-button report-job-button"
+      data-toggle="modal"
+      data-target="#report-job-modal"
+      data-jobid="{{{ $job_id }}}"
+    >
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
+    </button>
+  @endif
 @overwrite
 
 {{--

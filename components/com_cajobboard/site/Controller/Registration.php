@@ -35,7 +35,11 @@ class Registration extends Controller
 	{
     parent::__construct($container, $config);
 
-    $this->predefinedTaskList = ['default', 'RegisterWithEmail', 'RegisterWithGoogle', 'RegisterWithFacebook', 'RegisterWithLinkedin'];
+    $this->predefinedTaskList = [
+      'default',
+      'Register',
+      'RegisterWithSocialAccount'
+    ];
   }
 
 	/**
@@ -59,7 +63,7 @@ class Registration extends Controller
 	 *
 	 * @return  bool
 	 */
-	public function RegisterWithEmail()
+	public function Register()
 	{
     $RegistrationHelper = new RegistrationHelper($this->container);
 
@@ -86,38 +90,14 @@ class Registration extends Controller
   }
 
 	/**
-	 * Register user with the user's Google account.
-	 *
-	 * @param   string  $task  The task to execute
+	 * Register user with a social media account.
 	 *
 	 * @return  bool
 	 */
-	public function RegisterWithGoogle()
+	public function RegisterWithSocialAccount()
 	{
+    JLog::add('Registration controller, RegisterWithSocialAccount() method called', JLog::DEBUG, 'cajobboard');
 
-  }
-
-	/**
-	 * Register user with the user's Facebook account.
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
-	public function RegisterWithFacebook()
-	{
-
-  }
-
-	/**
-	 *Register user with the user's Linkedin account.
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
-	public function RegisterWithLinkedin()
-	{
-
+    return true;
   }
 }

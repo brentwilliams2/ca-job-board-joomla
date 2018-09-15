@@ -27,11 +27,11 @@ defined('_JEXEC') or die;
 class JobPosting extends DataController
 {
 	/**
-	 * Overridden. Limit the tasks we're allowed to execute.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
+	* Overridden. Limit the tasks we're allowed to execute.
+	*
+	* @param   Container $container
+	* @param   array     $config
+	*/
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
@@ -39,43 +39,91 @@ class JobPosting extends DataController
     $this->predefinedTaskList = ['browse', 'read'];
   }
 
+	/**
+	* Save a job for a user
+	*
+	* @return  bool
+	*/
+	public function saveJob()
+	{
+    // @TODO: save job id to save join table (saved jobs)
+
+    /* Return something like this:
+      {
+        "status": "error", // or "success"
+        "message": "Job doesn't exist"
+      }
+    */
+    JLog::add('JobPosting controller, saveJob() method called', JLog::DEBUG, 'cajobboard');
+
+		return true;
+  }
+
 
 	/**
-	 * Runs before executing a task in the controller, overriden to keep from ACL check
-   * with no area set. Seems like bug inController triggerEvent() method
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
+	* Send a job to user's email
+	*
+	* @return  bool
+	*/
+	public function sendJobToEmail()
+	{
+    // @TODO: send the job to email
+
+    /* Return something like this:
+      {
+        "status": "error", // or "success"
+        "message": "Job doesn't exist"
+      }
+    */
+    JLog::add('JobPosting controller, sendJobToEmail() method called', JLog::DEBUG, 'cajobboard');
+
+		return true;
+  }
+
+
+	/**
+	* Report a job for TOS violations
+	*
+	* @return  bool
+	*/
+	public function reportJob()
+	{
+    // @TODO: message administrators of the report
+
+    /* Return something like this:
+      {
+        "status": "error", // or "success"
+        "message": "Job doesn't exist"
+      }
+    */
+    JLog::add('JobPosting controller, reportJob() method called', JLog::DEBUG, 'cajobboard');
+
+		return true;
+  }
+
+
+	/**
+	* Runs before executing a task in the controller, overriden to keep from ACL check
+  * with no area set. Seems like bug inController triggerEvent() method
+	*
+	* @param   string  $task  The task to execute
+	*
+	* @return  bool
+	*/
 	public function onBeforeExecute($task)
 	{
     // Do any ACL? This runs for *any* task, even public ones
 		return true;
   }
 
-
 	/**
-	 * Overriden to keep public views having ACL checks ran (should just use Joomla! access control).
-	 *
-	 * @param   string  $area  The task being checked for ACL
-	 *
-	 * @return  bool
-	 */
-  protected function checkACL($area)
-  {
-     return ($area == 'read') ? true : parent::checkACL($area);
-  }
-
-
-	/**
-	 * Runs before executing a task in the controller, overriden to keep from ACL check
-   * with no area set. Seems like bug inController triggerEvent() method
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
+	* Runs before executing a task in the controller, overriden to keep from ACL check
+  * with no area set. Seems like bug inController triggerEvent() method
+	*
+	* @param   string  $task  The task to execute
+	*
+	* @return  bool
+	*/
 	public function onBeforeRead()
 	{
     // Do any ACL? This runs for *any* task, even public ones
@@ -83,3 +131,15 @@ class JobPosting extends DataController
 		return true;
   }
 }
+
+	/**
+	* Overriden to keep public views having ACL checks ran (should just use Joomla! access control).
+	*
+	* @param   string  $area  The task being checked for ACL
+	*
+	* @return  bool
+	*/
+  protected function checkACL($area)
+  {
+     return ($area == 'read') ? true : parent::checkACL($area);
+  }

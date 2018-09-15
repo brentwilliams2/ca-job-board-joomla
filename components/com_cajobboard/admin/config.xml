@@ -31,6 +31,19 @@
       label="COM_CAJOBBOARD_JOB_POSTINGS_PAGINATION_LIMIT_LABEL"
       description="COM_CAJOBBOARD_JOB_POSTINGS_PAGINATION_LIMIT_DESC"
     />
+  </fieldset>
+
+  <fieldset
+		name="login"
+		label="COM_CAJOBBOARD_LOGIN_LABEL"
+		description="COM_CAJOBBOARD_LOGIN_DESC"
+	>
+    <field
+      type="spacer"
+      name="email-registration-options"
+      class="text"
+      label="COM_CAJOBBOARD_REGISTRATION_EMAIL_OPTIONS_LABEL"
+    />
 
     <field
       name="registration_email_placeholder"
@@ -44,13 +57,27 @@
       default="yourname@provider.com"
     />
 
-  </fieldset>
+    <field
+      name="terms_of_use"
+      type="menuitem"
+      label="COM_CAJOBBOARD_REGISTRATION_TOS_LABEL"
+      description="COM_CAJOBBOARD_REGISTRATION_TOS_DESC"
+    />
 
-  <fieldset
-		name="social_login"
-		label="COM_CAJOBBOARD_SOCIAL_LOGIN_LABEL"
-		description="COM_CAJOBBOARD_SOCIAL_LOGIN_DESC"
-	>
+    <field
+      name="privacy_policy"
+      type="menuitem"
+      label="COM_CAJOBBOARD_REGISTRATION_PRIVACY_POLICY_LABEL"
+      description="COM_CAJOBBOARD_REGISTRATION_PRIVACY_POLICY_DESC"
+    />
+
+    <field
+      type="spacer"
+      name="social-login-and-registration-options"
+      class="text"
+      label="COM_CAJOBBOARD_SOCIAL_LOGIN_AND_REGISTRATION_OPTIONS_LABEL"
+    />
+
     <field
       name="google_login_enabled"
       type="radio"
