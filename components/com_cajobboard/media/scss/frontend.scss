@@ -53,13 +53,18 @@
   }
 }
 
+// Set larger font size for SVG output from rater.js star rating module
+.rating {
+  font-size: 1.5em; /* 30px/20=1.5em */
+}
+
 //-----------------------------------------------------------------------------
-// JobPostings ViewTemplate - list view - default.blade.php
+// JobPostings ViewTemplate - list view                      default.blade.php
 //-----------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------
-// JobPostings ViewTemplate - list view item - default_item.blade.php
+// JobPostings ViewTemplate - list view item            default_item.blade.php
 //-----------------------------------------------------------------------------
 
 // The container for the entire job posting item in list view
@@ -120,13 +125,51 @@
   border-radius: 5px;
 }
 
+// Classes for button classes
+.save-job-button,
+.job-saved-button,
+.guest-email-job-button,
+.registered-email-job-button,
+.guest-report-job-button,
+.report-job-button{
+  margin-left: 15px !important;
+}
+
 
 //-----------------------------------------------------------------------------
-// JobPostings ViewTemplate - save job modal - save_job_modal.blade.php
+// JobPostings ViewTemplate - Email a Job modal              default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Email Job" button pushed
+#email-a-job-modal {
+
+}
+
+#submit-job-to-email-button {
+  margin-left: 5px !important;
+}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Report Job modal               default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Report Job" button pushed
+#report-job-modal {
+
+}
+
+#submit-job-report-button {
+  margin-left: 5px !important;
+}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Save Job modal                 default.blade.php
 //-----------------------------------------------------------------------------
 
 // Modal dialog shown when "Save Job" button pushed
-.save-job-modal {
+#save-job-modal {
 
 }
 
@@ -137,6 +180,35 @@
 .save-job-right-column {
   border-left: 1px;
 }
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Login or Register modal        default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Save Job" button is pushed for guest user
+#login-or-register-modal {
+
+}
+
+
+//-----------------------------------------------------------------------------
+// Persons ViewTemplate - Login form                           login.blade.php
+//-----------------------------------------------------------------------------
+
+#email-login-form {
+
+}
+
+
+//-----------------------------------------------------------------------------
+// Registrations ViewTemplate - Register modal              register.blade.php
+//-----------------------------------------------------------------------------
+
+#email-registration-form {
+
+}
+
 
 //-----------------------------------------------------------------------------
 // Icons

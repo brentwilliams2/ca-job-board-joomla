@@ -13,7 +13,7 @@
   // Framework classes
   use FOF30\Utils\FEFHelper\BrowseView;
   use FOF30\Utils\SelectOptions;
-  use JUri;
+  //use JUri;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -24,6 +24,8 @@
 
   // $dashboardID = $componentParams->get('dashboardID');
 ?>
+
+@js('media:com_cajobboard/js/rater.min.js')
 
 @section('header')
     <h1>This is the item view header</h1>

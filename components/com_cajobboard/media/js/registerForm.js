@@ -12,7 +12,7 @@
  *
  */
 
-/*global $ validationHelper validationUI*/
+/*global $ jQuery validationHelper validationUI*/
 
 /**
  * Register modules in this file with global onload handler
@@ -92,12 +92,12 @@ const RegisterForm = (function($) {
 
     // bind all of the register-with-social-account buttons to a handler
     elementRef.socialButtons.forEach( function(element) {
-      element.click( function(event) { registerWithSocial(event) } );
+      element.click( function(event) { registerWithSocial(event); } );
       element.keyup( function(event) { if (event.keyCode == 13) registerWithSocial(event); } );
     });
 
     // event listeners for email input box
-    const emailListeners = function(event) { checkEmail(elementRef.emailInput.val(), event) };
+    const emailListeners = function(event) { checkEmail(elementRef.emailInput.val(), event); };
     elementRef.emailInput.focusout( function(event) { emailListeners(event); } );
     elementRef.emailInput.click( function(event) { emailListeners(event); } );
     elementRef.emailInput.keyup( function(event) { emailListeners(event); } );
@@ -149,7 +149,7 @@ const RegisterForm = (function($) {
   * @param  string  password  The password to validate
   * @param  object  params    An object setting validation parameters
   *
-  * @return  bool|object  True if the password is valid, or a JQuery DOM object with the error message
+  * @return  bool|object  True if the password is valid, or a jQuery DOM object with the error message
   */
   const checkPassword = function(password, event) {
     // don't validate password until user has left input box for first time
@@ -184,7 +184,7 @@ const RegisterForm = (function($) {
   // @TODO: duplicating the getErrorMessageElement() method here and in jobPostings.js
 
   /**
-  * Assemble an HTML string for the error message, for use with the JQuery() constructor
+  * Assemble an HTML string for the error message, for use with the jQuery() constructor
   *
   * @return string  A string containing the HTML of the error message element
   */
@@ -195,7 +195,7 @@ const RegisterForm = (function($) {
   /**
   * Register a user with email and password
   *
-  * @return object  A JQuery element of the error message
+  * @return object  A jQuery element of the error message
   */
   const register = function (event) {
     event.preventDefault();
@@ -204,8 +204,8 @@ const RegisterForm = (function($) {
       type: 'post',
       url: '/index.php?controller=Registration&task=Register',
       data: elementRef.emailRegisterForm.serialize(),
-      success: function(results) {
-        // do something on success
+      success: function() {
+        // @TODO do something on success of registering new user with server by email
       }
     });
   };
@@ -213,7 +213,7 @@ const RegisterForm = (function($) {
   /**
   * Register a user with a social account
   *
-  * @return object  A JQuery element of the error message
+  * @return object  A jQuery element of the error message
   */
   const registerWithSocial = function (event) {
     event.preventDefault();
@@ -222,8 +222,8 @@ const RegisterForm = (function($) {
       type: 'post',
       // register with social account buttons should have a 'data-network' data attribute with the name of the social network
       url: '/index.php?controller=Registration&task=RegisterWithSocialAccount&network=' . event.target.dataset.network,
-      success: function(results) {
-        // do something on success
+      success: function() {
+        // @TODO do something on success of registration with social account
       }
     });
   };
@@ -231,4 +231,4 @@ const RegisterForm = (function($) {
   return {
     init: init,
   };
-})(JQuery);
+})(jQuery);

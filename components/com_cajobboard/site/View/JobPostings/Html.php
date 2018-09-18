@@ -15,7 +15,7 @@ namespace Calligraphic\Cajobboard\Site\View\JobPostings;
 use FOF30\Container\Container;
 use JComponentHelper;
 use JFactory;
-use Jlog;
+//use Jlog;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -27,9 +27,16 @@ class Html extends \FOF30\View\DataView\Html
 	/**
 	 * The component-level parameters stored in #__extensions by com_config
 	 *
-	 * @var   \JRegistry
+	 * @var  \JRegistry
 	 */
-	protected $componentParams;
+  protected $componentParams;
+  
+	/**
+	 * The aggregate reviews data for each job posting
+	 *
+	 * @var  array  Indexed array of PHP objects containing aggregate review data
+   */
+   protected $aggregateReviews;
 
 	/**
 	 * Overridden. Load view-specific language file.
@@ -61,19 +68,16 @@ class Html extends \FOF30\View\DataView\Html
    */
 	protected function onBeforeBrowse()
 	{
-    JLog::add('onBeforeBrowse() in Html View called', JLog::DEBUG, 'cajobboard');
+    $this->addJavascriptFile('media://com_cajobboard/js/rater.min.js');
 
 		// Create the lists object
     $this->lists = new \stdClass();
 
-		// Load the model
+		// Load the Job Postings model, and set to persist state in the session
 		/** @var DataModel $model */
-    $model = $this->getModel();
+    $model = $this->getModel()->savestate(1);
 
-		// We want to persist the state in the session
-    $model->savestate(1);
-
-    // Assign items to the view
+    // Relations to eager-load
     $eagerLoadModels = array(
       'hiringOrganization',
       'Places'
@@ -82,9 +86,10 @@ class Html extends \FOF30\View\DataView\Html
     // Load and populate state in the model, with eager-loaded models
     $this->items = $model->with($eagerLoadModels)->get(false);
 
+    // Get a count of total items in the model to set pagination parameters
     $this->itemCount = $model->count();
 
-		// Display limits
+		// Number of items per page for pagination
     $displayLimit = $this->componentParams->get('job_postings_pagination_limit', 20);
 
 		$this->lists->limitStart = $model->getState('limitstart', 0, 'int');
@@ -104,8 +109,44 @@ class Html extends \FOF30\View\DataView\Html
 			$this->lists->order_Dir = strtolower($this->lists->order_Dir);
     }
 
-		// Pagination
+		// Set pagination
     $this->pagination = new \JPagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
+
+    // @TODO: Move to repository as a join
+    // Aggregate Review data for each job posting item
+    $joinIds = array();
+
+    foreach ($this->items as $item)
+    {
+      array_push($joinIds, $item->job_posting_id);
+    }
+
+    $db = $this->container->db;
+
+    $joinIdString = '(' . implode(', ', array_map(function($item) use ($db) { return $item; }, $joinIds)) . ')';
+    // '`1`, `2`'
+
+    // Create a new query object.
+    $query = $db->getQuery(true);
+
+    $query
+      ->select($db->qn(array(
+        'job_postings.job_posting_id',
+        'job_postings.hiring_organization',
+        'aggregate_ratings.item_reviewed',
+        'aggregate_ratings.rating_count',
+        'aggregate_ratings.review_count',
+        'aggregate_ratings.rating_value'
+      )))
+      ->from($db->qn('#__cajobboard_job_postings', 'job_postings'))
+      ->leftJoin($db->qn('#__cajobboard_employer_aggregate_ratings', 'aggregate_ratings') . ' ON (' . $db->qn('job_postings.job_posting_id') . ' = ' . $db->qn('aggregate_ratings.item_reviewed') . ')')
+      ->where($db->qn('job_posting_id') . ' IN ' . $joinIdString);
+
+    // Reset the query using our newly populated query object.
+    $db->setQuery($query);
+
+    // Load the results as a list of stdClass objects
+    $this->aggregateReviews = $db->loadObjectList();
   }
 
   /*

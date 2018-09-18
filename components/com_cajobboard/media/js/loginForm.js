@@ -12,7 +12,7 @@
  *
  */
 
-/*global $*/
+/*global $ jQuery*/
 
 /**
  * Register modules in this file with global onload handler
@@ -75,7 +75,7 @@ const LoginForm = (function($) {
 
     // bind all of the login-with-social-account buttons to a handler
     elementRef.socialButtons.forEach( function(element) {
-      element.click( function(event) { loginWithSocial(event) } );
+      element.click( function(event) { loginWithSocial(event); } );
       element.keyup( function(event) { if (event.keyCode == 13) loginWithSocial(event); } );
     });
 
@@ -99,7 +99,7 @@ const LoginForm = (function($) {
   /**
   * Login a user with email and password
   *
-  * @return object  A JQuery element of the error message
+  * @return object  A jQuery element of the error message
   */
   const login = function (event) {
     event.preventDefault();
@@ -108,8 +108,8 @@ const LoginForm = (function($) {
       type: 'post',
       url: '/index.php?controller=Person&task=Login',
       data: elementRef.emailLoginForm.serialize(),
-      success: function(results) {
-        // do something on success
+      success: function() {
+        // @TODO: do something on success of logging user in, this probably redirects?
       }
     });
   };
@@ -117,7 +117,7 @@ const LoginForm = (function($) {
   /**
   * Login a user with a social account
   *
-  * @return object  A JQuery element of the error message
+  * @return object  A jQuery element of the error message
   */
   const loginWithSocial = function (event) {
     event.preventDefault();
@@ -126,8 +126,8 @@ const LoginForm = (function($) {
       type: 'post',
       // login with social account buttons should have a 'data-network' data attribute with the name of the social network
       url: '/index.php?controller=Person&task=LoginWithSocialAccount&network=' . event.target.dataset.network,
-      success: function(results) {
-        // do something on success
+      success: function() {
+        // @TODO do something on success of social login, this probably redirects?
       }
     });
   };
@@ -135,4 +135,4 @@ const LoginForm = (function($) {
   return {
     init: init,
   };
-})(JQuery);
+})(jQuery);

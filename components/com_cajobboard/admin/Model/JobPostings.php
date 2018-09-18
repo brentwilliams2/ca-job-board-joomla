@@ -65,8 +65,8 @@ use JLog;
  * @property string   $skills                     Skills required to fulfill this role
  * @property string   $special_commitments        Any special commitments associated with this job posting. Valid entries include VeteranCommit, MilitarySpouseCommit, etc.
  * @property string   $work_hours                 The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).
- * @property int      $jobLocation                A (typically single) geographic location associated with the job position.
- * @property int      $hiringOrganization         Organization offering the job position. FK to #__cajobboard_organizations
+ * @property Places   $jobLocation                A (typically single) geographic location associated with the job position.
+ * @property Organizations  $hiringOrganization   Organization offering the job position. FK to #__cajobboard_organizations
  * SCHEMA: JobPosting (relevantOccupation) -> Occupation (name)
  * @property string   $relevant_occupation_name   The job title.
  * SCHEMA: JobPosting (baseSalary) -> MonetaryAmount
@@ -80,9 +80,9 @@ use JLog;
  * @property string   $identifier                  Internal identifier used by the employer for this job posting.
  * @property string   $sameAs                      URL of the job posting on the employer\s website.
  * SCHEMA: https://calligraphic.design/schema/EmploymentType
- * @property int      $employmentType             Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
+ * @property JobEmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
- * @property int      $occupationalCategory          The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
+ * @property OccupationalCategories  $occupationalCategory  The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
  *
  * Filters / state:
  *

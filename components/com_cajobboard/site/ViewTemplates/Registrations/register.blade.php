@@ -11,13 +11,11 @@
   */
 
   // Framework classes
-  use JUri;
-  use JRoute;
 
   // no direct access
   defined('_JEXEC') or die;
 
-  params = $this->getPageParams();
+  $params = $this->getPageParams();
 
   // parameters for email input box
   $emailPlaceholder       = $params->get('registration_email_placeholder');

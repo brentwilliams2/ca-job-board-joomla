@@ -65,6 +65,22 @@ class Registration extends Controller
 	 */
 	public function Register()
 	{
+    /* Check captcha validity
+
+      $input = JRequest::get('post');
+
+      JPluginHelper::importPlugin('captcha');
+
+      $dispatcher = JDispatcher::getInstance();
+
+      $result = $dispatcher->trigger('onCheckAnswer',$input['recaptcha_response_field']);
+
+      if(!$result[0]){
+          die('Invalid Captcha Code');
+      }
+
+    */
+
     $RegistrationHelper = new RegistrationHelper($this->container);
 
     $model = $this->getModel();
@@ -79,7 +95,7 @@ class Registration extends Controller
         $model->getState('password')
       );
     }
-    catch($e)
+    catch(Exception $e)
     {
       $this->setRedirect('index.php?option=com_users&view=registration', $e, 'notice');
     }

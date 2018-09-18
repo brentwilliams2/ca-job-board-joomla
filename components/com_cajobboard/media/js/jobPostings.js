@@ -8,15 +8,17 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-/*global $*/
+/*global $ jQuery validationHelper validationUI*/
 
 /**
  * Register modules in this file with global onload handler
  */
-$(document).ready(function() {
+jQuery(document).ready(function() {
   toggleLoginRegister.init();
   saveJobsButton.init();
   emailJob.init();
+  reportJob.init();
+  starRating.init();
 });
 
 // SINGLETON FORMS / MODALS
@@ -73,25 +75,25 @@ const toggleLoginRegister = (function($) {
 
   const toggleTo = function(state) {
     switch (state) {
-      case 'login':
-        elementRef.registerForm.addClass('hidden');
-        elementRef.loginForm.removeClass('hidden')
-        break;
+    case 'login':
+      elementRef.registerForm.addClass('hidden');
+      elementRef.loginForm.removeClass('hidden');
+      break;
 
-      case 'registration':
-        elementRef.loginForm.addClass('hidden');
-        elementRef.registerForm.removeClass('hidden')
-        break;
+    case 'registration':
+      elementRef.loginForm.addClass('hidden');
+      elementRef.registerForm.removeClass('hidden');
+      break;
 
-      default:
-        console.log('Error in toggleTo method of jobPostings/toggleLoginRegister, invalid state parameter passed:' + state);
+    default:
+      throw new Error('Error in toggleTo method of jobPostings/toggleLoginRegister, invalid state parameter passed:' + state);
     }
   };
 
   return {
     init: init,
   };
-})(JQuery);
+})(jQuery);
 
 
 // HANDLERS FOR COLLECTIONS OF ELEMENTS ("Save Job", "Email Job", and "Report Job" buttons on every job posting in list view / job posting in item view)
@@ -158,13 +160,11 @@ const saveJobsButton = (function($) {
           setButtonToSaved(buttonID);
         }
         if (responseText.status === 'error') {
-          console.log('Error status in saveJob XHR, server response: ' + responseText.message)
-          setButtonToSaved(buttonID);
+          throw new Error('Error status in saveJob XHR, server response: ' + responseText.message);
         }
       })
       .fail(function(jqXHR, textStatus) {
-        console.log('Fail handler in saveJob XHR, server response: ' + textStatus)
-        setButtonToSaved(buttonID);
+        throw new Error('Fail handler in saveJob XHR, server response: ' + textStatus);
       });
   };
 
@@ -182,7 +182,7 @@ const saveJobsButton = (function($) {
   return {
     init: init,
   };
-})(JQuery);
+})(jQuery);
 
 
 /**
@@ -246,7 +246,7 @@ const emailJob = (function($) {
    * Set focus on email input box when modal is shown, and set the hidden input to the
    * job id of the button that triggered showing the email-a-job modal
    *
-   * @param  string  event  The JQuery event trigger this method
+   * @param  string  event  The jQuery event trigger this method
    */
   const showEmailJobModal= function (event) {
     // HTML5 autofocus has no effect in Bootstrap modals
@@ -289,8 +289,7 @@ const emailJob = (function($) {
     if (!isValid) {
       // make email input box look nice since it's valid
       validationUI.setSuccess(elementRef.emailInput);
-      // store valid email address
-      params.emailEntered = email;
+
     } else {
       // email address is invalid, show error border on email input box
       validationUI.setFailure(elementRef.emailInput, getErrorMessageElement(isValid + 'Message'));
@@ -300,7 +299,7 @@ const emailJob = (function($) {
   // @TODO: duplicating the getErrorMessageElement method here and in registrationForm.js
 
   /**
-  * Assemble an HTML string for the error message, for use with the JQuery() constructor
+  * Assemble an HTML string for the error message, for use with the jQuery() constructor
   *
   * @return string  A string containing the HTML of the error message element
   */
@@ -320,8 +319,8 @@ const emailJob = (function($) {
       type: 'post',
       url: '/index.php?controller=JobPosting&task=sendJobToEmail',
       data: elementRef.emailLoginForm.serialize(),
-      success: function(results) {
-        // do something on success
+      success: function() {
+        // @TODO: do something on success of sending job to email to server
       }
     });
   };
@@ -329,7 +328,7 @@ const emailJob = (function($) {
   return {
     init: init,
   };
-})(JQuery);
+})(jQuery);
 
 
 /**
@@ -355,7 +354,7 @@ const reportJob = (function($) {
   * Central entry point to the module
   */
   const init = function() {
-    // reference toreport-a-job modal
+    // reference to report-a-job modal
     elementRef.reportJobModal = $('#report-job-modal');
     // reference to form inside report-a-job modal
     elementRef.reportJobForm = $('#report-a-job-form');
@@ -383,7 +382,7 @@ const reportJob = (function($) {
    * Set focus on report job text box when modal is shown, and set the hidden input to the
    * job id of the button that triggered showing the email-a-job modal
    *
-   * @param  string  event  The JQuery event trigger this method
+   * @param  string  event  The jQuery event trigger this method
    */
   const showReportJobModal= function (event) {
     // HTML5 autofocus has no effect in Bootstrap modals
@@ -419,8 +418,8 @@ const reportJob = (function($) {
       type: 'post',
       url: '/index.php?controller=JobPosting&task=reportJob',
       data: elementRef.reportJobForm.serialize(),
-      success: function(results) {
-        // do something on success
+      success: function() {
+        // @TODO do something on success of reporting job to server
       }
     });
   };
@@ -428,4 +427,54 @@ const reportJob = (function($) {
   return {
     init: init,
   };
-})(JQuery);
+})(jQuery);
+
+
+/**
+ * Initialize rater.js star-rating module
+ *
+ * @return  method  init  Initialize the rating module
+ */
+const starRating = (function($) {
+  /**
+  * Store references to all DOM elements used in this module
+  *
+  * @param  object  elementRefs  References to all elements for this module
+  */
+  const elementRef = {
+    ratingElements: null
+  };
+
+  /**
+  * Options for star ratings
+  */
+  const options = {
+    max_value: 5,
+    step_size: 0.5
+  }
+
+  /**
+  * Central entry point to the module
+  */
+  const init = function() {
+    // reference to all elements that should have star rating applied
+    elementRef.ratingElements = $('.rating');
+
+    applyStarRatings();
+  };
+
+  /**
+   * Set focus on report job text box when modal is shown, and set the hidden input to the
+   * job id of the button that triggered showing the email-a-job modal
+   *
+   * @param  string  event  The jQuery event trigger this method
+   */
+  const applyStarRatings = function () {
+    // HTML5 autofocus has no effect in Bootstrap modals
+    elementRef.ratingElements.rate(options);
+  };
+
+  return {
+    init: init,
+  };
+})(jQuery);

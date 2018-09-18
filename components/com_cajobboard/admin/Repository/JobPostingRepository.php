@@ -200,22 +200,9 @@ class JobPostingRepository extends DataModel
 
       // Need to add '#__cajobboard_saved_jobs' join table with 'saved' key per job
 
+      // Need to add jobLocation->address__address_region, which is a join
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      // Need to add employer_aggregate_reviews as a join, and remove query from Job Postings onAfterBrowse method
 
     // Run the "before build query" hook and behaviours
     $this->triggerEvent('onBeforeBuildQuery', array(&$query, $overrideLimits));

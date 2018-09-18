@@ -13,34 +13,44 @@
   // Framework classes
   use FOF30\Utils\FEFHelper\BrowseView;
   use FOF30\Utils\SelectOptions;
-  use JUri;
-  //use Jlog;
 
   // no direct access
   defined('_JEXEC') or die;
 
-  // Plural translation strings:
-  // @plural('COM_USERS_N_USERS_ACTIVATED', count($ids))
-  // COM_USERS_N_USERS_ACTIVATED_0="No users activated"
-  // COM_USERS_N_USERS_ACTIVATED_1="User successfully activated"
-  // COM_USERS_N_USERS_ACTIVATED="%s Users successfully activated"
+  // get component configuration
+  $params = $this->container->params;
 
-  // Translation string substitution:
-  // @sprintf('STRING_WITH_NUMBERS_IN_IT', $num1, $num2, $num3)
-  // STRING_WITH_NUMBERS_IN_IT="First %d, second %d, third %d"
+  // current user ID
+  $userId = $this->container->platform->getUser()->id;
 
+  // model data fields
   $job_id         = $item->job_posting_id;
   $job_title      = $item->title;
   $logo_source    = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
   $logo_caption   = $item->jobLocation->Logo->caption;
   $employer_id    = $item->hiringOrganization->organization_id;
-  $tags = new \JHelperTags;
+  $tags = new JHelperTags;
   $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
 
-  // @TODO set $saved to $this->saved field after the saved job join table is added to repository, and update in #7 "Saved Job" button
+  // @TODO: set $saved to $this->saved field after the saved job join table is added to repository, and update in #7 "Saved Job" button
   $saved = false;
 
-  // @TODO "Share this" social media button on job
+  // @TODO: "Share this" social media button on job
+
+  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
+  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
+
+  // @TODO: move all code for aggregate reviews to Job Postings repository
+  $aggregateReview = new stdClass();
+
+  foreach ( $this->aggregateReviews as $aggregateReviewIteratee )
+  {
+    if ($aggregateReviewIteratee->job_posting_id == $job_id)
+    {
+      $aggregateReview = $aggregateReviewIteratee;
+      break;
+    }
+  }
 ?>
 
 {{--
@@ -88,8 +98,8 @@
   #5 - Job Location, link to map slider via Javascript
 --}}
 @section('job_location')
-  <p>Location</p>
-  <p>{{-- $item->jobLocation --}}</p>
+  <p>{{{ $item->jobLocation->address__address_locality }}}</p>
+  {{-- @TODO need to add $item->jobLocation->address__address_region after repository finished --}}
 @overwrite
 
 {{--
@@ -105,24 +115,24 @@
 @section('save_job')
   @if ( $userId == 0 )
     {{-- Guest user. Only a singleton login / register modal included on page. --}}
-    <button type="button" class="btn btn-primary btn-md btn-job-posting guest-save-job-button" data-toggle="modal" data-target="#login-or-register-modal">
+    <button type="button" class="btn btn-primary btn-xs btn-job-posting guest-save-job-button" data-toggle="modal" data-target="#login-or-register-modal">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
     </button>
 
   @elseif ( !$saved )
     {{-- Logged-in user, job hasn't been saved --}}
-    <button type="button" id="registered-save-job-button-{{{ $job_id }}}" class="btn btn-primary btn-md btn-job-posting save-job-button">
+    <button type="button" id="registered-save-job-button-{{{ $job_id }}}" class="btn btn-primary btn-xs btn-job-posting save-job-button">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
     </button>
     {{-- Hidden success button to show after saved --}}
     {{-- @TODO: Add hyperlink to saved jobs list view --}}
-    <button type="button" id="job-saved-button-{{{ $job_id }}}" class="btn btn-primary btn-md btn-job-posting job-saved-button hidden" disabled="disabled">
+    <button type="button" id="job-saved-button-{{{ $job_id }}}" class="btn btn-primary btn-xs btn-job-posting job-saved-button hidden" disabled="disabled">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_JOB_SAVED_BUTTON_LABEL')
     </button>
   @else
     {{-- Logged-in user, job has already been saved --}}
     {{-- @TODO: Add hyperlink to saved jobs list view --}}
-    <button type="button" class="btn btn-primary btn-md btn-job-posting job-saved-button" disabled="disabled">
+    <button type="button" class="btn btn-primary btn-xs btn-job-posting job-saved-button" disabled="disabled">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_JOB_SAVED_BUTTON_LABEL')
     </button>
   @endif
@@ -136,7 +146,7 @@
 @section('email_job')
   @if ( $userId == 0 )
     {{-- Guest user. Only a singleton login / register modal included on page. --}}
-    <button type="button" class="btn btn-primary btn-md btn-job-posting guest-email-job-button" data-toggle="modal" data-target="#login-or-register-modal">
+    <button type="button" class="btn btn-primary btn-xs btn-job-posting guest-email-job-button" data-toggle="modal" data-target="#login-or-register-modal">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
     </button>
   @else
@@ -144,7 +154,7 @@
     <button
       type="button"
       id="email-job-button-{{{ $job_id }}}"
-      class="btn btn-primary btn-xs email-job-button registered-email-job-button"
+      class="btn btn-primary btn-xs btn-job-posting registered-email-job-button"
       data-toggle="modal"
       data-target="#email-a-job-modal"
       data-jobid="{{{ $job_id }}}"
@@ -162,7 +172,7 @@
 @section('report_job')
   @if ( $userId == 0 )
     {{-- Guest user. Only a singleton login / register modal included on page. --}}
-    <button type="button" class="btn btn-primary btn-md btn-job-posting guest-email-job-button" data-toggle="modal" data-target="#login-or-register-modal">
+    <button type="button" class="btn btn-primary btn-xs btn-job-posting guest-report-job-button" data-toggle="modal" data-target="#login-or-register-modal">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
     </button>
   @else
@@ -170,10 +180,10 @@
     <button
       type="button"
       id="report-job-button-{{{ $job_id }}}"
-      class="btn btn-primary btn-xs email-job-button report-job-button"
+      class="btn btn-primary btn-xs btn-job-posting report-job-button"
       data-toggle="modal"
       data-target="#report-job-modal"
-      data-jobid="{{{ $job_id }}}"
+      data-jobid="{{ $job_id }}"
     >
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
     </button>
@@ -181,50 +191,61 @@
 @overwrite
 
 {{--
-  #10 - Job Rating, e.g. 1-5 stars and link to Reviews page
+  #10 - Employer Rating, e.g. 1-5 stars and link to Reviews page
 --}}
-@section('job_rating')
-  <span>Job Rating</span>
+@section('employer_rating')
+  <a href="/index.php?view=Employers&task=read&id={{ $aggregateReview->hiring_organization }}">
+    <div class="rating" data-rate-value={{ $aggregateReview->rating_value }}></div>
+  </a>
 @overwrite
 
 {{--
-  #11 - Job Reviews, e.g. number of reviews and link to Reviews page
+  #11 - Employer Reviews, e.g. number of reviews and link to Reviews page
 --}}
-@section('job_reviews')
-  <span>Job Reviews</span>
+@section('employer_reviews')
+  <a href="/index.php?view=Employers&task=read&id={{ $aggregateReview->hiring_organization }}">
+    @plural('COM_CAJOBBOARD_JOB_POSTINGS_REVIEW_COUNT', $aggregateReview->review_count)
+  </a>
 @overwrite
 
 {{--
   #12 - "Quick Apply" Button
 --}}
 @section('quick_apply')
-  <button type="button" class="btn btn-primary btn-xs">
-    @lang('COM_CAJOBBOARD_JOB_POSTINGS_QUICK_APPLY_BUTTON_LABEL')
-  </button>
+  <a href="/index.php?view=Applications&task=edit&id={{ $job_id }}">
+    <button type="button" class="btn btn-primary btn-xs">
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_QUICK_APPLY_BUTTON_LABEL')
+    </button>
+  </a>
 @overwrite
 
 {{--
   #13 - Date Job Posted, format adjustable in parameters
 --}}
 @section('date_job_posted')
-  <span>Date Posted</span>
-  <p>{{-- $item->created_on --}}</p>
-  <p>{{-- $item->modified_on --}}</p>
+  <span>
+    @lang('COM_CAJOBBOARD_JOB_POSTINGS_POSTED_TIME_AGO')
+    <?php echo $JobPostingViewHelper->convertToTimeAgoString($item->created_on, $item->modified_on); ?>
+  </span>
 @overwrite
 
 {{--
   #14 - Job Hours, e.g. Part-Time, Full-Time
 --}}
 @section('job_hours')
-  <span>Hours</span>
-  <p>{{-- $item->employmentType --}}</p>
+  <span>
+    {{-- @TODO: Tooltip with description of employment type --}}
+    {{ $item->employmentType->name }}
+  </span>
 @overwrite
 
 {{--
   #15 - Benefits, e.g. "Includes medical and dental insurance"
 --}}
 @section('job_benefits')
-  <span>Benefits</span>
+  <span>
+    {{ $item->job_benefits }}
+  </span>
 @overwrite
 
 {{--
@@ -232,10 +253,15 @@
 --}}
 @section('job_pay')
   <span>Pay</span>
-  <p>{{-- $item->base_salary__max_value --}}</p>
-  <p>{{-- $item->base_salary__value --}}</p>
-  <p>{{-- $item->base_salary__min_value --}}</p>
-  <p>{{-- $item->base_salary__duration --}}  {{-- P0H1 per hour, P1D per day, P1W per week, P2W biweekly, P1M per month, P1Y annually --}}
+  <span>max: {{ $item->base_salary__max_value }}</span>
+  <span>value: {{ $item->base_salary__value }}</span>
+  <span>min: {{ $item->base_salary__min_value }}</span>
+
+  <span>
+    duration: {{ $item->base_salary__duration }}
+   
+    
+  </span>  {{-- P0H1 per hour, P1D per day, P1W per week, P2W biweekly, P1M per month, P1Y annually --}}
 @overwrite
 
 {{--
@@ -280,19 +306,19 @@
       </div>
     </div>
 
-    {{-- #4 Name of Employer, #10 Job Rating, #11 Job Reviews --}}
+    {{-- #4 Name of Employer, #10 Employer Rating, #11 Employer Reviews --}}
     <div class="row">
       {{-- #4 Name of Employer --}}
       <div class="col-md-8 col-sm-9">
         @yield('employer_name')
       </div>
-      {{-- #10 Job Rating --}}
+      {{-- #10 Employer Rating --}}
       <div class="col-md-2 col-sm-3">
-        @yield('job_rating')
+        @yield('employer_rating')
       </div>
-      {{-- md and lg screens only: #11 Job Reviews --}}
+      {{-- md and lg screens only: #11 Employer Reviews --}}
       <div class="col-md-2 hidden-sm hidden-xs">
-        @yield('job_reviews')
+        @yield('employer_reviews')
       </div>
     </div>
 
@@ -352,26 +378,26 @@
 
     {{-- md and lg screens: #7 "Save Job" Button, #8 "Email Job" Button, #9 "Report Job" Button, #13 Date Job Posted --}}
     <div class="row hidden-sm hidden-xs">
-      <div class="col-md-3">
+      <span class="float-left">
         {{-- #7 "Save Job" Button --}}
         @yield('save_job')
         @yield('save_job_modal')
-      </div>
+      </span>
 
-      <div class="col-md-3">
+      <span class="float-left">
         {{-- #8 "Email Job" Button --}}
         @yield('email_job')
-      </div>
+      </span>
 
-      <div class="col-md-3">
+      <span class="float-left">
         {{-- #9 "Report Job" Button --}}
         @yield('report_job')
-      </div>
+      </span>
 
-      <div class="col-md-3">
+      <span class="float-right">
         {{-- #13 Date Job Posted --}}
         @yield('date_job_posted')
-      </div>
+      </span>
     </div>
 
     {{-- sm and xs screens: #13 Date Job Posted --}}

@@ -34,6 +34,10 @@
     color: #818078;
     background-color: #fcfcfa; }
 
+.rating {
+  font-size: 1.5em;
+  /* 30px/20=1.5em */ }
+
 .job-posting-list-item {
   background-color: #e3e3e4 !important;
   margin-top: 12px;
@@ -60,6 +64,20 @@
   /*border styles*/
   border: 0px;
   border-radius: 5px; }
+
+.save-job-button,
+.job-saved-button,
+.guest-email-job-button,
+.registered-email-job-button,
+.guest-report-job-button,
+.report-job-button {
+  margin-left: 15px !important; }
+
+#submit-job-to-email-button {
+  margin-left: 5px !important; }
+
+#submit-job-report-button {
+  margin-left: 5px !important; }
 
 .save-job-right-column {
   border-left: 1px; }

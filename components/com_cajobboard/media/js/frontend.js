@@ -14,7 +14,7 @@
 
 /**
 * Methods to handle setting proper Bootstrap UI validation state, appends
-* or removes JQuery DOM element with error message below input box
+* or removes jQuery DOM element with error message below input box
 */
 /* eslint-disable no-unused-vars */
 const validationUI = {
@@ -27,11 +27,11 @@ const validationUI = {
   * @return  object  Returns the element passed, or a new element if HTML string passed in
   */
   setSuccess: function(element) {
-    // create JQuery DOM element if HTML string passed
+    // create jQuery DOM element if HTML string passed
     if (!(element instanceof jQuery) && typeof element === 'string') {
       element = $(element);
 
-    } else if (!(element instanceof jQuery)) throw new Error('"element" parameter to frontend/validationUI.setSuccess must be a string or JQuery object');
+    } else if (!(element instanceof jQuery)) throw new Error('"element" parameter to frontend/validationUI.setSuccess must be a string or jQuery object');
 
     // remove error border on input box if present
     if (element.hasClass('has-error')) element.removeClass('has-error');
@@ -50,20 +50,20 @@ const validationUI = {
   * Change input box to failure state UI, and add queued error messages below
   *
   * @param  string|object  element  The reference to the input box to work on, or an HTML string
-  * @param  string|object  errorMessage  The error message to display below the input box, or a JQuery DOM object
+  * @param  string|object  errorMessage  The error message to display below the input box, or a jQuery DOM object
   *
   * @return  object  Returns the element passed, or a new element if HTML string passed in
   */
   setFailure: function(element, errorMessage) {
-    // create JQuery DOM elements for parameters if HTML string passed
+    // create jQuery DOM elements for parameters if HTML string passed
     if (!(element instanceof jQuery) && typeof element === 'string') {
       element = $(element);
 
-    } else if (!(element instanceof jQuery)) throw new Error('"element" parameter to frontend/validationUI.setFailure must be a string or JQuery object');
+    } else if (!(element instanceof jQuery)) throw new Error('"element" parameter to frontend/validationUI.setFailure must be a string or jQuery object');
 
     if (!(errorMessage instanceof jQuery) && typeof errorMessage === 'string') {
       errorMessage = $(errorMessage);
-    } else if (!(errorMessage instanceof jQuery)) throw new Error('"errorMessage" parameter to frontend/validationUI.setFailure must be a string or JQuery object');
+    } else if (!(errorMessage instanceof jQuery)) throw new Error('"errorMessage" parameter to frontend/validationUI.setFailure must be a string or jQuery object');
 
     // remove success border on input box if present
     if (element.hasClass('has-success')) element.removeClass('has-success');

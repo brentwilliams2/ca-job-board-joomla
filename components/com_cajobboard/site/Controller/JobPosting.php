@@ -130,7 +130,6 @@ class JobPosting extends DataController
     JLog::add('Job Posting Controller, onBeforeRead()', JLog::DEBUG, 'cajobboard');
 		return true;
   }
-}
 
 	/**
 	* Overriden to keep public views having ACL checks ran (should just use Joomla! access control).
@@ -143,3 +142,4 @@ class JobPosting extends DataController
   {
      return ($area == 'read') ? true : parent::checkACL($area);
   }
+}

@@ -14,6 +14,10 @@ namespace Calligraphic\Cajobboard\Site\Dispatcher;
 
 //  Framework classes
 use FOF30\Container\Container;
+use JHtml;
+
+// Helpe classes
+use Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -25,13 +29,17 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
-		// Renderer options (0=none, 1=frontend, 2=backend, 3=both)
-		// $myParam   = $this->container->params->get('param_name', 3);
-		// $this->container->renderer->setOption('param_name', $myParam);
+    // Load JQuery and Bootstrap javascript before anything else (template includes load after component)
+    JHtml::_('jquery.framework');
+    JHtml::_('bootstrap.framework');
 
     // Load common CSS and JavaScript
-    // @TODO Change to minified versions via 'dev' and 'prod' tags
+    // @TODO Add minifier build step, and change includes to minified versions via 'dev' and 'prod' tags
 		$this->container->template->addCSS('media://com_cajobboard/css/frontend.css');
-		$this->container->template->addJS('media://com_cajobboard/js/frontend.js', true, false);
+    $this->container->template->addJS('media://com_cajobboard/js/frontend.js', true, false);
+
+    $this->container['job_posting_view_helper'] = function ($c) {
+      return new JobPostingViewHelper();
+    };
 	}
 }

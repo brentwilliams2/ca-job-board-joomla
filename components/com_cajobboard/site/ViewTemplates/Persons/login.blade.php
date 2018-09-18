@@ -11,8 +11,6 @@
   */
 
   // Framework classes
-  use JUri;
-  use JText;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -20,7 +18,7 @@
   $params = $this->getPageParams();
 
   // parameters for email input box
-  $emailPlaceholder = $params->get('registration_email_placeholder'
+  $emailPlaceholder = $params->get('registration_email_placeholder');
 
   // link for forgot password input box
   $forgotPasswordURL = "<a href=" . JRoute::_('index.php?option=com_users&view=reset') . "\">";

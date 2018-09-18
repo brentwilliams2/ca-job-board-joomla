@@ -13,31 +13,34 @@
   // Framework classes
   use FOF30\Utils\FEFHelper\BrowseView;
   use FOF30\Utils\SelectOptions;
-  use JFactory;
-  USE JRoute;
-  use JUri;
-  use JLog;
 
   // no direct access
   defined('_JEXEC') or die;
 
+  // get application
+  $app = JFactory::getApplication();
+
   // collection of job postings model objects for this list view
   $items = $this->getItems();
 
-  // get site configuration
-  $config = JFactory::getConfig();
+  // get global site configuration
+  $config = $this->container->platform->getConfig();
 
-  // get component parameters
-  params = $this->getPageParams();
+  // get component configuration
+  $params = $this->container->params;
 
-  $siteName = $config->get( 'sitename' );
+  // get sitename from global configuration
+  $siteName = $config->get('sitename', 'Job Board');
 
-  // parameters for email input box placeholder
+  // parameters for email input box placeholder from component
   $emailPlaceholder = $params->get('registration_email_placeholder');
 
   // admin parameters for links
   $terms_of_service = JRoute::_('index.php?Itemid=' . $params->get('terms_of_use'));
   $privacy_policy = JRoute::_('index.php?Itemid=' . $params->get('privacy_policy'));
+
+  // current user ID
+  $userId = $this->container->platform->getUser()->id;
 ?>
 
 @section('header')
@@ -73,64 +76,6 @@
 
 @section('footer')
   <p></p>
-@show
-
-
-{{--
-  Singleton login and register modal (only include once)
---}}
-@section('login-or-register-modal')
-  {{-- only take bandwidth hit of including modal HTML if user is a guest --}}
-  @if ( $userId == 0 )
-    <div class="modal fade" id="login-or-register-modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          {{-- button with an "X" to close the modal, top right-hand corner --}}
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-
-          <div class="modal-body">
-            {{-- Left-hand column with text giving reasons to login or register to site --}}
-            <div class="col-xs-hidden col-md-6 save-job-left-column">
-              @lang('COM_CAJOBBOARD_SAVE_JOB_INVITE_TO_LOGIN_OR_REGISTER')
-            </div>
-
-            {{-- Right-hand column --}}
-            <div class="col-xs-12 col-md-6 save-job-right-column">
-              {{-- Registration form (default) --}}
-              <div class="save-job-registration-form">
-                @include('site:com_cajobboard/Registrations/register')
-              </div>
-
-              {{-- Login form (initially hidden) --}}
-              <div class="save-job-login-form hidden">
-                @include('site:com_cajobboard/Persons/login')
-              </div>
-            </div>
-          </div>
-
-          {{-- Footer with option to toggle between registration and login views --}}
-          <div class="modal-footer">
-            {{-- "Already have a job board account? sign in" link on registration screen --}}
-            <span id="toggle-to-login">
-              @lang('COM_CAJOBBOARD_LOGIN_OR_REGISTER_TOGGLE_TO_LOGIN_LABEL', $siteName)
-            </span>
-
-            {{-- "Don't have a job board account? sign up" link on login screen --}}
-            <span id="toggle-to-register hidden">
-              @lang('COM_CAJOBBOARD_LOGIN_OR_REGISTER_TOGGLE_TO_REGISTER_LABEL', $siteName)
-            </span>
-
-            {{-- Close button --}}
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              @lang('COM_CAJOBBOARD_CLOSE_BUTTON_LABEL');
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  @endif
 @show
 
 
@@ -184,7 +129,7 @@
 
                 {{-- Close button to cancel modal --}}
                 <span class="float-right">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                  <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">
                     @lang('COM_CAJOBBOARD_CLOSE_BUTTON_LABEL');
                   </button>
                 </span>
@@ -256,7 +201,7 @@
 
                 {{-- Close button to cancel modal --}}
                 <span class="float-right">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                  <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">
                     @lang('COM_CAJOBBOARD_CLOSE_BUTTON_LABEL');
                   </button>
                 </span>
@@ -271,55 +216,59 @@
 @show
 
 
-
-
-
-
-
-
-          <div class="form-group">
-            <label for="message-text" class="control-label">Message:</label>
-
+{{--
+  Singleton login and register modal (only include once)
+--}}
+@section('login-or-register-modal')
+  {{-- only take bandwidth hit of including modal HTML if user is a guest --}}
+  @if ($userId == 0)
+    <div class="modal fade" id="login-or-register-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          {{-- button with an "X" to close the modal, top right-hand corner --}}
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
 
+          <div class="modal-body">
+            {{-- Left-hand column with text giving reasons to login or register to site --}}
+            <div class="col-xs-hidden col-md-6 save-job-left-column">
+              @lang('COM_CAJOBBOARD_SAVE_JOB_INVITE_TO_LOGIN_OR_REGISTER')
+            </div>
 
+            {{-- Right-hand column --}}
+            <div class="col-xs-12 col-md-6 save-job-right-column">
+              {{-- Registration form (default) --}}
+              <div class="save-job-registration-form">
+                @include('site:com_cajobboard/Registrations/register')
+              </div>
 
+              {{-- Login form (initially hidden) --}}
+              <div class="save-job-login-form hidden">
+                @include('site:com_cajobboard/Persons/login')
+              </div>
+            </div>
+          </div>
 
+          {{-- Footer with option to toggle between registration and login views --}}
+          <div class="modal-footer">
+            {{-- "Already have a job board account? sign in" link on registration screen --}}
+            <span id="toggle-to-login">
+              @lang('COM_CAJOBBOARD_LOGIN_OR_REGISTER_TOGGLE_TO_LOGIN_LABEL', $siteName)
+            </span>
 
+            {{-- "Don't have a job board account? sign up" link on login screen --}}
+            <span id="toggle-to-register hidden">
+              @lang('COM_CAJOBBOARD_LOGIN_OR_REGISTER_TOGGLE_TO_REGISTER_LABEL', $siteName)
+            </span>
 
-
-
-
-
-
-
-{{--
-  Singleton "report a job" modal (only load once)
-
-  Javascript links a singleton modal into all buttons
---}}
-@section('report-a-job-modal')
-  <form id="report-a-job-modal">
-    {{-- Combo box drop-down of categories to classify report on job --}}
-    <div id="send-to-email" class="form-group">
-      <label for="send-to-email-input-box">
-        @lang('COM_CAJOBBOARD_EMAIL_A_JOB_USER_EMAIL_INPUT_BOX_LABEL')
-      </label>
-      <input type="email" class="form-control" id="send-to-email-input-box" placeholder="{{{ $emailPlaceholder }}}">
+            {{-- Close button --}}
+            <button type="button" class="btn btn-default btn-xs " data-dismiss="modal">
+              @lang('COM_CAJOBBOARD_CLOSE_BUTTON_LABEL');
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    {{-- "Enter reason to report the job" text box --}}
-    <div id="send-to-email" class="form-group">
-      <label for="send-to-email-input-box">
-        @lang('COM_CAJOBBOARD_EMAIL_A_JOB_USER_EMAIL_INPUT_BOX_LABEL')
-      </label>
-      <input type="email" class="form-control" id="send-to-email-input-box" placeholder="{{{ $emailPlaceholder }}}">
-    </div>
-
-    {{-- Captcha --}}
-    <?php echo JFactory::getApplication()->get('captcha'); ?>
-
-    {{-- Javascript responsible for setting a hidden input with id="reported-job-number" and value of that job number --}}
-  </form>
+  @endif
 @show
-
