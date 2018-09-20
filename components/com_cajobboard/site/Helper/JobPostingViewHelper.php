@@ -32,7 +32,7 @@
     */
     public function convertToTimeAgoString($dateCreated, $dateModified = null) {
       // difference between current time and the database (MySQL format) item's created or modified time (whichever is later)
-      $diff = time() - strtotime($dateModified = null? $time : $dateModified); 
+      $diff = time() - strtotime($dateModified = null? $time : $dateModified);
 
       if( $diff < 60 ) // it happened now
         return JText::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_NOW');
@@ -73,9 +73,17 @@
     *
     * @return   string  Formatted time
     */
-    public function formatPayToValueOrRange($min_value = null, $value = null, $max_value = null) {
-      //$max_value
-      //$value
-      //$min_value
+    public function formatPayToValueOrRange($value = null, $min_value = null, $max_value = null, $duration='P0H1') {
+      $payPeriod = 'COM_CAJOBBOARD_PAY_FORMATTER_' . $duration;
+
+      if ($value) {
+        return $value . ' ' . JText::_($payPeriod);
+      }
+
+      elseif ($min_value && $max_value) {
+        return JText::_('COM_CAJOBBOARD_PAY_FORMATTER_BETWEEN') . ' ' . $min_value . ' ' . JText::_('COM_CAJOBBOARD_PAY_FORMATTER_AND') . ' ' . $max_value . ' ' . JText::_($payPeriod);
+      }
+
+      return null;
     }
   }

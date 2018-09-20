@@ -40,7 +40,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
     {
     $timage= 'https://www.masterbootstrap.com/images/217x196xprofessortocat-compressor.png.pagespeed.ic.F75ysx_X8Q.webp';
     }
-  $doc =& JFactory::getDocument();
+  $doc = JFactory::getDocument();
   $doc->addCustomTag( '
   <meta name="twitter:title" content="'.$this->escape($this->item->title).'">
   <meta name="twitter:card" content="summary_large_image">

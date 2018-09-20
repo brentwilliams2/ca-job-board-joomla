@@ -49,8 +49,6 @@ class JobPostings extends DataController
    */
   public function browse()
   {
-JLog::add('XYZ Site JobPostings controller called, in browse() method', JLog::DEBUG, 'cajobboard');
-
 		// Determine if user logged in
     $user = $this->container->platform->getUser();
 
@@ -60,20 +58,11 @@ JLog::add('XYZ Site JobPostings controller called, in browse() method', JLog::DE
       // @TODO: geolocation code
     }
 
-    // Do something special if a privileged user
-    // $jobPostingsModel = $this->getModel();
-
 		// Does the user have core.manage access?
     //$isAdmin = $user->authorise('core.manage', 'com_cajobboard');
 
-		if ($isAdmin)
-		{
-			// $jobPostingsModel->user_id(null);
-		}
-		else
-		{
-			//$jobPostingsModel->user_id($user->id);
-    }
+    // Do something special if a privileged user
+		//if ($isAdmin)
 
     if (empty($this->layout))
     {

@@ -15,7 +15,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  $params = $this->getPageParams();
+  $params = $this->container->params;
 
   // parameters for email input box
   $emailPlaceholder = $params->get('registration_email_placeholder');
@@ -47,13 +47,13 @@
       <label for="login-password-input" class="control-label">
         @lang('COM_CAJOBBOARD_LOGIN_PASSWORD_INPUT_LABEL')
       </label>
-      <input type="password" class="form-control" id="login-password-input" placeholder="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_PASSWORD_INPUT_PLACEHOLDER') }}}">
+      <input type="password" class="form-control" id="login-password-input" placeholder="@lang('COM_CAJOBBOARD_REGISTRATION_PASSWORD_INPUT_PLACEHOLDER')">
     </div>
 
     <div class="checkbox" class="form-control">
       <input type="checkbox" name="remember" id="persons-login-remember" value="yes">
       <label for="persons-login-remember">
-        <?php echo JText::_('COM_CAJOBBOARD_LOGIN_REMEMBER_ME_LABEL'); ?>
+        @lang('COM_CAJOBBOARD_LOGIN_REMEMBER_ME_LABEL')
       </label>
     </div>
 
@@ -68,7 +68,7 @@
     </div>
 
   </form>
-@show
+@stop
 
 
 {{--
@@ -79,7 +79,7 @@
     <div class="row">
       <button
         id="sign-in-with-google"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-google social-sign-in"
+        class="btn social-button social-button-text social-button-pill social-button-google social-sign-in"
         data-network="google"
       >
         <i class="fa fa-google"></i>
@@ -87,7 +87,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Sign in with Facebook
@@ -97,7 +97,7 @@
     <div class="row">
       <button
         id="sign-in-with-facebook"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-facebook social-sign-in"
+        class="btn social-button social-button-text social-button-pill social-button-facebook social-sign-in"
         data-network="facebook"
       >
         <i class="fa fa-facebook"></i>
@@ -105,7 +105,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Sign in with Linkedin
@@ -115,7 +115,7 @@
     <div class="row">
       <button
         id="sign-in-with-linkedin"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-linkedin social-sign-in"
+        class="btn social-button social-button-text social-button-pill social-button-linkedin social-sign-in"
         data-network="linkedin"
       >
         <i class="fa fa-linkedin"></i>
@@ -123,7 +123,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Sign in with Instagram
@@ -133,7 +133,7 @@
     <div class="row">
       <button
         id="sign-in-with-instagram"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-instagram social-sign-in"
+        class="btn social-button social-button-text social-button-pill social-button-instagram social-sign-in"
         data-network="instagram"
       >
         <i class="fa fa-instagram"></i>
@@ -141,7 +141,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Sign in with Twitter
@@ -151,7 +151,7 @@
     <div class="row">
       <button
         id="sign-in-with-twitter"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-twitter social-sign-in"
+        class="btn social-button social-button-text social-button-pill social-button-twitter social-sign-in"
         data-network="twitter"
       >
         <i class="fa fa-twitter"></i>
@@ -159,7 +159,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   login dialog box
