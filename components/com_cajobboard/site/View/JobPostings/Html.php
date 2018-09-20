@@ -15,7 +15,6 @@ namespace Calligraphic\Cajobboard\Site\View\JobPostings;
 use FOF30\Container\Container;
 use JComponentHelper;
 use JFactory;
-//use Jlog;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -30,7 +29,7 @@ class Html extends \FOF30\View\DataView\Html
 	 * @var  \JRegistry
 	 */
   protected $componentParams;
-  
+
 	/**
 	 * The aggregate reviews data for each job posting
 	 *
@@ -46,6 +45,7 @@ class Html extends \FOF30\View\DataView\Html
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    // Add view template helper for Job Postings to container
     $config['template_path'] = $container->thisPath . '/ViewTemplates/JobPostings';
 
     parent::__construct($container, $config);
@@ -147,6 +147,15 @@ class Html extends \FOF30\View\DataView\Html
 
     // Load the results as a list of stdClass objects
     $this->aggregateReviews = $db->loadObjectList();
+
+		// Pass page params on frontend only
+		if ($this->container->platform->isFrontend())
+		{
+			/** @var \JApplicationSite $app */
+			$app = \JFactory::getApplication();
+			$params = $app->getParams();
+			$this->pageParams = $params;
+		}
   }
 
   /*
@@ -156,9 +165,32 @@ class Html extends \FOF30\View\DataView\Html
    */
 	protected function onBeforeRead()
 	{
-    JLog::add('onBeforeRead() in Html View called', JLog::DEBUG, 'cajobboard');
-
     parent::onBeforeRead();
+
+    // @TODO: Move logic for returning reviews from database to Repo
+    $db = $this->container->db;
+
+    // Create a new query object.
+    $query = $db->getQuery(true);
+
+    $query
+      ->select($db->qn(array(
+        'job_postings.job_posting_id',
+        'job_postings.hiring_organization',
+        'aggregate_ratings.item_reviewed',
+        'aggregate_ratings.rating_count',
+        'aggregate_ratings.review_count',
+        'aggregate_ratings.rating_value'
+      )))
+      ->from($db->qn('#__cajobboard_job_postings', 'job_postings'))
+      ->leftJoin($db->qn('#__cajobboard_employer_aggregate_ratings', 'aggregate_ratings') . ' ON (' . $db->qn('job_postings.job_posting_id') . ' = ' . $db->qn('aggregate_ratings.item_reviewed') . ')')
+      ->where($db->qn('job_posting_id') . ' = ' . $this->item->job_posting_id);
+
+    // Reset the query using our newly populated query object.
+    $db->setQuery($query);
+
+    // Load the results as a list of stdClass objects
+    $this->aggregateReviews = $db->loadObjectList();
   }
 
 	/**
@@ -168,8 +200,6 @@ class Html extends \FOF30\View\DataView\Html
 	 */
 	protected function onBeforeAdd()
 	{
-    JLog::add('onBeforeAdd() in Html View called', JLog::DEBUG, 'cajobboard');
-
     parent::onBeforeAdd();
   }
 
@@ -180,8 +210,6 @@ class Html extends \FOF30\View\DataView\Html
 	 */
 	protected function onBeforeEdit()
 	{
-    JLog::add('onBeforeEdit() in Html View called', JLog::DEBUG, 'cajobboard');
-
     parent::onBeforeEdit();
   }
 }

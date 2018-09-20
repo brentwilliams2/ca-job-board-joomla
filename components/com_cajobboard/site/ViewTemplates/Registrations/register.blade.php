@@ -15,13 +15,13 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  $params = $this->getPageParams();
+  $params = $this->container->params;
 
   // parameters for email input box
   $emailPlaceholder       = $params->get('registration_email_placeholder');
 
   // parameters set in admin for password strength
-  $usersConfig = Container::getInstance('com_users')->params;
+  $usersConfig = $this->container->getInstance('com_users')->params;
   $minPasswordLength      = $usersConfig->get('minimum_length');
   $minNumberOfIntegers    = $usersConfig->get('minimum_integers');
   $minNumberOfUppercase   = $usersConfig->get('minimum_uppercase');
@@ -33,12 +33,19 @@
 
 
   // Load and initialize captcha plugin if enabled in global configuration
-  $captcha = JFactory::getApplication()->get('captcha', 0);
+  $isCaptchaEnabled = JFactory::getApplication()->get('captcha', 0);
+
+  if ($isCaptchaEnabled)
+
   // Global captcha configuration: 0 if not enabled, or name of captcha plugin to use
-  if($captcha) {
-    JPluginHelper::importPlugin('captcha', $captcha);
+  if($isCaptchaEnabled) {
+    JPluginHelper::importPlugin('captcha', $isCaptchaEnabled);
     $dispatcher = JDispatcher::getInstance();
-    $dispatcher->trigger('onInit', $captcha);
+    // enable captcha for site, includes proper CSS and Javascript
+    $dispatcher->trigger('onInit', $isCaptchaEnabled);
+    // get a formatted HTML tag for the captcha, e.g.
+    // <div id="registration-dynamic-captcha"  data-sitekey="mySecretKey" data-theme="light" data-size="normal"></div>
+    $captchaOutput = $dispatcher->trigger('onDisplay', [null, 'registration-dynamic-captcha'])[0];
   }
 ?>
 
@@ -61,16 +68,16 @@
       <label for="registration-password-input" class="control-label">
         @lang('COM_CAJOBBOARD_REGISTRATION_PASSWORD_INPUT_LABEL')
       </label>
-      <input type="password" class="form-control" id="registration-password-input" placeholder="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_PASSWORD_INPUT_PLACEHOLDER') }}}">
+      <input type="password" class="form-control" id="registration-password-input" placeholder="@lang('COM_CAJOBBOARD_REGISTRATION_PASSWORD_INPUT_PLACEHOLDER')">
     </div>
 
     {{-- Captcha --}}
-    @if( $captcha )
+    @if(isset($captchaOutput) && $isCaptchaEnabled != "0")
       <div id="registration-captcha" class="form-group">
         <label for="registration-dynamic-captcha" class="control-label">
           @lang('COM_CAJOBBOARD_REGISTRATION_CAPTCHA_DESC')
         </label>
-        <?php echo $dispatcher->trigger( 'onDisplay', [ null, 'registration-dynamic-captcha' ] ); ?>
+        {{ $captchaOutput }}
       </div>
     @endif
 
@@ -80,19 +87,19 @@
       </button>
     </div>
 
-    <input id="invalidEmailMessage"  type="hidden" value="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_INVALID_EMAIL_MESSAGE') }}}">
+    <input id="invalidEmailMessage"  type="hidden" value="@lang('COM_CAJOBBOARD_REGISTRATION_INVALID_EMAIL_MESSAGE')">
 
-    <input id="passwordLength"       type="hidden" value="{{{ $minPasswordLength) }}}">
-    <input id="passwordIntegers"     type="hidden" value="{{{ $minNumberOfIntegers) }}}">
-    <input id="passwordUppercase"    type="hidden" value="{{{ $minNumberOfUppercase) }}}">
-    <input id="passwordSymbols"      type="hidden" value="{{{ $minNumberOfSymbols) }}}">
+    <input id="passwordLength"       type="hidden" value="{{{ $minPasswordLength }}}">
+    <input id="passwordIntegers"     type="hidden" value="{{{ $minNumberOfIntegers }}}">
+    <input id="passwordUppercase"    type="hidden" value="{{{ $minNumberOfUppercase }}}">
+    <input id="passwordSymbols"      type="hidden" value="{{{ $minNumberOfSymbols }}}">
 
-    <input id="invalidPasswordLengthMessage"    type="hidden" value="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_INVALID_LENGTH_PASSWORD_MESSAGE', $minPasswordLength) }}}">
-    <input id="invalidPasswordIntegersMessage"  type="hidden" value="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_INVALID_INTEGERS_PASSWORD_MESSAGE', $minNumberOfIntegers) }}}">
-    <input id="invalidPasswordUppercaseMessage" type="hidden" value="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_INVALID_UPPERCASE_PASSWORD_MESSAGE', $minNumberOfUppercase) }}}">
-    <input id="invalidPasswordSymbolsMessage"   type="hidden" value="{{{ @lang('COM_CAJOBBOARD_REGISTRATION_INVALID_SYMBOLS_PASSWORD_MESSAGE', $minNumberOfSymbols) }}}">
+    <input id="invalidPasswordLengthMessage"    type="hidden" value="@lang('COM_CAJOBBOARD_REGISTRATION_INVALID_LENGTH_PASSWORD_MESSAGE', $minPasswordLength)">
+    <input id="invalidPasswordIntegersMessage"  type="hidden" value="@lang('COM_CAJOBBOARD_REGISTRATION_INVALID_INTEGERS_PASSWORD_MESSAGE', $minNumberOfIntegers)">
+    <input id="invalidPasswordUppercaseMessage" type="hidden" value="@lang('COM_CAJOBBOARD_REGISTRATION_INVALID_UPPERCASE_PASSWORD_MESSAGE', $minNumberOfUppercase)">
+    <input id="invalidPasswordSymbolsMessage"   type="hidden" value="@lang('COM_CAJOBBOARD_REGISTRATION_INVALID_SYMBOLS_PASSWORD_MESSAGE', $minNumberOfSymbols)">
   </form>
-@show
+@stop
 
 {{--
   Create account with Google
@@ -102,7 +109,7 @@
     <div class="row">
       <button
         id="registration-with-google"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-google social-register"
+        class="btn social-button social-button-text social-button-pill social-button-google social-register"
         data-network="google"
       >
         <i class="fa fa-google"></i>
@@ -110,7 +117,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Create account with Facebook
@@ -120,7 +127,7 @@
     <div class="row">
       <button
         id="registration-with-facebook"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-facebook social-register"
+        class="btn social-button social-button-text social-button-pill social-button-facebook social-register"
         data-network="facebook"
       >
         <i class="fa fa-facebook"></i>
@@ -128,7 +135,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Create account with Linkedin
@@ -138,7 +145,7 @@
     <div class="row">
       <button
         id="registration-with-linkedin"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-linkedin social-register"
+        class="btn social-button social-button-text social-button-pill social-button-linkedin social-register"
         data-network="linkedin"
       >
         <i class="fa fa-linkedin"></i>
@@ -146,7 +153,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Create account with Instagram
@@ -156,7 +163,7 @@
     <div class="row">
       <button
         id="registration-with-instagram"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-instagram social-register"
+        class="btn social-button social-button-text social-button-pill social-button-instagram social-register"
         data-network="instagram"
       >
         <i class="fa fa-instagram"></i>
@@ -164,7 +171,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Create account with Twitter
@@ -174,7 +181,7 @@
     <div class="row">
       <button
         id="registration-with-twitter"
-        class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-twitter social-register"
+        class="btn social-button social-button-text social-button-pill social-button-twitter social-register"
         data-network="twitter"
       >
         <i class="fa fa-twitter"></i>
@@ -182,7 +189,7 @@
       </button>
     </div>
   @endif
-@show
+@stop
 
 {{--
   Register new user / social login dialog box

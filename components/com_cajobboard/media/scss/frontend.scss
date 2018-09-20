@@ -8,6 +8,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
+
 //-----------------------------------------------------------------------------
 // Core variables and mixins from template
 //-----------------------------------------------------------------------------
@@ -62,6 +63,9 @@
 // JobPostings ViewTemplate - list view                      default.blade.php
 //-----------------------------------------------------------------------------
 
+.job-posting-item {
+
+}
 
 //-----------------------------------------------------------------------------
 // JobPostings ViewTemplate - list view item            default_item.blade.php

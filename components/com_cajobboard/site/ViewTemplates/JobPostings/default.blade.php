@@ -10,10 +10,6 @@
   *
   */
 
-  // Framework classes
-  use FOF30\Utils\FEFHelper\BrowseView;
-  use FOF30\Utils\SelectOptions;
-
   // no direct access
   defined('_JEXEC') or die;
 
@@ -245,7 +241,7 @@
 
               {{-- Login form (initially hidden) --}}
               <div class="save-job-login-form hidden">
-                @include('site:com_cajobboard/Persons/login')
+                {{-- @include('site:com_cajobboard/Persons/login') --}}
               </div>
             </div>
           </div>

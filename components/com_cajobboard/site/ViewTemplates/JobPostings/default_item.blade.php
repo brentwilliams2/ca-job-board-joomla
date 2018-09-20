@@ -10,15 +10,8 @@
   *
   */
 
-  // Framework classes
-  use FOF30\Utils\FEFHelper\BrowseView;
-  use FOF30\Utils\SelectOptions;
-
   // no direct access
   defined('_JEXEC') or die;
-
-  // get component configuration
-  $params = $this->container->params;
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
@@ -37,10 +30,7 @@
 
   // @TODO: "Share this" social media button on job
 
-  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
-  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
-
-  // @TODO: move all code for aggregate reviews to Job Postings repository
+   // @TODO: move all code for aggregate reviews to Job Postings repository
   $aggregateReview = new stdClass();
 
   foreach ( $this->aggregateReviews as $aggregateReviewIteratee )
@@ -51,6 +41,18 @@
       break;
     }
   }
+
+  $employmentType = JText::_($item->employmentType->name);
+
+  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
+  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
+
+  $formattedPay = $JobPostingViewHelper->formatPayToValueOrRange(
+    $item->base_salary__value,
+    $item->base_salary__min_value,
+    $item->base_salary__max_value,
+    $item->base_salary__duration
+  );
 ?>
 
 {{--
@@ -80,6 +82,7 @@
     <?php foreach ($tags->itemTags as $key => $tag) : ?>
         <span class="job-title-tag"><?php echo $tag->title; ?></span>
     <?php endforeach; ?>
+  {{-- @TODO: remove this placeholder --}}
   <?php else: ?>
     <span class="job-title-tag">Great!</span>
   <?php endif; ?>
@@ -235,7 +238,7 @@
 @section('job_hours')
   <span>
     {{-- @TODO: Tooltip with description of employment type --}}
-    {{ $item->employmentType->name }}
+    {{ $employmentType }}
   </span>
 @overwrite
 
@@ -244,6 +247,7 @@
 --}}
 @section('job_benefits')
   <span>
+    {{-- @TODO: Need to split this into two fields, or somehow handle providing a shorter string for the list view --}}
     {{ $item->job_benefits }}
   </span>
 @overwrite
@@ -252,26 +256,24 @@
   #16 - Pay, e.g. "$14 - $15 Per Hour"
 --}}
 @section('job_pay')
-  <span>Pay</span>
-  <span>max: {{ $item->base_salary__max_value }}</span>
-  <span>value: {{ $item->base_salary__value }}</span>
-  <span>min: {{ $item->base_salary__min_value }}</span>
-
-  <span>
-    duration: {{ $item->base_salary__duration }}
-   
-    
-  </span>  {{-- P0H1 per hour, P1D per day, P1W per week, P2W biweekly, P1M per month, P1Y annually --}}
+  @if ($formattedPay)
+    <span>
+      {{ $formattedPay }}
+    </span>
+  @endif
 @overwrite
 
 {{--
   #17 - Tag Line, e.g. "Earn Extra Cash"
 --}}
 @section('tag_line')
-  <span>Tag Line</span>
+  {{-- @TODO: Implement tag line --}}
 @overwrite
 
-{{-- Responsive container for desktop and mobile --}}
+
+{{--
+  Responsive container for desktop and mobile
+--}}
 <div class="job-posting-list-item">{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
 
   {{-- sm, md, and large screens only: #1 Employer Logo --}}
@@ -411,7 +413,7 @@
     <div class="row hidden-lg hidden-md">
       {{-- Button to trigger modal --}}
       <span class="pull-left">
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#save-job-{{ $this->job_posting_id }}">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#save-job-{{ $item->job_posting_id }}">
           @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB')
         </button>
       </span>
@@ -424,7 +426,7 @@
     {{-- sm and xs screens: Save modal --}}
     <div
       class="modal fade hidden-lg hidden-md"
-      id="save-job-{{ $this->job_posting_id }}"
+      id="save-job-{{ $item->job_posting_id }}"
       tabindex="-1"
       role="dialog"
       aria-labelledby="@lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_MODAL_ARIA_LABEL')"
