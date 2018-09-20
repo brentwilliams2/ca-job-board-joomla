@@ -1,33 +1,252 @@
-/*
-Errno::EACCES: Permission denied @ apply2files - .sass-cache/f9c7d2198e71ce10091623b713617ddee5603508/frontend.scssc
+/**
+ * Front-end styles
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+.hr-text {
+  line-height: 1em;
+  position: relative;
+  outline: 0;
+  border: 0;
+  color: black;
+  text-align: center;
+  height: 1.5em;
+  opacity: .5; }
+  .hr-text:before {
+    content: '';
+    background: linear-gradient(to right, transparent, #818078, transparent);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px; }
+  .hr-text:after {
+    content: attr(data-content);
+    position: relative;
+    display: inline-block;
+    color: black;
+    padding: 0 .5em;
+    line-height: 1.5em;
+    color: #818078;
+    background-color: #fcfcfa; }
 
-Backtrace:
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/filesystem.rb:26:in `unlink'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/filesystem.rb:26:in `_retrieve'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/base.rb:63:in `retrieve'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:25:in `block in retrieve'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:24:in `each'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:24:in `each_with_index'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/cache_stores/chain.rb:24:in `retrieve'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/engine.rb:407:in `_to_tree'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/engine.rb:307:in `render_with_sourcemap'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `each'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:443:in `on_file_changed'
-/var/lib/gems/2.5.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:320:in `block in watch'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/config.rb:23:in `call'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:115:in `_process_changes'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:19:in `block in loop_for'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:15:in `loop'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/processor.rb:15:in `loop_for'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/loop.rb:84:in `_wait_for_changes'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/event/loop.rb:42:in `block in setup'
-/var/lib/gems/2.5.0/gems/sass-listen-4.0.0/lib/sass-listen/internals/thread_pool.rb:6:in `block in add'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Errno::EACCES: Permission denied @ apply2files - .sass-cache/f9c7d2198e71ce10091623b713617ddee5603508/frontend.scssc"; }
+.rating {
+  font-size: 1.5em;
+  /* 30px/20=1.5em */ }
+
+.job-posting-list-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px; }
+
+.btn-job-posting {
+  border-radius: 5px; }
+
+.job-title span {
+  font-weight: bold;
+  font-size: 18px; }
+
+.job-title-tag {
+  /*basic styles*/
+  padding: 3px;
+  color: white;
+  background-color: #5cb85c;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  /*border styles*/
+  border: 0px;
+  border-radius: 5px; }
+
+.save-job-button,
+.job-saved-button,
+.guest-email-job-button,
+.registered-email-job-button,
+.guest-report-job-button,
+.report-job-button {
+  margin-left: 15px !important; }
+
+#submit-job-to-email-button {
+  margin-left: 5px !important; }
+
+#submit-job-report-button {
+  margin-left: 5px !important; }
+
+.save-job-right-column {
+  border-left: 1px; }
+
+.social-button {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  -o-transition: all .3s;
+  -moz-transition: all .3s;
+  -webkit-transition: all .3s;
+  -ms-transition: all .3s;
+  transition: all .3s; }
+
+.social-button:hover,
+.social-button:focus,
+.social-button:active {
+  outline: 0;
+  opacity: 0.8;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+  transition: all .3s; }
+
+.social-button-size-32 {
+  width: 32px;
+  height: 32px;
+  margin: 5px;
+  padding-top: 8px;
+  font-size: 14px;
+  line-height: 14px; }
+
+.social-button-size-48 {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  padding-top: 13px;
+  font-size: 21px;
+  line-height: 21px; }
+
+.social-button-size-64 {
+  width: 64px;
+  height: 64px;
+  margin: 10px;
+  padding-top: 16px;
+  font-size: 28px;
+  line-height: 28px; }
+
+.social-button-square {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px; }
+
+.social-button-circle {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%; }
+
+.social-button-text {
+  height: 48px;
+  margin: 8px;
+  padding: 13px 17px;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 300;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px; }
+
+.social-button-text i {
+  padding-right: 27px;
+  font-size: 21px;
+  line-height: 21px;
+  vertical-align: top; }
+
+.social-button-text i:after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 70%;
+  width: 1px;
+  height: 36px;
+  background: #ccc;
+  background: rgba(255, 255, 255, 0.3); }
+
+.social-button-border-bottom {
+  padding-top: 12px;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.1); }
+
+.social-button-pill {
+  -moz-border-radius: 400px;
+  -webkit-border-radius: 400px;
+  border-radius: 400px; }
+
+.social-button-gradient {
+  position: relative;
+  overflow: hidden; }
+
+.social-button-gradient:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%); }
+
+.social-button-shadow-left {
+  position: relative;
+  overflow: hidden; }
+
+.social-button-shadow-left:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1); }
+
+.social-button-shadow-bottom {
+  position: relative;
+  overflow: hidden; }
+
+.social-button-shadow-bottom:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: rgba(0, 0, 0, 0.1); }
+
+.social-button-facebook {
+  background: #4862a3; }
+
+.social-button-google {
+  background: #3f85f4; }
+
+.social-button-instagram {
+  background: #3d6b92; }
+
+.social-button-linkedin {
+  background: #0177b5; }
+
+.social-button-twitter {
+  background: #55acee; }
+
+.social-button-long-shadow {
+  overflow: hidden; }
+
+.social-button-long-shadow.social-button-facebook {
+  text-shadow: #415893 1px 1px, #415893 2px 2px, #415893 3px 3px, #415893 4px 4px, #415894 5px 5px, #415894 6px 6px, #415894 7px 7px, #415994 8px 8px, #415994 9px 9px, #415995 10px 10px, #415995 11px 11px, #425995 12px 12px, #425995 13px 13px, #425995 14px 14px, #425996 15px 15px, #425a96 16px 16px, #425a96 17px 17px, #425a96 18px 18px, #425a96 19px 19px, #425a97 20px 20px, #425a97 21px 21px, #425a97 22px 22px, #435a97 23px 23px, #435b97 24px 24px, #435b98 25px 25px, #435b98 26px 26px, #435b98 27px 27px, #435b98 28px 28px, #435b98 29px 29px, #435b99 30px 30px, #435b99 31px 31px, #435c99 32px 32px, #435c99 33px 33px, #435c99 34px 34px, #445c9a 35px 35px, #445c9a 36px 36px, #445c9a 37px 37px, #445c9a 38px 38px, #445c9a 39px 39px, #445d9b 40px 40px, #445d9b 41px 41px, #445d9b 42px 42px, #445d9b 43px 43px, #445d9b 44px 44px, #445d9c 45px 45px, #455d9c 46px 46px, #455d9c 47px 47px, #455e9c 48px 48px, #455e9c 49px 49px, #455e9d 50px 50px, #455e9d 51px 51px, #455e9d 52px 52px, #455e9d 53px 53px, #455e9d 54px 54px, #455e9e 55px 55px, #455f9e 56px 56px, #455f9e 57px 57px, #465f9e 58px 58px, #465f9e 59px 59px, #465f9f 60px 60px, #465f9f 61px 61px, #465f9f 62px 62px, #465f9f 63px 63px, #46609f 64px 64px, #4660a0 65px 65px, #4660a0 66px 66px, #4660a0 67px 67px, #4660a0 68px 68px, #4760a0 69px 69px, #4760a1 70px 70px, #4760a1 71px 71px, #4761a1 72px 72px, #4761a1 73px 73px, #4761a1 74px 74px, #4761a2 75px 75px, #4761a2 76px 76px, #4761a2 77px 77px, #4761a2 78px 78px, #4761a2 79px 79px, #4862a3 80px 80px; }
+
+.social-button-long-shadow.social-button-google {
+  text-shadow: #3978dc 1px 1px, #3978dc 2px 2px, #3978dc 3px 3px, #3978dd 4px 4px, #3978dd 5px 5px, #3978dd 6px 6px, #3979de 7px 7px, #3979de 8px 8px, #3979de 9px 9px, #3979df 10px 10px, #3979df 11px 11px, #3979df 12px 12px, #397adf 13px 13px, #3a7ae0 14px 14px, #3a7ae0 15px 15px, #3a7ae0 16px 16px, #3a7ae1 17px 17px, #3a7ae1 18px 18px, #3a7be1 19px 19px, #3a7be2 20px 20px, #3a7be2 21px 21px, #3a7be2 22px 22px, #3a7be2 23px 23px, #3a7be3 24px 24px, #3a7ce3 25px 25px, #3a7ce3 26px 26px, #3b7ce4 27px 27px, #3b7ce4 28px 28px, #3b7ce4 29px 29px, #3b7ce5 30px 30px, #3b7de5 31px 31px, #3b7de5 32px 32px, #3b7de5 33px 33px, #3b7de6 34px 34px, #3b7de6 35px 35px, #3b7de6 36px 36px, #3b7ee7 37px 37px, #3b7ee7 38px 38px, #3b7ee7 39px 39px, #3c7ee8 40px 40px, #3c7ee8 41px 41px, #3c7ee8 42px 42px, #3c7ee8 43px 43px, #3c7fe9 44px 44px, #3c7fe9 45px 45px, #3c7fe9 46px 46px, #3c7fea 47px 47px, #3c7fea 48px 48px, #3c7fea 49px 49px, #3c80eb 50px 50px, #3c80eb 51px 51px, #3c80eb 52px 52px, #3c80eb 53px 53px, #3d80ec 54px 54px, #3d80ec 55px 55px, #3d81ec 56px 56px, #3d81ed 57px 57px, #3d81ed 58px 58px, #3d81ed 59px 59px, #3d81ee 60px 60px, #3d81ee 61px 61px, #3d82ee 62px 62px, #3d82ee 63px 63px, #3d82ef 64px 64px, #3d82ef 65px 65px, #3d82ef 66px 66px, #3e82f0 67px 67px, #3e83f0 68px 68px, #3e83f0 69px 69px, #3e83f1 70px 70px, #3e83f1 71px 71px, #3e83f1 72px 72px, #3e83f1 73px 73px, #3e84f2 74px 74px, #3e84f2 75px 75px, #3e84f2 76px 76px, #3e84f3 77px 77px, #3e84f3 78px 78px, #3e84f3 79px 79px, #3f85f4 80px 80px; }
+
+.social-button-long-shadow.social-button-instagram {
+  text-shadow: #376083 1px 1px, #376083 2px 2px, #376083 3px 3px, #376083 4px 4px, #376083 5px 5px, #376084 6px 6px, #376084 7px 7px, #376184 8px 8px, #376184 9px 9px, #376184 10px 10px, #376185 11px 11px, #376185 12px 12px, #376185 13px 13px, #386185 14px 14px, #386285 15px 15px, #386286 16px 16px, #386286 17px 17px, #386286 18px 18px, #386286 19px 19px, #386286 20px 20px, #386286 21px 21px, #386387 22px 22px, #386387 23px 23px, #386387 24px 24px, #386387 25px 25px, #386387 26px 26px, #396388 27px 27px, #396388 28px 28px, #396388 29px 29px, #396488 30px 30px, #396488 31px 31px, #396489 32px 32px, #396489 33px 33px, #396489 34px 34px, #396489 35px 35px, #396489 36px 36px, #396589 37px 37px, #39658a 38px 38px, #39658a 39px 39px, #3a658a 40px 40px, #3a658a 41px 41px, #3a658a 42px 42px, #3a658b 43px 43px, #3a668b 44px 44px, #3a668b 45px 45px, #3a668b 46px 46px, #3a668b 47px 47px, #3a668c 48px 48px, #3a668c 49px 49px, #3a668c 50px 50px, #3a678c 51px 51px, #3a678c 52px 52px, #3a678c 53px 53px, #3b678d 54px 54px, #3b678d 55px 55px, #3b678d 56px 56px, #3b678d 57px 57px, #3b678d 58px 58px, #3b688e 59px 59px, #3b688e 60px 60px, #3b688e 61px 61px, #3b688e 62px 62px, #3b688e 63px 63px, #3b688f 64px 64px, #3b688f 65px 65px, #3b698f 66px 66px, #3c698f 67px 67px, #3c698f 68px 68px, #3c698f 69px 69px, #3c6990 70px 70px, #3c6990 71px 71px, #3c6990 72px 72px, #3c6a90 73px 73px, #3c6a90 74px 74px, #3c6a91 75px 75px, #3c6a91 76px 76px, #3c6a91 77px 77px, #3c6a91 78px 78px, #3c6a91 79px 79px, #3d6b92 80px 80px; }
+
+.social-button-long-shadow.social-button-linkedin {
+  text-shadow: #016ba3 1px 1px, #016ba3 2px 2px, #016ba3 3px 3px, #016ba3 4px 4px, #016ba4 5px 5px, #016ba4 6px 6px, #016ca4 7px 7px, #016ca4 8px 8px, #016ca5 9px 9px, #016ca5 10px 10px, #016ca5 11px 11px, #016ca5 12px 12px, #016ca5 13px 13px, #016da6 14px 14px, #016da6 15px 15px, #016da6 16px 16px, #016da6 17px 17px, #016da7 18px 18px, #016da7 19px 19px, #016ea7 20px 20px, #016ea7 21px 21px, #016ea7 22px 22px, #016ea8 23px 23px, #016ea8 24px 24px, #016ea8 25px 25px, #016ea8 26px 26px, #016fa9 27px 27px, #016fa9 28px 28px, #016fa9 29px 29px, #016fa9 30px 30px, #016fa9 31px 31px, #016faa 32px 32px, #016faa 33px 33px, #0170aa 34px 34px, #0170aa 35px 35px, #0170ab 36px 36px, #0170ab 37px 37px, #0170ab 38px 38px, #0170ab 39px 39px, #0171ac 40px 40px, #0171ac 41px 41px, #0171ac 42px 42px, #0171ac 43px 43px, #0171ac 44px 44px, #0171ad 45px 45px, #0171ad 46px 46px, #0172ad 47px 47px, #0172ad 48px 48px, #0172ae 49px 49px, #0172ae 50px 50px, #0172ae 51px 51px, #0172ae 52px 52px, #0172ae 53px 53px, #0173af 54px 54px, #0173af 55px 55px, #0173af 56px 56px, #0173af 57px 57px, #0173b0 58px 58px, #0173b0 59px 59px, #0174b0 60px 60px, #0174b0 61px 61px, #0174b0 62px 62px, #0174b1 63px 63px, #0174b1 64px 64px, #0174b1 65px 65px, #0174b1 66px 66px, #0175b2 67px 67px, #0175b2 68px 68px, #0175b2 69px 69px, #0175b2 70px 70px, #0175b2 71px 71px, #0175b3 72px 72px, #0175b3 73px 73px, #0176b3 74px 74px, #0176b3 75px 75px, #0176b4 76px 76px, #0176b4 77px 77px, #0176b4 78px 78px, #0176b4 79px 79px, #0177b5 80px 80px; }
+
+.social-button-long-shadow.azm-twitter {
+  text-shadow: #4d9bd6 1px 1px, #4d9bd6 2px 2px, #4d9bd6 3px 3px, #4d9bd7 4px 4px, #4d9cd7 5px 5px, #4d9cd7 6px 6px, #4d9cd8 7px 7px, #4d9cd8 8px 8px, #4d9cd8 9px 9px, #4e9dd9 10px 10px, #4e9dd9 11px 11px, #4e9dd9 12px 12px, #4e9dd9 13px 13px, #4e9dda 14px 14px, #4e9eda 15px 15px, #4e9eda 16px 16px, #4e9edb 17px 17px, #4e9edb 18px 18px, #4e9fdb 19px 19px, #4f9fdc 20px 20px, #4f9fdc 21px 21px, #4f9fdc 22px 22px, #4f9fdc 23px 23px, #4fa0dd 24px 24px, #4fa0dd 25px 25px, #4fa0dd 26px 26px, #4fa0de 27px 27px, #4fa0de 28px 28px, #4fa1de 29px 29px, #50a1df 30px 30px, #50a1df 31px 31px, #50a1df 32px 32px, #50a2df 33px 33px, #50a2e0 34px 34px, #50a2e0 35px 35px, #50a2e0 36px 36px, #50a2e1 37px 37px, #50a3e1 38px 38px, #50a3e1 39px 39px, #51a3e2 40px 40px, #51a3e2 41px 41px, #51a3e2 42px 42px, #51a4e2 43px 43px, #51a4e3 44px 44px, #51a4e3 45px 45px, #51a4e3 46px 46px, #51a4e4 47px 47px, #51a5e4 48px 48px, #51a5e4 49px 49px, #52a5e5 50px 50px, #52a5e5 51px 51px, #52a6e5 52px 52px, #52a6e5 53px 53px, #52a6e6 54px 54px, #52a6e6 55px 55px, #52a6e6 56px 56px, #52a7e7 57px 57px, #52a7e7 58px 58px, #52a7e7 59px 59px, #53a7e8 60px 60px, #53a7e8 61px 61px, #53a8e8 62px 62px, #53a8e8 63px 63px, #53a8e9 64px 64px, #53a8e9 65px 65px, #53a9e9 66px 66px, #53a9ea 67px 67px, #53a9ea 68px 68px, #53a9ea 69px 69px, #54a9eb 70px 70px, #54aaeb 71px 71px, #54aaeb 72px 72px, #54aaeb 73px 73px, #54aaec 74px 74px, #54aaec 75px 75px, #54abec 76px 76px, #54abed 77px 77px, #54abed 78px 78px, #54abed 79px 79px, #55acee 80px 80px; }
+
+/*# sourceMappingURL=frontend.css.map */
