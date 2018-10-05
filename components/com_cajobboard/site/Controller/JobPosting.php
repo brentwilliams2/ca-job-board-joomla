@@ -36,7 +36,89 @@ class JobPosting extends DataController
 	{
     parent::__construct($container, $config);
 
-    $this->predefinedTaskList = ['browse', 'read'];
+    $this->predefinedTaskList = ['browse', 'read', 'save', 'apply'];
+  }
+
+  /**
+   * Override default browse task (list view) to remove functionality calling XML forms
+   *
+   * @return  void
+   */
+  public function browse()
+  {
+		// Determine if user logged in
+    $user = $this->container->platform->getUser();
+
+		// If we have a guest user, guess their location
+		if ($user->guest)
+		{
+      // @TODO: geolocation code
+    }
+
+		// Does the user have core.manage access?
+    //$isAdmin = $user->authorise('core.manage', 'com_cajobboard');
+
+    // Do something special if a privileged user
+		//if ($isAdmin)
+
+    if (empty($this->layout))
+    {
+      $this->layout = 'default';
+    }
+
+    // Display the view
+    $this->display(in_array('browse', $this->cacheableTasks), $this->cacheParams);
+  }
+
+	/**
+	 * Single record read. The id set in the request is passed to the model and
+	 * then the item layout is used to render the result.
+	 *
+	 * @return  void
+	 *
+	 * @throws ItemNotFound When the item is not found
+	 */
+	public function read()
+	{
+		// Load the model
+		/** @var DataModel $model */
+		$model = $this->getModel()->savestate(false);
+
+		// If there is no record loaded, try loading a record based on the id passed in the input object
+		if (!$model->getId())
+		{
+			$ids = $this->getIDsFromRequest($model, true);
+
+			if ($model->getId() != reset($ids))
+			{
+				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
+				throw new ItemNotFound(\JText::_($key), 404);
+			}
+		}
+
+		// Set the layout to item, if it's not set in the URL
+		if (empty($this->layout))
+		{
+			$this->layout = 'item';
+		}
+		elseif ($this->layout == 'default')
+		{
+			$this->layout = 'item';
+		}
+
+		// Display the view
+		$this->display(in_array('read', $this->cacheableTasks), $this->cacheParams);
+	}
+
+  /**
+	 *
+	 * @return  bool
+	 */
+	public function onBeforeAdd()
+	{
+    // @TODO: redirect guest users before they see an add form
+
+		return true;
   }
 
 	/**

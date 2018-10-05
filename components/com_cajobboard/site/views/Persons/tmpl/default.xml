@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Admin Menu item for Persons Browse view
+
+  @package Calligraphic Job boards
+  @copyright Copyright (c)2018 Calligraphic Design
+  @license GNU General Public License version 3, or later
+-->
+<metadata>
+	<layout title="COM_CAJOBBOARD_VIEW_PERSONS_DEFAULT_TITLE">
+		<message>
+				<![CDATA[COM_CAJOBBOARD_VIEW_PERSONS_DEFAULT_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_CAJOBBOARD_VIEW_PERSONS_DEFAULT_TITLE</name>
+		<description>COM_CAJOBBOARD_VIEW_PERSONS_DEFAULT_DESC</description>
+	</state>
+  <fields name="request">
+    <fieldset name="request">
+      <field
+        name="task"
+        type="hidden"
+        value="browse"
+      />
+    </fieldset>
+  </fields>
+</metadata>

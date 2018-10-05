@@ -12,25 +12,28 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  // Note. It is important to remove spaces between elements.
+  // You can set an id for the menu in the back-end module manager for the menu, otherwise no id
+  $id = '';
+
+  if ($tagId = $params->get('tag_id', ''))
+  {
+    $id = ' id="' . $tagId . '"';
+  }
 ?>
+<ul class="nav menu<?php echo $class_sfx; ?>"<?php echo $id; ?>>
 
-<?php // The menu class is deprecated. Use nav instead. ?>
-<ul class="nav menu<?php echo $class_sfx;?>"<?php
-	$tag = '';
-
-	if ($params->get('tag_id') != null)
-	{
-		$tag = $params->get('tag_id') . '';
-		echo ' id="' . $tag . '"';
-	}
-?>>
-<?php
-foreach ($list as $i => &$item)
+<?php foreach ($list as $i => &$item)
 {
+  // Set the class for the menu item
 	$class = 'item-' . $item->id;
 
-	if (($item->id == $active_id) OR ($item->type == 'alias' AND $item->params->get('aliasoptions') == $active_id))
+  // Add default class if this is the default menu item
+	if ($item->id == $default_id)
+	{
+		$class .= ' default';
+	}
+
+	if ($item->id == $active_id || ($item->type === 'alias' && $item->params->get('aliasoptions') == $active_id))
 	{
 		$class .= ' current';
 	}
@@ -39,7 +42,7 @@ foreach ($list as $i => &$item)
 	{
 		$class .= ' active';
 	}
-	elseif ($item->type == 'alias')
+	elseif ($item->type === 'alias')
 	{
 		$aliasToId = $item->params->get('aliasoptions');
 
@@ -53,7 +56,7 @@ foreach ($list as $i => &$item)
 		}
 	}
 
-	if ($item->type == 'separator')
+	if ($item->type === 'separator')
 	{
 		$class .= ' divider';
 	}
@@ -68,19 +71,13 @@ foreach ($list as $i => &$item)
 		$class .= ' parent';
 	}
 
-	if (!empty($class))
-	{
-		$class = ' class="' . trim($class) . '"';
-	}
+	echo '<li class="' . $class . '">';
 
-	echo '<li' . $class . '>';
-
-	// Render the menu item.
 	switch ($item->type) :
 		case 'separator':
-		case 'url':
 		case 'component':
 		case 'heading':
+		case 'url':
 			require JModuleHelper::getLayoutPath('mod_menu', 'default_' . $item->type);
 			break;
 
@@ -94,15 +91,15 @@ foreach ($list as $i => &$item)
 	{
 		echo '<ul class="nav-child unstyled small">';
 	}
+	// The next item is shallower.
 	elseif ($item->shallower)
 	{
-		// The next item is shallower.
 		echo '</li>';
 		echo str_repeat('</ul></li>', $item->level_diff);
 	}
+	// The next item is on the same level.
 	else
 	{
-		// The next item is on the same level.
 		echo '</li>';
 	}
 }

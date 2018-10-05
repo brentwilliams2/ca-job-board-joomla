@@ -1,0 +1,184 @@
+/**
+ *  Styles for Social Icon Widgets
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
+ * Rounded corner square flat buttons:
+ *
+ *   <a href="#" class="btn social-button social-button-size-48 social-button-square social-button-facebook"><i class="fa fa-facebook"></i></a>
+ *
+ * Circle long shadow:
+ *
+ *    <a href="#" class="btn social-button social-button-size-64 social-button-circle social-button-long-shadow social-button-facebook"><i class="fa fa-facebook"></i></a>
+ *
+ * Text buttons, border bottom:
+ *
+ *    <a href="#" class="btn social-button social-button-text social-button-border-bottom social-button-facebook"><i class="fa fa-facebook"></i> Log in with Facebook</a>
+ *
+ * Text buttons, pill shape, bottom shadow:
+ *
+ *    <a href="#" class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
+ */
+
+// Base social button class, use on all variants
+.social-button {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	color: #fff;
+	text-align: center;
+	-moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
+	-o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+.social-button:hover,
+.social-button:focus,
+.social-button:active {
+  outline: 0;
+  opacity: 0.8;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+  transition: all .3s;
+}
+
+// Size classes for square buttons and circle buttons
+.social-button-size-32 {
+	width: 32px;
+	height: 32px;
+	margin: 5px;
+	padding-top: 8px;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.social-button-size-48 {
+	width: 48px;
+	height: 48px;
+	margin: 8px;
+	padding-top: 13px;
+	font-size: 21px;
+	line-height: 21px;
+}
+
+.social-button-size-64 {
+	width: 64px;
+	height: 64px;
+	margin: 10px;
+	padding-top: 16px;
+	font-size: 28px;
+	line-height: 28px;
+}
+
+// Use square and circle with size class
+.social-button-square {
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+}
+
+.social-button-circle {
+	-moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;
+}
+
+// Text button, use with pill, border-bottom, and shadow-bottom classes (not size class)
+.social-button-text {
+	height: 48px;
+	margin: 8px;
+	padding: 13px 17px;
+	font-size: 14px;
+	line-height: 21px;
+	font-weight: 300;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+}
+
+.social-button-text i {
+  padding-right: 27px;
+  font-size: 21px;
+  line-height: 21px;
+  vertical-align: top;
+}
+
+.social-button-text i:after {
+	content: "";
+	position: absolute;
+	top: -8px;
+	left: 70%;
+	width: 1px;
+	height: 36px;
+	background: #ccc;
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.social-button-border-bottom {
+	padding-top: 12px;
+	border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+}
+
+.social-button-pill {
+	-moz-border-radius: 400px; -webkit-border-radius: 400px; border-radius: 400px;
+}
+
+.social-button-gradient {
+	position: relative;
+	overflow: hidden;
+}
+
+.social-button-gradient:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to bottom,  rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%);
+}
+
+.social-button-shadow-left {
+	position: relative;
+	overflow: hidden;
+}
+
+.social-button-shadow-left:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.social-button-shadow-bottom {
+	position: relative;
+	overflow: hidden;
+}
+
+.social-button-shadow-bottom:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.social-button-facebook { background: #4862a3; }
+.social-button-google { background: #3f85f4; }
+.social-button-instagram { background: #3d6b92; }
+.social-button-linkedin { background: #0177b5; }
+.social-button-twitter { background: #55acee; }
+
+// long shadows for use on circle and square buttons
+.social-button-long-shadow {
+	overflow: hidden;
+}
+
+.social-button-long-shadow.social-button-facebook {text-shadow:rgb(65,88,147) 1px 1px,rgb(65,88,147) 2px 2px,rgb(65,88,147) 3px 3px,rgb(65,88,147) 4px 4px,rgb(65,88,148) 5px 5px,rgb(65,88,148) 6px 6px,rgb(65,88,148) 7px 7px,rgb(65,89,148) 8px 8px,rgb(65,89,148) 9px 9px,rgb(65,89,149) 10px 10px,rgb(65,89,149) 11px 11px,rgb(66,89,149) 12px 12px,rgb(66,89,149) 13px 13px,rgb(66,89,149) 14px 14px,rgb(66,89,150) 15px 15px,rgb(66,90,150) 16px 16px,rgb(66,90,150) 17px 17px,rgb(66,90,150) 18px 18px,rgb(66,90,150) 19px 19px,rgb(66,90,151) 20px 20px,rgb(66,90,151) 21px 21px,rgb(66,90,151) 22px 22px,rgb(67,90,151) 23px 23px,rgb(67,91,151) 24px 24px,rgb(67,91,152) 25px 25px,rgb(67,91,152) 26px 26px,rgb(67,91,152) 27px 27px,rgb(67,91,152) 28px 28px,rgb(67,91,152) 29px 29px,rgb(67,91,153) 30px 30px,rgb(67,91,153) 31px 31px,rgb(67,92,153) 32px 32px,rgb(67,92,153) 33px 33px,rgb(67,92,153) 34px 34px,rgb(68,92,154) 35px 35px,rgb(68,92,154) 36px 36px,rgb(68,92,154) 37px 37px,rgb(68,92,154) 38px 38px,rgb(68,92,154) 39px 39px,rgb(68,93,155) 40px 40px,rgb(68,93,155) 41px 41px,rgb(68,93,155) 42px 42px,rgb(68,93,155) 43px 43px,rgb(68,93,155) 44px 44px,rgb(68,93,156) 45px 45px,rgb(69,93,156) 46px 46px,rgb(69,93,156) 47px 47px,rgb(69,94,156) 48px 48px,rgb(69,94,156) 49px 49px,rgb(69,94,157) 50px 50px,rgb(69,94,157) 51px 51px,rgb(69,94,157) 52px 52px,rgb(69,94,157) 53px 53px,rgb(69,94,157) 54px 54px,rgb(69,94,158) 55px 55px,rgb(69,95,158) 56px 56px,rgb(69,95,158) 57px 57px,rgb(70,95,158) 58px 58px,rgb(70,95,158) 59px 59px,rgb(70,95,159) 60px 60px,rgb(70,95,159) 61px 61px,rgb(70,95,159) 62px 62px,rgb(70,95,159) 63px 63px,rgb(70,96,159) 64px 64px,rgb(70,96,160) 65px 65px,rgb(70,96,160) 66px 66px,rgb(70,96,160) 67px 67px,rgb(70,96,160) 68px 68px,rgb(71,96,160) 69px 69px,rgb(71,96,161) 70px 70px,rgb(71,96,161) 71px 71px,rgb(71,97,161) 72px 72px,rgb(71,97,161) 73px 73px,rgb(71,97,161) 74px 74px,rgb(71,97,162) 75px 75px,rgb(71,97,162) 76px 76px,rgb(71,97,162) 77px 77px,rgb(71,97,162) 78px 78px,rgb(71,97,162) 79px 79px,rgb(72,98,163) 80px 80px}
+.social-button-long-shadow.social-button-google {text-shadow:rgb(57,120,220) 1px 1px,rgb(57,120,220) 2px 2px,rgb(57,120,220) 3px 3px,rgb(57,120,221) 4px 4px,rgb(57,120,221) 5px 5px,rgb(57,120,221) 6px 6px,rgb(57,121,222) 7px 7px,rgb(57,121,222) 8px 8px,rgb(57,121,222) 9px 9px,rgb(57,121,223) 10px 10px,rgb(57,121,223) 11px 11px,rgb(57,121,223) 12px 12px,rgb(57,122,223) 13px 13px,rgb(58,122,224) 14px 14px,rgb(58,122,224) 15px 15px,rgb(58,122,224) 16px 16px,rgb(58,122,225) 17px 17px,rgb(58,122,225) 18px 18px,rgb(58,123,225) 19px 19px,rgb(58,123,226) 20px 20px,rgb(58,123,226) 21px 21px,rgb(58,123,226) 22px 22px,rgb(58,123,226) 23px 23px,rgb(58,123,227) 24px 24px,rgb(58,124,227) 25px 25px,rgb(58,124,227) 26px 26px,rgb(59,124,228) 27px 27px,rgb(59,124,228) 28px 28px,rgb(59,124,228) 29px 29px,rgb(59,124,229) 30px 30px,rgb(59,125,229) 31px 31px,rgb(59,125,229) 32px 32px,rgb(59,125,229) 33px 33px,rgb(59,125,230) 34px 34px,rgb(59,125,230) 35px 35px,rgb(59,125,230) 36px 36px,rgb(59,126,231) 37px 37px,rgb(59,126,231) 38px 38px,rgb(59,126,231) 39px 39px,rgb(60,126,232) 40px 40px,rgb(60,126,232) 41px 41px,rgb(60,126,232) 42px 42px,rgb(60,126,232) 43px 43px,rgb(60,127,233) 44px 44px,rgb(60,127,233) 45px 45px,rgb(60,127,233) 46px 46px,rgb(60,127,234) 47px 47px,rgb(60,127,234) 48px 48px,rgb(60,127,234) 49px 49px,rgb(60,128,235) 50px 50px,rgb(60,128,235) 51px 51px,rgb(60,128,235) 52px 52px,rgb(60,128,235) 53px 53px,rgb(61,128,236) 54px 54px,rgb(61,128,236) 55px 55px,rgb(61,129,236) 56px 56px,rgb(61,129,237) 57px 57px,rgb(61,129,237) 58px 58px,rgb(61,129,237) 59px 59px,rgb(61,129,238) 60px 60px,rgb(61,129,238) 61px 61px,rgb(61,130,238) 62px 62px,rgb(61,130,238) 63px 63px,rgb(61,130,239) 64px 64px,rgb(61,130,239) 65px 65px,rgb(61,130,239) 66px 66px,rgb(62,130,240) 67px 67px,rgb(62,131,240) 68px 68px,rgb(62,131,240) 69px 69px,rgb(62,131,241) 70px 70px,rgb(62,131,241) 71px 71px,rgb(62,131,241) 72px 72px,rgb(62,131,241) 73px 73px,rgb(62,132,242) 74px 74px,rgb(62,132,242) 75px 75px,rgb(62,132,242) 76px 76px,rgb(62,132,243) 77px 77px,rgb(62,132,243) 78px 78px,rgb(62,132,243) 79px 79px,rgb(63,133,244) 80px 80px}
+.social-button-long-shadow.social-button-instagram {text-shadow:rgb(55,96,131) 1px 1px,rgb(55,96,131) 2px 2px,rgb(55,96,131) 3px 3px,rgb(55,96,131) 4px 4px,rgb(55,96,131) 5px 5px,rgb(55,96,132) 6px 6px,rgb(55,96,132) 7px 7px,rgb(55,97,132) 8px 8px,rgb(55,97,132) 9px 9px,rgb(55,97,132) 10px 10px,rgb(55,97,133) 11px 11px,rgb(55,97,133) 12px 12px,rgb(55,97,133) 13px 13px,rgb(56,97,133) 14px 14px,rgb(56,98,133) 15px 15px,rgb(56,98,134) 16px 16px,rgb(56,98,134) 17px 17px,rgb(56,98,134) 18px 18px,rgb(56,98,134) 19px 19px,rgb(56,98,134) 20px 20px,rgb(56,98,134) 21px 21px,rgb(56,99,135) 22px 22px,rgb(56,99,135) 23px 23px,rgb(56,99,135) 24px 24px,rgb(56,99,135) 25px 25px,rgb(56,99,135) 26px 26px,rgb(57,99,136) 27px 27px,rgb(57,99,136) 28px 28px,rgb(57,99,136) 29px 29px,rgb(57,100,136) 30px 30px,rgb(57,100,136) 31px 31px,rgb(57,100,137) 32px 32px,rgb(57,100,137) 33px 33px,rgb(57,100,137) 34px 34px,rgb(57,100,137) 35px 35px,rgb(57,100,137) 36px 36px,rgb(57,101,137) 37px 37px,rgb(57,101,138) 38px 38px,rgb(57,101,138) 39px 39px,rgb(58,101,138) 40px 40px,rgb(58,101,138) 41px 41px,rgb(58,101,138) 42px 42px,rgb(58,101,139) 43px 43px,rgb(58,102,139) 44px 44px,rgb(58,102,139) 45px 45px,rgb(58,102,139) 46px 46px,rgb(58,102,139) 47px 47px,rgb(58,102,140) 48px 48px,rgb(58,102,140) 49px 49px,rgb(58,102,140) 50px 50px,rgb(58,103,140) 51px 51px,rgb(58,103,140) 52px 52px,rgb(58,103,140) 53px 53px,rgb(59,103,141) 54px 54px,rgb(59,103,141) 55px 55px,rgb(59,103,141) 56px 56px,rgb(59,103,141) 57px 57px,rgb(59,103,141) 58px 58px,rgb(59,104,142) 59px 59px,rgb(59,104,142) 60px 60px,rgb(59,104,142) 61px 61px,rgb(59,104,142) 62px 62px,rgb(59,104,142) 63px 63px,rgb(59,104,143) 64px 64px,rgb(59,104,143) 65px 65px,rgb(59,105,143) 66px 66px,rgb(60,105,143) 67px 67px,rgb(60,105,143) 68px 68px,rgb(60,105,143) 69px 69px,rgb(60,105,144) 70px 70px,rgb(60,105,144) 71px 71px,rgb(60,105,144) 72px 72px,rgb(60,106,144) 73px 73px,rgb(60,106,144) 74px 74px,rgb(60,106,145) 75px 75px,rgb(60,106,145) 76px 76px,rgb(60,106,145) 77px 77px,rgb(60,106,145) 78px 78px,rgb(60,106,145) 79px 79px,rgb(61,107,146) 80px 80px}
+.social-button-long-shadow.social-button-linkedin {text-shadow:rgb(1,107,163) 1px 1px,rgb(1,107,163) 2px 2px,rgb(1,107,163) 3px 3px,rgb(1,107,163) 4px 4px,rgb(1,107,164) 5px 5px,rgb(1,107,164) 6px 6px,rgb(1,108,164) 7px 7px,rgb(1,108,164) 8px 8px,rgb(1,108,165) 9px 9px,rgb(1,108,165) 10px 10px,rgb(1,108,165) 11px 11px,rgb(1,108,165) 12px 12px,rgb(1,108,165) 13px 13px,rgb(1,109,166) 14px 14px,rgb(1,109,166) 15px 15px,rgb(1,109,166) 16px 16px,rgb(1,109,166) 17px 17px,rgb(1,109,167) 18px 18px,rgb(1,109,167) 19px 19px,rgb(1,110,167) 20px 20px,rgb(1,110,167) 21px 21px,rgb(1,110,167) 22px 22px,rgb(1,110,168) 23px 23px,rgb(1,110,168) 24px 24px,rgb(1,110,168) 25px 25px,rgb(1,110,168) 26px 26px,rgb(1,111,169) 27px 27px,rgb(1,111,169) 28px 28px,rgb(1,111,169) 29px 29px,rgb(1,111,169) 30px 30px,rgb(1,111,169) 31px 31px,rgb(1,111,170) 32px 32px,rgb(1,111,170) 33px 33px,rgb(1,112,170) 34px 34px,rgb(1,112,170) 35px 35px,rgb(1,112,171) 36px 36px,rgb(1,112,171) 37px 37px,rgb(1,112,171) 38px 38px,rgb(1,112,171) 39px 39px,rgb(1,113,172) 40px 40px,rgb(1,113,172) 41px 41px,rgb(1,113,172) 42px 42px,rgb(1,113,172) 43px 43px,rgb(1,113,172) 44px 44px,rgb(1,113,173) 45px 45px,rgb(1,113,173) 46px 46px,rgb(1,114,173) 47px 47px,rgb(1,114,173) 48px 48px,rgb(1,114,174) 49px 49px,rgb(1,114,174) 50px 50px,rgb(1,114,174) 51px 51px,rgb(1,114,174) 52px 52px,rgb(1,114,174) 53px 53px,rgb(1,115,175) 54px 54px,rgb(1,115,175) 55px 55px,rgb(1,115,175) 56px 56px,rgb(1,115,175) 57px 57px,rgb(1,115,176) 58px 58px,rgb(1,115,176) 59px 59px,rgb(1,116,176) 60px 60px,rgb(1,116,176) 61px 61px,rgb(1,116,176) 62px 62px,rgb(1,116,177) 63px 63px,rgb(1,116,177) 64px 64px,rgb(1,116,177) 65px 65px,rgb(1,116,177) 66px 66px,rgb(1,117,178) 67px 67px,rgb(1,117,178) 68px 68px,rgb(1,117,178) 69px 69px,rgb(1,117,178) 70px 70px,rgb(1,117,178) 71px 71px,rgb(1,117,179) 72px 72px,rgb(1,117,179) 73px 73px,rgb(1,118,179) 74px 74px,rgb(1,118,179) 75px 75px,rgb(1,118,180) 76px 76px,rgb(1,118,180) 77px 77px,rgb(1,118,180) 78px 78px,rgb(1,118,180) 79px 79px,rgb(1,119,181) 80px 80px}
+.social-button-long-shadow.azm-twitter {text-shadow:rgb(77,155,214) 1px 1px,rgb(77,155,214) 2px 2px,rgb(77,155,214) 3px 3px,rgb(77,155,215) 4px 4px,rgb(77,156,215) 5px 5px,rgb(77,156,215) 6px 6px,rgb(77,156,216) 7px 7px,rgb(77,156,216) 8px 8px,rgb(77,156,216) 9px 9px,rgb(78,157,217) 10px 10px,rgb(78,157,217) 11px 11px,rgb(78,157,217) 12px 12px,rgb(78,157,217) 13px 13px,rgb(78,157,218) 14px 14px,rgb(78,158,218) 15px 15px,rgb(78,158,218) 16px 16px,rgb(78,158,219) 17px 17px,rgb(78,158,219) 18px 18px,rgb(78,159,219) 19px 19px,rgb(79,159,220) 20px 20px,rgb(79,159,220) 21px 21px,rgb(79,159,220) 22px 22px,rgb(79,159,220) 23px 23px,rgb(79,160,221) 24px 24px,rgb(79,160,221) 25px 25px,rgb(79,160,221) 26px 26px,rgb(79,160,222) 27px 27px,rgb(79,160,222) 28px 28px,rgb(79,161,222) 29px 29px,rgb(80,161,223) 30px 30px,rgb(80,161,223) 31px 31px,rgb(80,161,223) 32px 32px,rgb(80,162,223) 33px 33px,rgb(80,162,224) 34px 34px,rgb(80,162,224) 35px 35px,rgb(80,162,224) 36px 36px,rgb(80,162,225) 37px 37px,rgb(80,163,225) 38px 38px,rgb(80,163,225) 39px 39px,rgb(81,163,226) 40px 40px,rgb(81,163,226) 41px 41px,rgb(81,163,226) 42px 42px,rgb(81,164,226) 43px 43px,rgb(81,164,227) 44px 44px,rgb(81,164,227) 45px 45px,rgb(81,164,227) 46px 46px,rgb(81,164,228) 47px 47px,rgb(81,165,228) 48px 48px,rgb(81,165,228) 49px 49px,rgb(82,165,229) 50px 50px,rgb(82,165,229) 51px 51px,rgb(82,166,229) 52px 52px,rgb(82,166,229) 53px 53px,rgb(82,166,230) 54px 54px,rgb(82,166,230) 55px 55px,rgb(82,166,230) 56px 56px,rgb(82,167,231) 57px 57px,rgb(82,167,231) 58px 58px,rgb(82,167,231) 59px 59px,rgb(83,167,232) 60px 60px,rgb(83,167,232) 61px 61px,rgb(83,168,232) 62px 62px,rgb(83,168,232) 63px 63px,rgb(83,168,233) 64px 64px,rgb(83,168,233) 65px 65px,rgb(83,169,233) 66px 66px,rgb(83,169,234) 67px 67px,rgb(83,169,234) 68px 68px,rgb(83,169,234) 69px 69px,rgb(84,169,235) 70px 70px,rgb(84,170,235) 71px 71px,rgb(84,170,235) 72px 72px,rgb(84,170,235) 73px 73px,rgb(84,170,236) 74px 74px,rgb(84,170,236) 75px 75px,rgb(84,171,236) 76px 76px,rgb(84,171,237) 77px 77px,rgb(84,171,237) 78px 78px,rgb(84,171,237) 79px 79px,rgb(85,172,238) 80px 80px}

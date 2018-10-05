@@ -13,7 +13,6 @@
   // Framework classes
   use FOF30\Utils\FEFHelper\BrowseView;
   use FOF30\Utils\SelectOptions;
-  use JUri;
 
   // no direct access
   defined('_JEXEC') or die;

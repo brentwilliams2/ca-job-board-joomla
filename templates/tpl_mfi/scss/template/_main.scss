@@ -74,14 +74,14 @@ a {
 a:focus, a:hover {
     text-decoration: none;
 }
-/*TAGS CLUDS*/
+/*TAGS CLOUDS*/
 .module-content .tagspopular ul li {
     display: inline-block;
 }
 .module-content > .tagspopular ul li::before {
     content: none;
 }
-/*CALENDARIO*/
+/*CALENDAR*/
 .calendar {
     margin: 5px 0 0 1px !important;
 }
@@ -110,10 +110,6 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
     width: 100%;
 }
 /*LISTAS EN MODULOS*/
-.module-content ul li::before {
-	content:"\e080";
-    font-family: glyphicons halflings;
-}
 .module-content ul {
     margin: 0;
     padding: 0;

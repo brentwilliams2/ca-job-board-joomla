@@ -86,4 +86,26 @@
 
       return null;
     }
+
+    /**
+    * Create a teaser sentence from a longer string of text
+    *
+    * @param    $string   The string containing full text
+    * @param    $count    Number of words to include in teaser string
+    *
+    * @return   string  Formatted time
+    */
+    function getTeaser($string, $count)
+    {
+      $words = explode(' ', $string);
+
+      if (count($words) > $count)
+      {
+        $words = array_slice($words, 0, $count);
+
+        $teaser = implode(' ', $words);
+      }
+
+      return $teaser;
+    }
   }

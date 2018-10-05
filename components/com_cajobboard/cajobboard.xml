@@ -103,6 +103,7 @@
       <file driver="mysql" charset="utf8">sql/install/mysql/organizations.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/persons.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/places.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/questions_answers.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/reviews.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/utilities.sql</file>
     </sql>

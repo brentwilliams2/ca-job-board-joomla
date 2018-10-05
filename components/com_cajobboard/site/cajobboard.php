@@ -28,7 +28,7 @@ if(JDEBUG) {
 }
 
 // Load custom class paths
-include_once JPATH_COMPONENT_ADMINISTRATOR . '/Helpers/Autoloader.php';
+include_once JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Autoloader.php';
 
 $container = FOF30\Container\Container::getInstance('com_cajobboard')->dispatcher->dispatch();
 

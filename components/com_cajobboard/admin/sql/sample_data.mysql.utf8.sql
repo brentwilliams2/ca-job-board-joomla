@@ -95,14 +95,16 @@ INSERT INTO `#__cajobboard_job_postings` (
   '2'
 );
 
+
 /**
  * Image Object table sample data
  */
-INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, caption, content_location, height, width) VALUES
+INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, description, caption, content_location, height, width) VALUES
   (
     'media://com_cajobboard/images/places/266e84d61e29d12a36860f68879320de.jpg',
     'media://com_cajobboard/images/places/thumbs/10003e84a62ba007664ca4ec4ffdb930.jpg',
     'Bellagio Properties',
+    'bellagio-properties',
     'The headquarters of Bellagio Properties',
     'Bellagio Properties',
     1,
@@ -113,6 +115,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/places/36a86d9f88f24294925f827d9485da77.jpg',
     'media://com_cajobboard/images/places/thumbs/407ff4303f5bf177766b96f99d1cc938.jpg',
     'Circus Circus',
+    'circus-circus',
     'The headquarters of Bellagio Properties',
     'Circus Circus',
     2,
@@ -123,6 +126,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/persons/88545549392290bb7d136dbbbd13ec04.png',
     'media://com_cajobboard/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.png',
     'Employer Tom',
+    'employer-tom',
     'Employer Tom\'s Captions',
     'Employer Tom',
     3,
@@ -133,6 +137,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/persons/7295dba823ca6605f115a385517f8073.png',
     'media://com_cajobboard/images/persons/thumbs/thumb.ca1feedd1c5ebc4ec3d32964a40642d3.png',
     'Employer Janice',
+    'employer-janice',
     'Employer Janice\'s Caption',
     'Employer Janice',
     4,
@@ -143,6 +148,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/persons/48ceeada3a22ff130bb42b8bddf673f0.png',
     'media://com_cajobboard/images/persons/thumbs/thumb.f67f07e99b25686480177eead4185f6b.png',
     'Job Seeker Tim',
+    'job-seeker-tim',
     'Job Seeker Tim\'s Caption',
     'Job Seeker Tim',
     5,
@@ -153,6 +159,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/persons/d3cce8929e3a0525b453360a0d79f46c.gif',
     'media://com_cajobboard/images/persons/thumbs/thumb.bcc2ff3d300a59cb3ef3b6cd742fbebc.gif',
     'Job Seeker Susan',
+    'job-seeker-susan',
     'Job Seeker Susan\'s Caption',
     'Job Seeker Susan',
     6,
@@ -163,6 +170,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/persons/03079f1f0a7d5740404768bb5c051f75.jpg',
     'media://com_cajobboard/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.jpg',
     'Recruiter Tony',
+    'recruiter-tony',
     'Recruiter Tony\'s Caption',
     'Recruiter Tony',
     7,
@@ -173,6 +181,7 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/organizations/9ce203d4cf9b44218b864f51e82c8ed4.jpg',
     'media://com_cajobboard/images/organizations/thumbs/6407e2d6b58b00a69162f875cc25dc35.jpg',
     'Elite Property Management',
+    'elite-property-management',
     'Nobody does it better.',
     'Elite Property Management',
     1,
@@ -183,12 +192,14 @@ INSERT INTO `#__cajobboard_image_objects` (image, thumbnail, name, description, 
     'media://com_cajobboard/images/organizations/458b8334edf54c056392276cbf18ae4e.jpg',
     'media://com_cajobboard/images/organizations/thumbs/f9a399dfb8f45c1013b8e03ba05a81e9.jpg',
     'Action Property Management',
+    'action-property-management',
     'An easier way home',
     'Action Property Management',
     2,
     234,
     134
   );
+
 
 /**
  * Sample Place data
@@ -248,12 +259,14 @@ INSERT INTO `#__cajobboard_places` (
   1
 );
 
+
 /**
  * Sample Place-Images join table data
  */
 INSERT INTO `#__cajobboard_places_images` (photo, image_object_id) VALUES
   (1, 2),
   (2, 1);
+
 
 /**
  * Sample Organization table data
@@ -319,6 +332,7 @@ INSERT INTO `#__cajobboard_organizations` (
   '4'
 );
 
+
 /**
  * Sample Organization - Employee join table data
  */
@@ -328,6 +342,7 @@ INSERT INTO `#__cajobboard_organizations_employees` (
 ) VALUES
   ('1', '131'),
   ('2', '132');
+
 
 /**
  * Sample Organizations - ImageObjects join table data
@@ -339,6 +354,7 @@ INSERT INTO `#__cajobboard_organizations_images` (
   ('1', '1'),
   ('2', '2');
 
+
 /**
  * Sample Organization - Organization join table data
  */
@@ -348,6 +364,7 @@ INSERT INTO `#__cajobboard_organizations_organizations` (
 ) VALUES
   ('1', '1'),
   ('2', '2');
+
 
 /**
  * Sample Reviews table data
@@ -374,6 +391,7 @@ INSERT INTO `#__cajobboard_reviews` (
     '134'
   );
 
+
 /**
  * Sample Aggregate rating table data
  */
@@ -382,7 +400,7 @@ INSERT INTO `#__cajobboard_employer_aggregate_ratings` (
   item_reviewed, /* FK to #__cajobboard_organizations */
   rating_count,
   review_count,
-  rating_value 
+  rating_value
 ) VALUES
  (
    '1',
@@ -399,6 +417,7 @@ INSERT INTO `#__cajobboard_employer_aggregate_ratings` (
    '5'
  )
 
+
 /**
  * Sample User Geo table data
  */
@@ -410,6 +429,7 @@ INSERT INTO `#__cajobboard_person_geos` (geo) VALUES
   (ST_GEOMFROMTEXT('POINT(115.1332 36.1458)')),
   (ST_GEOMFROMTEXT('POINT(115.1242 36.1237)'));
 
+
 /**
  * Sample Persons - Organizations join table data (Recruiters and Connectors)
  */
@@ -419,6 +439,7 @@ INSERT INTO `#__cajobboard_persons_organizations` (
 ) VALUES
   ('131', '1'),
   ('132', '2');
+
 
 /**
  * Sample User Profiles table data
@@ -560,3 +581,341 @@ INSERT INTO `#__user_profiles` (user_id, profile_key, profile_value) VALUES
   ('138', 'cajobboard.address_region', '2'),
   ('138', 'cajobboard.geo', '6'),
   ('138', 'cajobboard.worksFor', '2');
+
+
+/**
+ * Sample Questions table data
+ */
+INSERT INTO `#__cajobboard_questions` (
+  question_id,
+  slug,
+  is_part_of,
+  publisher,
+  `text`,
+  accepted_answer,
+  upvote_count,
+  downvote_count
+) VALUES
+  (
+    '1',
+    'what-is-the-most-stressful-part-about-working-at-elite-property-management',
+    '1',
+    '132',
+    'What is the most stressful part about working at Elite Property Management?',
+    '1',
+    '4',
+    '1'
+  ),
+  (
+    '2',
+    'how-often-do-raises-occur-at-elite-property-management',
+    '2',
+    '133',
+    'How often do raises occur at Elite Property Management?',
+    '3',
+    '11',
+    '2'
+  ),
+  (
+    '3',
+    'what-is-the-interview-process-like',
+    '3',
+    '134',
+    'What is the interview process like?',
+    '5',
+    '2',
+    '0'
+  ),
+  (
+    '4',
+    'how-do-you-feel-about-going-to-work-each-day',
+    '4',
+    '135',
+    'How do you feel about going to work each day?',
+    '7',
+    '6',
+    '2'
+  );
+
+
+/**
+ * Sample Answers table data
+ */
+INSERT INTO `#__cajobboard_answers` (
+  answer_id,
+  slug,
+  is_part_of,
+  publisher,
+  `text`,
+  parent_item,
+  upvote_count,
+  downvote_count
+) VALUES
+  (
+    '1',
+    'the_work_environment_and_lack_of_proper_office_equipment',
+    '1',
+    '134',
+    'The work environment and lack of proper office equipment',
+    '1',
+    '4',
+    '1'
+  ),
+  (
+    '2',
+    'i_wanted_to_retire_from_this_place',
+    '1',
+    '135',
+    'I wanted to retire from this place but the management made my job so impossible, always calling us into office, to write us up because we had to work so short handed, we couldn\'t get everything done',
+    '1',
+    '5',
+    '0'
+  ),
+  (
+    '3',
+    'no_one_i_work_with_has_received_a_raise',
+    '2',
+    '136',
+    'No one I work with has received a raise and i have worked here for a year and a half. Other than $0.10 after 90 days, had to ask for that.',
+    '2',
+    '11',
+    '2'
+  ),
+  (
+    '4',
+    'hardly_much_of_a_living_expenses_increase',
+    '2',
+    '137',
+    'Once a year at 1.5%. Hardly much of a living expenses increase.',
+    '2',
+    '5',
+    '0'
+  ),
+  (
+    '5',
+    'worked_through_lunch',
+    '3',
+    '138',
+    '9.5 went in at 7:45 worked through lunch (not by choice) and usually worked until 5-5:15pm sometimes 5:30',
+    '3',
+    '4',
+    '7'
+  ),
+  (
+    '6',
+    'seven_or_nine',
+    '3',
+    '135',
+    'Seven or nine',
+    '3',
+    '1',
+    '0'
+  ),
+  (
+    '7',
+    'i_go_to_work_each_day_because_the_residents_are_counting_on_me',
+    '4',
+    '136',
+    'I go to work each day, because the residents are counting on me. I\'m at my wits end with the management in the bldg. and I\'m currently looking for other employment.',
+    '4',
+    '8',
+    '2'
+  ),
+  (
+    '8',
+    'never_no_if_you_will_be_back_the_next_day',
+    '4',
+    '137',
+    'Never no if you will be back the next day. They have their favorite employees. If they don\'t like you they make your life miserable Training sucks that\'s even if you get any. They lie. Not a good place to work at. They need new management.',
+    '4',
+    '9',
+    '1'
+  );
+
+
+/**
+ * Sample QAPage question-and-answer table data
+ */
+INSERT INTO `#__cajobboard_qapages` (
+  qapage_id,
+  about,
+  specialty
+) VALUES
+  (
+    '1',
+    '1',
+    '5'
+  ),
+  (
+    '2',
+    '1',
+    '4'
+  ),
+  (
+    '3',
+    '2',
+    '11'
+  ),
+  (
+    '4',
+    '2',
+    '15'
+  );
+
+
+/**
+ * Sample Reports table data
+ */
+INSERT INTO `#__cajobboard_reports`(
+  report_id,
+  slug,
+  keywords,
+  `text`,
+  about__model,
+  about__id
+)
+VALUES
+  (
+    '1',
+    'the-worst-part-of-buying-a-new-golf-club',
+    'COM_CAJOBBOARD_REPORTS_REASON_INAPPROPRIATE_LANGUAGE',
+    'You know the worst part of buying a new golf club? Having to wait to use it, ugh!',
+    'Reviews',
+    '1'
+  ),
+  (
+    '2',
+    'my-car-is-not-white',
+    'COM_CAJOBBOARD_REPORTS_REASON_SPAM',
+    "I can't stand that people think my car is white! It\'s ivory!",
+    'Comments',
+    '2'
+  ),
+  (
+    '3',
+    'berries-and-avocados',
+    'COM_CAJOBBOARD_REPORTS_REASON_DOX',
+    "I don't understand how people can only spend $100 a week on groceries. Berries and avocados alone runs us $42 a week!",
+    'Questions',
+    '1'
+  ),
+  (
+    '4',
+    'tesselated-cheese',
+    'COM_CAJOBBOARD_REPORTS_REASON_ILLEGAL',
+    "The person at Subway didn't tesselate my cheese. Ohio sucks!",
+    'Answers',
+    '3'
+  ),
+  (
+    '5',
+    'natural-disaster-and-games',
+    'COM_CAJOBBOARD_REPORTS_REASON_IRRELEVANT',
+    'Yes you had an issue with a natural disaster, but I paid money for your game and I expect it to work. ',
+    'JobPostings',
+    '2'
+  ),
+  (
+    '6',
+    'waiters-and-servers',
+    'COM_CAJOBBOARD_REPORTS_REASON_CRITICISM',
+    'A message to all waiters/servers. You are all over-privileged spoiled brats. You are making more money per hour than most teachers make. Stop complaining.',
+    'Places',
+    '1'
+  );
+
+
+/**
+ * Sample Comments table data
+ */
+INSERT INTO `#__cajobboard_comments`(
+  comment_id,
+  slug,
+  `text`,
+  parentItem,
+  about__model,
+  about__id,
+  upvoteCount,
+  downvoteCount
+)
+VALUES
+  (
+    '1',
+    'slow-internet',
+    "Slow internet is my generation's Vietnam.",
+    '0',
+    'JobPostings',
+    '1',
+    '9',
+    '3'
+  ),
+  (
+    '2',
+    'book-out-of-battery',
+    "I'm on the last thirty pages of Game of Thrones, but my book ran out of battery!",
+    '1',
+    'JobPostings',
+    '1',
+    '8',
+    '3'
+  ),
+  (
+    '3',
+    'bahamas-a-billion-times',
+    "I just got back from this boring trip with my dad. I was like Dad I've been to the Bahamas a billion times, why can't we go to Mexico this year? and he just said no, effing rude.",
+    '0',
+    'Organizations',
+    '2',
+    '78',
+    '0'
+  ),
+  (
+    '4',
+    'i-wish',
+     'I wish I was more enthused about this pomegranate.',
+    '0',
+    'Organizations',
+    '2',
+    '112',
+    '89'
+  ),
+  (
+    '5',
+    'no-wifi-in-church',
+    "This church doesn't have wifi. #churchtweets",
+    '0',
+    'Places',
+    '1',
+    '4',
+    '9'
+  ),
+  (
+    '6',
+    'egyptian-in-france',
+    "The words on the statute were written in Egyptian. I don't read Egyptian, and didn't think I'd have to in France.",
+    '0',
+    'QAPages',
+    '2',
+    '2',
+    '12'
+  ),
+  (
+    '7',
+    'covfefe',
+    'Despite the constant negative press covfefe',
+    '0',
+    'Questions',
+    '2',
+    '14',
+    '7'
+  ),
+  (
+    '8',
+    'new-amazing-diet',
+    'The flu can be an amazing diet. So glad it came in time for the party.',
+    '0',
+    'Answers',
+    '3',
+    '3',
+    '7'
+  );

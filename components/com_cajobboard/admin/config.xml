@@ -83,8 +83,8 @@
       type="radio"
       class="btn-group btn-group-yesno"
       default="0"
-      label="COM_CAJOBBOARD_ENABLE GOOGLE_LOGIN_LABEL"
-      description="COM_CAJOBBOARD_ENABLE GOOGLE_LOGIN_DESC"
+      label="COM_CAJOBBOARD_ENABLE_GOOGLE_LOGIN_LABEL"
+      description="COM_CAJOBBOARD_ENABLE_GOOGLE_LOGIN_DESC"
     >
       <option value="0">JNO</option>
       <option value="1">JYES</option>
@@ -95,8 +95,8 @@
       type="radio"
       class="btn-group btn-group-yesno"
       default="0"
-      label="COM_CAJOBBOARD_ENABLE FACEBOOK_LOGIN_LABEL"
-      description="COM_CAJOBBOARD_ENABLE FACEBOOK_LOGIN_DESC"
+      label="COM_CAJOBBOARD_ENABLE_FACEBOOK_LOGIN_LABEL"
+      description="COM_CAJOBBOARD_ENABLE_FACEBOOK_LOGIN_DESC"
     >
       <option value="0">JNO</option>
       <option value="1">JYES</option>
@@ -107,8 +107,8 @@
       type="radio"
       class="btn-group btn-group-yesno"
       default="0"
-      label="COM_CAJOBBOARD_ENABLE LINKEDIN_LOGIN_LABEL"
-      description="COM_CAJOBBOARD_ENABLE LINKEDIN_LOGIN_DESC"
+      label="COM_CAJOBBOARD_ENABLE_LINKEDIN_LOGIN_LABEL"
+      description="COM_CAJOBBOARD_ENABLE_LINKEDIN_LOGIN_DESC"
     >
       <option value="0">JNO</option>
       <option value="1">JYES</option>
@@ -119,8 +119,8 @@
       type="radio"
       class="btn-group btn-group-yesno"
       default="0"
-      label="COM_CAJOBBOARD_ENABLE TWITTER_LOGIN_LABEL"
-      description="COM_CAJOBBOARD_ENABLE TWITTER_LOGIN_DESC"
+      label="COM_CAJOBBOARD_ENABLE_TWITTER_LOGIN_LABEL"
+      description="COM_CAJOBBOARD_ENABLE_TWITTER_LOGIN_DESC"
     >
       <option value="0">JNO</option>
       <option value="1">JYES</option>
@@ -131,8 +131,8 @@
       type="radio"
       class="btn-group btn-group-yesno"
       default="0"
-      label="COM_CAJOBBOARD_ENABLE INSTAGRAM_LOGIN_LABEL"
-      description="COM_CAJOBBOARD_ENABLE INSTAGRAM_LOGIN_DESC"
+      label="COM_CAJOBBOARD_ENABLE_INSTAGRAM_LOGIN_LABEL"
+      description="COM_CAJOBBOARD_ENABLE_INSTAGRAM_LOGIN_DESC"
     >
       <option value="0">JNO</option>
       <option value="1">JYES</option>

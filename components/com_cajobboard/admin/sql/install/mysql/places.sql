@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
 
   /* SCHEMA: Thing */
-  name VARCHAR(255) COMMENT 'A name for this image.',
-  description TEXT COMMENT 'A long description of this image.',
+  name VARCHAR(255) COMMENT 'A name for this place.',
+  description TEXT COMMENT 'A long description of this place.',
 
   /* SCHEMA: PostalAddress */
   branch_code VARCHAR(50) COMMENT 'A short textual code that uniquely identifies a place of business',

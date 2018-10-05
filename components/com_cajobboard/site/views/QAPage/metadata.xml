@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  QAPage Question-and-Answer menu items for com_menus
+
+  @package Calligraphic Job boards
+  @copyright Copyright (c)2018 Calligraphic Design
+  @license GNU General Public License version 3, or later
+-->
+<metadata>
+  <view title="COM_CAJOBBOARD_VIEW_QAPAGE_TITLE">
+		<message><![CDATA[COM_CAJOBBOARD_VIEW_QAPAGE_DESC]]></message>
+  </view>
+</metadata>

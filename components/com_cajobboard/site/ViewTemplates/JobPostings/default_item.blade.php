@@ -247,7 +247,7 @@
 --}}
 @section('job_benefits')
   <span>
-    {{-- @TODO: Need to split this into two fields, or somehow handle providing a shorter string for the list view --}}
+    {{-- @TODO: User JobPostingViewHelper->getTeaser() to shorten long strings of benefits --}}
     {{ $item->job_benefits }}
   </span>
 @overwrite

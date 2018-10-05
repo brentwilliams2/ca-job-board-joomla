@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reviews` (
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
 
+  /* SCHEMA: Thing */
+  name VARCHAR(255) NOT NULL COMMENT 'A name for this review.',
+
   /* SCHEMA: Review */
   item_reviewed INT UNSIGNED COMMENT 'The employer being reviewed/rated.', /* FK to #__cajobboard_organizations */
   review_body TEXT COMMENT 'The actual body of the review.',

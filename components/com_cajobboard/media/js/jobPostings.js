@@ -429,6 +429,7 @@ const reportJob = (function($) {
   };
 })(jQuery);
 
+// @TODO: Using rater initializer in two places already (Reviews and JobPostings), refactor out
 
 /**
  * Initialize rater.js star-rating module

@@ -7,37 +7,56 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-.hr-text {
-  line-height: 1em;
-  position: relative;
-  outline: 0;
-  border: 0;
-  color: black;
-  text-align: center;
-  height: 1.5em;
-  opacity: .5; }
-  .hr-text:before {
-    content: '';
-    background: linear-gradient(to right, transparent, #818078, transparent);
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    height: 1px; }
-  .hr-text:after {
-    content: attr(data-content);
-    position: relative;
-    display: inline-block;
-    color: black;
-    padding: 0 .5em;
-    line-height: 1.5em;
-    color: #818078;
-    background-color: #fcfcfa; }
+/**
+ * Styles for Comment Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+.comment-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px; }
 
-.rating {
-  font-size: 1.5em;
-  /* 30px/20=1.5em */ }
+.comment-list-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px; }
 
+.btn-comment {
+  border-radius: 5px;
+  margin-left: 5px; }
+
+.comment-title {
+  font-weight: bold;
+  font-size: 18px; }
+
+a.comment-text-link {
+  color: #333333;
+  text-decoration: none; }
+
+a.comment-text-link:hover, .comment-text-link:focus {
+  color: #777777;
+  text-decoration: none; }
+
+/**
+ * Styles for Job Posting Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
 .job-posting-list-item {
   background-color: #e3e3e4 !important;
   margin-top: 12px;
@@ -82,6 +101,69 @@
 .save-job-right-column {
   border-left: 1px; }
 
+/**
+ *  Styles for Person Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/**
+ *  Styles for Registration Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/**
+ *  Styles for Review Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+.review-list-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px; }
+
+.btn-reviews {
+  margin-left: 5px !important; }
+
+/**
+ *  Styles for Social Icon Widgets
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
+ * Rounded corner square flat buttons:
+ *
+ *   <a href="#" class="btn social-button social-button-size-48 social-button-square social-button-facebook"><i class="fa fa-facebook"></i></a>
+ *
+ * Circle long shadow:
+ *
+ *    <a href="#" class="btn social-button social-button-size-64 social-button-circle social-button-long-shadow social-button-facebook"><i class="fa fa-facebook"></i></a>
+ *
+ * Text buttons, border bottom:
+ *
+ *    <a href="#" class="btn social-button social-button-text social-button-border-bottom social-button-facebook"><i class="fa fa-facebook"></i> Log in with Facebook</a>
+ *
+ * Text buttons, pill shape, bottom shadow:
+ *
+ *    <a href="#" class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
+ */
 .social-button {
   margin: 0;
   padding: 0;
@@ -248,5 +330,36 @@
 
 .social-button-long-shadow.azm-twitter {
   text-shadow: #4d9bd6 1px 1px, #4d9bd6 2px 2px, #4d9bd6 3px 3px, #4d9bd7 4px 4px, #4d9cd7 5px 5px, #4d9cd7 6px 6px, #4d9cd8 7px 7px, #4d9cd8 8px 8px, #4d9cd8 9px 9px, #4e9dd9 10px 10px, #4e9dd9 11px 11px, #4e9dd9 12px 12px, #4e9dd9 13px 13px, #4e9dda 14px 14px, #4e9eda 15px 15px, #4e9eda 16px 16px, #4e9edb 17px 17px, #4e9edb 18px 18px, #4e9fdb 19px 19px, #4f9fdc 20px 20px, #4f9fdc 21px 21px, #4f9fdc 22px 22px, #4f9fdc 23px 23px, #4fa0dd 24px 24px, #4fa0dd 25px 25px, #4fa0dd 26px 26px, #4fa0de 27px 27px, #4fa0de 28px 28px, #4fa1de 29px 29px, #50a1df 30px 30px, #50a1df 31px 31px, #50a1df 32px 32px, #50a2df 33px 33px, #50a2e0 34px 34px, #50a2e0 35px 35px, #50a2e0 36px 36px, #50a2e1 37px 37px, #50a3e1 38px 38px, #50a3e1 39px 39px, #51a3e2 40px 40px, #51a3e2 41px 41px, #51a3e2 42px 42px, #51a4e2 43px 43px, #51a4e3 44px 44px, #51a4e3 45px 45px, #51a4e3 46px 46px, #51a4e4 47px 47px, #51a5e4 48px 48px, #51a5e4 49px 49px, #52a5e5 50px 50px, #52a5e5 51px 51px, #52a6e5 52px 52px, #52a6e5 53px 53px, #52a6e6 54px 54px, #52a6e6 55px 55px, #52a6e6 56px 56px, #52a7e7 57px 57px, #52a7e7 58px 58px, #52a7e7 59px 59px, #53a7e8 60px 60px, #53a7e8 61px 61px, #53a8e8 62px 62px, #53a8e8 63px 63px, #53a8e9 64px 64px, #53a8e9 65px 65px, #53a9e9 66px 66px, #53a9ea 67px 67px, #53a9ea 68px 68px, #53a9ea 69px 69px, #54a9eb 70px 70px, #54aaeb 71px 71px, #54aaeb 72px 72px, #54aaeb 73px 73px, #54aaec 74px 74px, #54aaec 75px 75px, #54abec 76px 76px, #54abed 77px 77px, #54abed 78px 78px, #54abed 79px 79px, #55acee 80px 80px; }
+
+.hr-text {
+  line-height: 1em;
+  position: relative;
+  outline: 0;
+  border: 0;
+  color: black;
+  text-align: center;
+  height: 1.5em;
+  opacity: .5; }
+  .hr-text:before {
+    content: '';
+    background: linear-gradient(to right, transparent, #818078, transparent);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px; }
+  .hr-text:after {
+    content: attr(data-content);
+    position: relative;
+    display: inline-block;
+    color: black;
+    padding: 0 .5em;
+    line-height: 1.5em;
+    color: #818078;
+    background-color: #fcfcfa; }
+
+.rating {
+  font-size: 1.5em;
+  /* 30px/20=1.5em */ }
 
 /*# sourceMappingURL=frontend.css.map */
