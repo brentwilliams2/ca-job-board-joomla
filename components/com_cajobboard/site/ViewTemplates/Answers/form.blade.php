@@ -1,6 +1,6 @@
 <?php
  /**
-  * Reviews Edit View Template
+  * Answers Edit View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -10,22 +10,28 @@
   *
   */
 
-  // Framework classes
-  JLog::add('in form.blade.php', JLog::DEBUG, 'cajobboard');
-
   // no direct access
   defined('_JEXEC') or die;
 
   $item = $this->getItem();
 
   // model data fields
-  $reviewID     = $item->review_id;
-  $employerName = $reviewID ? $item->ItemReviewed->legal_name : null;  // The employer being reviewed/rated
-  $employerID   = $reviewID ? $item->ItemReviewed->organization_id : null;
-  $reviewTitle  = $item->name;  // A name for this review, used to automatically generate the URL slug
-  $reviewBody   = $item->review_body;   // The actual body of the review.
-  $ratingValue  = $item->rating_value ? $item->rating_value : 5;  // The rating for the content. Default worstRating 1 and bestRating 5 assumed. Set to 5 by default for new reviews.
-  // $item->Author;        // The author of this content or rating (always hidden), FK to #__users
+  $answerID       = $item->answer_id;
+  $created_by     = $item->created_by;      // userid of the creator of this answer.
+  $createdOn      = $item->created_on;
+  $description    = $item->description;     // Text of the answer.
+  $downvoteCount  = $item->downvote_count;  // Downvote count for this item.
+  $featured       = $item->featured;        // bool whether this answer is featured or not
+  $hits           = $item->hits;            // Number of hits this answer has received
+  $isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
+  $modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
+  $modifiedOn     = $item->modified_on;
+  $title          = $item->name;            // A title to use for the answer.
+  $parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
+  $Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
+  $slug           = $item->slug;            // Alias for SEF URL
+  $text           = $item->text;            // The actual text of the answer itself.
+  $upvoteCount    = $item->upvote_count;    // Upvote count for this item.
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
@@ -36,101 +42,102 @@
   if ($task === 'edit') $action .= '&id=' . $this->getItem()->getId();
 ?>
 
-{{-- @TODO: move JQuery module loads to View file --}}
-@js('media://com_cajobboard/js/rater.min.js')
-
 {{--
-  #1 - Employer reviewed
+#1 - Answer Title
 --}}
-@section('employer')
-  <h4>
-    <label for="employer">
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_EMPLOYER_NAME')
-    </label>
-  </h4>
-  {{-- @TODO: fill employer list from database, see controller --}}
-  <select class="form-control" name="item_reviewed" id="employer" value="{{{ $employerName }}}">
-      <option value="1">Elite Properties</option>
-      <option value="2">Action Property</option>
-  </select>
+@section('answer_title')
+{{-- link to individual answer --}}
+<h4>
+  <label>
+    @lang('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_LABEL')
+  </label>
+</h4>
+<input
+  type="text"
+  class="form-control"
+  name="name"
+  id="answer_title"
+  value="{{{ $title }}}"
+  placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_PLACEHOLDER')); ?>"
+/>
 @overwrite
 
 {{--
-  #2 - Total rating value for employer
+#2 - Answer Text
 --}}
-@section('review_rating')
+@section('answer_text')
+<div class="answer_text">
   <h4>
-    <label>
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_RATING')
+    <label for="text">
+      @lang('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_LABEL')
     </label>
   </h4>
-  <div class="rating" data-rate-value={{ $ratingValue }}></div>
-@overwrite
-
-
-{{--
-  #3 - A title for this review
---}}
-@section('review_title')
-  <h4>
-    <label>
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_TITLE')
-    </label>
-  </h4>
-  <input type="text" class="form-control" name="name" id="review_title" value="{{{ $reviewTitle }}}" placeholder="@lang('COM_CAJOBBOARD_EDIT_REVIEW_TITLE_INPUT_BOX_PLACEHOLDER')" />
-@overwrite
-
-{{--
-  #4 - Body text of review
---}}
-@section('review_text')
-  <h4>
-    <label for="title">
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_TEXT')
-    </label>
-  </h4>
-  <textarea name="review_body" id="review_text" class="form-control" rows="8">
-    {{{ $reviewBody }}}
+  <textarea name="text" id="answer_text" class="form-control" rows="8">
+    <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_PLACEHOLDER')); ?>
   </textarea>
+</div>
 @overwrite
 
+{{--
+#3 - Answer Posted Date
+--}}
+@section('answer_posted_date')
+{{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+<span class="answer-posted-date">
+  @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
+  <?php echo date("d/m/Y", strtotime($createdOn)); ?>
+</span>
+@overwrite
+
+{{--
+#4 - Answer Last Modified Date
+--}}
+@section('answer_modified_date')
+@if ($modifiedOn)
+  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+  <span class="answer-posted-date">
+    @lang('COM_CAJOBBOARD_ANSWERS_MODIFIED_ON_BUTTON_LABEL')
+    <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
+  </span>
+@endif
+@overwrite
 
 {{--
   Responsive component
 --}}
-@section('review-edit-container')
+@section('answer-edit-container')
   <form action="{{{ $action }}}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
 
-    <div class="review-edit-container">
-      <div class="cajobboard-edit-form" id="cajobboard-review-edit-form">
+    <div class="answer-edit-container">
+      <div class="cajobboard-edit-form" id="cajobboard-answer-edit-form">
 
         <header class="block-header">
           <h3>
             @if($task === 'edit')
-              @lang('COM_CAJOBBOARD_EDIT_REVIEW_HEADER')
+              @lang('COM_CAJOBBOARD_ANSWERS_EDIT_HEADER')
             @else
-              @lang('COM_CAJOBBOARD_ADD_REVIEW_HEADER')
+              @lang('COM_CAJOBBOARD_ANSWERS_ADD_HEADER')
             @endif
           </h3>
         </header>
 
         <div class="form-group">
-          @yield('review_title')
+          <h4>@yield('answer_title')</h4>
         </div>
 
         <div class="form-group">
-          @yield('employer')
+          <p>@yield('answer_text')</p>
         </div>
 
         <div class="form-group">
-            @yield('review_rating')
+          @yield('answer_posted_date')
         </div>
 
         <div class="form-group">
-            @yield('review_text')
+          @yield('answer_modified_date')
         </div>
 
-        <button class="btn btn-primary pull-right review-submit" type="submit">
+        <button class="btn btn-primary pull-right answer-submit" type="submit">
           @lang('COM_CAJOBBOARD_SUBMIT_BUTTON_LABEL')
         </button>
 
@@ -143,7 +150,3 @@
     </div>
   </form>
 @show
-
-
-
-

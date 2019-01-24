@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_qapages` (
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'A name for this question and answer page.',
   description TEXT COMMENT 'A long description of this question and answer page.',
+  main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to question this page is about',
 
   /* SCHEMA: CreativeWork */
   about BIGINT UNSIGNED COMMENT 'The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id)',
@@ -122,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_questions` (
   description TEXT COMMENT 'Text of the question.',
 
   /* SCHEMA: CreativeWork */
-  is_part_of BIGINT UNSIGNED COMMENT 'This property points to a QAPage entity associated with this question. FK to #__cajobboard_qapage(qapage_id)',
   publisher BIGINT UNSIGNED COMMENT 'The company that wrote this answer. FK to #__organizations(organization)id).',
   `text` TEXT COMMENT 'The actual text of the question itself.',
 

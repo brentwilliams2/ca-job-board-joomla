@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
   description TEXT COMMENT 'A long description of this place.',
 
   /* SCHEMA: PostalAddress */
-  branch_code VARCHAR(50) COMMENT 'A short textual code that uniquely identifies a place of business',
+  branch_code VARCHAR(50) COMMENT 'A short textual code that uniquely identifies a place of business. The string "HQ" is reserved to identify the main office branch of an organization.',
   fax_number VARCHAR(30) COMMENT 'The E.164 PSTN fax number',
   public_access BOOLEAN COMMENT 'A flag to signal that the Place is open to public visitors. If this property is omitted there is no assumed default boolean value',
 

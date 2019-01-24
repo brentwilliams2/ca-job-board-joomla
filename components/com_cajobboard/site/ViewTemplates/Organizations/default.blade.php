@@ -1,6 +1,6 @@
 <?php
  /**
-  * Organizations (Employer Profiles) List View Template
+  * Organizations List View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -20,4 +20,21 @@
   $items = $this->getItems();
 ?>
 
-Organizations (Employer Profiles) List View Template
+@section('header')
+  <h4>Organization Profile List View</h4>
+@show
+
+@section('sidebar')
+  <p></p>
+@show
+
+@section('item')
+  <div class="container-fluid organizations-list">
+    @each('site:com_cajobboard/Organizations/default_item', $items, 'item', 'text|COM_CAJOBBOARD_ORGANIZATIONS_NO_ORGANIZATIONS_FOUND')
+  </div>
+@show
+
+@section('footer')
+  <p></p>
+@show
+

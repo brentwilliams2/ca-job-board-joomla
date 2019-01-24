@@ -60,6 +60,7 @@
       <menu view="JobSeekers">COM_CAJOBBOARD_SUBMENU_JOBSEEKERS</menu>
       <menu view="Recruiters">COM_CAJOBBOARD_SUBMENU_RECRUITERS</menu>
       <menu view="Subscriptions">COM_CAJOBBOARD_SUBMENU_SUBSCRIPTIONS</menu>
+      <menu view="Media">COM_CAJOBBOARD_SUBMENU_MEDIA</menu>
       <menu view="Miscellaneous">COM_CAJOBBOARD_SUBMENU_MISCELLANEOUS</menu>
     </submenu>
 
@@ -70,12 +71,15 @@
       <folder>Helper</folder>
       <folder>language</folder>
       <folder>Model</folder>
+      <folder>models</folder>
       <folder>sql</folder>
       <folder>Toolbar</folder>
       <folder>View</folder>
       <folder>ViewTemplates</folder>
       <filename>access.xml</filename>
       <filename>cajobboard.php</filename>
+      <filename>composer.json</filename>
+      <filename>composer.lock</filename>
       <filename>config.xml</filename>
       <filename>fof.xml</filename>
       <filename>index.html</filename>
@@ -85,6 +89,7 @@
   <files folder="site">
     <folder>Controller</folder>
     <folder>Dispatcher</folder>
+    <folder>Helper</folder>
     <folder>language</folder>
     <folder>Model</folder>
     <folder>Toolbar</folder>
@@ -93,6 +98,8 @@
     <folder>ViewTemplates</folder>
     <filename>cajobboard.php</filename>
     <filename>index.html</filename>
+    <filename>router.php</filename>
+    <filename>ROUTER.md</filename>
   </files>
 
   <install>

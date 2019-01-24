@@ -19,9 +19,7 @@ defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
-use JLog;
 
-JLog::add('Organization Types model called', JLog::DEBUG, 'cajobboard');
 /*
  * Places model
  *

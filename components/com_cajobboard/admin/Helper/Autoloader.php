@@ -15,6 +15,14 @@ defined( '_JEXEC' ) or die;
 
 $autoloader = FOF30\Autoloader\Autoloader::getInstance();
 
+// Add Admin Helper namespace
+$adminHelperNamespace = 'Calligraphic\\Cajobboard\\Admin\\Helper\\';
+
+if (!$autoloader->hasMap($adminHelperNamespace))
+{
+  $autoloader->addMap($adminHelperNamespace, JPATH_COMPONENT_ADMINISTRATOR . '/Helper');
+}
+
 // Add Admin Repository namespace
 $adminRepositoryNamespace = 'Calligraphic\\Cajobboard\\Admin\\Repository\\';
 
@@ -31,9 +39,8 @@ if (!$autoloader->hasMap($siteRepositoryNamespace))
   $autoloader->addMap($siteRepositoryNamespace, JPATH_COMPONENT_SITE . '/Repository');
 }
 
+// Register modified autoload function
+$autoloader->register(false);
+
 // Add Composer autoloader for applications in vendor directory
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/vendor/autoload.php';
-
-// Register modified autoload function. PHP will run through multiple autoload functions in the
-// sequence they were added, so it doesn't matter that \FOF30 namespace is duplicated here
-$autoloader->register(false);

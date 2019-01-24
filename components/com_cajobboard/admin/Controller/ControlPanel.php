@@ -12,42 +12,19 @@
 
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
+// Framework classes
+use FOF30\Container\Container;
+use FOF30\Controller\Controller;
+use FOF30\View\Exception\AccessForbidden;
+use JFilterOutput;
+
 // no direct access
 defined('_JEXEC') or die;
 
-class Person extends DataController
+class ControlPanel extends Controller
 {
-	/*
-	 * Overridden. Limit the tasks we're allowed to execute.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-    $this->predefinedTaskList = ['browse', 'save'];
-
-    parent::__construct($container, $config);
+  public function onBeforeDefault()
+  {
+    return true;
   }
-
-	/*
-	 * Override browse task.
-	 */
-	protected function browse()
-	{
-  }
-
-	/*
-	 * Override read task.
-	 */
-	protected function read()
-	{
-  }
-
-  /*
-   * Override edit task.
-   */
-	protected function edit()
-	{
-	}
 }

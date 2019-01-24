@@ -1,0 +1,1 @@
+This folder is legacy Joomla! to allow specifying custom parameters for categories

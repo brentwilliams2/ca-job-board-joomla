@@ -13,12 +13,23 @@
 namespace Calligraphic\Cajobboard\Site\View\Organizations;
 
 use FOF30\Container\Container;
+use JComponentHelper;
+use JFactory;
 
 // no direct access
 defined('_JEXEC') or die;
 
+if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 class Html extends \FOF30\View\DataView\Html
 {
+	/**
+	 * The component-level parameters stored in #__extensions by com_config
+	 *
+	 * @var  \JRegistry
+	 */
+  protected $componentParams;
+  
 	/**
 	 * Overridden.
 	 *

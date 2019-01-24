@@ -17,9 +17,7 @@ defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
-use Jlog;
 
-JLog::add('Organization model called', JLog::DEBUG, 'cajobboard');
 /*
  * Organizations model
  *
@@ -68,9 +66,9 @@ JLog::add('Organization model called', JLog::DEBUG, 'cajobboard');
  * @property Places         $Location             Where the organization is located, FK to Places
  * @property ImageObjects   $Logo                 A logo for this organization, FK to ImageObjects table
  * @property DiversityPolicies $DiversityPolicy	  Statement on diversity policy of the employer,  FK to #__content table via DiversityPolicies model
- * @property Person         $Employee             Someone working for this organization. Supersedes employees, FK to user table
+ * @property Person         $Employees            Someone working for this organization. Supersedes employees, FK to user table
  * @property AggregateRatings	  $AggregateRating  The overall rating, based on a collection of reviews or ratings, of the item, FK to employer_reviews table
- * @property Reviews        $Review               A review of the item. Supersedes reviews.
+ * @property Reviews        $Reviews              A review of the item. Supersedes reviews.
  * @property Organization   $member_of            An Organization (or ProgramMembership) to which this Person or Organization belongs.
  * @property Organization   $ParentOrganization   The larger organization that this organization is a subOrganization of, if any.
  *
@@ -80,11 +78,19 @@ JLog::add('Organization model called', JLog::DEBUG, 'cajobboard');
  * @property string         $disambiguating_description    A short description of the employer, for example to use on listing pages.
  * @property string         $description          A description of the item.
  * @property string         $url                  URL of employer's website.
- * @property ImageObjects   $Image                Images of the employer, FK to ImageObjects table
+ * @property ImageObjects   $Images               Images of the employer, FK to ImageObjects table
+ *
+ * SCHEMA: Thing(additionalType) -> Role(roleName)
+ *
+ * @property string         $RoleName             The role of the organization e.g. Employer, Recruiter, etc., FK to #__cajobboard_organization_role
  *
  * SCHEMA: Thing(additionalType) -> extended types in private namespace (default)
  *
- * @property string   $OrganizationType           The type of organization e.g. Employer, Recruiter, etc., FK to OrganizationType
+ * @property string         $OrganizationType     The type of organization e.g. Employer, Recruiter, etc., FK to #__cajobboard_organization_types
+ *
+ * SCHEMA: Thing(additionalType) -> extended types in private namespace (default)
+ *
+ * @property string         $Branches             Properties managed by this organization, FK to #__cajobboard_places
  */
 class Organizations extends \FOF30\Model\DataModel
 {
@@ -117,11 +123,14 @@ class Organizations extends \FOF30\Model\DataModel
     // many-to-one FK to  #__cajobboard_places
     $this->belongsTo('Location', 'Places@com_cajobboard', 'location', 'place_id');
 
+    // many-to-many FK to  #__cajobboard_places via join table
+    $this->belongsToMany('Branches', 'Places@com_cajobboard', 'organization_id', 'place_id', '#__cajobboard_organizations_places');
+
     // many-to-one FK to  #__cajobboard_image_objects
     $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
 
     // many-to-many FK to  #__cajobboard_image_objects via join table
-    $this->belongsToMany('Image', 'ImageObjects@com_cajobboard', 'image', 'image_object_id', '#__cajobboard_organizations_images');
+    $this->belongsToMany('Images', 'ImageObjects@com_cajobboard', 'image', 'image_object_id', '#__cajobboard_organizations_images');
 
     // one-to-one FK to  #__content through DiversityPolicies model
     $this->belongsTo('DiversityPolicy', 'DiversityPolicies@com_cajobboard', 'diversity_policy', 'diversity_policy_id');
@@ -130,16 +139,19 @@ class Organizations extends \FOF30\Model\DataModel
     $this->hasOne('AggregateRating', 'EmployerAggregateRatings@com_cajobboard', 'aggregate_rating', 'employer_aggregate_rating_id');
 
     // one-to-many FK to #__cajobboard_reviews
-    $this->hasMany('Review', 'Reviews@com_cajobboard', 'organization_id', 'review_id');
+    $this->hasMany('Reviews', 'Reviews@com_cajobboard', 'organization_id', 'review_id');
 
     // many-to-many FK to #__cajobboard_persons
-    $this->belongsToMany('Employee', 'Persons@com_cajobboard', 'organization_id', 'id', '#__cajobboard_organizations_employees', 'organization_id', 'employee_id');
+    $this->belongsToMany('Employees', 'Persons@com_cajobboard', 'organization_id', 'id', '#__cajobboard_organizations_employees', 'organization_id', 'employee_id');
 
     // many-to-many FK to #__cajobboard_organizations
     $this->belongsToMany('MemberOf', 'Organizations@com_cajobboard', 'organization_id', 'organization_id', '#__cajobboard_organizations_organizations', 'organization_id', 'member_of_organization_id');
 
     // one-to-one FK to  #__cajobboard_organizations
     $this->hasOne('ParentOrganization', 'Organizations@com_cajobboard', 'parent_organization', 'organization_id');
+
+    // many-to-one FK to  #__cajobboard_organization_types
+    $this->belongsTo('RoleName', 'OrganizationRoles@com_cajobboard', 'role_name', 'organization_role_id');
 
     // many-to-one FK to  #__cajobboard_organization_types
     $this->belongsTo('OrganizationType', 'OrganizationTypes@com_cajobboard', 'organization_type', 'organization_type_id');

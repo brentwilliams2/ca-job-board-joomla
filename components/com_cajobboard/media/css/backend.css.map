@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAAA;;;;;;;;GAQG",
-"sources": ["../scss/backend.scss"],
+"mappings": "AAAA;;;;;;;;GAQG;ACRH;;;;;;;;GAQG;AAKH,qBAAsB;EACpB,UAAU,EAAE,MAAM;;ADWpB,iBAAkB;EAChB,WAAW,EAAE,IAAI",
+"sources": ["../scss/backend.scss","../scss/_admin_control_panel.scss"],
 "names": [],
 "file": "backend.css"
 }

@@ -1,5 +1,5 @@
 /**
- * Javascript for Employer views
+ * Javascript for Employer Profile views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

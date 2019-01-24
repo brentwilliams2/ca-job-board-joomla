@@ -1,6 +1,6 @@
 <?php
  /**
-  * Comments List View Template
+  * Answers List View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -13,12 +13,12 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  // collection of review postings model objects for this list view
+  // collection of answer model objects for this list view
   $items = $this->getItems();
 ?>
 
 @section('header')
-  <h4>Comments</h4>
+  <h4>Answers</h4>
 @show
 
 @section('sidebar')
@@ -26,8 +26,8 @@
 @show
 
 @section('item')
-  <div class="container-fluid comments-list">
-    @each('site:com_cajobboard/Comments/default_item', $items, 'item', 'text|COM_CAJOBBOARD_COMMENTS_NO_COMMENTS_FOUND')
+  <div class="container-fluid answers-list">
+    @each('site:com_cajobboard/Answers/default_item', $items, 'item', 'text|COM_CAJOBBOARD_ANSWERS_NO_ANSWERS_FOUND')
   </div>
 @show
 

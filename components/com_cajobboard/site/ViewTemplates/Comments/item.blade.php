@@ -36,6 +36,9 @@
   $text                   = $item->text;            // The full text of this comment.
   $upvoteCount            = $item->upvote_count;    // The number of upvotes this comment has received from the community.
 
+  // current user ID
+  $userId = $this->container->platform->getUser()->id;
+
   // create identicon avatar 64x64
   $identicon = new \Identicon\Identicon();
   $authorAvatarUri = $identicon->getImageDataUri($commentID, 32);
@@ -84,7 +87,7 @@
 @section('author_last_seen')
   {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
   <span class="author-last-seen">
-    <div>@lang('COM_CAJOBBOARD_COMMENT_AUTHOR_LAST_SEEN_BUTTON_LABEL')</div>
+    <div>@lang('COM_CAJOBBOARD_COMMENTS_AUTHOR_LAST_SEEN_BUTTON_LABEL')</div>
     <div>1 week ago</div>
   </span>
 @overwrite
@@ -95,7 +98,7 @@
 @section('comment_posted_date')
   {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
   <span class="comment-posted-date">
-    @lang('COM_CAJOBBOARD_COMMENT_POSTED_ON_BUTTON_LABEL')
+    @lang('COM_CAJOBBOARD_COMMENTS_POSTED_ON_BUTTON_LABEL')
     <?php echo date("d/m/Y", strtotime($createdOn)); ?>
   </span>
 @overwrite
@@ -105,7 +108,7 @@
 --}}
 @section('comment_upvotes')
   <button class="btn btn-primary btn-xs btn-comment comment-upvotes pull-right" type="button">
-    @lang('COM_CAJOBBOARD_COMMENT_UPVOTES_BUTTON_LABEL')
+    @lang('COM_CAJOBBOARD_COMMENTS_UPVOTES_BUTTON_LABEL')
     <span class="badge">
       {{{ $upvoteCount }}}
     </span>
@@ -117,7 +120,7 @@
 --}}
 @section('comment_downvotes')
   <button class="btn btn-primary btn-xs btn-comment comment-downvotes pull-right" type="button">
-    @lang('COM_CAJOBBOARD_COMMENT_DOWNVOTES_BUTTON_LABEL')
+    @lang('COM_CAJOBBOARD_COMMENTS_DOWNVOTES_BUTTON_LABEL')
     <span class="badge">
       {{{ $downvoteCount }}}
     </span>
@@ -131,10 +134,23 @@
 --}}
 @section('report_comment')
   <button type="button" class="btn btn-primary btn-xs btn-comment guest-report-comment-button pull-right" data-toggle="modal" data-target="#report-comment">
-    @lang('COM_CAJOBBOARD_REPORT_COMMENT_BUTTON_LABEL')
+    @lang('COM_CAJOBBOARD_REPORT_COMMENTS_BUTTON_LABEL')
   </button>
 @overwrite
 
+{{--
+  #10 - Edit Button for logged-in users
+--}}
+@section('edit_comment')
+  {{-- @TODO: Fix access control on edit comment button --}}
+  @if ($userId != 0)
+    <a class="edit-comment-link" href="@route('index.php?option=com_cajobboard&view=Comment&task=edit&id='. (int) $commentID)">
+      <button type="button" class="btn btn-warning btn-xs btn-comment edit-comment-button pull-right">
+        @lang('COM_CAJOBBOARD_EDIT_COMMENTS_BUTTON_LABEL')
+      </button>
+    </a>
+  @endif
+@overwrite
 
 {{--
   Responsive container for desktop and mobile
@@ -161,6 +177,7 @@
   </div>
 
   <div class="">
+    @yield('edit_comment')
     @yield('report_comment')
     @yield('comment_downvotes')
     @yield('comment_upvotes')

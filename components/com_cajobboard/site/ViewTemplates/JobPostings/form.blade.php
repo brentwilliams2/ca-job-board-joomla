@@ -18,105 +18,119 @@
   defined('_JEXEC') or die;
 
   $item = $this->getItem();
+
+
+  // URL to post the form to
+  $task = $this->getTask();
+  $action = 'index.php?option=' . $this->getContainer()->componentName . '&view=' . $this->getName();
+  if ($task === 'edit') $action .= '&id=' . $this->getItem()->getId();
 ?>
 
-{{{ $item->slug }}}
-{{{ $item->metadesc }}}
-{{{ $item->hits }}}
-{{{ $item->featured }}}
+{{--
+#1 - Comment Title
+--}}
+@section('comment_title')
+{{-- link to individual comment --}}
+<h4>
+  <label>
+    @lang('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_LABEL')
+  </label>
+</h4>
+<input
+  type="text"
+  class="form-control"
+  name="name"
+  id="comment_title"
+  value="{{{ $title }}}"
+  placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_PLACEHOLDER')); ?>"
+/>
+@overwrite
 
-{{{ $item->title }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_TITLE_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_TITLE_DESC')
+{{--
+#2 - Comment Text
+--}}
+@section('comment_text')
+<div class="comment_text">
+  <h4>
+    <label for="text">
+      @lang('COM_CAJOBBOARD_COMMENTS_EDIT_TEXT_LABEL')
+    </label>
+  </h4>
+  <textarea name="text" id="comment_text" class="form-control" rows="8">
+    <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_COMMENTS_EDIT_TEXT_PLACEHOLDER')); ?>
+  </textarea>
+</div>
+@overwrite
 
-{{{ $item->relevant_occupation_name }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_RELEVANT_OCCUPATION_NAME_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_RELEVANT_OCCUPATION_NAME_DESC')
+{{--
+#3 - Comment Posted Date
+--}}
+@section('comment_posted_date')
+{{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+<span class="comment-posted-date">
+  @lang('COM_CAJOBBOARD_COMMENTS_POSTED_ON_BUTTON_LABEL')
+  <?php echo date("d/m/Y", strtotime($createdOn)); ?>
+</span>
+@overwrite
 
-{{{ $item->disambiguating_description }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_DISAMBIGUATING_LABELRIPTION_DESC')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_DISAMBIGUATING_LABELRIPTION_DESC')
+{{--
+#4 - Comment Last Modified Date
+--}}
+@section('comment_modified_date')
+@if ($modifiedOn)
+  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+  <span class="comment-posted-date">
+    @lang('COM_CAJOBBOARD_COMMENTS_MODIFIED_ON_BUTTON_LABEL')
+    <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
+  </span>
+@endif
+@overwrite
 
-{{{ $item->description }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_DESCRIPTION_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_DESCRIPTION_DESC')
+{{--
+  Responsive component
+--}}
+@section('comment-edit-container')
+  <form action="{{{ $action }}}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
 
-{{{ $item->education_requirements }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_EDUCATION_REQUIREMENTS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_EDUCATION_REQUIREMENTS_DESC')
+    <div class="comment-edit-container">
+      <div class="cajobboard-edit-form" id="cajobboard-comment-edit-form">
 
-{{{ $item->experience_requirements }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_EXPERIENCE_REQUIREMENTS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_EXPERIENCE_REQUIREMENTS_DESC')
+        <header class="block-header">
+          <h3>
+            @if($task === 'edit')
+              @lang('COM_CAJOBBOARD_COMMENTS_EDIT_HEADER')
+            @else
+              @lang('COM_CAJOBBOARD_COMMENTS_ADD_HEADER')
+            @endif
+          </h3>
+        </header>
 
-{{{ $item->incentive_compensation }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_INCENTIVE_COMPENSATION_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_INCENTIVE_COMPENSATION_DESC')
+        <div class="form-group">
+          <h4>@yield('comment_title')</h4>
+        </div>
 
-{{{ $item->job_benefits }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_JOB_BENEFITS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_JOB_BENEFITS_DESC')
+        <div class="form-group">
+          <p>@yield('comment_text')</p>
+        </div>
 
-{{{ $item->qualifications }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_QUALIFICATIONS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_QUALIFICATIONS_DESC')
+        <div class="form-group">
+          @yield('comment_posted_date')
+        </div>
 
-{{{ $item->responsibilities }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_RESPONSIBILITIES_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_RESPONSIBILITIES_DESC')
+        <div class="form-group">
+          @yield('comment_modified_date')
+        </div>
 
-{{{ $item->skills }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_SKILLS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_SKILLS_DESC')
+        <button class="btn btn-primary pull-right comment-submit" type="submit">
+          @lang('COM_CAJOBBOARD_SUBMIT_BUTTON_LABEL')
+        </button>
 
-{{{ $item->special_commitments }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_SPECIAL_COMMITMENTS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_SPECIAL_COMMITMENTS_DESC')
+      </div>
+    </div>
 
-{{{ $item->work_hours }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_WORK_HOURS_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_WORK_HOURS_DESC')
-
-{{{ $item->base_salary__max_value }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__MAX_VALUE_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__MAX_VALUE_DESC')
-
-{{{ $item->base_salary__value }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__VALUE_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__VALUE_DESC')
-
-{{{ $item->base_salary__min_value }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__MIN_VALUE_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__MIN_VALUE_DESC')
-
-{{{ $item->base_salary__currency }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__CURRENCY_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__CURRENCY_DESC')
-
-{{{ $item->base_salary__duration }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__DURATION_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_BASE_SALARY__DURATION_DESC')
-
-{{{ $item->jobLocation }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_JOBLOCATION_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_JOBLOCATION_DESC')
-
-{{{ $item->hiringOrganization }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_HIRINGORGANIZATION_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_HIRINGORGANIZATION_DESC')
-
-{{{ $item->employmentType }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_EMPLOYMENTTYPE_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_EMPLOYMENTTYPE_DESC')
-
-{{{ $item->occupationalCategory }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_OCCUPATIONALCATEGORY_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_OCCUPATIONALCATEGORY_DESC')
-
-{{{ $item->identifier }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_JOBID_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_JOBID_DESC')
-
-{{{ $item->sameAs }}}
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_CANONICAL_WEBPAGE_LABEL')
-@lang('COM_CAJOBBOARD_JOBPOSTINGS_CANONICAL_WEBPAGE_DESC')
+    {{-- Hidden form fields --}}
+    <div class="cajobboard-form-hidden-fields">
+      <input type="hidden" name="@token()" value="1"/>
+    </div>
+  </form>
+@show

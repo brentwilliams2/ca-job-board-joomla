@@ -62,7 +62,7 @@
             {{-- button with an "X" to close the modal, top right-hand corner --}}
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="reportReviewModalLabel">
-                @lang('COM_CAJOBBOARD_REVIEW_REPORT_REVIEW_HEADER_DESC')
+                @lang('COM_CAJOBBOARD_REVIEWS_REPORT_REVIEW_HEADER_DESC')
             </h4>
           </div>
 

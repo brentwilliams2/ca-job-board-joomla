@@ -1,6 +1,6 @@
 <?php
  /**
-  * Reviews List View Item Template
+  * Question and Answer Pages List View Item Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -14,95 +14,41 @@
   defined('_JEXEC') or die;
 
   // model data fields
-  $reviewID     = $item->review_id;
-  $employerName = $item->ItemReviewed->legal_name;  // The employer being reviewed/rated
-  $employerID   = $item->ItemReviewed->organization_id;
-  $reviewBody   = $item->review_body;   // The actual body of the review.
-  $ratingValue  = $item->rating_value;  // The rating for the content. Default worstRating 1 and bestRating 5 assumed.
-  // $item->Author;        // The author of this content or rating (always hidden), FK to #__users
+  $aboutOrganization  = $item->About->legal_name;     // The organization item question-and-answer page is about. FK to #__cajobboard_organizations
+  $createdBy          = $item->created_by;            // Userid of the creator of this answer.
+  $createdOn          = $item->created_on;            // Date this answer was created.
+  $featured           = $item->featured;              // Whether this answer is featured or not.
+  $hits               = $item->hits;                  // Number of hits this answer has received.
+  $modifiedBy         = $item->modified_by;           // Userid of person that last modified this answer.
+  $modifiedOn         = $item->modified_on;           // Date this answer was last modified.
+  $qapageID           = $item->qapage_id;             // Surrogate primary key
+  $questionID         = $item->Question->question_id; // ID of the Question this page is about
+  $questionTitle      = $item->Question->text;       // Title of the question this page is about
+  $questionCategory   = $item->Specialty;             // A category to which item question and answer page's content applies. Join to #__cajobboard_qapage_categories
+  $slug               = $item->slug;                  // Alias for SEF URL.
+  $text               = $item->description;           // A long description of this question and answer page.
+  $title              = $item->name;                  // A name for this question and answer page.
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
 ?>
 
 {{--
-  #1 - Employer reviewed
+  #1 - Question
 --}}
-@section('employer')
-  {{-- link to employer profile, unless this is being showed on that page already --}}
-  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employerID)">
-    {{{ $employerName }}}
+@section('question')
+  {{-- link to question --}}
+  <a class="media-object question" href="@route('index.php?option=com_cajobboard&view=QAPage&task=read&id='. (int) $qapageID)">
+    {{{ $questionTitle }}}
   </a>
 @overwrite
-
-{{--
-  #2 - Total rating value for employer
---}}
-@section('review_rating')
-  <div class="rating" data-rate-value={{ $ratingValue }}></div>
-@overwrite
-
-{{--
-  #3 - Body text of review
---}}
-@section('review_text')
-  <p class="review-text">
-    {{{ $reviewBody }}}
-  </p>
-@overwrite
-
-{{--
-  #4 - "Show Full Review" Button
-
-  Javascript links a singleton modal into all buttons
---}}
-@section('show_full_review')
-  <a class="show-full-review-anchor" href="@route('index.php?option=com_cajobboard&view=Review&task=read&id='. (int) $reviewID)">
-    <button type="button" class="btn btn-primary btn-xs btn-reviews show-full-review-button pull-right">
-      @lang('COM_CAJOBBOARD_SHOW_FULL_REVIEW_BUTTON_LABEL')
-    </button>
-  </a>
-@overwrite
-
-{{--
-  #5 - "Report Rating" Button
-
-  Javascript links a singleton modal into all buttons
---}}
-@section('report_review')
-  @if ( $userId == 0 )
-    {{-- Guest user. Only a singleton login / register modal included on page. --}}
-    <button type="button" class="btn btn-primary btn-xs btn-reviews guest-report-review-button" data-toggle="modal" data-target="#login-or-register-modal">
-      @lang('COM_CAJOBBOARD_REPORT_REVIEW_BUTTON_LABEL')
-    </button>
-  @else
-    {{-- Logged-in user, show modal for emailing a job --}}
-    <button
-      type="button"
-      id="report-job-button-{{{ $reviewID }}}"
-      class="btn btn-danger btn-xs btn-reviews report-review-button pull-right"
-      data-toggle="modal"
-      data-target="#report-review-modal"
-      data-reviewid="{{ $reviewID }}"
-    >
-      @lang('COM_CAJOBBOARD_REPORT_REVIEW_BUTTON_LABEL')
-    </button>
-  @endif
-@overwrite
-
 
 {{--
   Responsive container for desktop and mobile
 --}}
 <div class="review-list-item">{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
   <div>
-
-    @yield('employer')
-    @yield('review_rating')
-    @yield('review_text')
-    @yield('report_review')
-    @yield('show_full_review')
-
+    <h4>@yield('question')</h4>
   </div>{{-- End main container --}}
   <div class="clearfix"></div>
 </div>{{-- End responsive container --}}

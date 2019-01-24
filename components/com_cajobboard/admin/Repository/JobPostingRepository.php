@@ -152,7 +152,7 @@ class JobPostingRepository extends DataModel
     // Set overriden browse view query
     $query = $db
       ->getQuery(true)
-      ->select($this->quoteColumnNames(array(
+      ->select($query->quoteColumnNames(array(
         'job_posting_id',
         'slug',
         'asset_id',

@@ -44,8 +44,9 @@ use FOF30\Model\DataModel;
  *
  * * SCHEMA: Question
  * @property Answer         $acceptedAnswer   Use acceptedAnswer for the best answer to a question.  FK to #__cajobboard_answers(answer_id)
- * @property int            $upvote_          Upvote count for this item.
+ * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
+ * 
  */
 class Questions extends DataModel
 {

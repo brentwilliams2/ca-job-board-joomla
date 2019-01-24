@@ -18,14 +18,24 @@
 
   $item = $this->getItem();
 
+  $isEditTask = $this->task == 'edit';
+  
   // model data fields
-  $reviewID     = $item->review_id;
-  $employerName = $reviewID ? $item->ItemReviewed->legal_name : null;  // The employer being reviewed/rated
-  $employerID   = $reviewID ? $item->ItemReviewed->organization_id : null;
-  $reviewTitle  = $item->name;  // A name for this review, used to automatically generate the URL slug
-  $reviewBody   = $item->review_body;   // The actual body of the review.
-  $ratingValue  = $item->rating_value ? $item->rating_value : 5;  // The rating for the content. Default worstRating 1 and bestRating 5 assumed. Set to 5 by default for new reviews.
-  // $item->Author;        // The author of this content or rating (always hidden), FK to #__users
+  $reviewID               = $item->review_id;
+  //$author                 = $item->Author;                  // The author of this content or rating (always hidden), FK to #__users
+  $createdBy              = $item->created_by;                // userid of the creator of this review.
+  $createdOn              = $item->created_on;
+  $featured               = $item->featured;                  // bool whether this review is featured or not
+  $hits                   = $item->hits;                      // Number of hits this review has received
+  $modifiedBy             = $item->modified_by;               // userid of person that modified this review.
+  $modifiedOn             = $item->modified_on;
+  $ratingValue            = $item->rating_value;              // The rating for the content. Default worstRating 1 and bestRating 5 assumed.  Nullable.
+  $reviewBody             = $item->review_body;               // The actual body of the review.
+  $slug                   = $item->slug;                      // Alias for SEF URL
+  $title                  = $item->name;                      // A title for this review.
+
+  $employerName           = $isEditTask ? $item->ItemReviewed->name : null;        // The employer being reviewed/rated
+  $employerID             = $isEditTask ? $item->ItemReviewed->organization_id : null;
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
@@ -45,11 +55,11 @@
 @section('employer')
   <h4>
     <label for="employer">
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_EMPLOYER_NAME')
+        @lang('COM_CAJOBBOARD_REVIEWS_EMPLOYER_NAME_EDIT')
     </label>
   </h4>
-  {{-- @TODO: fill employer list from database, see controller --}}
-  <select class="form-control" name="item_reviewed" id="employer" value="{{{ $employerName }}}">
+  {{-- @TODO: fill employer list from database, see controller. Don't set value if this is an add screen. --}}
+  <select class="form-control" name="item_reviewed" id="employer" value="{{{ $employerName }}}" >
       <option value="1">Elite Properties</option>
       <option value="2">Action Property</option>
   </select>
@@ -61,7 +71,7 @@
 @section('review_rating')
   <h4>
     <label>
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_RATING')
+        @lang('COM_CAJOBBOARD_REVIEWS_RATING_EDIT')
     </label>
   </h4>
   <div class="rating" data-rate-value={{ $ratingValue }}></div>
@@ -74,10 +84,10 @@
 @section('review_title')
   <h4>
     <label>
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_TITLE')
+        @lang('COM_CAJOBBOARD_REVIEWS_TITLE_EDIT_LABEL')
     </label>
   </h4>
-  <input type="text" class="form-control" name="name" id="review_title" value="{{{ $reviewTitle }}}" placeholder="@lang('COM_CAJOBBOARD_EDIT_REVIEW_TITLE_INPUT_BOX_PLACEHOLDER')" />
+  <input type="text" class="form-control" name="name" id="review_title" value="{{{ $title }}}" placeholder="@lang('COM_CAJOBBOARD_REVIEWS_TITLE_EDIT_PLACEHOLDER')" />
 @overwrite
 
 {{--
@@ -86,7 +96,7 @@
 @section('review_text')
   <h4>
     <label for="title">
-        @lang('COM_CAJOBBOARD_EDIT_REVIEW_TEXT')
+        @lang('COM_CAJOBBOARD_REVIEWS_TEXT_EDIT')
     </label>
   </h4>
   <textarea name="review_body" id="review_text" class="form-control" rows="8">
@@ -107,9 +117,9 @@
         <header class="block-header">
           <h3>
             @if($task === 'edit')
-              @lang('COM_CAJOBBOARD_EDIT_REVIEW_HEADER')
+              @lang('COM_CAJOBBOARD_REVIEWS_EDIT_REVIEW_HEADER')
             @else
-              @lang('COM_CAJOBBOARD_ADD_REVIEW_HEADER')
+              @lang('COM_CAJOBBOARD_REVIEWS_ADD_REVIEW_HEADER')
             @endif
           </h3>
         </header>

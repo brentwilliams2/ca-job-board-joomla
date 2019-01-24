@@ -18,12 +18,21 @@
   $item = $this->getItem();
 
   // model data fields
-  $reviewID     = $item->review_id;
-  $employerName = $item->ItemReviewed->legal_name;  // The employer being reviewed/rated
-  $employerID   = $item->ItemReviewed->organization_id;
-  $reviewBody   = $item->review_body;   // The actual body of the review.
-  $ratingValue  = $item->rating_value;  // The rating for the content. Default worstRating 1 and bestRating 5 assumed.
-  // $item->Author;        // The author of this content or rating (always hidden), FK to #__users
+  $reviewID               = $item->review_id;
+  //$author                 = $item->Author;                  // The author of this content or rating (always hidden), FK to #__users
+  $createdBy              = $item->created_by;                // userid of the creator of this comment.
+  $createdOn              = $item->created_on;
+  $description            = $item->description;               // A short description of this comment.
+  $employerName           = $item->ItemReviewed->name;        // The employer being reviewed/rated
+  $employerID             = $item->ItemReviewed->organization_id;
+  $featured               = $item->featured;                  // bool whether this comment is featured or not
+  $hits                   = $item->hits;                      // Number of hits this comment has received
+  $modifiedBy             = $item->modified_by;               // userid of person that modified this comment.
+  $modifiedOn             = $item->modified_on;
+  $ratingValue            = $item->rating_value;              // The rating for the content. Default worstRating 1 and bestRating 5 assumed.
+  $reviewBody             = $item->review_body;               // The actual body of the review.
+  $slug                   = $item->slug;                      // Alias for SEF URL
+  $title                  = $item->name;                      //  A title for this review.
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
@@ -65,8 +74,8 @@
 --}}
 @section('show_full_review')
   <a class="show-full-review-anchor" href="@route('index.php?option=com_cajobboard&view=Review&task=read&id='. (int) $reviewID)">
-    <button type="button" class="btn btn-primary btn-xs btn-reviews show-full-review-button pull-right">
-      @lang('COM_CAJOBBOARD_SHOW_FULL_REVIEW_BUTTON_LABEL')
+    <button type="button" class="btn btn-primary btn-xs btn-review show-full-review-button pull-right">
+      @lang('COM_CAJOBBOARD_REVIEWS_SHOW_FULL_REVIEW_BUTTON_LABEL')
     </button>
   </a>
 @overwrite
@@ -79,7 +88,7 @@
 @section('report_review')
   @if ( $userId == 0 )
     {{-- Guest user. Only a singleton login / register modal included on page. --}}
-    <button type="button" class="btn btn-primary btn-xs btn-reviews guest-report-review-button" data-toggle="modal" data-target="#login-or-register-modal">
+    <button type="button" class="btn btn-primary btn-xs btn-review guest-report-review-button" data-toggle="modal" data-target="#login-or-register-modal">
       @lang('COM_CAJOBBOARD_REPORT_REVIEW_BUTTON_LABEL')
     </button>
   @else
@@ -87,13 +96,27 @@
     <button
       type="button"
       id="report-job-button-{{{ $reviewID }}}"
-      class="btn btn-danger btn-xs btn-reviews report-review-button pull-right"
+      class="btn btn-danger btn-xs btn-review report-review-button pull-right"
       data-toggle="modal"
       data-target="#report-review-modal"
       data-reviewid="{{ $reviewID }}"
     >
       @lang('COM_CAJOBBOARD_REPORT_REVIEW_BUTTON_LABEL')
     </button>
+  @endif
+@overwrite
+
+{{--
+  #6 - Edit Button for logged-in users
+--}}
+@section('edit_review')
+  {{-- @TODO: Fix access control on edit review button --}}
+  @if ($userId != 0)
+    <a class="edit-review-link" href="@route('index.php?option=com_cajobboard&view=Review&task=edit&id='. (int) $reviewID)">
+      <button type="button" class="btn btn-warning btn-xs btn-review edit-review-button pull-right">
+        @lang('COM_CAJOBBOARD_REVIEWS_EDIT_REVIEW_BUTTON_LABEL')
+      </button>
+    </a>
   @endif
 @overwrite
 
@@ -107,8 +130,12 @@
     @yield('employer')
     @yield('review_rating')
     @yield('review_text')
-    @yield('report_review')
-    @yield('show_full_review')
+
+    <div>
+      @yield('edit_review')
+      @yield('report_review')
+      @yield('show_full_review')
+    </div>
 
   </div>{{-- End main container --}}
   <div class="clearfix"></div>

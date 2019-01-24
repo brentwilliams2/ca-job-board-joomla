@@ -7,17 +7,34 @@
  */
 
  /**
+ * Organization Role table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_organization_roles` (
+  /* UCM (unified content model) properties for internal record metadata */
+  organization_role_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  /* SCHEMA: Organizaton (additionalType) -> Role(roleName) */
+  role_name TEXT COMMENT 'The role of the organization, e.g. Employer, Recruiter, etc.',
+  /* SCHEMA: Thing */
+  description TEXT COMMENT 'A description of the role of the organization',
+  url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for organization type, e.g. wikipedia page on Employer, Recruiter, etc.',
+  PRIMARY KEY (organization_role_id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+ /**
  * Organization Type table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organization_types` (
   /* UCM (unified content model) properties for internal record metadata */
   organization_type_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   /* SCHEMA: Organizaton (OrganizationType) -> ItemList */
-  itemListElement TEXT COMMENT 'The type of organization, e.g. Employer, Recruiter, etc.',
+  itemListElement TEXT COMMENT 'The type of organization, e.g. Non-Profit, Sole Proprietorship, etc.',
   itemListOrderType INT COMMENT 'The order this item should appear in the list',
   /* SCHEMA: Thing */
   description TEXT COMMENT 'A description of the type of organization',
-  url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for organization type, e.g. wikipedia page on Employer.',
+  url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for organization type, e.g. wikipedia page on Non-Profits.',
   PRIMARY KEY (organization_type_id)
 )
   ENGINE=innoDB
@@ -66,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   telephone TEXT COMMENT 'The E.164 PSTN telephone number.',
   fax_number	VARCHAR(24) COMMENT 'The E.164 PSTN fax number.',
   number_of_employees VARCHAR(16)	COMMENT 'The number of employees in an organization e.g. business.', /* Can also be a QuantitativeValue, which has properties like value, minValue, maxValue, unitCode for unit of measurement */
-  location BIGINT UNSIGNED COMMENT 'Where the organization is located', /* FK to Places */
+  location BIGINT UNSIGNED COMMENT 'Where the organization main office or headquarters is located', /* FK to Places */
   logo BIGINT UNSIGNED COMMENT 'An associated logo.',  /* FK to ImageObjects table */
   /* @TODO: contact_point ContactPoint COMMENT 'A contact point for a person or organization.' */
   diversity_policy BIGINT UNSIGNED COMMENT 'Statement on diversity policy of the employer.', /* FK to diversity_policies table */
@@ -75,14 +92,17 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   parent_organization BIGINT UNSIGNED COMMENT 'The larger organization that this organization is a subOrganization of, if any.', /* FK to organizations table */
 
   /* SCHEMA: Thing */
-  name CHAR(255) COMMENT 'The name of this organization.',
+  name CHAR(255) NOT NULL COMMENT 'The name of this organization.',
   disambiguating_description TEXT COMMENT 'A short description of the employer, for example to use on listing pages.',
   description TEXT COMMENT 'A description of the item.',
   url VARCHAR(2083) COMMENT 'URL of employer\'s website.',
   image BIGINT UNSIGNED COMMENT	'Images of the employer.', /* FK to images table */
 
+  /* SCHEMA: Thing(additionalType) -> Role(roleName) */
+  role_name BIGINT UNSIGNED COMMENT 'The role of the organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_role */
+
   /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
-  organization_type BIGINT UNSIGNED COMMENT 'The type of organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_type */
+  organization_type BIGINT UNSIGNED COMMENT 'The structure of the organization e.g. Non-Profit, Corporation, Sole Proprietorship, etc.', /* FK to #__cajobboard_organization_type */
 
   PRIMARY KEY (organization_id)
 )
@@ -129,6 +149,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_organizations` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
+ /**
+ * Organization - Place join table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_places` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  organization_id BIGINT UNSIGNED NOT NULL,
+  place_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
 /**
  * Initial organization types
  */
@@ -143,6 +176,13 @@ INSERT INTO `#__cajobboard_organization_types` (itemListElement, itemListOrderTy
   ('COM_CAJOBBOARD_ORGANIZATION_TYPE_FRANCHISE', 8, 'COM_CAJOBBOARD_ORGANIZATION_TYPE_FRANCHISE_DESC', 'https://en.wikipedia.org/wiki/Franchising'),
   ('COM_CAJOBBOARD_ORGANIZATION_TYPE_OTHER', 9, 'COM_CAJOBBOARD_ORGANIZATION_TYPE_OTHER_DESC', 'https://en.wiktionary.org/wiki/other');
 
+/**
+ * Initial organization roles
+ */
+INSERT INTO `#__cajobboard_organization_roles` (role_name, description, url) VALUES
+  ('COM_CAJOBBOARD_ORGANIZATION_ROLE_EMPLOYER', 'COM_CAJOBBOARD_ORGANIZATION_ROLE_EMPLOYER_DESC', 'https://en.wiktionary.org/wiki/employer'),
+  ('COM_CAJOBBOARD_ORGANIZATION_ROLE_RECRUITER', 'COM_CAJOBBOARD_ORGANIZATION_ROLE_RECRUITER_DESC', 'https://en.wiktionary.org/wiki/recruiter'),
+  ('COM_CAJOBBOARD_ORGANIZATION_ROLE_CONNECTOR', 'COM_CAJOBBOARD_ORGANIZATION_ROLE_CONNECTOR_DESC', 'https://en.wiktionary.org/wiki/connector');
 
 /*
  * Create content types for relevant tables, mapping fields to the UCM standard fields for history feature

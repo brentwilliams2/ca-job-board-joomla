@@ -22,8 +22,16 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
+if(JDEBUG) {
+  JLog::addLogger(
+    array('text_file' => 'cajobboard.debug.php'),
+    JLog::DEBUG,
+    array('cajobboard')
+  );
+}
+
 // Load custom class paths
-include_once JPATH_COMPONENT_ADMINISTRATOR . '/Helpers/Autoloader.php';
+include_once JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Autoloader.php';
 
 // Dispatch the application
 $container = Container::getInstance('com_cajobboard')->dispatcher->dispatch();

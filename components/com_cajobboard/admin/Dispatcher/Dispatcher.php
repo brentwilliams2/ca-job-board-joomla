@@ -25,8 +25,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
-		JLog::add('onBeforeDispatch: $task: ' . $this->input->getCmd('task'), JLog::DEBUG, 'cajobboard');
-
 		// Load common CSS and JavaScript
 		$this->container->template->addCSS('media://com_cajobboard/css/backend.css', $this->container->mediaVersion);
 		$this->container->template->addJS('media://com_cajobboard/js/backend.js', false, false, $this->container->mediaVersion);

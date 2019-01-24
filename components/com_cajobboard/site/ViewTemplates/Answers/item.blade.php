@@ -1,6 +1,6 @@
 <?php
  /**
-  * Reviews Item View Template
+  * Answers Item View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -18,82 +18,136 @@
   $item = $this->getItem();
 
   // model data fields
-  $reviewID     = $item->review_id;
-  $employerName = $item->ItemReviewed->legal_name;  // The employer being reviewed/rated
-  $employerID   = $item->ItemReviewed->organization_id;
-  $reviewBody   = $item->review_body;   // The actual body of the review.
-  $ratingValue  = $item->rating_value;  // The rating for the content. Default worstRating 1 and bestRating 5 assumed.
-  // $item->Author;        // The author of this content or rating (always hidden), FK to #__users
+  $answerID       = $item->answer_id;
+  $created_by     = $item->created_by;      // userid of the creator of this answer.
+  $createdOn      = $item->created_on;
+  $description    = $item->description;     // Text of the answer.
+  $downvoteCount  = $item->downvote_count;  // Downvote count for this item.
+  $featured       = $item->featured;        // bool whether this answer is featured or not
+  $hits           = $item->hits;            // Number of hits this answer has received
+  $isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
+  $modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
+  $modifiedOn     = $item->modified_on;
+  $title          = $item->name;            // A title to use for the answer.
+  $parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
+  $Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
+  $slug           = $item->slug;            // Alias for SEF URL
+  $text           = $item->text;            // The actual text of the answer itself.
+  $upvoteCount    = $item->upvote_count;    // Upvote count for this item.
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
+
+  // create identicon avatar 32X32
+  $identicon = new \Identicon\Identicon();
+  $authorAvatarUri = $identicon->getImageDataUri($answerID, 32);
 ?>
 
-{{-- @TODO: move JQuery module loads to View file --}}
-@js('media://com_cajobboard/js/rater.min.js')
-
 {{--
-  #1 - Employer reviewed
+  #1 - Answer Title
 --}}
-@section('employer')
-  {{-- link to employer profile, unless this is being showed on that page already --}}
-  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employerID)">
-    {{{ $employerName }}}
-  </a>
+@section('answer_title')
+  {{-- link to individual answer --}}
+  <span class="answer-title">
+    {{{ $title }}}
+  </span>
 @overwrite
 
 {{--
-  #2 - Total rating value for employer
+  #2 - Answer Text
 --}}
-@section('review_rating')
-  <div class="rating" data-rate-value={{ $ratingValue }}></div>
-@overwrite
-
-{{--
-  #3 - Body text of review
---}}
-@section('review_text')
-  <p class="review-text">
-    {{{ $reviewBody }}}
+@section('answer_text')
+  <p class="answer-text">
+    <b>{{{ $text }}}</b>
   </p>
 @overwrite
 
-{{--
-  #4 - "Show Full Review" Button
 
-  Javascript links a singleton modal into all buttons
+{{--
+  #3 - Answer Author's name
 --}}
-@section('show_full_review')
-  <a class="show-full-review-anchor" href="@route('index.php?option=com_cajobboard&view=Review&task=read&id='. (int) $reviewID)">
-    <button type="button" class="btn btn-primary btn-xs btn-reviews show-full-review-button pull-right">
-      @lang('COM_CAJOBBOARD_SHOW_FULL_REVIEW_BUTTON_LABEL')
-    </button>
-  </a>
+@section('authors_name')
+  {{-- @TODO: add user table relationship and get user name --}}
+  <span class="answer-authors-name">
+    Jane Q. Public
+  </span>
 @overwrite
 
 {{--
-  #5 - "Report Rating" Button
-
-  Javascript links a singleton modal into all buttons
+  #4 - Answer Author's avatar
 --}}
-@section('report_review')
-  @if ( $userId == 0 )
-    {{-- Guest user. Only a singleton login / register modal included on page. --}}
-    <button type="button" class="btn btn-primary btn-xs btn-reviews guest-report-review-button" data-toggle="modal" data-target="#login-or-register-modal">
-      @lang('COM_CAJOBBOARD_REPORT_REVIEW_BUTTON_LABEL')
-    </button>
-  @else
-    {{-- Logged-in user, show modal for emailing a job --}}
-    <button
-      type="button"
-      id="report-job-button-{{{ $reviewID }}}"
-      class="btn btn-danger btn-xs btn-reviews report-review-button pull-right"
-      data-toggle="modal"
-      data-target="#report-review-modal"
-      data-reviewid="{{ $reviewID }}"
-    >
-      @lang('COM_CAJOBBOARD_REPORT_REVIEW_BUTTON_LABEL')
-    </button>
+@section('authors_avatar')
+  {{-- @TODO: Implement author avatar, need to add to user profile? --}}
+  <img src="{{{ $authorAvatarUri }}}" alt="Avatar" class="img-thumbnail answer-author-avatar" height="32" width="32" />
+@overwrite
+
+{{--
+  #5 - Answer Author's last seen
+--}}
+@section('author_last_seen')
+  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+  <span class="author-last-seen">
+    @lang('COM_CAJOBBOARD_ANSWERS_AUTHOR_LAST_SEEN_BUTTON_LABEL')
+    1 week ago
+  </span>
+@overwrite
+
+{{--
+  #6 - Answer Posted Date
+--}}
+@section('answer_posted_date')
+  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+  <span class="answer-posted-date">
+    @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
+    <?php echo date("d/m/Y", strtotime($createdOn)); ?>
+  </span>
+@overwrite
+
+{{--
+  #7 - Answer Upvotes
+--}}
+@section('answer_upvotes')
+  <button class="btn btn-primary btn-xs btn-answer answer-upvotes pull-right" type="button">
+    @lang('COM_CAJOBBOARD_ANSWERS_UPVOTES_BUTTON_LABEL')
+    <span class="badge">
+      {{{ $upvoteCount }}}
+    </span>
+  </button>
+@overwrite
+
+{{--
+  #8 - Answer Downvotes
+--}}
+@section('answer_downvotes')
+  <button class="btn btn-primary btn-xs btn-answer answer-downvotes pull-right" type="button">
+    @lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTES_BUTTON_LABEL')
+    <span class="badge">
+      {{{ $downvoteCount }}}
+    </span>
+  </button>
+@overwrite
+
+{{--
+  #9 - "Report answer" Button
+--}}
+@section('report_answer')
+  <button type="button" class="btn btn-primary btn-xs btn-answer guest-report-answer-button pull-right" data-toggle="modal" data-target="#report-answer">
+    @lang('COM_CAJOBBOARD_REPORT_ANSWERS_BUTTON_LABEL')
+  </button>
+@overwrite
+
+
+{{--
+  #10 - Edit Button for logged-in users
+--}}
+@section('edit_answer')
+  {{-- @TODO: Fix access control on edit answer button --}}
+  @if ($userId != 0)
+    <a class="edit-answer-link" href="@route('index.php?option=com_cajobboard&view=answer&task=edit&id='. (int) $answerID)">
+      <button type="button" class="btn btn-warning btn-xs btn-answer edit-answer-button pull-right">
+        @lang('COM_CAJOBBOARD_EDIT_ANSWERS_BUTTON_LABEL')
+      </button>
+    </a>
   @endif
 @overwrite
 
@@ -101,15 +155,36 @@
 {{--
   Responsive container for desktop and mobile
 --}}
-<div class="review-list-item">{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
-  <div>
+{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
+<div class="row answer-item media">
+    <h4>@yield('answer_title')</h4>
+    <p>@yield('answer_text')</p>
 
-    @yield('employer')
-    @yield('review_rating')
-    @yield('review_text')
-    @yield('report_review')
-    @yield('show_full_review')
+    <div>
+      @yield('answer_posted_date')
+    </div>
 
-  </div>{{-- End main container --}}
-  <div class="clearfix"></div>
+    <div class="clearfix"></div>
+
+    <div>
+      <a href="#">
+        @yield('authors_avatar')
+      </a>
+      <a href="#">
+        @yield('authors_name')
+      </a>
+      @yield('author_last_seen')
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div>
+      @yield('edit_answer')
+      @yield('report_answer')
+      @yield('answer_downvotes')
+      @yield('answer_upvotes')
+    </div>
+
+
 </div>{{-- End responsive container --}}
+<div class="clearfix"></div>

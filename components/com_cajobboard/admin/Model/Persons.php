@@ -18,6 +18,7 @@ defined( '_JEXEC' ) or die;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use JLoader;
+use JFactory;
 
 /**
  * Model class for Job Board users

@@ -25,28 +25,35 @@ use FOF30\Model\DataModel;
  *
  * Fields:
  *
- * @property  int			$image_object_id    Surrogate primary key
- * @property string   $slug               Alias for SEF URL
+ * UCM
+ * @property int            $image_object_id    Surrogate primary key.
+ * @property string         $slug               Alias for SEF URL.
+ * @property bool           $featured           Whether this answer is featured or not.
+ * @property int            $hits               Number of hits this answer has received.
+ * @property int            $created_by         Userid of the creator of this answer.
+ * @property string         $created_on         Date this answer was created.
+ * @property int            $modified_by        Userid of person that last modified this answer.
+ * @property string         $modified_on        Date this answer was last modified.
+ * @property Object         $Category           Category object for this image, FK to #__categories
  *
  * SCHEMA: ImageObject
- * @property  string	$thumbnail          Filename of the property image thumbnail
- * @property  string	$caption            Caption for the property image
- * @property  string	$exif_data          JSON-encoded exif data for this image
+ * @property  string	      $caption            Caption for the property image
+ * @property  string	      $exif_data          JSON-encoded exif data for this image
  *
  * SCHEMA: MediaObject
- * @property  string	$content_url        Filename of the property image
- * @property  int			$content_size       File size in bytes
- * @property  int			$height             Height of the property image in px
- * @property  int			$width              Width of the property image in px
- * @property  string	$encoding_format    RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif
+ * @property  string	      $content_url        Filename of the property image
+ * @property  int			      $content_size       File size in bytes
+ * @property  int			      $height             Height of the property image in px
+ * @property  int			      $width              Width of the property image in px
+ * @property  string	      $encoding_format    RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif
  *
  * SCHEMA: CreativeWork
- * @property  Object	$contentLocation   Place depicted or described in the image, FK to #__cajobboard_places
+ * @property  Object	      $ContentLocation   Place depicted or described in the image, FK to #__cajobboard_places
  *
  * SCHEMA: Thing
- * @property  string	$name              A name for this image
- * @property  string	$description       A long description of this image
- * @property  Object  $author            The author of this content or rating, FK to #__users
+ * @property  string	      $name              A name for this image
+ * @property  string	      $description       A long description of this image
+ * @property  Object        $Author            The author of this content or rating, FK to #__users
  */
 class ImageObjects extends \FOF30\Model\DataModel
 {
@@ -77,8 +84,12 @@ class ImageObjects extends \FOF30\Model\DataModel
      */
 
     // Place depicted or described in the image, many-to-one FK to  #__cajobboard_places
-    $this->belongsTo('contentLocation', 'Places@com_cajobboard', 'content_location', 'place_id');
+    $this->belongsTo('ContentLocation', 'Places@com_cajobboard', 'content_location', 'place_id');
 
     // Relation to users table for $author
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'author', 'id');
+
+    // Relation to category table for $Category
+    $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
   }
 }

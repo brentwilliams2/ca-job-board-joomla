@@ -16,12 +16,25 @@
   // current user ID
   $userId = $this->container->platform->getUser()->id;
 
+  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
+  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
+
   // model data fields
-  $job_id         = $item->job_posting_id;
-  $job_title      = $item->title;
-  $logo_source    = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
-  $logo_caption   = $item->jobLocation->Logo->caption;
-  $employer_id    = $item->hiringOrganization->organization_id;
+  $jobID                = $item->job_posting_id;
+  $jobTitle             = $item->title;
+  $logoSource           = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
+  $logoCaption          = $item->jobLocation->Logo->caption;
+  $employerID           = $item->hiringOrganization->organization_id;
+  $created_by           = $item->created_by;        // Userid of the creator of this answer.
+  $createdOn            = $item->created_on;        // Date this answer was created.
+  $featured             = $item->featured;          // Whether this answer is featured or not.
+  $hits                 = $item->hits;              // Number of hits this answer has received.
+  $jobPostingSlug       = $item->slug;              // Alias for SEF URL
+  $modifiedBy           = $item->modified_b;        // Userid of person that last modified this answer.
+  $modifiedOn           = $item->modified_o;        // Date this answer was last modified.
+  $employmentType       = JText::_($item->employmentType->name); // Employment type (part-time, full-time, etc.) saved as translation string in DB
+
+
   $tags = new JHelperTags;
   $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
 
@@ -30,22 +43,19 @@
 
   // @TODO: "Share this" social media button on job
 
+
+
    // @TODO: move all code for aggregate reviews to Job Postings repository
   $aggregateReview = new stdClass();
 
   foreach ( $this->aggregateReviews as $aggregateReviewIteratee )
   {
-    if ($aggregateReviewIteratee->job_posting_id == $job_id)
+    if ($aggregateReviewIteratee->job_posting_id == $jobID)
     {
       $aggregateReview = $aggregateReviewIteratee;
       break;
     }
   }
-
-  $employmentType = JText::_($item->employmentType->name);
-
-  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
-  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
 
   $formattedPay = $JobPostingViewHelper->formatPayToValueOrRange(
     $item->base_salary__value,
@@ -59,18 +69,17 @@
   #1 - Employer Logo, link to Employer Profile
 --}}
 @section('employer_logo')
-  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employer_id)">
-    <img src="{{{ $logo_source }}}" alt="{{{ $logo_caption }}}">
+  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employerID)">
+    <img src="{{{ $logoSource }}}" alt="{{{ $logoCaption }}}">
   </a>
-  <p>{{-- $ --}}</p>
 @overwrite
 
 {{--
   #2 - Job Title
 --}}
 @section('job_title')
-  <a class="job-title" href="@route('index.php?option=com_cajobboard&view=JobPosting&task=read&id='. (int) $job_id)">
-    <span>{{{ $job_title }}}</span>
+  <a class="job-title" href="@route('index.php?option=com_cajobboard&view=JobPosting&task=read&id='. (int) $jobID)">
+    <span>{{{ $jobTitle }}}</span>
   </a>
 @overwrite
 
@@ -92,7 +101,7 @@
   #4 - Name of Employer
 --}}
 @section('employer_name')
-  <a class="employer-name" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employer_id)">
+  <a class="employer-name" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employerID)">
     <span>{{{ $item->hiringOrganization->legal_name }}}</span>
   </a>
 @overwrite
@@ -124,12 +133,12 @@
 
   @elseif ( !$saved )
     {{-- Logged-in user, job hasn't been saved --}}
-    <button type="button" id="registered-save-job-button-{{{ $job_id }}}" class="btn btn-primary btn-xs btn-job-posting save-job-button">
+    <button type="button" id="registered-save-job-button-{{{ $jobID }}}" class="btn btn-primary btn-xs btn-job-posting save-job-button">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_SAVE_JOB_BUTTON_LABEL')
     </button>
     {{-- Hidden success button to show after saved --}}
     {{-- @TODO: Add hyperlink to saved jobs list view --}}
-    <button type="button" id="job-saved-button-{{{ $job_id }}}" class="btn btn-primary btn-xs btn-job-posting job-saved-button hidden" disabled="disabled">
+    <button type="button" id="job-saved-button-{{{ $jobID }}}" class="btn btn-primary btn-xs btn-job-posting job-saved-button hidden" disabled="disabled">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_JOB_SAVED_BUTTON_LABEL')
     </button>
   @else
@@ -156,11 +165,11 @@
     {{-- Logged-in user, show modal for emailing a job --}}
     <button
       type="button"
-      id="email-job-button-{{{ $job_id }}}"
+      id="email-job-button-{{{ $jobID }}}"
       class="btn btn-primary btn-xs btn-job-posting registered-email-job-button"
       data-toggle="modal"
       data-target="#email-a-job-modal"
-      data-jobid="{{{ $job_id }}}"
+      data-jobid="{{{ $jobID }}}"
     >
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMAIL_JOB_BUTTON_LABEL')
     </button>
@@ -182,11 +191,11 @@
     {{-- Logged-in user, show modal for emailing a job --}}
     <button
       type="button"
-      id="report-job-button-{{{ $job_id }}}"
+      id="report-job-button-{{{ $jobID }}}"
       class="btn btn-primary btn-xs btn-job-posting report-job-button"
       data-toggle="modal"
       data-target="#report-job-modal"
-      data-jobid="{{ $job_id }}"
+      data-jobid="{{ $jobID }}"
     >
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_REPORT_JOB_BUTTON_LABEL')
     </button>
@@ -215,7 +224,7 @@
   #12 - "Quick Apply" Button
 --}}
 @section('quick_apply')
-  <a href="/index.php?view=Applications&task=edit&id={{ $job_id }}">
+  <a href="/index.php?view=Applications&task=edit&id={{ $jobID }}">
     <button type="button" class="btn btn-primary btn-xs">
       @lang('COM_CAJOBBOARD_JOB_POSTINGS_QUICK_APPLY_BUTTON_LABEL')
     </button>

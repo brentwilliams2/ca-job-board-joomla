@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-  <fieldset name="component">
+  <!--Configuration options tab #1: "Component" -->
+  <fieldset
+    name="component"
+  	label="COM_CAJOBBOARD_COMPONENT_PARAMETERS_TAB_LABEL"
+		description="COM_CAJOBBOARD_COMPONENT_PARAMETERS_TAB_DESC"
+  >
+    <!-- Parameters for general category of options -->
+    <field
+      type="spacer"
+      name="general-options"
+      class="text-info"
+      label="COM_CAJOBBOARD_GENERAL_OPTIONS_GROUP_LABEL"
+    />
+
     <field
       name="save_history"
       type="radio"
@@ -21,9 +34,15 @@
       description="JGLOBAL_HISTORY_LIMIT_OPTIONS_DESC"
       default="5"
     />
-  </fieldset>
 
-  <fieldset name="job_postings">
+    <!-- Parameters for job postings category of options -->
+    <field
+      type="spacer"
+      name="job-postings-options"
+      class="text-info"
+      label="COM_CAJOBBOARD_JOB_POSTINGS_OPTIONS_GROUP_LABEL"
+    />
+
     <field
       name="job_postings_pagination_limit"
       type="number"
@@ -33,16 +52,19 @@
     />
   </fieldset>
 
+
+  <!--Configuration options tab #2: "Login and Registration" -->
   <fieldset
 		name="login"
-		label="COM_CAJOBBOARD_LOGIN_LABEL"
-		description="COM_CAJOBBOARD_LOGIN_DESC"
+		label="COM_CAJOBBOARD_LOGIN_PARAMETERS_TAB_LABEL"
+		description="COM_CAJOBBOARD_LOGIN_PARAMETERS_TAB_DESC"
 	>
+    <!-- Parameters for email registration category of options -->
     <field
       type="spacer"
       name="email-registration-options"
-      class="text"
-      label="COM_CAJOBBOARD_REGISTRATION_EMAIL_OPTIONS_LABEL"
+      class="text-info"
+      label="COM_CAJOBBOARD_REGISTRATION_EMAIL_OPTIONS_GROUP_LABEL"
     />
 
     <field
@@ -71,11 +93,12 @@
       description="COM_CAJOBBOARD_REGISTRATION_PRIVACY_POLICY_DESC"
     />
 
+    <!-- Parameters for social login and registration category of options -->
     <field
       type="spacer"
       name="social-login-and-registration-options"
-      class="text"
-      label="COM_CAJOBBOARD_SOCIAL_LOGIN_AND_REGISTRATION_OPTIONS_LABEL"
+      class="text-info"
+      label="COM_CAJOBBOARD_SOCIAL_LOGIN_AND_REGISTRATION_OPTIONS_GROUP_LABEL"
     />
 
     <field
@@ -137,9 +160,130 @@
       <option value="0">JNO</option>
       <option value="1">JYES</option>
     </field>
-
 	</fieldset>
 
+
+  <!--Configuration options tab #3: "Media" -->
+  <!--  Image media height is set with "constrain aspect ratio" option in image category configuration options -->
+  <fieldset
+		name="media"
+		label="COM_CAJOBBOARD_MEDIA_PARAMETERS_TAB_LABEL"
+		description="COM_CAJOBBOARD_MEDIA_PARAMETERS_TAB_DESC"
+	>
+    <!-- Width settings for system image sizes -->
+    <field
+      name="image-size"
+      type="spacer"
+      class="text-info"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_SIZE_LABEL"
+    />
+
+    <field
+      name="thumbnail-width"
+      type="number"
+      default="100"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_THUMBNAIL_IMAGE_SIZE_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_WIDTH_DESC"
+      min="100"
+      step="1"
+    />
+
+    <field
+      name="small-width"
+      type="number"
+      default="320"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_SMALL_IMAGE_SIZE_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_WIDTH_DESC"
+      min="100"
+      step="1"
+    />
+
+    <field
+      name="medium-width"
+      type="number"
+      default="460"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_MEDIUM_IMAGE_SIZE_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_WIDTH_DESC"
+      min="100"
+      step="1"
+    />
+
+    <field
+      name="large-width"
+      type="number"
+      default="520"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_LARGE_IMAGE_SIZE_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_WIDTH_DESC"
+      min="100"
+      step="1"
+    />
+
+    <!-- Padding to add to width of image for comparing against bootstrap media query setpoints -->
+    <field
+      name="image-padding-for-setpoints-section-label"
+      type="spacer"
+      class="text-info"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_PADDING_SECTION_LABEL"
+    />
+
+    <field
+      name="image-padding-for-setpoints"
+      type="number"
+      default="20"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_PADDING_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_PADDING_DESC"
+    />
+
+    <!-- Bootstrap media query settings -->
+    <field
+      name="bootstrap-media-query"
+      type="spacer"
+      class="text-info"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_SECTION_LABEL"
+    />
+
+    <field
+      name="bootstrap-media-query-xs-min"
+      type="number"
+      default="480"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_XS_MIN_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_XS_MIN_DESC"
+      min="100"
+      step="1"
+    />
+
+    <field
+      name="bootstrap-media-query-sm-min"
+      type="number"
+      default="768"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_SM_MIN_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_SM_MIN_DESC"
+      min="100"
+      step="1"
+    />
+
+    <field
+      name="bootstrap-media-query-md-min"
+      type="number"
+      default="992"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_MD_MIN_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_MD_MIN_DESC"
+      min="100"
+      step="1"
+    />
+
+    <field
+      name="bootstrap-media-query-lg-min"
+      type="number"
+      default="1200"
+      label="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_LG_MIN_LABEL"
+      description="COM_CAJOBBOARD_MEDIA_PARAMS_BOOTSTRAP_MEDIA_QUERY_LG_MIN_DESC"
+      min="100"
+      step="1"
+    />
+	</fieldset>
+
+  <!--Configuration options tab #4: "Permissions" -->
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"

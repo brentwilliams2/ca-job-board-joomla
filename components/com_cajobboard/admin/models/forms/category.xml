@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  If you have more than one type of category in your component (e.g. "com_mycomponent.mycategorytype")
+  you need to make the name of the XML file "category.mytype.xml".
+-->
+<form>
+  <fields name="params">
+    <fieldset name="images" label="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_TAB_TITLE">
+      <field
+        name="enforce_aspect_ratio"
+        type="checkbox"
+        label="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ENFORCE_ASPECT_RATIO_LABEL"
+        description="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ENFORCE_ASPECT_RATIO_DESC"
+        value="1"
+      />
+
+      <field
+        name="thumbnail_aspect_ratio"
+        type="list"
+        default="aspect-ratio-1-1"
+        required="true"
+        label="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_THUMBNAIL_ASPECT_RATIO_LABEL"
+        description="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_THUMBNAIL_ASPECT_RATIO_DESC"
+      >
+        <option value="">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_SQUARE_ASPECT_RATIO_ALLOWED_SECTION_LABEL</option>
+        <option value="aspect-ratio-1-1">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_1_1_LABEL</option>
+        <option value="">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_LANDSCAPE_ASPECT_RATIOS_ALLOWED_SECTION_LABEL</option>
+        <option value="aspect-ratio-4-3">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_4_3_LABEL</option>
+        <option value="aspect-ratio-3-2">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_2_LABEL</option>
+        <option value="aspect-ratio-8-5">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_8_5_LABEL</option>
+        <option value="aspect-ratio-5-3">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_5_3_LABEL</option>
+        <option value="aspect-ratio-16-9">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_16_9_LABEL</option>
+        <option value="">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_PORTRAIT_ASPECT_RATIO_SECTION_LABEL</option>
+        <option value="aspect-ratio-3-4">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_4_LABEL</option>
+        <option value="aspect-ratio-2-3">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_2_3_LABEL</option>
+        <option value="aspect-ratio-5-8">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_5_8_LABEL</option>
+        <option value="aspect-ratio-3-5">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_5_LABEL</option>
+        <option value="aspect-ratio-9-16">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_9_16_LABEL</option>
+      </field>
+
+      <field
+        name="image_aspect_ratio"
+        type="list"
+        default="aspect-ratio-4-3"
+        required="true"
+        label="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_IMAGE_ASPECT_RATIO_LABEL"
+        description="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_IMAGE_ASPECT_RATIO_DESC"
+      >
+        <option value="">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_SQUARE_ASPECT_RATIO_ALLOWED_SECTION_LABEL</option>
+        <option value="aspect-ratio-1-1">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_1_1_LABEL</option>
+        <option value="">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_LANDSCAPE_ASPECT_RATIOS_ALLOWED_SECTION_LABEL</option>
+        <option value="aspect-ratio-4-3">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_4_3_LABEL</option>
+        <option value="aspect-ratio-3-2">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_2_LABEL</option>
+        <option value="aspect-ratio-8-5">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_8_5_LABEL</option>
+        <option value="aspect-ratio-5-3">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_5_3_LABEL</option>
+        <option value="aspect-ratio-16-9">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_16_9_LABEL</option>
+        <option value="">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_PORTRAIT_ASPECT_RATIO_SECTION_LABEL</option>
+        <option value="aspect-ratio-3-4">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_4_LABEL</option>
+        <option value="aspect-ratio-2-3">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_2_3_LABEL</option>
+        <option value="aspect-ratio-5-8">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_5_8_LABEL</option>
+        <option value="aspect-ratio-3-5">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_5_LABEL</option>
+        <option value="aspect-ratio-9-16">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_9_16_LABEL</option>
+      </field>
+    </fieldset>
+  </fields>
+</form>

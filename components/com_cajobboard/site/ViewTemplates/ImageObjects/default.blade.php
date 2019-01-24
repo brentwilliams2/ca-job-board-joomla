@@ -30,7 +30,14 @@
 
 @section('item')
   <div class="container-fluid job-posting-list">
-    @each('site:com_cajobboard/JobPostings/default_item', $items, 'item', 'text|COM_CAJOBBOARD_JOB_POSTINGS_NO_JOB_POSTS_FOUND')
+      {{--@each('site:com_cajobboard/ImageObjects/default_item', $items, 'item', 'text|COM_CAJOBBOARD_JOB_POSTINGS_NO_JOB_POSTS_FOUND')--}}
+
+    @forelse($items as $item)
+      @include('site:com_cajobboard/ImageObjects/default_item', array('item' => $item, 'displaySize' => 'large'))
+    @empty
+      @lang('COM_CAJOBBOARD_JOB_POSTINGS_NO_JOB_POSTS_FOUND')
+    @endforelse
+
   </div>
 @show
 
@@ -38,16 +45,3 @@
 @section('footer')
   <p></p>
 @show
-
-
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        {{-- repeat calling row however many times necessary  --}}
-        <div class="row">
-          {{-- call three images in a row, or whatever the row width  --}}
-        </div>
-        <div class="row">
-          {{-- call three images in a row, or whatever the row width  --}}
-        </div>
-    </div>
-</div>

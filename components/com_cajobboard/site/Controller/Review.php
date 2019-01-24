@@ -54,6 +54,8 @@ class Review extends DataController
 	public function onBeforeAdd()
 	{
     // @TODO: code for pulling employer list. Should this be here or in view class?
+    // @TODO: check if user is a guest. Better place to do this to always catch it for all views?
+    /*
     if ($guest)
     {
       // Joomla! requires the URL the user is redirected to after login to be base64 encoded
@@ -61,7 +63,8 @@ class Review extends DataController
 
       $this->setRedirect($url, $msg = null, 'message')->redirect();
     }
-
+    */
+    
 		return true;
   }
 

@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reviews` (
   enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
   created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
   created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
-  modified_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
-  modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
+  modified_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
+  modified_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
   locked_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
@@ -44,14 +44,14 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reviews` (
   name VARCHAR(255) NOT NULL COMMENT 'A name for this review.',
 
   /* SCHEMA: Review */
-  item_reviewed INT UNSIGNED COMMENT 'The employer being reviewed/rated.', /* FK to #__cajobboard_organizations */
-  review_body TEXT COMMENT 'The actual body of the review.',
+  item_reviewed BIGINT UNSIGNED NOT NULL COMMENT 'The employer being reviewed/rated.', /* FK to #__cajobboard_organizations */
+  review_body TEXT NOT NULL COMMENT 'The actual body of the review.',
 
   /* SCHEMA: Review(reviewRating) -> Rating(ratingValue) */
   rating_value INT COMMENT 'The rating for the content. Default worstRating 1 and bestRating 5 assumed.',
 
   /* SCHEMA: CreateWork */
-  author INT UNSIGNED COMMENT 'The author of this content or rating.', /* FK to #__users */
+  author INT UNSIGNED NOT NULL COMMENT 'The author of this review.', /* FK to #__users */
 
   PRIMARY KEY (review_id)
 )

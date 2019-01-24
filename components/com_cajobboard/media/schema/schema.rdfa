@@ -45,3 +45,11 @@
   <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/Thing">Thing</a></span>
   <span>Source:  <a property="dc:source" href="http://schema.org/employmentType">employmentType</a></span>
 </div>
+
+<!--
+  @TODO: Need to show additionalType for Organizations as Role(roleName), The role of the organization e.g. Employer, Recruiter, etc.
+-->
+
+<!--
+  @TODO: Need to show external extension additionalType for Organizations as Branch, additional Place this organization uses
+-->

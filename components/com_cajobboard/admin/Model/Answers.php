@@ -46,7 +46,6 @@ use FOF30\Model\DataModel;
  * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questionss(question_id).
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
- *
  */
 class Answers extends DataModel
 {

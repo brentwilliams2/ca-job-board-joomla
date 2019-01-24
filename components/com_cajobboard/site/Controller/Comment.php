@@ -17,6 +17,7 @@ use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 use FOF30\View\Exception\AccessForbidden;
 use JFilterOutput;
+use JLog;
 
 use Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
 

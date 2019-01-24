@@ -99,10 +99,9 @@ INSERT INTO `#__cajobboard_job_postings` (
 /**
  * Image Object table sample data
  */
-INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, description, caption, content_location, height, width) VALUES
+INSERT INTO `#__cajobboard_image_objects` (content_url, name, slug, description, caption, content_location, height, width) VALUES
   (
     'media://com_cajobboard/images/places/266e84d61e29d12a36860f68879320de.jpg',
-    'media://com_cajobboard/images/places/thumbs/10003e84a62ba007664ca4ec4ffdb930.jpg',
     'Bellagio Properties',
     'bellagio-properties',
     'The headquarters of Bellagio Properties',
@@ -113,7 +112,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/places/36a86d9f88f24294925f827d9485da77.jpg',
-    'media://com_cajobboard/images/places/thumbs/407ff4303f5bf177766b96f99d1cc938.jpg',
     'Circus Circus',
     'circus-circus',
     'The headquarters of Bellagio Properties',
@@ -124,7 +122,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/persons/88545549392290bb7d136dbbbd13ec04.png',
-    'media://com_cajobboard/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.png',
     'Employer Tom',
     'employer-tom',
     'Employer Tom\'s Captions',
@@ -135,7 +132,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/persons/7295dba823ca6605f115a385517f8073.png',
-    'media://com_cajobboard/images/persons/thumbs/thumb.ca1feedd1c5ebc4ec3d32964a40642d3.png',
     'Employer Janice',
     'employer-janice',
     'Employer Janice\'s Caption',
@@ -146,7 +142,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/persons/48ceeada3a22ff130bb42b8bddf673f0.png',
-    'media://com_cajobboard/images/persons/thumbs/thumb.f67f07e99b25686480177eead4185f6b.png',
     'Job Seeker Tim',
     'job-seeker-tim',
     'Job Seeker Tim\'s Caption',
@@ -157,7 +152,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/persons/d3cce8929e3a0525b453360a0d79f46c.gif',
-    'media://com_cajobboard/images/persons/thumbs/thumb.bcc2ff3d300a59cb3ef3b6cd742fbebc.gif',
     'Job Seeker Susan',
     'job-seeker-susan',
     'Job Seeker Susan\'s Caption',
@@ -168,7 +162,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/persons/03079f1f0a7d5740404768bb5c051f75.jpg',
-    'media://com_cajobboard/images/persons/thumbs/thumb.86f675701721e7531e3cd80116c6ab03.jpg',
     'Recruiter Tony',
     'recruiter-tony',
     'Recruiter Tony\'s Caption',
@@ -179,7 +172,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/organizations/9ce203d4cf9b44218b864f51e82c8ed4.jpg',
-    'media://com_cajobboard/images/organizations/thumbs/6407e2d6b58b00a69162f875cc25dc35.jpg',
     'Elite Property Management',
     'elite-property-management',
     'Nobody does it better.',
@@ -190,7 +182,6 @@ INSERT INTO `#__cajobboard_image_objects` (content_url, thumbnail, name, slug, d
   ),
   (
     'media://com_cajobboard/images/organizations/458b8334edf54c056392276cbf18ae4e.jpg',
-    'media://com_cajobboard/images/organizations/thumbs/f9a399dfb8f45c1013b8e03ba05a81e9.jpg',
     'Action Property Management',
     'action-property-management',
     'An easier way home',
@@ -269,6 +260,15 @@ INSERT INTO `#__cajobboard_places_images` (photo, image_object_id) VALUES
 
 
 /**
+ * Sample Organizations-Places join table data
+ */
+INSERT INTO `#__cajobboard_organizations_places` (organization_id, place_id) VALUES
+  (1, 2),
+  (2, 1);
+
+
+
+/**
  * Sample Organization table data
  */
 INSERT INTO `#__cajobboard_organizations` (
@@ -289,6 +289,7 @@ INSERT INTO `#__cajobboard_organizations` (
   description,
   url,
   image,
+  role_name,
   organization_type
 ) VALUES
 (
@@ -308,6 +309,7 @@ INSERT INTO `#__cajobboard_organizations` (
   'Elite can be the best job of your life!',
   'Founded in 1995, Elite Property Management is a family owned and operated business with headquarters in Virginia Beach, Virginia.',
   'http://elite-property.test',
+  '1',
   '1',
   '3'
 ),
@@ -329,6 +331,7 @@ INSERT INTO `#__cajobboard_organizations` (
   'At Action Property, exceptional, personalized living comes full of amenities with none of the stress of homeownership. We do it through the programs we offer, a commitment to local neighborhoods and innovative green living opportunities. Our award-winning apartments are managed and staffed by award-winning teams. Residents rent with us, and stay with us, because our life\'s work is helping people feel at home, over and over again. Building and maintaining strong relationships with our residents, employees, investors and partners matters to us. We\'ve got the depth of experience and financial foundation to provide stability and peace of mind to our renters.',
   'http://action-property.text',
   '2',
+  '1',
   '4'
 );
 
@@ -739,27 +742,32 @@ INSERT INTO `#__cajobboard_answers` (
 INSERT INTO `#__cajobboard_qapages` (
   qapage_id,
   about,
-  specialty
+  specialty,
+  main_entity_of_page
 ) VALUES
   (
     '1',
     '1',
-    '5'
+    '5',
+    '1'
   ),
   (
     '2',
     '1',
-    '4'
+    '4',
+    '2'
   ),
   (
     '3',
     '2',
-    '11'
+    '11',
+    '3'
   ),
   (
     '4',
     '2',
-    '15'
+    '11',
+    '4'
   );
 
 

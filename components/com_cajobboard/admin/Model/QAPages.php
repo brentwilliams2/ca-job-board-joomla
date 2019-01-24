@@ -23,19 +23,29 @@ use FOF30\Model\DataModel;
  *
  * Fields:
  *
- * @property int                $qapage_id    Surrogate primary key
+ * UCM
+ * @property int                $qapage_id          Surrogate primary key
+ * @property string             $slug               Alias for SEF URL.
+ * @property bool               $featured           Whether this answer is featured or not.
+ * @property int                $hits               Number of hits this answer has received.
+ * @property int                $created_by         Userid of the creator of this answer.
+ * @property string             $created_on         Date this answer was created.
+ * @property int                $modified_by        Userid of person that last modified this answer.
+ * @property string             $modified_on        Date this answer was last modified.
+ *
  * SCHEMA: Thing
- * @property string             $name         A name for this question and answer page.
- * @property string             $description  A long description of this question and answer page.
+ * @property string             $name               A name for this question and answer page.
+ * @property string             $description        A long description of this question and answer page.
+ * @property int                $mainEntityOfPage   FK to question this page is about
+ * 
  * SCHEMA: CreativeWork
- * @property Organizations      $About        The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id)
+ * @property Organizations      $About              The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id)
+ * 
  * SCHEMA: QAPage
- * @property QAPageCategories   $Specialty    A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id)
+ * @property QAPageCategories   $Specialty          A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id)
  *
  * RELATIONS
- * @property Questions          $Question     The Question this page is about
- * @property Answers            $Answers      The Answers for the question of this page
- *
+ * @property Questions          $Question           The Question this page is about
  */
 class QAPages extends DataModel
 {
@@ -70,14 +80,67 @@ class QAPages extends DataModel
     // Many-to-one FK to  #__cajobboard_organizations
     $this->belongsTo('About', 'Organizations@com_cajobboard', 'about', 'organization_id');
 
-    // $Specialty    A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id)
-
     // one-to-one FK to  #__cajobboard_questions
-    $this->hasOne('Question', 'Questions@com_cajobboard', 'question', 'question_id');
-
-    // many-to-one FK to #__cajobboard_answers
-    $this->hasMany('Answer', 'Answers@com_cajobboard', 'qapage_id', 'is_part_of');
+    $this->hasOne('Question', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
   }
+
+
+	/**
+	 * Override to add join field for #__cajobboard_qapage_categories as $Specialty
+	 *
+	 * @param   boolean $overrideLimits Should I override limits
+	 *
+	 * @return  \JDatabaseQuery  The database query to use
+	 */
+  public function buildQuery($overrideLimits = false)
+	{
+		// Join category table specialty field to QAPages table
+    $db = $this->getDbo();
+    
+		$query = $db->getQuery(true)
+      ->select(array(
+        $db->quoteName('qapages.*'),
+        $db->quoteName('category.name', 'Specialty')
+      ))
+      ->from($db->quoteName('#__cajobboard_qapages', 'qapages'))
+      ->join('INNER', $db->quoteName('#__cajobboard_qapage_categories', 'category') . ' ON (' . $db->quoteName('qapages.specialty') . ' = ' . $db->quoteName('category.qapage_category_id') . ')');
+
+      // @TODO: main_entity_of_page -> accepted_answer -> answer_id: name, description, upvote_count, downvote_count
+      // @TODO: remove is_part_of column from #__cajobboard_answers
+
+    // Apply custom WHERE clauses
+		if (count($this->whereClauses))
+		{
+			foreach ($this->whereClauses as $clause)
+			{
+				$query->where($clause);
+			}
+    }
+    
+    // Handle checking state for order and setting it if needed
+    $order = $this->getState('filter_order', null, 'cmd');
+    
+		if (!array_key_exists($order, $this->knownFields))
+		{
+			$order = $this->getIdFieldName();
+			$this->setState('filter_order', $order);
+    }
+    
+    $order = $db->qn($order);
+    
+    $dir = strtoupper($this->getState('filter_order_Dir', null, 'cmd'));
+    
+		if (!in_array($dir, array('ASC', 'DESC')))
+		{
+			$dir = 'ASC';
+			$this->setState('filter_order_Dir', $dir);
+    }
+    
+		$query->order($order . ' ' . $dir);
+
+  	return $query;
+  }
+
 
 	/**
 	 * Perform checks on data for validity
@@ -97,3 +160,5 @@ class QAPages extends DataModel
     return $this;
   }
 }
+
+

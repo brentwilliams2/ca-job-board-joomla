@@ -56,7 +56,7 @@
 {{-- link to individual comment --}}
 <h4>
   <label>
-    {{{ $title or @lang('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_LABEL') }}}
+    @lang('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_LABEL')
   </label>
 </h4>
 <input
@@ -65,7 +65,7 @@
   name="name"
   id="comment_title"
   value="{{{ $title }}}"
-  placeholder="@lang('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_PLACEHOLDER')"
+  placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_PLACEHOLDER')); ?>"
 />
 @overwrite
 
@@ -80,7 +80,7 @@
     </label>
   </h4>
   <textarea name="text" id="comment_text" class="form-control" rows="8">
-    {{{ $text or @lang('COM_CAJOBBOARD_COMMENTS_EDIT_TEXT_PLACEHOLDER') }}}
+    <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_COMMENTS_EDIT_TEXT_PLACEHOLDER')); ?>
   </textarea>
 </div>
 @overwrite
@@ -91,7 +91,7 @@
 @section('comment_posted_date')
 {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
 <span class="comment-posted-date">
-  @lang('COM_CAJOBBOARD_COMMENT_POSTED_ON_BUTTON_LABEL')
+  @lang('COM_CAJOBBOARD_COMMENTS_POSTED_ON_BUTTON_LABEL')
   <?php echo date("d/m/Y", strtotime($createdOn)); ?>
 </span>
 @overwrite
@@ -103,7 +103,7 @@
 @if ($modifiedOn)
   {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
   <span class="comment-posted-date">
-    @lang('COM_CAJOBBOARD_COMMENT_MODIFIED_ON_BUTTON_LABEL')
+    @lang('COM_CAJOBBOARD_COMMENTS_MODIFIED_ON_BUTTON_LABEL')
     <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
   </span>
 @endif
@@ -121,9 +121,9 @@
         <header class="block-header">
           <h3>
             @if($task === 'edit')
-              @lang('COM_CAJOBBOARD_COMMENT_EDIT_HEADER')
+              @lang('COM_CAJOBBOARD_COMMENTS_EDIT_HEADER')
             @else
-              @lang('COM_CAJOBBOARD_COMMENT_ADD_HEADER')
+              @lang('COM_CAJOBBOARD_COMMENTS_ADD_HEADER')
             @endif
           </h3>
         </header>

@@ -9,9 +9,23 @@
  */
 
 //-----------------------------------------------------------------------------
-// Reviews ViewTemplate
+// Reviews ViewTemplate - list view                      default.blade.php
 //-----------------------------------------------------------------------------
 
+.review-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
+
+//-----------------------------------------------------------------------------
+// Reviews ViewTemplate - list view item            default_item.blade.php
+//-----------------------------------------------------------------------------
+
+ // The container for the entire job posting item in list view
 .review-list-item {
   background-color: #e3e3e4 !important;
   margin-top: 12px;
@@ -21,6 +35,38 @@
   padding-left: 10px;
 }
 
-.btn-reviews {
-  margin-left: 5px !important;
+// Generic items
+.btn-review {
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+// Class applied to the job posting title anchor (link to item view of job posting)
+.review-title {
+  font-weight: bold;
+  font-size: $font-size-large;
+}
+
+// review body text when link applied to it
+a.review-text-link {
+  color: $text-color;
+  text-decoration: none;
+}
+
+a.review-text-link:hover, .review-text-link:focus {
+  color: $gray-light;
+  text-decoration: none;
+}
+
+//-----------------------------------------------------------------------------
+// Reviews ViewTemplate - item view                             item.blade.php
+//-----------------------------------------------------------------------------
+
+.review-item {
+  background-color: #e3e3e4 !important;
+  margin-top: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
 }
