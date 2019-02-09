@@ -1,0 +1,23 @@
+{
+  "name": "ca-job-board-joomla",
+  "version": "1.0.0",
+  "description": "A job board extension for Joomla!",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calligraphic/ca-job-board-joomla.git"
+  },
+  "keywords": [
+    "job",
+    "board"
+  ],
+  "author": "Kevin Brown",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/calligraphic/ca-job-board-joomla/issues"
+  },
+  "homepage": "https://github.com/calligraphic/ca-job-board-joomla#readme"
+}

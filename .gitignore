@@ -7,13 +7,10 @@
 /build/tools
 /build/override.properties
 
-/component/*.xml
-
-/component/language/backend/en-GB
-/component/language/frontend/en-GB
-
 /release
 
 /*/.DS_Store
 
-validate-buildfile-xml.sh
+/components/com_cajobboard/admin/vendor
+
+/Tests/config.php

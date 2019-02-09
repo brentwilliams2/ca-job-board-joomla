@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="Tests/bootstrap.php"
+    colors="true"
+>
+  <php>
+    <!-- Set error reporting to "E_ALL" -->
+    <ini name="error_reporting" value="32767"/>
+    <!-- Enable displaying errors -->
+    <ini name="display_errors" value="1"/>
+  </php>
+
+	<testsuites>
+		<testsuite name="Calligraphic Job Board Unit Tests">
+			<directory>Tests/components</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
+
+
+
