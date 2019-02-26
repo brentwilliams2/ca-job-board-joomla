@@ -17,6 +17,8 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use JFilterOutput;
+use JLog;
 
 /**
  * Model class description
@@ -24,26 +26,27 @@ use FOF30\Model\DataModel;
  * Fields:
  *
  * UCM
- * @property int            $answer_id       Surrogate primary key.
- * @property string         $slug            Alias for SEF URL.
- * @property bool           $featured        Whether this answer is featured or not.
- * @property int            $hits            Number of hits this answer has received.
- * @property int            $created_by      Userid of the creator of this answer.
- * @property string         $createdOn       Date this answer was created.
- * @property int            $modifiedBy      Userid of person that last modified this answer.
- * @property string         $modifiedOn      Date this answer was last modified.
+ * @property int            $id               Surrogate primary key.
+ * @property string         $slug             Alias for SEF URL.
+ * @property bool           $featured         Whether this answer is featured or not.
+ * @property int            $hits             Number of hits this answer has received.
+ * @property int            $created_by       Userid of the creator of this answer.
+ * @property string         $createdOn        Date this answer was created.
+ * @property int            $modifiedBy       Userid of person that last modified this answer.
+ * @property string         $modifiedOn       Date this answer was last modified.
  *
  * SCHEMA: Thing
- * @property string         $name            A title to use for the answer.
- * @property string         $description     Alias of the author.
+ * @property string         $name             A title to use for the answer.
+ * @property string         $description      A description of the answer.
  *
  * SCHEMA: CreativeWork
  * @property QAPage         $isPartOf         This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id).
- * @property Organization   $Publisher        The company that wrote this answer. FK to #__organizations(organization)id).
+ * @property Organization   $Publisher        The company that wrote this answer. FK to #__organizations(organization_id).
  * @property string         $text             The actual text of the answer itself.
+ * @property Person         $Author           The author of this comment.  FK to #__persons.
  *
  * SCHEMA: Answer
- * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questionss(question_id).
+ * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questions(question_id).
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
@@ -73,6 +76,10 @@ class Answers extends DataModel
 
     parent::__construct($container, $config);
 
+    // Set `filter_order` state variable to use the ordering column, for Joomla!'s
+    // administrator browse view panel drag-and-drop ordering functionality
+    $this->setState('filter_order', 'ordering');
+
     /*
      * Set up relations
      */
@@ -85,9 +92,12 @@ class Answers extends DataModel
 
     // one-to-one FK to  #__cajobboard_questions
     $this->hasOne('parentItem', 'Questions@com_cajobboard', 'parent_item', 'question_id');
+
+    // one-to-one FK to  #__cajobboard_persons
+     $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
   }
 
-	/**
+  /**
 	 * Perform checks on data for validity
 	 *
 	 * @return  static  Self, for chaining
@@ -96,12 +106,79 @@ class Answers extends DataModel
 	 */
 	public function check()
 	{
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_ANSWER_ERR_TITLE');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_ANSWER_ERR_DESCRIPTION');
-    $this->assertNotEmpty($this->url, 'COM_CAJOBBOARD_ANSWER_ERR_URL');
+    // Make sure slug is populated from the answer title, if it is left empty
+    if(!$this->slug)
+    {
+      $this->makeSlug();
+    }
+
+    // Answer title ('name' column in DB) and description are required
+    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EDIT_TITLE_ERR');
+    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_EDIT_DESCRIPTION_ERR');
 
 		parent::check();
 
     return $this;
+  }
+
+
+  // @TODO: author and robot fields are not handling JRegistry metadata field correctly.
+  protected function onBeforeSave($data)
+  {
+    $this->metadata->set('author', $this->input->get('metadata_author'));
+    $this->metadata->set('robots', $this->input->get('metadata_robots'));
+  }
+
+
+  /**
+	 * Transform 'metadata' field to a JRegistry object on bind
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+  protected function getMetadataAttribute($value)
+  {
+    // Make sure it's not a JRegistry already
+    if (is_object($value) && ($value instanceof \JRegistry))
+    {
+        return $value;
+    }
+
+    // Return the data transformed to a JRegistry object
+    return new \JRegistry($value);
+  }
+
+
+  /**
+	 * Transform 'metadata' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+  protected function setMetadataAttribute($value)
+  {
+    // Make sure it a JRegistry object, otherwise return the value
+    if (!is_object($value) || !($value instanceof \JRegistry))
+    {
+      return $value;
+    }
+
+    // Return the data transformed to JSON
+    return $value->toString('JSON');
+  }
+
+
+  /**
+	 * Create a slug from the answer title
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+  protected function makeSlug()
+  {
+    $this->slug = JFilterOutput::stringURLSafe($this->name);
   }
 }

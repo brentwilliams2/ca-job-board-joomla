@@ -30,30 +30,10 @@ class Answer extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    $this->modelName = 'Answers';
+
+    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save'];
+
     parent::__construct($container, $config);
-
-    $this->predefinedTaskList = [
-      'default',
-      'browse',
-      'read',
-      'edit',
-      'add'
-    ];
-  }
-
-	/**
-	 * Make sure we create a unique slug for the comment before saving it.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
-	public function onBeforeApplySave($data)
-	{
-    // @TODO: Make sure the slug is unique
-    $data->slug = JFilterOutput::stringURLSafe($data->name);
-    $data->author = $this->container->platform->getUser()->id;
-
-
-		return true;
   }
 }

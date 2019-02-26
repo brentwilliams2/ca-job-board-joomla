@@ -26,3 +26,151 @@
 .font-weight-bold {
   font-weight: bold;
 }
+
+
+//-----------------------------------------------------------------------------
+// From cajobboard Subs:
+//-----------------------------------------------------------------------------
+.icon-cajobboard {
+	background: transparent url(../images/cajobboard-16.png) no-repeat;
+	min-width: 16px !important;
+	min-height: 16px !important;
+}
+
+.icon-48-cajobboard {
+	background: transparent url(../images/cajobboard-48.png) no-repeat !important;
+}
+
+.container_16 .icon-48-cajobboard {
+	padding-right: 20px;
+	background: transparent url(../images/cajobboard-16.png) 5px right no-repeat !important;
+}
+
+.icon-32-subrefresh { background: transparent url(../images/subrefresh.png); }
+
+#toolbar-Link .icon-32-export { background: transparent url(../images/export.png); }
+
+fieldset label { float: left; }
+
+#enabled0, #enabled1, label[for=enabled0], label[for=enabled1],
+#combine0, #combine1, label[for=combine0], label[for=combine1],
+#isbusiness0, #isbusiness1, label[for=isbusiness0], label[for=isbusiness1],
+#viesregistered0, #viesregistered1, label[for=viesregistered0], label[for=viesregistered1]
+{
+	float: none;
+	display: inline-block;
+}
+
+span.cajobboard-booleangroup {
+	float: left;
+}
+
+span.cajobboard-booleangroup input,
+span.cajobboard-booleangroup label {
+	float: none !important;
+	display: inline-block !important;
+	margin-left: 4px !important;
+	padding: 0 !important;
+}
+
+.cajobboard-clear { clear:both; }
+
+label.title, input.title { font-weight: bold; font-size: larger; }
+
+label.main { display: inline-block; width: 45%; background: #e0e0e0; border-bottom: 1px solid gray; padding: 2px; margin-bottom: 2px }
+input.longer { width: 40% }
+
+#image-preview { display: block !important; border: thin solid gray !important; border-radius: 5px; margin: 2px 2px 2px 48% !important; width: 80px !important; height: 80px !important; box-shadow: 0px 0px 5px #999; }
+
+fieldset.cajobboard-float-left {
+	float: left; width: 48%;
+}
+
+.sublevelpic { float: left; margin-right: 3px; }
+
+.subslevel { float: left; margin-top: 10px; }
+
+.gravatar { margin-right: 3px; }
+
+#refreshMessage h3, #refreshMessage p { text-align: center; }
+
+.cajobboard-nofloat-input input {
+	float: none;
+}
+
+.cajobboard-nofloat-input img.calendar {
+	float: none;
+	padding: 0;
+	margin: 0 0 -4px 3px;
+}
+
+.fof-usersfield-id:before {
+	content: "["
+}
+
+.fof-usersfield-id:after {
+	content: "]"
+}
+
+.fof-usersfield-name {
+	display: block;
+}
+
+/** Joomla! 3 workaround for calendar fields */
+div.task-browse input#publish_up {
+	width: 90px;
+}
+
+div.task-browse input#publish_down {
+	width: 90px;
+}
+
+div.task-browse input#since {
+	width: 90px;
+}
+
+/**
+ * Control panel
+ */
+
+.cpanel-icon {width: 100px; height: 100px; margin-bottom: 10px; margin-right: 7px; text-align: center}
+
+/**
+ * Joomla! 3.7 made success buttons fixed width.
+ */
+#toolbar .btn-success { width: auto !important; }
+
+/**
+ * Joomla! 3.7 broke span6 margins x_x
+ */
+div#cajobboard-renderjoomla [class*="span"] { margin-left: 0; }
+
+div.joomla-version-3{ padding:0 }
+
+div.cajobboard-filter-bar--right{
+	text-align: right;
+}
+
+div.cajobboard-filter-element {
+	display: inline-block;
+	margin-right: 0.5em;
+}
+
+div.cajobboard-filter-element button[class*=--icon-only]+button[class*=--icon-only] {
+	margin-left: 0;
+}
+
+div.cajobboard-filter-element button[class*=--icon-only] [class*=akion-] {
+	margin: 0;
+	vertical-align: baseline;
+}
+
+div.cajobboard-filter-bar select.custom-select{
+	min-width: 0;
+	max-width: 115px;
+}
+
+.joomla-version-3 .cajobboard-filter-joomlacalendarfix {
+	vertical-align: middle;
+	padding-top: 0.35em;
+}

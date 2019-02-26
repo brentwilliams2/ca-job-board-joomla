@@ -1,5 +1,7 @@
 <?php
 /**
+ * Preflight installer script to ensure Akeeba F0F is properly installed with Job Board package
+ *
  * @package		Calligraphic Job Board
  * @copyright	Copyright (c) 2018 Kevin Brown / Calligraphic
  * @copyright Copyright (c)2013-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com

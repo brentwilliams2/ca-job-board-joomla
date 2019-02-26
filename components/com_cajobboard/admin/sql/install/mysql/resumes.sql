@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_resumes' (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
+  note VARCHAR(255) COMMENT 'A note to save with this resume in the back-end interface.',
 
   /* SCHEMA: */
 

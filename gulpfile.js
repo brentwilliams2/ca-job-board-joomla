@@ -66,7 +66,7 @@ gulp.task('copy', ['clean'], function() {
 		.pipe(gulp.dest(joomlaTemplatePath));
 });
 
-// Sass
+// Build SASS Javascript files
 function compileSassFile(src, destinationFolder, options)
 {
 	return gulp.src(src)

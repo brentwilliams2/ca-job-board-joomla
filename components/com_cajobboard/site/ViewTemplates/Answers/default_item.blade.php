@@ -11,7 +11,7 @@
   */
 
   // Identicon avatar generator
-  use Identicon\Identicon;
+  use \Identicon\Identicon;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -38,9 +38,9 @@
   $userId = $this->container->platform->getUser()->id;
 
     // create identicon avatar 24X24
-  $identicon = new \Identicon\Identicon();
+  $identicon = new Identicon();
   $authorAvatarUri = $identicon->getImageDataUri($answerID, 24);
-  
+
 ?>
 
 {{--

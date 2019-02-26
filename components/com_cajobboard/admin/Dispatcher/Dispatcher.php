@@ -16,7 +16,6 @@ namespace Calligraphic\Cajobboard\Admin\Dispatcher;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use Jlog;
 
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {

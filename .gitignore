@@ -14,3 +14,4 @@
 /components/com_cajobboard/admin/vendor
 
 /Tests/config.php
+node_modules

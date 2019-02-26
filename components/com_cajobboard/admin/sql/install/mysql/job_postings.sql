@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
+  note VARCHAR(255) COMMENT 'A note to save with this job posting in the back-end interface.',
 
   /* SCHEMA: JobPosting */
   title CHAR(255) COMMENT 'The title of the job posting.',
@@ -371,7 +372,7 @@ VALUES(
   '',
   /* content_history_options */
   '{
-    "formFile":"administrator\\/components\\/com_cajobboard\\/Form\\/jobposting.xml",
+    "formFile":"administrator\\/components\\/com_cajobboard\\/Form\\/common.xml",
     "hideFields":[
       "asset_id",
       "version",

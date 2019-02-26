@@ -43,4 +43,4 @@ if (!$autoloader->hasMap($siteRepositoryNamespace))
 $autoloader->register(false);
 
 // Add Composer autoloader for applications in vendor directory
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/vendor/autoload.php';
+require_once JPATH_ROOT . '/vendor/autoload.php';

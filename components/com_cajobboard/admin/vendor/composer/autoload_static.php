@@ -16,6 +16,10 @@ class ComposerStaticInitcb44c6864943a25e005acca01ebc1066
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'b' => 
+        array (
+            'bheller\\ImagesGenerator\\' => 24,
+        ),
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
@@ -23,6 +27,10 @@ class ComposerStaticInitcb44c6864943a25e005acca01ebc1066
         'S' => 
         array (
             'Symfony\\Polyfill\\Ctype\\' => 23,
+        ),
+        'F' => 
+        array (
+            'Faker\\' => 6,
         ),
         'D' => 
         array (
@@ -38,6 +46,10 @@ class ComposerStaticInitcb44c6864943a25e005acca01ebc1066
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
+        'bheller\\ImagesGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bheller/images-generator/src',
+        ),
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
@@ -45,6 +57,10 @@ class ComposerStaticInitcb44c6864943a25e005acca01ebc1066
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Faker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

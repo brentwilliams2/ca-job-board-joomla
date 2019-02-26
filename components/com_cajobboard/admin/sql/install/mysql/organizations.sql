@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
+  note VARCHAR(255) COMMENT 'A note to save with this organization in the back-end interface.',
 
   /* SCHEMA: Organization */
   legal_name VARCHAR(255) COMMENT 'The official name of the employer.',
@@ -314,7 +315,7 @@ VALUES(
   '',
   /* content_history_options */
   '{
-    "formFile":"administrator\\/components\\/com_cajobboard\\/Form\\/organization.xml",
+    "formFile":"administrator\\/components\\/com_cajobboard\\/Form\\/common.xml",
     "hideFields":[
       "asset_id",
       "version",

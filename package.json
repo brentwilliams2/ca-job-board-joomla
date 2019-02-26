@@ -19,5 +19,20 @@
   "bugs": {
     "url": "https://github.com/calligraphic/ca-job-board-joomla/issues"
   },
-  "homepage": "https://github.com/calligraphic/ca-job-board-joomla#readme"
+  "homepage": "https://github.com/calligraphic/ca-job-board-joomla#readme",
+  "devDependencies": {
+    "beepbeep": "^1.2.2",
+    "browser-sync": "^2.26.3",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.1",
+    "gulp-util": "^3.0.8",
+    "gulp-zip": "^4.2.0",
+    "xml2js": "^0.4.19"
+  }
 }
