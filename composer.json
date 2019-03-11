@@ -13,16 +13,15 @@
     "vendor-dir": "components/com_cajobboard/admin/vendor"
   },
   "scripts": {
-    "test": "@php `pwd`/components/com_cajobboard/admin/vendor/phpunit/phpunit/phpunit -c `pwd`/phpunit.xml"
+    "test": "@php `pwd`/components/com_cajobboard/admin/vendor/phpunit/phpunit/phpunit -c `pwd`/phpunit.xml",
+    "seed": "@php `pwd`/administrator/components/com_cajobboard/Cli/PopulateSampleAssetData.php"
   },
   "require": {
     "php": "^7.2",
     "ext-soap": "*",
-    "ext-json": "*"
+    "ext-json": "*",
   },
   "require-dev": {
     "phpunit/phpunit": "^8",
-    "fzaninotto/faker": "^1.8",
-    "bheller/images-generator": "^1.0"
   }
 }

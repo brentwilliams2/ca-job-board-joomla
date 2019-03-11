@@ -52,6 +52,8 @@ use JLog;
  */
 class Answers extends DataModel
 {
+  use \Calligraphic\Cajobboard\Admin\Helper\AssetHelperTrait;
+
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
@@ -74,15 +76,14 @@ class Answers extends DataModel
     // Add behaviours to the model
     $config['behaviours'] = array('Filters', 'Language', 'Tags');
 
+    // Parent constructor
     parent::__construct($container, $config);
 
     // Set `filter_order` state variable to use the ordering column, for Joomla!'s
     // administrator browse view panel drag-and-drop ordering functionality
     $this->setState('filter_order', 'ordering');
 
-    /*
-     * Set up relations
-     */
+    /* Set up relations */
 
     // one-to-one FK to #__cajobboard_qapage
     $this->hasOne('isPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'qapage_id');
@@ -97,6 +98,7 @@ class Answers extends DataModel
      $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
   }
 
+
   /**
 	 * Perform checks on data for validity
 	 *
@@ -106,6 +108,9 @@ class Answers extends DataModel
 	 */
 	public function check()
 	{
+    // @TODO: Make sure a default category for com_cajobboard ({title, path, alias}=uncategorized)
+    // exists in #__categories, and that the default category is set for this item if nothing else is set
+
     // Make sure slug is populated from the answer title, if it is left empty
     if(!$this->slug)
     {
@@ -122,9 +127,60 @@ class Answers extends DataModel
   }
 
 
-  // @TODO: author and robot fields are not handling JRegistry metadata field correctly.
+   /*
+   * Handle creating ACL record after creating a new Answer record
+   */
+  protected function onAfterCreate()
+  {
+    if($this->isAssetsTracked())
+    {
+      // Get the JTableAsset object for this item's asset name
+      $assetModel = $this->getAsset();
+
+      // Get the ID of the parent asset object for this item
+      $assetModel->parent_id = $this->getCategoryAssetID();
+      $assetModel->name = $this->getAssetName();
+      $assetModel->rules = (string) $this->getRules();
+
+      $assetId = $this->saveAssetRecord($assetModel);
+
+      $this->setFieldValue('asset_id', $assetId);
+
+      $this->save();
+    }
+  }
+
+
+  /*
+   * Handle deleting the ACL record after an Answer record is deleted
+   */
+  protected function onAfterDelete()
+  {
+    $this->removeAssetRecord();
+  }
+
+
+  /*
+   * Handle updating ACL record after editing an Answer record
+   */
+  protected function onAfterUpdate()
+  {
+    // @TODO: implement to check when the permissions page is changed on an admin edit screen
+  }
+
+
+  /*
+   * Handle the 'metadata' JSON field
+   */
   protected function onBeforeSave($data)
   {
+    // @TODO: author and robot fields are not handling JRegistry metadata field correctly.
+    // Set 'metadata' field to new JRegistry object when save is for a new item (add task)
+    if (!is_object($this->metadata) && (!$this->metadata instanceof \JRegistry))
+    {
+      $this->metadata = new \JRegistry();
+    }
+
     $this->metadata->set('author', $this->input->get('metadata_author'));
     $this->metadata->set('robots', $this->input->get('metadata_robots'));
   }

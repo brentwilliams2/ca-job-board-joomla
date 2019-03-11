@@ -73,7 +73,7 @@
 @section('browse-table-body-norecords')
   <tr>
     <td colspan="99">
-      <?php echo JText::_('COM_CAJOBBOARD_COMMON_NORECORDS') ?>
+      @lang('COM_CAJOBBOARD_COMMON_NORECORDS')
     </td>
   </tr>
 @stop

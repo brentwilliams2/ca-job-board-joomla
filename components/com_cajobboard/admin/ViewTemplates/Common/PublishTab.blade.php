@@ -18,7 +18,17 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  $robot_value = $item->metadata->get('robots');
+  // Check if 'metadata' field is JRegistry object, will be null if this is a new record (add task)
+  if (is_object($item->metadata) && ($item->metadata instanceof \JRegistry))
+  {
+    $robot_value  = $item->metadata->get('robots');
+    $author_value = $item->metadata->get('author');
+  }
+  else
+  {
+    $robot_value = '';
+    $author_value = '';
+  }
 
   // Options for robots metadata tag
   $robot_values = array(
@@ -28,14 +38,14 @@
     'JGLOBAL_INDEX_NOFOLLOW' => 'index, nofollow',
     'JGLOBAL_NOINDEX_NOFOLLOW' => 'noindex, nofollow',
   );
+
 ?>
 
 {{-----------------------------------------------------------------------------------}}
-{{-- SECTION: "Publishing" pane of Publishing" options tab in admin item view edit --}}
+{{-- SECTION: "Publishing" pane of "Publishing" options tab in admin item view edit --}}
 {{-----------------------------------------------------------------------------------}}
 
 @section('publishing-data')
-
   <fieldset name="created_date">
     <label for="created_date">
       @lang('JGLOBAL_FIELD_CREATED_DESC')
@@ -99,7 +109,7 @@
     <label for="metadata_author">
       @lang('JAUTHOR')
     </label>
-    <input type="text" name="metadata_author" id="metadata_author" value="{{{ $item->metadata->get('author') }}}"/>
+    <input type="text" name="metadata_author" id="metadata_author" value="{{{ $author_value }}}"/>
   </fieldset>
 
   {{-- Metadata Robots field --}}

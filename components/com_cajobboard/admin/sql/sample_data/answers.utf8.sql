@@ -4,6 +4,8 @@
 
 INSERT INTO `#__cajobboard_answers` (
   answer_id,
+  `name`,
+  `description`,
   slug,
   is_part_of,
   publisher,
@@ -14,6 +16,8 @@ INSERT INTO `#__cajobboard_answers` (
 ) VALUES
   (
     '1',
+    'Difficult work environment',
+    'An insider',
     'the_work_environment_and_lack_of_proper_office_equipment',
     '1',
     '134',
@@ -24,6 +28,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '2',
+    'Short staffed',
+    'Quit a year ago',
     'i_wanted_to_retire_from_this_place',
     '1',
     '135',
@@ -34,6 +40,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '3',
+    'Salary issues',
+    'Still employed here',
     'no_one_i_work_with_has_received_a_raise',
     '2',
     '136',
@@ -44,6 +52,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '4',
+    'Annual wage increases',
+    'Worked there years ago',
     'hardly_much_of_a_living_expenses_increase',
     '2',
     '137',
@@ -54,6 +64,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '5',
+    'Work-life balance',
+    'Job hunting now',
     'worked_through_lunch',
     '3',
     '138',
@@ -64,6 +76,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '6',
+    'Rating on a scale of 1 to 10',
+    'Laid off in \'08.',
     'seven_or_nine',
     '3',
     '135',
@@ -74,6 +88,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '7',
+    'Great residents',
+    'Still on staff',
     'i_go_to_work_each_day_because_the_residents_are_counting_on_me',
     '4',
     '136',
@@ -84,6 +100,8 @@ INSERT INTO `#__cajobboard_answers` (
   ),
   (
     '8',
+    'Management plays favorites',
+    'Thinking of quitting.',
     'never_no_if_you_will_be_back_the_next_day',
     '4',
     '137',

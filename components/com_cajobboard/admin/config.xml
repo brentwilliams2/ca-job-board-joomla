@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is a form-definition for the Preferences of this component:
+  the screen you see after clicking the 'Options' button in back-end browse views
+  or the left-hand menu of all component configuration options when on the
+  Global Configuration site page.
+
+  Tabs in Component Configurtion Options:
+    #1: "Component"
+    #2: "Login and Registration"
+    #3: "Media"
+    #4: "Permissions"
+-->
 <config>
   <!--Configuration options tab #1: "Component" -->
   <fieldset
@@ -289,24 +301,40 @@
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC"
 	>
+    <!-- XML FormField for Global Configuration permission options -->
 		<field
 			name="rules"
 			type="rules"
 			label="JCONFIG_PERMISSIONS_LABEL"
 			class="inputbox"
 			filter="rules"
+      validate="rules"
 			component="com_cajobboard"
 			section="component"
     />
 
+    <!--XML FormField for Category Configuration permission options -->
 		<field
 			name="rules"
 			type="rules"
 			label="JCONFIG_PERMISSIONS_LABEL"
 			class="inputbox"
 			filter="rules"
+      validate="rules"
 			component="com_cajobboard"
-			section="items"
+			section="categories"
+    />
+
+    <!--XML FormField for Object / Record (item-level) Configuration permission options -->
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+      validate="rules"
+			component="com_cajobboard"
+			section="records"
     />
 	</fieldset>
 </config>

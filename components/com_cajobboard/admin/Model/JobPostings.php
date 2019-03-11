@@ -45,13 +45,13 @@ use JLog;
  * @property int      $ordering                   Order this record should appear in for sorting.
  * @property object   $metadata                   JSON encoded metadata field for this item.
  * @property string   $metakey                    Meta keywords for this item.
- * @property string   $metadesc                   Meta descriptionfor this item.
+ * @property string   $metadesc                   Meta description for this item.
  * @property string   $xreference                 A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.
- * @property string   $params                     JSON encoded parameters for the content item.
+ * @property string   $params                     JSON encoded parameters for this item.
  * @property string   $language                   The language code for the article or * for all languages.
- * @property int      $cat_id                     Category ID for this content item.
- * @property int      $hits                       Number of hits the content item has received on the site.
- * @property int      $featured                   Whether this content item is featured or not.
+ * @property int      $cat_id                     Category ID for this item.
+ * @property int      $hits                       Number of hits the item has received on the site.
+ * @property int      $featured                   Whether this item is featured or not.
  * SCHEMA: JobPosting
  * @property string   $title                      The title of the job posting.
  * @property string   $disambiguating_description Short description of the job, used in cajobboard on job posting list pages, etc.

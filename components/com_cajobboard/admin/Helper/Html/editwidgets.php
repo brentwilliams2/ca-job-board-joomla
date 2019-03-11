@@ -13,7 +13,11 @@
  *
  * These are based on the Akeeba FEF (front-end framework) helperrs included in FOF with revised HTML output
  */
+
+// Can't namespace since this class is used through Joomla's autoloader and JHtml system
+
 use FOF30\Utils\ArrayHelper;
+use Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
 
 abstract class HelperEditWidgets
 {
@@ -78,19 +82,40 @@ EOT;
 
 	/**
 	 * "Category" widget for edit sidebar
+   *
+   * @param   string    $cat_id   The category id of this item
 	 *
-	 * @return  string
+	 * @return  string    HTML string of the <select> control for categories
 	 *
 	 * @since   0.1
 	 */
-	public static function category($category_id)
+	public static function category($cat_id)
 	{
-    $label = JText::_('JCATEGORY');
+    $html  = '<div class="control-group">';
+    $html .= '<div class="control-label">';
+    $html .= '<label id="jform_catid-lbl" for="jform_catid" class="hasPopover required" title="">';
+    $html .= JText::_('JCATEGORIES');
+    $html .= '</label>';
+    $html .= '</div>';
 
-    $html = <<<EOT
-<label for="category">$label</label>
-<span name="parent" class="" aria-hidden="true"><i>Implement ViewTemplates/Common/HelperEditWidgets::category</i></span>
-EOT;
+    $html .= '<div class="controls">';
+    $html .= '<select id="jform_catid" name="cat_id" class="required chzn-custom-value" required="required" aria-required="true" onchange="categoryHasChanged(this);" style="display: none;">';
+
+    $categories = CategoryHelper::getCategories();
+
+    $selected = CategoryHelper::selectedHelper($categories, $cat_id);
+
+    foreach($categories as $category)
+    {
+      $select = $selected == $category->id ? 'selected' : NULL;
+      $html .= '<option value=' . $category->id . '" ' . $select . '>';
+      $html .= CategoryHelper::getIndentedCategoryTitle($category);
+      $html .= '</option>';
+    }
+
+    $html .= '</select>';
+    $html .= '</div>';
+    $html .= '</div>';
 
 		return $html;
   }
@@ -109,10 +134,9 @@ EOT;
     $yes   = JText::_('JYES');
     $no    = JText::_('JNO');
 
-    $html = '<label for="featured">'. $label . '</label>';
+    $html  = '<label for="featured">'. $label . '</label>';
     $html .= '<fieldset id="featured" class="btn-group btn-group-yesno radio">';
 
-    // @TODO: this is broken, javascript is triggering for some reason immediately and showing both buttons as active
     if( $isFeatured )
     {
       $html .= '<input type="radio" id="featured0" name="[featured]" value="1" checked="checked">';

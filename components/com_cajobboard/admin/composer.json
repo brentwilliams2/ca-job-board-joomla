@@ -1,5 +1,9 @@
 {
-    "require": {
-        "yzalis/identicon": "^1.2"
-    }
+  "require": {
+    "fzaninotto/faker": "^1.8",
+    "bheller/images-generator": "^1.0",
+    "yzalis/identicon": "^1.2",
+    "fzaninotto/company-name-generator": "dev-master",
+    "frequenc1/newage-ipsum": "dev-master"
+  }
 }

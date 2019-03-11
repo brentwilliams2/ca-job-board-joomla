@@ -1,0 +1,14 @@
+{
+  "scaling": 1,
+  "models": [
+    "Answers"
+  ],
+  "count": {
+    "Answers": 1,
+    "Organizations": 30
+  },
+  "seed": {
+    "Answers": 1,
+    "Users": 1
+  }
+}

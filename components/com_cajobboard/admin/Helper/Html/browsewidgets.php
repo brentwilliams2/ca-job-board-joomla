@@ -13,6 +13,9 @@
  *
  * These are based on the Akeeba FEF (front-end framework) helperrs included in FOF with revised HTML output
  */
+
+// Can't namespace since this class is used through Joomla's autoloader and JHtml system
+
 use FOF30\Utils\ArrayHelper;
 
 abstract class HelperBrowseWidgets

@@ -1,0 +1,18 @@
+{
+  "Employer": {
+    "count": 3,
+    "existing": [131, 132]
+  },
+  "JobSeeker": {
+    "count": 2,
+    "existing": [133, 134]
+  },
+  "Recruiter": {
+    "count": 2,
+    "existing": [135, 136]
+  },
+  "Connector": {
+    "count": 2,
+    "existing": [137, 138]
+  }
+}

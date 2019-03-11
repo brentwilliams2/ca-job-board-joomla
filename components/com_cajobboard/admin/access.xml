@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <access component="com_cajobboard">
+  <!--
+    ACL Component Configuration access actions
+  -->
 	<section name="component">
     <!-- user groups allowed to configure the component level permissions via the 'Options' toolbar button -->
 		<action name="core.admin"       title="JACTION_ADMIN"           description="JACTION_ADMIN_COMPONENT_DESC" />
     <!--  user groups allowed to access the component's backend -->
 		<action name="core.manage"      title="JACTION_MANAGE"          description="JACTION_MANAGE_COMPONENT_DESC" />
+    <!--  user groups allowed to perform CRUD and custom actions on object / record level -->
 		<action name="core.create"      title="JACTION_CREATE"          description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete"      title="JACTION_DELETE"          description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit"        title="JACTION_EDIT"            description="JACTION_EDIT_COMPONENT_DESC" />
@@ -12,11 +16,27 @@
 		<action name="core.edit.state"  title="JACTION_EDITSTATE"       description="JACTION_EDITSTATE_COMPONENT_DESC" />
 	</section>
 
-  <section name="items">
-		<action name="core.create" title="JACTION_CREATE" description="COM_CAJOBBOARD_ACCESS_CREATE_DESC" />
-		<action name="core.delete" title="JACTION_DELETE" description="COM_CAJOBBOARD_ACCESS_DELETE_DESC" />
-		<action name="core.edit" title="JACTION_EDIT" description="COM_CAJOBBOARD_ACCESS_EDIT_DESC" />
-		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_CAJOBBOARD_ACCESS_EDITSTATE_DESC" />
-		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_CAJOBBOARD_ACCESS_EDITOWN_DESC" />
+  <!--
+    ACL Category Configuration access actions
+
+    Overrides Object / Record level access control settings, inherits from Global Configuration
+  -->
+	<section name="category">
+		<action name="core.create"      title="JACTION_CREATE"          description="COM_CATEGORIES_ACCESS_CREATE_DESC" />
+		<action name="core.delete"      title="JACTION_DELETE"          description="COM_CATEGORIES_ACCESS_DELETE_DESC" />
+		<action name="core.edit"        title="JACTION_EDIT"            description="COM_CATEGORIES_ACCESS_EDIT_DESC" />
+		<action name="core.edit.state"  title="JACTION_EDITSTATE"       description="COM_CATEGORIES_ACCESS_EDITSTATE_DESC" />
+		<action name="core.edit.own"    title="JACTION_EDITOWN"         description="COM_CATEGORIES_ACCESS_EDITOWN_DESC" />
+	</section>
+
+  <!--
+    ACL Object / Record access actions for ACL
+  -->
+  <section name="records">
+		<action name="core.create"      title="JACTION_CREATE"          description="COM_CAJOBBOARD_ACCESS_CREATE_DESC" />
+		<action name="core.delete"      title="JACTION_DELETE"          description="COM_CAJOBBOARD_ACCESS_DELETE_DESC" />
+		<action name="core.edit"        title="JACTION_EDIT"            description="COM_CAJOBBOARD_ACCESS_EDIT_DESC" />
+    <action name="core.edit.own"    title="JACTION_EDITOWN"         description="COM_CAJOBBOARD_ACCESS_EDITOWN_DESC" />
+		<action name="core.edit.state"  title="JACTION_EDITSTATE"       description="COM_CAJOBBOARD_ACCESS_EDITSTATE_DESC" />
   </section>
 </access>

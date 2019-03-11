@@ -52,8 +52,8 @@ class Html extends \FOF30\View\DataView\Html
     // Load Answers language file
     $lang->load('answers', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
-    // Load javascript file for Job Posting views
-    // $this->addJavascriptFile('media://com_cajobboard/js/imageObjects.js');
+    // Load CSS for Answers admin view
+    $this->addCssFile('media://com_cajobboard/css/backend.css');
   }
 
 

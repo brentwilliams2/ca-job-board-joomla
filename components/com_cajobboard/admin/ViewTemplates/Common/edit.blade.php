@@ -132,7 +132,7 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('permissions-options')
-  <i>@TODO: Implement Joomla! permissions page for FOF DataModel</i>
+  {{-- @include('admin:com_cajobboard/Common/PermissionsTab', ['item' => $item]) --}}
 @stop
 
 
@@ -151,7 +151,7 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('sidebar')
-  @include('admin:com_cajobboard/Common/SideBar', ['item' => $item, 'fieldsToHide' => array('parent', 'category')])
+  @include('admin:com_cajobboard/Common/SideBar', ['item' => $item, 'fieldsToHide' => array('parent')])
 @stop
 
 

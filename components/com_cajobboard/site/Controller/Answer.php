@@ -16,6 +16,7 @@ namespace Calligraphic\Cajobboard\Site\Controller;
 use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 use FOF30\View\Exception\AccessForbidden;
+use JLog;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -35,5 +36,28 @@ class Answer extends DataController
     $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save'];
 
     parent::__construct($container, $config);
+  }
+
+  public function onBeforeExecute($task)
+  {
+    // Avoiding ACL check done in triggerEvent() when there isn't a method to call for the 'execute' task
+    // This because sample data doesn't have asset_id field with FK and #__assets entry for the item
+    return true;
+  }
+
+
+  public function onBeforeRead()
+  {
+    // Avoiding ACL check done in triggerEvent() when there isn't a method to call for the 'read' task
+    // This because sample data doesn't have asset_id field with FK and #__assets entry for the item
+    return true;
+  }
+
+
+  public function onBeforeEdit()
+  {
+    // Avoiding ACL check done in triggerEvent() when there isn't a method to call for the 'edit' task
+    // This because sample data doesn't have asset_id field with FK and #__assets entry for the item
+    return true;
   }
 }
