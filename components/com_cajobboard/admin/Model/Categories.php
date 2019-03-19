@@ -55,6 +55,8 @@ use FOF30\Model\DataModel;
  */
 class Categories extends DataModel
 {
+// @TODO: See note in ImageObjects model about whether this model is needed, or we could use JTable\Categories instead
+
   /*
    * Overridden constructor
    */

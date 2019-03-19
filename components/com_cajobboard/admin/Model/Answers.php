@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers Model
+ * Answers Admin Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -110,6 +110,8 @@ class Answers extends DataModel
 	{
     // @TODO: Make sure a default category for com_cajobboard ({title, path, alias}=uncategorized)
     // exists in #__categories, and that the default category is set for this item if nothing else is set
+    // Most categories are the same as their model name, except for Persons
+    // (Connectors, Employers, Job Seekers, and Recruiters)
 
     // Make sure slug is populated from the answer title, if it is left empty
     if(!$this->slug)

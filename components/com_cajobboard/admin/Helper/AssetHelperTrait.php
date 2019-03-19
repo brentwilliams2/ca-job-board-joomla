@@ -141,6 +141,8 @@ trait AssetHelperTrait
    */
   public function saveAssetRecord($assetModel)
   {
+    // @TODO: This is saving the asset with a parent ID of "0", instead of pointing to the category asset id. Should there be one category per model?
+    // @TODO: Level is being set wrong, as "0" instead of "2"
     $assetModel->store();
 
     return $assetModel->id;

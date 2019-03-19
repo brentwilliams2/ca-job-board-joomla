@@ -30,27 +30,29 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MediaCategoriesHelper extends JHelperContent
 {
+  // @TODO: Is this being used?
+
 	/**
 	 * Configure the Linkbar.
 	 *
 	 * @return Bool
 	 */
 
-	public static function addSubmenu($submenu) 
+	public static function addSubmenu($submenu)
 	{
     JHtmlSidebar::addEntry(
 			JText::_('COM_CAJOBBOARD_SUBMENU_OPTION'),
 			'index.php?option=com_cajobboard',
 			$submenu == 'media'
     );
-    
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_CAJOBBOARD_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&view=categories&extension=com_cajobboard',
 			$submenu == 'categories'
 		);
 
-		if ($submenu == 'categories') 
+		if ($submenu == 'categories')
 		{
 			$document->setTitle(JText::_('COM_CAJOBBOARD_ADMINISTRATION_CATEGORIES'));
 		}

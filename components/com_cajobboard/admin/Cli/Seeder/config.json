@@ -4,11 +4,8 @@
     "Answers"
   ],
   "count": {
-    "Answers": 1,
+    "Answers": 4,
     "Organizations": 30
   },
-  "seed": {
-    "Answers": 1,
-    "Users": 1
-  }
+  "seed": 1
 }

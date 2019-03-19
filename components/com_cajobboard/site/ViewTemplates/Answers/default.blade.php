@@ -18,7 +18,7 @@
 ?>
 
 @section('header')
-  <h4>Answers</h4>
+  <h4>Answers which side?</h4>
 @show
 
 @section('sidebar')

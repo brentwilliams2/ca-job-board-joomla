@@ -58,6 +58,39 @@ class Pkg_CajobboardInstallerScript
 		// array('plugin', 'example', 1, 'system'),
     );
 
+
+
+// Example of enabling a plugin (defaults to disabled) in the package postflight script
+/*
+function postflight($type, $parent)
+{
+    // We only need to perform this if the extension is being installed, not updated
+    if (strtolower($type) === 'install')
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+        $fields = array(
+            $db->quoteName('enabled') . ' = 1',
+            $db->quoteName('ordering') . ' = 9999'
+        );
+
+        $conditions = array(
+            $db->quoteName('element') . ' = ' . $db->quote('plg_myplugin'),
+            $db->quoteName('type') . ' = ' . $db->quote('plugin')
+        );
+
+        $query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
+
+        $db->setQuery($query);
+        $db->execute();
+    }
+}
+*/
+
+
+
+
 	/**
 	 * =================================================================================================================
 	 * DO NOT EDIT BELOW THIS LINE

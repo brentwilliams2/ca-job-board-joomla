@@ -12,5 +12,9 @@
 // ControlPanel ViewTemplate - default view                  default.blade.php
 //-----------------------------------------------------------------------------
 .control-panel-header {
-  text-align: center;
+  //text-align: center;
+}
+
+.control-panel-body {
+  //margin-left: 0px !important;
 }

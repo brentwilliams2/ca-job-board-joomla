@@ -23,6 +23,10 @@ defined('_JEXEC') or die;
 
 class Answer extends DataController
 {
+  // Should be able to use:
+  // $categories = JCategories::getInstance('Cajobboard');
+  // $subCategories = $categories->get()->getChildren(true);
+
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
 	 *
@@ -38,6 +42,13 @@ class Answer extends DataController
     parent::__construct($container, $config);
   }
 
+  // Overridden, model which use asset tracking don't work with read tasks
+  protected function checkACL($area)
+  {
+    return ($area == 'read') ? true : parent::checkACL($area);
+  }
+
+  // @TODO: Necessary with the above?
   public function onBeforeExecute($task)
   {
     // Avoiding ACL check done in triggerEvent() when there isn't a method to call for the 'execute' task

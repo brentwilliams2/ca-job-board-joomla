@@ -30,11 +30,11 @@ class BaseTemplate
    *                                      $id, $title, $language, $level
    *
    *
-   * @return  AnswerTemplate
+   * @return  BaseTemplate  Returns self for chaining
 	 *
 	 * @since   0.0.1
 	 */
-	public function generate($config)
+	public function generate($config, $seed = null)
 	{
     $faker = Faker\Factory::create();
 
@@ -46,16 +46,16 @@ class BaseTemplate
     // $image = $faker->imageGenerator(
     //   $dir = null, $width = 640, $height = 480, $format = 'png', $fullPath = true, $text = null, $backgroundColor = null, $textColor = null
     // );
-    // Color parameters are hex values e.g. '#ff2222' or 'ff2222', $text is text to
+    // Color parameters are hex values e.g. 'ff2222', $text is text to
     // add on top of the image, $dir must be writable
     $faker->addProvider(new \bheller\ImagesGenerator\ImagesGeneratorProvider($faker));
 
     // Provider for realistic company names:  $faker->companyName
     $faker->addProvider(new \CompanyNameGenerator\FakerProvider($faker));
 
-    if($config->seed)
+    if($seed)
     {
-      $faker->seed($config->seed);
+      $faker->seed($seed);
     }
 
     foreach (array_keys(get_object_vars($this)) as $property)

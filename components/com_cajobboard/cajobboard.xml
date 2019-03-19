@@ -9,34 +9,7 @@
   <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
   <version>0.0.1</version>
 
-  <description><![CDATA[<table width="100%" class="adminlist">
-	<thead>
-		<tr>
-			<!--<td colspan="3" style="text-align: center;" align="center"><img style='vertical-align: middle;' src='media/com_cajobboard/images/calligraphic_logo.png'></td>-->
-		</tr>
-		<tr>
-			<td colspan="1" align="right" width="33%" style="font-weight: bold; padding-right: 15px; text-align: right;">Version:</td>
-			<td colspan="2" align="left">0.0.1</td>
-		</tr>
-		<tr>
-			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">Release Date:</td>
-			<td colspan="2" align="left">August 2018</td>
-		</tr>
-		<tr>
-			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">Author:</td>
-			<td colspan="2" align="left"><a href="www.calligraphic.design"></a>Calligraphic Design</a></td>
-		</tr>
-		<tr>
-			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">Copyright:</td>
-			<td colspan="2" align="left" style="width: 375px;">&copy;&nbsp;2018 Calligraphic Design, All rights reserved.</td>
-		</tr>
-		<tr>
-			<td colspan="1" align="right" style="font-weight: bold; padding-right: 15px; text-align: right;">License:</td>
-			<td colspan="2" align="left">GNU General Public License</td>
-		</tr>
-		<tr><td colspan="3" style="padding-bottom: 15px;">&nbsp;</td></tr>
-	</thead>
- </table>]]></description>
+  <description>COM_CAJOBBOARD</description>
 
   <scriptfile>script.cajobboard.php</scriptfile>
 
@@ -56,15 +29,16 @@
       <menu view="JobPostings">COM_CAJOBBOARD_SUBMENU_JOBPOSTINGS</menu>
       <menu view="Applications">COM_CAJOBBOARD_SUBMENU_APPLICATIONS</menu>
       <menu view="Resumes">COM_CAJOBBOARD_SUBMENU_RESUMES</menu>
+      <menu view="Subscriptions">COM_CAJOBBOARD_SUBMENU_SUBSCRIPTIONS</menu>
       <menu view="Employers">COM_CAJOBBOARD_SUBMENU_EMPLOYERS</menu>
       <menu view="JobSeekers">COM_CAJOBBOARD_SUBMENU_JOBSEEKERS</menu>
       <menu view="Recruiters">COM_CAJOBBOARD_SUBMENU_RECRUITERS</menu>
-      <menu view="Subscriptions">COM_CAJOBBOARD_SUBMENU_SUBSCRIPTIONS</menu>
       <menu view="Media">COM_CAJOBBOARD_SUBMENU_MEDIA</menu>
       <menu view="Miscellaneous">COM_CAJOBBOARD_SUBMENU_MISCELLANEOUS</menu>
     </submenu>
 
     <files folder="admin">
+      <folder>Cli</folder>
       <folder>Controller</folder>
       <folder>Dispatcher</folder>
       <folder>Form</folder>
@@ -90,6 +64,7 @@
     <folder>Controller</folder>
     <folder>Dispatcher</folder>
     <folder>Helper</folder>
+    <folder>helpers</folder>
     <folder>language</folder>
     <folder>Model</folder>
     <folder>Toolbar</folder>
@@ -98,19 +73,22 @@
     <folder>ViewTemplates</folder>
     <filename>cajobboard.php</filename>
     <filename>index.html</filename>
-    <filename>router.php</filename>
+    <filename>router.bak</filename>
     <filename>ROUTER.md</filename>
   </files>
 
   <install>
     <sql>
+      <file driver="mysql" charset="utf8">sql/install/mysql/answers.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/employer_aggregate_ratings.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/image_objects.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/job_postings.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/organizations.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/persons.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/places.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/questions_answers.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/qapages.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/questions.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/reports.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/reviews.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/utilities.sql</file>
     </sql>

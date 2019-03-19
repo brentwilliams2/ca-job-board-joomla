@@ -89,6 +89,9 @@ class ImageObjects extends \FOF30\Model\DataModel
     // Relation to users table for $author
     $this->belongsTo('Author', 'Persons@com_cajobboard', 'author', 'id');
 
+// @TODO: Could this be done using JTable\Categories, and the FOF Categories model removed from this project?
+// @TODO: Something like: $category = \JTable::getInstance('Category');
+
     // Relation to category table for $Category
     $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
   }

@@ -26,7 +26,10 @@
 
 
 @section('item')
-  <p></p>
+  <h2>Answers</h2>
+  <a href="http://joomla.test/administrator/index.php?option=com_cajobboard&view=Answers">
+    Answers
+  </a>
 @overwrite
 
 
@@ -34,30 +37,29 @@
   <p></p>
 @overwrite
 
+{{-- @TODO: Problem with toolbar being collapsed (not used for control panel), and overlapping menu --}}
 
 <div class="clearfix"></div>
 
 <div>
   <div class="row">
-    <div class="col-md-12 control-panel-header">
+    <div class="span12 control-panel-header">
       @yield('header')
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4">
+  <div class="row control-panel-body">
+    <div class="span4">
       @yield('sidebar')
     </div>
 
-    <div class="col-md-8">
-      <div class="row">
+    <div class="span8">
         @yield('item')
-      </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="span12">
       @yield('footer')
     </div>
   </div>

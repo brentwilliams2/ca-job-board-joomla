@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers HTML View
+ * Answers Site HTML View
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

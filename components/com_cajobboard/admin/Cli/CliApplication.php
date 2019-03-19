@@ -15,6 +15,9 @@ if (array_key_exists('REQUEST_METHOD', $_SERVER))
 	die('Access Denied.');
 }
 
+// Set globals and app config for Jomsocial to initialize itself
+empty($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
 // Define ourselves as a parent Joomla! entry point file
 define('_JEXEC', 1);
 
@@ -49,6 +52,9 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 {
 	throw new RuntimeException('Cannot load FOF', 500);
 }
+
+// More help for Jomsocial, set this script as admin
+JFactory::getConfig()->set('session_name', 'administrator');
 
 // Current path to script
 $path = array(realpath(dirname(__FILE__)) . '/');

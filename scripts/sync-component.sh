@@ -6,7 +6,8 @@ echo "Syncing directories..."
 rm -r $CA_DIRECTORY_TO_JOOMLA/cache/com_cajobboard 2> /dev/null
 
 # Sync administrator component files
-rsync -arvzh $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/admin/ $CA_DIRECTORY_TO_JOOMLA/administrator/components/com_cajobboard --delete
+# Use multiple `--exclude` parameters if multiple files or directories are to be excluded
+rsync -arvzh --exclude 'user.json' $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/admin/ $CA_DIRECTORY_TO_JOOMLA/administrator/components/com_cajobboard --delete
 
 # Sync site component files
 rsync -arvzh $CA_DIRECTORY_TO_OBSERVE/components/com_cajobboard/site/ $CA_DIRECTORY_TO_JOOMLA/components/com_cajobboard --delete
