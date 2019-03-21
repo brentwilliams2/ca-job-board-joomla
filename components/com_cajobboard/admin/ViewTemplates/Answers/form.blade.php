@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Answers Form View Template
+ * Answers Admin Edit View Template
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -21,7 +21,7 @@
 @extends('admin:com_cajobboard/Common/edit')
 
 {{-----------------------------------------------------------------------------}}
-{{-- SECTION: Regular edit form tab in this section ---------------------------}}
+{{-- SECTION: Default edit form tab in this section ---------------------------}}
 {{-----------------------------------------------------------------------------}}
 
 @section('basic-options')
@@ -47,15 +47,6 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('advanced-options')
-
-  <?php
-  /*
-  is_part_of      BIGINT UNSIGNED COMMENT 'This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)',
-  publisher       BIGINT UNSIGNED COMMENT 'The company that wrote this answer. FK to #__organizations(organization)id).',
-  parent_item     BIGINT UNSIGNED COMMENT 'The question this answer is intended for. FK to #__cajobboard_questions(question_id)',
-  */
-  ?>
-
   {{-- Answer Description textbox --}}
   <fieldset
     name="description"

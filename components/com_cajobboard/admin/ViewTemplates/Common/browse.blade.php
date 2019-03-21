@@ -47,6 +47,8 @@
   // no direct access
   defined('_JEXEC') or die;
 
+  use Calligraphic\Cajobboard\Admin\Helper\LinkBarHelper;
+
   /** @var  FOF30\View\DataView\Html  $this */
 ?>
 
@@ -99,16 +101,16 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('browse-table-footer')
-    <tr>
-        <td colspan="99" class="center">
-            {{ $this->pagination->getListFooter() }}
-        </td>
-    </tr>
+  <tr>
+    <td colspan="99" class="center">
+      {{ $this->pagination->getListFooter() }}
+    </td>
+  </tr>
 @stop
 
 
 {{-----------------------------------------------------------------------------}}
-{{-- SECTION: Put your additional hidden fields in this section ---------------}}
+{{-- SECTION: Put additional hidden fields in this section --------------------}}
 {{-----------------------------------------------------------------------------}}
 
 @section('browse-hidden-fields')
@@ -129,6 +131,11 @@
     {{-- Toolbar shown at top of admin page, with search, filters, and ordering --}}
     <div id="filter-bar" class="btn-toolbar">
       @yield('browse-filters')
+    </div>
+
+    {{-- Sidebar with links --}}
+    <div id="j-sidebar-container" class="j-sidebar-container j-sidebar-visible">
+      <?php echo LinkBarHelper::renderLinkbar($this->getContainer()); ?>
     </div>
 
     {{-- Main browse-view table for admin pages with column headers, body, and footer --}}

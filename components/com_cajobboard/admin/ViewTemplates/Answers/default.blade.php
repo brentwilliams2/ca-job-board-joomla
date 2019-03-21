@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Answers Default View Template
+ * Answers Admin Default View Template
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -12,7 +12,7 @@
 use Joomla\CMS\HTML\HTMLHelper;
 
 use Calligraphic\Cajobboard\Site\Model\Answers;
-use Calligraphic\Cajobboard\Admin\Helper\Format;
+use Calligraphic\Cajobboard\Admin\Helper\FormatHelper;
 
 use FOF30\Utils\FEFHelper\BrowseView;
 use FOF30\Utils\SelectOptions;
@@ -30,7 +30,6 @@ HTMLHelper::_('formbehavior.chosen', 'select');
  * @var  Answers                  $model
  */
 $model = $this->getModel();
-
 
 /* UCM
  * @property int            $answer_id       Surrogate primary key.
@@ -110,7 +109,7 @@ $model = $this->getModel();
       {{-- COLUMN #5: Comment text, allows sorting ASC / DESC by clicking the field name in the column header. --}}
       <th>
         {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @lang('COM_CAJOBBOARD_ANSWER_TEXT')
+        @lang('COM_CAJOBBOARD_ANSWER_NAME')
       </th>
 
       {{-- COLUMN #6: Publish Up date, allows sorting ASC / DESC by clicking the field name in the column header. --}}
@@ -178,18 +177,35 @@ $model = $this->getModel();
       {{-- COLUMN #5: Comment text --}}
       <td>
         <a href="@route(\FOF30\Utils\FEFHelper\BrowseView::parseFieldTags('index.php?option=com_cajobboard&view=Answers&task=edit&id=[ITEM:ID]', $item))">
-          {{{ $item->text }}}
+          <?php
+            // If the answer title is left empty, backfill it from the first fifteen words of the text
+            // of the answer. Show an ellipse ("...") at the end if text is longer than fifteen words
+            $title = $item->name;
+
+            if (!$title)
+            {
+              $titleArray = explode(' ', $item->text);
+
+              $title = JText::_('COM_CAJOBBOARD_ANSWER_TITLE_EMPTY') . ' ' . implode(' ', array_slice($titleArray, 0, 15));
+
+              if (count($titleArray) > 15)
+              {
+                $title .= '...';
+              }
+            }
+          ?>
+          {{{ $title }}}
         </a>
       </td>
 
       {{-- COLUMN #6: Publish Up date --}}
       <td>
-        {{ Format::date($item->publish_up) }}
+        {{ FormatHelper::date($item->publish_up) }}
       </td>
 
       {{-- COLUMN #7: Publish Down date --}}
       <td>
-        {{ Format::date($item->publish_down) }}
+        {{ FormatHelper::date($item->publish_down) }}
       </td>
 
     </tr>

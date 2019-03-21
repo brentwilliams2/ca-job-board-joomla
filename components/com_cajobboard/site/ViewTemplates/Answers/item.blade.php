@@ -1,6 +1,6 @@
 <?php
  /**
-  * Answers Item View Template
+  * Answers Site Item View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018

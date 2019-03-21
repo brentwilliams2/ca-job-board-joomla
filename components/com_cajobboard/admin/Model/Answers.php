@@ -180,6 +180,8 @@ class Answers extends DataModel
     // Set 'metadata' field to new JRegistry object when save is for a new item (add task)
     if (!is_object($this->metadata) && (!$this->metadata instanceof \JRegistry))
     {
+      var_dump('why are we here?');
+      die();
       $this->metadata = new \JRegistry();
     }
 

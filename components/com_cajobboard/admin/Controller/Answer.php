@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Answer Controller
+ * Answers Admin Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

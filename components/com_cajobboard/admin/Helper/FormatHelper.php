@@ -28,7 +28,7 @@ defined('_JEXEC') or die;
 /**
  * A helper class for formatting data for display
  */
-abstract class Format
+abstract class FormatHelper
 {
 	/**
 	 * Format a date for display.
@@ -48,7 +48,7 @@ abstract class Format
 	{
     $utcTimeZone = new DateTimeZone('UTC');
 
-    $jDate       = new Date($date, $utcTimeZone);
+    $jDate = new Date($date, $utcTimeZone);
 
 		// Which timezone should I use?
     $tz = null;

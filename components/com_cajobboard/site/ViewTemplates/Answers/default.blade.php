@@ -1,6 +1,6 @@
 <?php
  /**
-  * Answers List View Template
+  * Answers Site List View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -18,7 +18,7 @@
 ?>
 
 @section('header')
-  <h4>Answers which side?</h4>
+  <h4>Answers</h4>
 @show
 
 @section('sidebar')

@@ -22,5 +22,10 @@ defined('_JEXEC') or die;
 
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {
+  // Customise the toolbar, methods called from most to the least specific:
+  //
+  //   onViewnameTaskname e.g. onItemsBrowse
+  //   onViewname e.g. onItems
+  //   onTaskname e.g. onBrowse
 
 }

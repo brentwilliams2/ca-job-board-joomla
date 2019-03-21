@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers Controller
+ * Answers Site Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -49,6 +49,7 @@ class Answer extends DataController
   }
 
   // @TODO: Necessary with the above?
+  /*
   public function onBeforeExecute($task)
   {
     // Avoiding ACL check done in triggerEvent() when there isn't a method to call for the 'execute' task
@@ -71,4 +72,5 @@ class Answer extends DataController
     // This because sample data doesn't have asset_id field with FK and #__assets entry for the item
     return true;
   }
+*/
 }
