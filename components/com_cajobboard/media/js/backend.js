@@ -8,6 +8,8 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
+/* Joomla! jQuery is v1.12.4 */
+
 /**
  * Register modules in this file with global onload handler
  */
@@ -128,7 +130,7 @@ const updateEmptySlug = (function($) {
         // replace spaces with a hyphen, collapsing multiple spaces
         .replace(/\s+/g, '-')
         // make the slug URI-safe
-        .replace(/[^a-z0-9-_]/g,'')
+        .replace(/[^a-zA-Z0-9-]/g,'')
         .toLowerCase();
     }
 

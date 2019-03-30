@@ -33,7 +33,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  use FOF30\Utils\FEFHelper\Html as FEFHtml;
+  use \FOF30\Utils\FEFHelper\Html as FEFHtml;
 
   /** @var  FOF30\View\DataView\Html  $this */
 
@@ -50,7 +50,7 @@
 @jhtml('behavior.tooltip')
 
 {{--
-  JHtmlFormbehavior::chosen(string $selector = '.advancedSelect', mixed $debug = null, array $options = array())
+  \JHtmlFormbehavior::chosen(string $selector = '.advancedSelect', mixed $debug = null, array $options = array())
 
   $(document).find("select").chosen({
     "disable_search_threshold": 10,
@@ -179,7 +179,7 @@
         $selector  The pane identifier.
         $params  Array. 'active' key specifies which tab pane $id to set as active on page load.
     --}}
-    <?php echo JHtml::_('bootstrap.startTabSet', 'edit-form-tabs', array('active' => 'basic-options')); ?>
+    <?php echo \JHtml::_('bootstrap.startTabSet', 'edit-form-tabs', array('active' => 'basic-options')); ?>
 
       {{--
         addTab(string $selector, string $id, string $title)
@@ -188,7 +188,7 @@
       --}}
 
       {{-- "Basic" tab --}}
-      <?php echo JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'basic-options', JText::_('COM_CAJOBBOARD_ADMIN_EDIT_MAIN_TAB')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'basic-options', \JText::_('COM_CAJOBBOARD_ADMIN_EDIT_MAIN_TAB')); ?>
         <div class="row-fluid">
           <div class="span9">
             <div class="form-vertical">
@@ -199,24 +199,24 @@
             @yield('sidebar')
           </div>
         </div>
-      <?php echo JHtml::_('bootstrap.endTab'); ?>
+      <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
       {{-- "Advanced" tab --}}
-      <?php echo JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'advanced-options', JText::_('JOPTIONS')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'advanced-options', \JText::_('JOPTIONS')); ?>
         @yield('advanced-options')
-      <?php echo JHtml::_('bootstrap.endTab'); ?>
+      <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
       {{-- "Publish" tab --}}
-      <?php echo JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'publishing-options', JText::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'publishing-options', \JText::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
         @include('admin:com_cajobboard/Common/PublishTab', [ 'item' => $item ])
-      <?php echo JHtml::_('bootstrap.endTab'); ?>
+      <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
       {{-- "Permissions" tab --}}
-      <?php echo JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'permissions-options', JText::_('JCONFIG_PERMISSIONS_LABEL')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'permissions-options', \JText::_('JCONFIG_PERMISSIONS_LABEL')); ?>
         @yield('permissions-options')
-      <?php echo JHtml::_('bootstrap.endTab'); ?>
+      <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+		<?php echo \JHtml::_('bootstrap.endTabSet'); ?>
 	</div>
 
   {{-- Hidden form fields --}}
@@ -255,9 +255,9 @@
  *  Drop-down combo box with preset values:
  *
  *    $typeOptions = [
- *      'value'       => JText::_('COM_CAJOBBOARD_COUPON_TYPE_VALUE'),
- *      'percent'     => JText::_('COM_CAJOBBOARD_COUPON_TYPE_PERCENT'),
- *      'lastpercent' => JText::_('COM_CAJOBBOARD_COUPON_TYPE_LASTPERCENT'),
+ *      'value'       => \JText::_('COM_CAJOBBOARD_COUPON_TYPE_VALUE'),
+ *      'percent'     => \JText::_('COM_CAJOBBOARD_COUPON_TYPE_PERCENT'),
+ *      'lastpercent' => \JText::_('COM_CAJOBBOARD_COUPON_TYPE_LASTPERCENT'),
  *    ];
  *
  *    @jhtml('FEFHelper.select.genericlist', $typeOptions, 'type', ['list.select' => $item->type])
@@ -308,11 +308,11 @@
  *
  *  Keep session alive, for example, while editing or creating an article:
  *
- *    JHtml::_('behavior.keepalive');
+ *    \JHtml::_('behavior.keepalive');
  *
  *  Client-side form validation, see https://docs.joomla.org/Client-side_form_validation
  *
- *    JHtml::_('behavior.formvalidator');
+ *    \JHtml::_('behavior.formvalidator');
  *
  *  action URL for <form> field:
  *

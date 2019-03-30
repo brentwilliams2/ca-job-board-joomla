@@ -21,19 +21,9 @@
 ?>
 
 <head>
-
-	<jdoc:include type="head" />
-  <!--
-
-  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-
-	<!--[if lte IE 8]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<?php  if ($pie == 1) : // CSS3 decorations for Internet Explorer ?>
-			<style>
-				{behavior:url(<?php  echo $tpath; ?>/js/PIE.htc);}
-			</style>
-		<?php  endif; ?>
-	<![endif]-->
-
+  <?php if (!$this->error->getCode()) : ?>
+    <jdoc:include type="head" />
+  <?php else : ?>
+    <title><?php echo $this->error->getCode() ?> - <?php echo $this->title; ?></title>
+  <?php endif; ?>
 </head>

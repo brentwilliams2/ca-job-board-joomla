@@ -34,10 +34,18 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     JHtml::_('bootstrap.framework');
 
     // Load common CSS and JavaScript
-    // @TODO Add minifier build step, and change includes to minified versions via 'dev' and 'prod' tags
+    if(JDEBUG)
+    {
 		$this->container->template->addCSS('media://com_cajobboard/css/frontend.css');
     $this->container->template->addJS('media://com_cajobboard/js/frontend.js', true, false);
+    }
+    else
+    {
+      $this->container->template->addCSS('media://com_cajobboard/css/frontend.min.css');
+      $this->container->template->addJS('media://com_cajobboard/js/frontend.min.js', true, false);
+    }
 
+    // @TODO: Is this really how we want to do this?
     $this->container['job_posting_view_helper'] = function ($c) {
       return new JobPostingViewHelper();
     };

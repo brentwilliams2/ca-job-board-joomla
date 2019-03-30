@@ -26,12 +26,21 @@ use TheSeer\Tokenizer\Exception;
 abstract class CategoryHelper
 {
   /**
-   * Cached array of the category items.
+   * Cached array of the category item objects.
    *
    * @var    array
    * @since  0.0.1
    */
   protected static $categories = array();
+
+
+  /**
+   * Cached array mapping category id's to names
+   *
+   * @var    array
+   * @since  0.0.1
+   */
+  protected static $categoryMapIdToName = array();
 
 
   /**
@@ -55,6 +64,32 @@ abstract class CategoryHelper
     }
 
     return $title;
+  }
+
+
+  /**
+   * Returns a category title
+   *
+   * @param   int   $categoryId   The primary key (id) of the category
+   *
+   * @return  string              The category title indented with hyphens if it is lower level than root categories
+   *
+   * @since   0.0.1
+   */
+  public static function getCategoryTitleById($categoryId)
+  {
+    if (empty(self::$categoryMapIdToName))
+    {
+      // array, each element is an object: $category->id, $category->title, $category->language, $category->level
+      $categories = self::getCategories();
+
+      foreach ($categories as $category)
+      {
+        self::$categoryMapIdToName[$category->id] = $category->title;
+      }
+    }
+
+    return self::$categoryMapIdToName[$categoryId];
   }
 
 

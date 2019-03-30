@@ -12,12 +12,13 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Answers;
 
-use FOF30\Container\Container;
-use JComponentHelper;
-use JFactory;
-
 // no direct access
 defined('_JEXEC') or die;
+
+use \Joomla\CMS\Factory;
+use \Joomla\Registry\Registry;
+use \Joomla\CMS\\Component\ComponentHelper;
+use \FOF30\Container\Container;
 
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
@@ -26,7 +27,7 @@ class Html extends \FOF30\View\DataView\Html
 	/**
 	 * The component-level parameters stored in #__extensions by com_config
 	 *
-	 * @var  \JRegistry
+	 * @var  Registry
 	 */
   protected $componentParams;
 
@@ -41,10 +42,10 @@ class Html extends \FOF30\View\DataView\Html
     parent::__construct($container, $config);
 
     // Get component parameters
-    $this->componentParams = \JComponentHelper::getParams('com_cajobboard');
+    $this->componentParams = ComponentHelper::getParams('com_cajobboard');
 
     // Using view-specific language files for maintainability
-    $lang = JFactory::getLanguage();
+    $lang = Factory::getLanguage();
 
     // Load Answers language file
     $lang->load('answers', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);

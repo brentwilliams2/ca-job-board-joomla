@@ -48,7 +48,7 @@ abstract class FormatHelper
 	{
     $utcTimeZone = new DateTimeZone('UTC');
 
-    $jDate = new Date($date, $utcTimeZone);
+    $dateObject = new Date($date, $utcTimeZone);
 
 		// Which timezone should I use?
     $tz = null;
@@ -75,7 +75,7 @@ abstract class FormatHelper
 			try
 			{
 				$userTimeZone = new DateTimeZone($tz);
-				$jDate->setTimezone($userTimeZone);
+				$dateObject->setTimezone($userTimeZone);
 			}
 			catch(\Exception $e)
 			{
@@ -85,11 +85,11 @@ abstract class FormatHelper
 
 		if (empty($format))
 		{
-			$format = self::getContainer()->params->get('dateformat', 'Y-m-d H:i T');
-			$format = str_replace('%', '', $format);
+			$format = self::getContainer()->params->get('dateformat', 'm-d-Y');
+			// $format = str_replace('%', '', $format);
     }
 
-		return $jDate->format($format, true);
+		return $dateObject->format($format, true);
   }
 
 

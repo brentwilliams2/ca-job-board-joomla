@@ -5,7 +5,7 @@
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2018 Calligraphic, LLC, (c) 2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -15,10 +15,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JFilterOutput;
-use JLog;
+use \FOF30\Container\Container;
+use \FOF30\Model\DataModel\Exception\NoTableColumns;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
  * Model class description
@@ -50,9 +49,9 @@ use JLog;
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
-class Answers extends DataModel
+class Answers extends BaseModel
 {
-  use \Calligraphic\Cajobboard\Admin\Helper\AssetHelperTrait;
+  use \FOF30\Model\Mixin\Assertions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -62,10 +61,12 @@ class Answers extends DataModel
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    /* Set up config before parent constructor */
+
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_answers';
     $config['idFieldName'] = 'answer_id';
@@ -76,14 +77,11 @@ class Answers extends DataModel
     // Add behaviours to the model
     $config['behaviours'] = array('Filters', 'Language', 'Tags');
 
-    // Parent constructor
+    /* Parent constructor */
+
     parent::__construct($container, $config);
 
-    // Set `filter_order` state variable to use the ordering column, for Joomla!'s
-    // administrator browse view panel drag-and-drop ordering functionality
-    $this->setState('filter_order', 'ordering');
-
-    /* Set up relations */
+    /* Set up relations after parent constructor */
 
     // one-to-one FK to #__cajobboard_qapage
     $this->hasOne('isPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'qapage_id');
@@ -101,24 +99,15 @@ class Answers extends DataModel
 
   /**
 	 * Perform checks on data for validity
+   *
+   * assertNotEmpty() throws \RuntimeException when the assertion fails
 	 *
 	 * @return  static  Self, for chaining
 	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 * @returns   $this   For chaining.
 	 */
 	public function check()
 	{
-    // @TODO: Make sure a default category for com_cajobboard ({title, path, alias}=uncategorized)
-    // exists in #__categories, and that the default category is set for this item if nothing else is set
-    // Most categories are the same as their model name, except for Persons
-    // (Connectors, Employers, Job Seekers, and Recruiters)
-
-    // Make sure slug is populated from the answer title, if it is left empty
-    if(!$this->slug)
-    {
-      $this->makeSlug();
-    }
-
     // Answer title ('name' column in DB) and description are required
     $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EDIT_TITLE_ERR');
     $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_EDIT_DESCRIPTION_ERR');
@@ -126,119 +115,5 @@ class Answers extends DataModel
 		parent::check();
 
     return $this;
-  }
-
-
-   /*
-   * Handle creating ACL record after creating a new Answer record
-   */
-  protected function onAfterCreate()
-  {
-    if($this->isAssetsTracked())
-    {
-      // Get the JTableAsset object for this item's asset name
-      $assetModel = $this->getAsset();
-
-      // Get the ID of the parent asset object for this item
-      $assetModel->parent_id = $this->getCategoryAssetID();
-      $assetModel->name = $this->getAssetName();
-      $assetModel->rules = (string) $this->getRules();
-
-      $assetId = $this->saveAssetRecord($assetModel);
-
-      $this->setFieldValue('asset_id', $assetId);
-
-      $this->save();
-    }
-  }
-
-
-  /*
-   * Handle deleting the ACL record after an Answer record is deleted
-   */
-  protected function onAfterDelete()
-  {
-    $this->removeAssetRecord();
-  }
-
-
-  /*
-   * Handle updating ACL record after editing an Answer record
-   */
-  protected function onAfterUpdate()
-  {
-    // @TODO: implement to check when the permissions page is changed on an admin edit screen
-  }
-
-
-  /*
-   * Handle the 'metadata' JSON field
-   */
-  protected function onBeforeSave($data)
-  {
-    // @TODO: author and robot fields are not handling JRegistry metadata field correctly.
-    // Set 'metadata' field to new JRegistry object when save is for a new item (add task)
-    if (!is_object($this->metadata) && (!$this->metadata instanceof \JRegistry))
-    {
-      var_dump('why are we here?');
-      die();
-      $this->metadata = new \JRegistry();
-    }
-
-    $this->metadata->set('author', $this->input->get('metadata_author'));
-    $this->metadata->set('robots', $this->input->get('metadata_robots'));
-  }
-
-
-  /**
-	 * Transform 'metadata' field to a JRegistry object on bind
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-  protected function getMetadataAttribute($value)
-  {
-    // Make sure it's not a JRegistry already
-    if (is_object($value) && ($value instanceof \JRegistry))
-    {
-        return $value;
-    }
-
-    // Return the data transformed to a JRegistry object
-    return new \JRegistry($value);
-  }
-
-
-  /**
-	 * Transform 'metadata' field's JRegistry object to a JSON string before save
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-  protected function setMetadataAttribute($value)
-  {
-    // Make sure it a JRegistry object, otherwise return the value
-    if (!is_object($value) || !($value instanceof \JRegistry))
-    {
-      return $value;
-    }
-
-    // Return the data transformed to JSON
-    return $value->toString('JSON');
-  }
-
-
-  /**
-	 * Create a slug from the answer title
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-  protected function makeSlug()
-  {
-    $this->slug = JFilterOutput::stringURLSafe($this->name);
   }
 }

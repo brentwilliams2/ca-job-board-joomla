@@ -47,7 +47,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  use Calligraphic\Cajobboard\Admin\Helper\LinkBarHelper;
+  use \Calligraphic\Cajobboard\Admin\Helper\LinkBarHelper;
 
   /** @var  FOF30\View\DataView\Html  $this */
 ?>
@@ -103,7 +103,7 @@
 @section('browse-table-footer')
   <tr>
     <td colspan="99" class="center">
-      {{ $this->pagination->getListFooter() }}
+      @jhtml('helper.browseWidgets.pagination', $this->getPagination())
     </td>
   </tr>
 @stop

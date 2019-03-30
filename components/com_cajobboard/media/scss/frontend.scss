@@ -34,6 +34,11 @@
 // General utilities
 //-----------------------------------------------------------------------------
 
+// This class is added by validate.js to form fields that are using client-side validation and do not pass
+.invalid {
+  border-color: red !important;
+}
+
 // Displays HR line on either side of text given by data-content attribute
 // <hr class="hr-text" data-content="My Text">
 .hr-text {

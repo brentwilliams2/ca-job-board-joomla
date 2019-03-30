@@ -15,6 +15,16 @@
   include 'includes/params.php';
 
   $notFrontPage = $menu->getActive() !== $menu->getDefault();
+
+  // @TODO: You can't use <jdoc:include > on error pages, so need to get modules on error pages like so:
+  /*
+  $modules = JModuleHelper::getModules('footer_3');
+  $attribs['style'] = 'xhtml';
+  foreach ($modules as $module)
+  {
+    echo JModuleHelper::renderModule( $module, $attribs );
+  }
+  */
 ?>
 
 <!DOCTYPE html>
@@ -154,16 +164,41 @@
               <!--END content center column top-->
 
               <!--TEMPLATE POSITION: message and component with front page show or hide -->
-              <?php if ($frontpageshow) { // show on all pages ?>
-                <div id="main-box">
+              <div id="main-box">
+                <?php if ($frontpageshow) : // show on all pages ?>
                   <jdoc:include type="message" />
+                <?php endif; ?>
+
+                <!--Use MFI template for error pages-->
+                <?php if ($this->error->getCode()) : /* check if we are on error page, if yes - display error message */ ?>
+                  <p><strong><?php echo $this->error->getCode() ?> - <?php echo $this->error->message ?></strong></p>
+
+                  <p><strong><?php echo JText::_('JERROR_LAYOUT_NOT_ABLE_TO_VISIT'); ?></strong></p>
+
+                  <ol>
+                    <li><?php echo JText::_('JERROR_LAYOUT_AN_OUT_OF_DATE_BOOKMARK_FAVOURITE'); ?></li>
+                    <li><?php echo JText::_('JERROR_LAYOUT_SEARCH_ENGINE_OUT_OF_DATE_LISTING'); ?></li>
+                    <li><?php echo JText::_('JERROR_LAYOUT_MIS_TYPED_ADDRESS'); ?></li>
+                    <li><?php echo JText::_('JERROR_LAYOUT_YOU_HAVE_NO_ACCESS_TO_THIS_PAGE'); ?></li>
+                    <li><?php echo JText::_('JERROR_LAYOUT_REQUESTED_RESOURCE_WAS_NOT_FOUND'); ?></li>
+                    <li><?php echo JText::_('JERROR_LAYOUT_ERROR_HAS_OCCURRED_WHILE_PROCESSING_YOUR_REQUEST'); ?></li>
+                  </ol>
+
+                  <p><strong><?php echo JText::_('JERROR_LAYOUT_PLEASE_TRY_ONE_OF_THE_FOLLOWING_PAGES'); ?></strong></p>
+
+                  <ul>
+                    <li>
+                      <a href="<?php echo $this->baseurl; ?>/index.php" title="<?php echo JText::_('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE'); ?>">
+                        <?php echo JText::_('JERROR_LAYOUT_HOME_PAGE'); ?>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <p><?php echo JText::_('JERROR_LAYOUT_PLEASE_CONTACT_THE_SYSTEM_ADMINISTRATOR'); ?>.</p>
+                <?php else : ?>
                   <jdoc:include type="component" />
-                </div>
-              <?php } elseif ($notFrontPage) { // show on all pages but the default page ?>
-                <div id="main-box">
-                  <jdoc:include type="component" />
-                </div>
-              <?php } ?>
+                <?php endif; ?>
+              </div>
               <!--END component-->
 
               <!--TEMPLATE POSITION: content-bottom-->

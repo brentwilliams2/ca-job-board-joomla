@@ -22,7 +22,7 @@
     'category',
     'featured',
     'access',
-    'language',
+    'languages',
     'tags',
     'note',
     'version_note',

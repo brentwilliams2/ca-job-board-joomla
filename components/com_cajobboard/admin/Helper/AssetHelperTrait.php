@@ -29,22 +29,25 @@
  *     3    com_content.field.n
  */
 
+/** @var FOF30\Model\DataModel $this */
+
 namespace Calligraphic\Cajobboard\Admin\Helper;
 
-/*
-  If using FOF TreeModel:
-  getParent()
-  getRoot()
-  getAncestors()
-  getImmediateDescendants()
-*/
+// no direct access
+defined('_JEXEC') or die;
+
+use \Joomla\CMS\Log\Log;
+use \Joomla\CMS\Table\Table;
+use \Joomla\CMS\Table\Asset;
+use \Joomla\Registry\Registry;
+use \Joomla\CMS\Access\Rules;
 
 trait AssetHelperTrait
 {
   /**
 	 * Overridden method to get the rules for the record from the $_rules property
 	 *
-	 * @return  \JAccessRules object
+	 * @return  Rules object
 	 */
 	public function getRules()
 	{
@@ -79,23 +82,56 @@ trait AssetHelperTrait
     {
       $assetRule = $db->loadResult();
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
-      throw new Exception("Error loading asset rules in loadRules() method of Asset Helper Trait:\n" . $e);
+      throw new \Exception("Error loading asset rules in loadRules() method of Asset Helper Trait:\n" . $e);
     }
 
 		$this->setRules($assetRule);
   }
 
 
+  /**
+   * Update a JRegistry rules object with new rules
+   *
+   * @var     mixed      $rule     The rule to update e.g. 'core.edit', or an array of rules as array($rule => $value)
+   * @var     string     $value    The value to set the rule to (false = denied, true = allowed, null = inherited)
+   * @var     Registry   $asset    The existing rule from the #__assets table record that will be updated, if null an empty rule object is returned
+   *
+   * @return  Registry
+   */
+  public function updateRules($rule, $value = null, $asset = null)
+  {
+    // @TODO: This is for the "permissions" tab to update in admin views
+  /*
+    // Asset record rule values are Joomla! JRegistry objects
+    $rules = new \JRegistry();
+
+    // Load the Current ACL rules into the Registry
+    $rules->loadString($asset);
+
+    $rule_array = $rules->toArray();    // Convert to Array for easy manipulation
+
+    // Set the ACL rules for Custom Usergroup 123
+    $rule_array['core.delete'][123] = 0;    // My custom usergroup cannot delete Content
+    $rule_array['core.edit'][123] = 1;      // My custom usergroup can edit Content
+
+    // Re-load the Rules registry with the modified rules array for saving
+    $rules->loadArray($rule_array);
+
+    return $rules;
+  */
+  }
+
+
 	/**
 	 * Overridden to return the JTableAsset object for this record, or an empty object if new
 	 *
-	 * @return \JTableAsset     Return a JTableAsset object
+	 * @return Asset     Return a JTableAsset object
 	 */
 	protected function getAsset()
 	{
-    $assetModel = \JTable::getInstance('Asset');
+    $assetModel = Table::getInstance('Asset');
 
     $assetModel->loadByName($this->getAssetName());
 
@@ -108,17 +144,17 @@ trait AssetHelperTrait
    *
    * @returns   int         Returns the primary key (id) value for the category asset record
    *
-   * @throws    Exception  Throws if category doesn't have an asset record created for it
+   * @throws    \Exception  Throws if category doesn't have an asset record created for it
    */
   public function getCategoryAssetID()
   {
-    $assetModel = \JTable::getInstance('Asset');
+    $assetModel = Table::getInstance('Asset');
 
-    // should look like: com_cajobboard.category.15
+    // should look like: com_cajobboard.category.n where n is the number of the category
     $category = $this->container->componentName . '.category.' . $this->getFieldValue('cat_id');
 
     // load the data and bind for the category asset record
-    $assetModel->loadByName($category);
+    $assetModel->loadByName('com_cajobboard.category.42'); // com_cajobboard.category.42
 
     $pk = $assetModel->id;
 
@@ -152,14 +188,14 @@ trait AssetHelperTrait
   /**
    * Alias to saveAssetRecord()
    *
-   * @param   JTableAsset   A model instance for the '#__assets' table
+   * @param   Asset   A model instance for the '#__assets' table
    *
    * @return  int   Returns the primary key value (`id`) for the asset record created
    *                in #__assets to store in item's `asset_id` foreign key field
    */
   public function createAssetRecord($assetModel)
   {
-    return $this->saveAsset($assetModel);
+    return $this->saveAssetRecord($assetModel);
   }
 
 
@@ -170,6 +206,9 @@ trait AssetHelperTrait
    */
   public function removeAssetRecord()
   {
+    // Get the \JDatabaseQuery object
+    $db = $this->container->db;
+
     // Remove the item-level access control records from the '#__assets' table for this model
     $query = $db->getQuery(true);
 
@@ -186,41 +225,9 @@ trait AssetHelperTrait
     {
       $result = $db->execute();
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
-      throw new Exception('Could not remove asset record for ' . $this->getTableName() . 'model, record number ' . $this->getId() . ': ' . $e);
+      Log::add('Could not remove asset record for ' . $this->getTableName() . 'model, record number ' . $this->getId() . ': ' . $e, Log::DEBUG);
     }
-  }
-
-
-  /**
-   * Update a JRegistry rules object with new rules
-   *
-   * @var     mixed                       $rule     The rule to update e.g. 'core.edit', or an array of rules as array($rule => $value)
-   * @var     string                      $value    The value to set the rule to (false = denied, true = allowed, null = inherited)
-   * @var     \Joomla\Registry\Registry   $asset    The existing rule from the #__assets table record that will be updated, if null an empty rule object is returned
-   *
-   * @return  \Joomla\Registry\Registry
-   */
-  public function updateRules($rule, $value = null, $asset = null)
-  {
-  /*
-    // Asset record rule values are Joomla! JRegistry objects
-    $rules = new \JRegistry();
-
-    // Load the Current ACL rules into the Registry
-    $rules->loadString($asset);
-
-    $rule_array = $rules->toArray();    // Convert to Array for easy manipulation
-
-    // Set the ACL rules for Custom Usergroup 123
-    $rule_array['core.delete'][123] = 0;    // My custom usergroup cannot delete Content
-    $rule_array['core.edit'][123] = 1;      // My custom usergroup can edit Content
-
-    // Re-load the Rules registry with the modified rules array for saving
-    $rules->loadArray($rule_array);
-
-    return $rules;
-  */
   }
 }

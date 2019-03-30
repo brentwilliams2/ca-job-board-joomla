@@ -16,7 +16,12 @@
 
 // Can't namespace since this class is used through Joomla's autoloader and JHtml system
 
+// no direct access
+defined('_JEXEC') or die;
+
 use FOF30\Utils\ArrayHelper;
+use \FOF30\Utils\SelectOptions;
+
 use Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
 
 abstract class HelperEditWidgets
@@ -94,7 +99,7 @@ EOT;
     $html  = '<div class="control-group">';
     $html .= '<div class="control-label">';
     $html .= '<label id="jform_catid-lbl" for="jform_catid" class="hasPopover required" title="">';
-    $html .= JText::_('JCATEGORIES');
+    $html .= JText::_('JCATEGORY');
     $html .= '</label>';
     $html .= '</div>';
 
@@ -108,7 +113,7 @@ EOT;
     foreach($categories as $category)
     {
       $select = $selected == $category->id ? 'selected' : NULL;
-      $html .= '<option value=' . $category->id . '" ' . $select . '>';
+      $html .= '<option value="' . $category->id . '" ' . $select . '>';
       $html .= CategoryHelper::getIndentedCategoryTitle($category);
       $html .= '</option>';
     }
@@ -174,7 +179,7 @@ EOT;
 
     $html .= \JHtml::_(
       'FEFHelper.select.genericlist',
-      \FOF30\Utils\SelectOptions::getOptions('access'),
+      SelectOptions::getOptions('access'),
       'access',
       ['list.select' => $access]
     );
@@ -183,8 +188,8 @@ EOT;
   }
 
 
-  	/**
-	 * "Category" widget for edit sidebar
+  /**
+	 * "Language" control for edit sidebar
 	 *
 	 * @return  string
 	 *
@@ -198,7 +203,7 @@ EOT;
 
     $html .= \JHtml::_(
       'FEFHelper.select.genericlist',
-      \FOF30\Utils\SelectOptions::getOptions('languages'),
+      SelectOptions::getOptions('languages'),
       'languages',
       ['list.select' => $language]
     );

@@ -15,18 +15,18 @@
 
 include realpath(__DIR__ . '/../CliApplication.php');
 
-use FOF30\Container\Container;
-use Calligraphic\Cajobboard\Admin\Cli\Seeder\RelationMapper;
-use Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
-use Calligraphic\Cajobboard\Admin\Helper\JsonHelper;
-use Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\UsersTemplate;
+use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Cli\Seeder\RelationMapper;
+use \Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
+use \Calligraphic\Cajobboard\Admin\Helper\JsonHelper;
+use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\UsersTemplate;
 
 // JTable::addIncludePath(JPATH_ADMINISTRATOR.'/libraries/joomla/table');
 
 /**
  * Calligraphic Job Board Sample Data Seeder CLI Application
  *
- * @var    JInput                       $input
+ * @var    \JInput                       $input
  * @var    \Joomla\Registry\Registry    $config
  */
 class PopulateSampleData extends CliApplication
@@ -101,11 +101,11 @@ class PopulateSampleData extends CliApplication
 	/**
 	 * Class constructor
 	 *
-   * @param JInputCli   $input
-   * @param JRegistry   $config
-   * @param JDispatcher $dispatcher
+   * @param \JInputCli   $input
+   * @param \JRegistry   $config
+   * @param \JDispatcher $dispatcher
 	 */
-  public function __construct(JInputCli $input = null, JRegistry $config = null, JDispatcher $dispatcher = null)
+  public function __construct(\JInputCli $input = null, \JRegistry $config = null, \JDispatcher $dispatcher = null)
   {
     parent::__construct($input, $config, $dispatcher);
     $this->loadConfig();
@@ -125,7 +125,7 @@ class PopulateSampleData extends CliApplication
 
     if (false === $file)
     {
-      throw new Exception("The config.json file can't be found\n");
+      throw new \Exception("The config.json file can't be found\n");
     }
 
     $config = json_decode($file, true);
@@ -133,7 +133,7 @@ class PopulateSampleData extends CliApplication
     // Throw an error if the config.json file isn't valid JSON
     if(!$config)
     {
-      throw new Exception("There is a JSON error in the config.json file:\n" . JsonHelper::getJsonErrorDesc() . "\n");
+      throw new \Exception("There is a JSON error in the config.json file:\n" . JsonHelper::getJsonErrorDesc() . "\n");
     }
 
     $this->seed       = $config['seed'] ? $config['seed'] : 1;
@@ -155,7 +155,7 @@ class PopulateSampleData extends CliApplication
 
     if (false === $file)
     {
-      throw new Exception("The user.json file can't be found\n");
+      throw new \Exception("The user.json file can't be found\n");
     }
 
     $this->users = json_decode($file, true);
@@ -163,7 +163,7 @@ class PopulateSampleData extends CliApplication
     // Throw an error if the user.json file isn't valid JSON
     if(!$this->users)
     {
-      throw new Exception("There is a JSON error in the user.json file:\n" . JsonHelper::getJsonErrorDesc() . "\n");
+      throw new \Exception("There is a JSON error in the user.json file:\n" . JsonHelper::getJsonErrorDesc() . "\n");
     }
   }
 
@@ -179,12 +179,12 @@ class PopulateSampleData extends CliApplication
     parent::execute();
 
     // Create a config object for the User template
-    $userConfig = new stdClass();
+    $userConfig = new \stdClass();
 
     $this->addSampleUsers($userConfig);
 
     // Create a config object for model sample data generators to pass to field faker functions
-    $config = new stdClass();
+    $config = new \stdClass();
 
     $config->users = $this->users;
 
@@ -256,7 +256,7 @@ class PopulateSampleData extends CliApplication
 
             $isUserConfigDirty = true;
           }
-          catch(Exception $e)
+          catch(\Exception $e)
           {
             $this->out($e->getMessage());
             exit();
@@ -276,14 +276,14 @@ class PopulateSampleData extends CliApplication
 
       if (false === $userData)
       {
-        throw new Exception("The data to save back to user.json isn't valid JSON:\n" . JsonHelper::getJsonErrorDesc() . "\n");
+        throw new \Exception("The data to save back to user.json isn't valid JSON:\n" . JsonHelper::getJsonErrorDesc() . "\n");
       }
 
       try
       {
         file_put_contents($userFile, $userData);
       }
-      catch(Exception $e)
+      catch(\Exception $e)
       {
         $this->out("Couldn't save data back to user.json: " . $e->getMessage());
         exit();
@@ -298,7 +298,7 @@ class PopulateSampleData extends CliApplication
   public function addJoinRecordUserToGroup()
   {
 
-    $db = JFactory::getDbo();
+    $db = \JFactory::getDbo();
 
     // #1 Get all maps from `#__user_usergroup_map`
     $query = $db->getQuery(true);
@@ -372,7 +372,7 @@ class PopulateSampleData extends CliApplication
 
       if (!class_exists($class))
       {
-        throw new Exception("Template class doesn't exist:\n" . $class . "\n");
+        throw new \Exception("Template class doesn't exist:\n" . $class . "\n");
       }
 
       $this->truncateTable($this->container, $modelName);
@@ -402,7 +402,7 @@ class PopulateSampleData extends CliApplication
 
           $this->out("Saved $modelName item #$recordId");
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
           $this->out($e->getMessage());
           exit();
@@ -427,9 +427,9 @@ class PopulateSampleData extends CliApplication
     {
       $db->truncateTable('#__cajobboard_' . strtolower($modelName));
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
-      throw new Exception("Could not truncate table for model name: $modelName\n" . $e);
+      throw new \Exception("Could not truncate table for model name: $modelName\n" . $e);
     }
 
     $this->removeAssetsForModel($container, $modelName);
@@ -466,9 +466,9 @@ class PopulateSampleData extends CliApplication
     {
       $assetIdsToRemove = $db->loadColumn();
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
-      throw new Exception("Could not get asset records in removeAssets() for model name: $modelName\n" . $e);
+      throw new \Exception("Could not get asset records in removeAssets() for model name: $modelName\n" . $e);
     }
 
     // Remove any assets

@@ -18,10 +18,13 @@
     <format property="version" pattern="%Y%m%d_%H%M"/>
   </tstamp>
 
+  <!-- Resolve a real file path to use -->
+  <property name="repo.dir" value="../" />
+  <resolvepath propertyName="repo.dir" file="${repo.dir}"/>
+
   <!-- Set some default parameters -->
-  <property name="build.dir" value="build" />
-  <property name="release.dir" value="release" />
-  <property name="source.dir" value="." />
+  <property name="build.dir" value="${repo.dir}/build" />
+  <property name="release.dir" value="${repo.dir}/release" />
 
   <property name="target.available" value="false" />
 
@@ -149,8 +152,10 @@
   <!-- ========================================================== -->
   <target name="component">
     <copy todir="${build.dir}/${component.name}" haltonerror="false">
-      <fileset dir="components/${component.name}">
+      <fileset dir="${repo.dir}/components/${component.name}">
         <include name="**/*"/>
+        <exclude name="node_modules/**"/>
+        <exclude name="scss/**"/>
       </fileset>
     </copy>
 
@@ -168,7 +173,7 @@
   <!-- ========================================================== -->
   <target name="module">
     <copy todir="${build.dir}/${module.name}" haltonerror="false">
-      <fileset dir="modules/${module.name}">
+      <fileset dir="${repo.dir}/modules/${module.name}">
         <include name="**/*"/>
       </fileset>
     </copy>
@@ -187,7 +192,7 @@
   <!-- ========================================================== -->
   <target name="plugin">
     <copy todir="${build.dir}/${plugin.name}" haltonerror="false">
-      <fileset dir="plugins/${plugin.name}">
+      <fileset dir="${repo.dir}/plugins/${plugin.name}">
         <include name="**/*"/>
       </fileset>
     </copy>
@@ -201,12 +206,12 @@
 
 
   <!-- ========================================================== -->
-  <!-- Target: LIB                                                -->
+  <!-- Target: LIBRARY                                            -->
   <!-- Build target for libraries                                 -->
   <!-- ========================================================== -->
   <target name="library">
     <copy todir="${build.dir}/${library.name}" haltonerror="false">
-      <fileset dir="libraries/${library.name}">
+      <fileset dir="${repo.dir}/libraries/${library.name}">
         <include name="**/*"/>
       </fileset>
     </copy>
@@ -225,9 +230,10 @@
   <!-- ========================================================== -->
   <target name="template">
     <copy todir="${build.dir}/${template.name}" haltonerror="false">
-      <fileset dir="templates/${template.name}">
+      <fileset dir="${repo.dir}/templates/${template.name}">
         <include name="**/*"/>
         <exclude name="node_modules/**"/>
+        <exclude name="scss/**"/>
       </fileset>
     </copy>
 
@@ -246,8 +252,7 @@
   <target name="package">
     <echo msg="Creating package archive file for ${project.name}..." />
 
-    <zip
-      destfile="${release.dir}/pkg_${project.name}_${version}.zip" ignorelinks="true">
+    <zip destfile="${release.dir}/pkg_${project.name}_${version}.zip" ignorelinks="true">
       <fileset dir="${archive.dir}" >
         <include name="**/*"/>
       </fileset>
@@ -256,14 +261,14 @@
         <include name="lib_fof30-*.zip"/>
       </fileset>
 
-      <fileset dir="${source.dir}" >
+      <fileset dir="${repo.dir}" >
         <include name="LICENSE.md"/>
         <include name="README.md"/>
       </fileset>
 
-      <fileset dir="${source.dir}/package" >
+      <fileset dir="${repo.dir}/package" >
         <include name="pkg_${project.name}.xml"/>
-        <include name="pkg_script.php"/>
+        <include name="script.${project.name}.php"/>
       </fileset>
     </zip>
 

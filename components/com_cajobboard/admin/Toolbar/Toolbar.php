@@ -11,21 +11,239 @@
 
 namespace Calligraphic\Cajobboard\Admin\Toolbar;
 
-// use JText;
-// use JToolBarHelper;
-
-// use JLog;
-// JLog::add('In Toolbar class', JLog::DEBUG, 'cajobboard');
-
 // no direct access
 defined('_JEXEC') or die;
 
+use \Joomla\CMS\Toolbar\ToolbarHelper as JToolBarHelper;
+use \Joomla\CMS\Language\Text;
+use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Toolbar\ToolbarHelper;
+
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {
-  // Customise the toolbar, methods called from most to the least specific:
-  //
-  //   onViewnameTaskname e.g. onItemsBrowse
-  //   onViewname e.g. onItems
-  //   onTaskname e.g. onBrowse
+  /**
+   * The `option` input parameter, e.g. `com_cajobboard`
+   *
+   *  @var  string
+   */
+  protected $option = null;
 
+
+	/**
+	 * Public constructor.
+	 *
+	 * The $config array can contain the following optional values:
+	 *
+	 * renderFrontendButtons	bool	Should I render buttons in the front-end of the component?
+	 * renderFrontendSubmenu	bool	Should I render the submenu in the front-end of the component?
+	 * useConfigurationFile		bool	Should we use the configuration file (fof.xml) of the component?
+	 *
+	 * @param   Container  $c       The container for the component
+	 * @param   array      $config  The configuration overrides, see above
+	 */
+	public function __construct(Container $container, array $config = array())
+	{
+    parent::__construct($container, $config);
+
+    $this->option = $container->componentName;
+  }
+
+
+	/**
+	 * Renders the toolbar for the Control Panel page
+	 *
+	 * @return  void
+	 */
+	public function onCpanelsBrowse()
+	{
+    if ( !$this->container->platform->isBackend() )
+    {
+      return;
+    }
+
+    $this->renderSubmenu();
+
+    $this->renderTitle('cpanel');
+
+    JToolBarHelper::divider();
+
+    $this->isDataView() && JToolBarHelper::preferences($this->option);
+  }
+
+
+	/**
+	 * Renders the toolbar for the component's Browse pages (the plural views)
+	 *
+	 * @return  void
+	 */
+	public function onBrowse()
+	{
+    if ( !$this->container->platform->isBackend() )
+    {
+      return;
+    }
+
+    $this->renderSubmenu();
+
+		// Setup
+		try
+		{
+      $view   = $this->container->input->getCmd('view', 'cpanel');
+      $model = $this->container->factory->model($view);
+		}
+		catch (\Exception $e)
+		{
+			$model = null;
+    }
+
+    $this->renderTitle('browse');
+
+		if (!$this->isDataView())
+		{
+			return;
+    }
+
+		$this->perms->create && JToolBarHelper::addNew();
+
+		$this->perms->edit && JToolBarHelper::editList();
+
+    // Published buttons are only added if there is an 'enabled' field in the table
+    if ($model && $model->hasField('enabled') && $this->perms->editstate)
+    {
+      JToolBarHelper::publishList();
+      JToolBarHelper::unpublishList();
+    }
+
+    // Featured buttons are only added if there is a 'featured' field in the table
+    if ($model && $model->hasField('featured') && $this->perms->editstate)
+    {
+      ToolbarHelper::featureList();
+      ToolbarHelper::unfeatureList();
+    }
+
+    $this->perms->editstate && JToolBarHelper::archiveList();
+
+    // A Check-In button is only added if there is a locked_on field in the table
+    // @TODO: move this into the job board widget helper class and use a nicer Bootstrap modal, and lose the all caps
+    ($model && $model->hasField('locked_on') && $this->perms->edit) && JToolBarHelper::checkin();
+
+    $this->perms->delete && JToolBarHelper::trash();
+
+    $this->perms->delete && JToolBarHelper::deleteList(strtoupper(Text::_($this->option . '_CONFIRM_DELETE')));
+
+    JToolBarHelper::divider();
+
+    // "Options" button that launches a modal of com_config view for this component
+    JToolBarHelper::preferences('com_cajobboard');
+
+    // string  $ref        The name of the popup file (excluding the file extension for an xml file).
+    // bool    $com        Use the help file in the component directory.
+    // string  $override   Use this URL instead of any other
+    // string  $component  Name of component to get Help (null for current component)
+    //
+    // JToolBarHelper::help($ref, $com = false, $override = null, $component = null);
+  }
+
+
+	/**
+	 * Renders the toolbar for the component's Read pages
+	 *
+	 * @return  void
+	 */
+	public function onRead()
+	{
+    if ( !$this->container->platform->isBackend() )
+    {
+      return;
+    }
+
+    $this->renderSubmenu();
+
+		$this->renderTitle('read');
+
+    JToolBarHelper::title(Text::_(strtoupper($this->option)) . ': ' . Text::_($subtitle_key), $componentName);
+
+		if (!$this->isDataView())
+		{
+			return;
+    }
+
+		JToolBarHelper::back();
+  }
+
+
+	/**
+	 * Renders the toolbar for the component's Add pages
+	 *
+	 * @return  void
+	 */
+	public function onAdd()
+	{
+    if ( !$this->container->platform->isBackend() )
+    {
+      return;
+    }
+
+    $this->renderTitle('add');
+
+		if (!$this->isDataView())
+		{
+			return;
+    }
+
+		($this->perms->edit || $this->perms->editown) && JToolBarHelper::apply();
+
+    JToolBarHelper::save();
+
+		$this->perms->create && JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+
+		JToolBarHelper::cancel();
+  }
+
+
+	/**
+	 * Renders the toolbar for the component's Edit pages
+	 *
+	 * @return  void
+	 */
+	public function onEdit()
+	{
+    if ( !$this->container->platform->isBackend() )
+    {
+      return;
+    }
+
+    $this->renderTitle('edit');
+
+		if (!$this->isDataView())
+		{
+			return;
+    }
+
+		($this->perms->edit || $this->perms->editown) && JToolBarHelper::apply();
+
+    JToolBarHelper::save();
+
+		($this->perms->create) && JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+
+		JToolBarHelper::cancel();
+  }
+
+
+	/**
+	 * Renders the title for admin pages
+	 *
+	 * @param   string    $task   The task of the page the title should be rendered for
+	 */
+	public function renderTitle($task)
+	{
+    // Set toolbar title
+    $view = $this->container->inflector->pluralize($this->container->input->getCmd('view', 'cpanel'));
+
+    $title_key = Text::_(strtoupper($this->option));
+
+    $subtitle_key = Text::_(strtoupper($this->option . '_TITLE_' . $view . '_' . $task));
+
+    JToolBarHelper::title($title_key . ': ' . $subtitle_key, 'com_cajobboard');
+  }
 }

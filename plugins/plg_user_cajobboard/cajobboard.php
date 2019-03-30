@@ -12,12 +12,10 @@
 // no direct access
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormHelper;
-use \JException;
-
+use \Joomla\Utilities\ArrayHelper;
+use \Joomla\CMS\Plugin\CMSPlugin;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Form\FormHelper;
 
 // @TODO: Should the different profiles (employer, job seeker, recruiter) have different profile plugins?
 
@@ -102,12 +100,12 @@ class PlgUserCajobboard extends CMSPlugin
       $db->setQuery($query);
       $results = $db->loadRowList();
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
-      JLog::add('Database error in plugin User, method onContentPrepareData: ' . $e->getMessage(), JLog::ERROR, 'database');
+      \JLog::add('Database error in plugin User, method onContentPrepareData: ' . $e->getMessage(), \JLog::ERROR, 'database');
 
       // Don't show the user a server error if there was an error in the database query
-      throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+      throw new \Exception(\JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
     }
 
     $data->{$this->profile_key} = array();
@@ -151,7 +149,7 @@ class PlgUserCajobboard extends CMSPlugin
     if (!in_array($form->getName(), $this->validForms)) return true;
 
     // Add the profile fields to the form.
-    JForm::addFormPath(dirname(__FILE__).'/profiles');
+    \JForm::addFormPath(dirname(__FILE__).'/profiles');
     $form->loadFile('profile', false);
 
     return true;
@@ -171,7 +169,7 @@ class PlgUserCajobboard extends CMSPlugin
 	 * @return  boolean
 	 *
 	 * @since   1.0
-	 * @throws  InvalidArgumentException on invalid date.
+	 * @throws  \InvalidArgumentException on invalid date.
 	 */
 	public function onUserBeforeSave($user, $isnew, $data)
 	{
@@ -212,12 +210,12 @@ class PlgUserCajobboard extends CMSPlugin
       try {
         $db->setQuery($query)->execute();
       }
-      catch (Exception $e)
+      catch (\Exception $e)
       {
-        JLog::add('Database error in plugin User, method onUserAfterSave, delete keys routine: ' . $e->getMessage(), JLog::ERROR, 'database');
+        \JLog::add('Database error in plugin User, method onUserAfterSave, delete keys routine: ' . $e->getMessage(), \JLog::ERROR, 'database');
 
         // Don't show the user a server error if there was an error in the database query
-        throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+        throw new \Exception(\JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
       }
 
       $tuples = array();
@@ -240,12 +238,12 @@ class PlgUserCajobboard extends CMSPlugin
       try {
         $db->setQuery($query)->execute();
       }
-      catch (Exception $e)
+      catch (\Exception $e)
       {
-        JLog::add('Database error in plugin User, method onUserAfterSave, insert keys routine: ' . $e->getMessage(), JLog::ERROR, 'database');
+        \JLog::add('Database error in plugin User, method onUserAfterSave, insert keys routine: ' . $e->getMessage(), \JLog::ERROR, 'database');
 
         // Don't show the user a server error if there was an error in the database query
-        throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+        throw new \Exception(\JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
       }
     }
 
@@ -282,12 +280,12 @@ class PlgUserCajobboard extends CMSPlugin
       try {
         $db->setQuery($query)->execute();
       }
-      catch (Exception $e)
+      catch (\Exception $e)
       {
-        JLog::add('Database error in plugin User, method onUserAfterDelete, delete keys routine: ' . $e->getMessage(), JLog::ERROR, 'database');
+        \JLog::add('Database error in plugin User, method onUserAfterDelete, delete keys routine: ' . $e->getMessage(), \JLog::ERROR, 'database');
 
         // Don't show the user a server error if there was an error in the database query
-        throw new Exception(JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
+        throw new \Exception(\JText::_('PLG_USER_CAJOBBOARD_DATABASE_ERROR'), 404);
       }
     }
 

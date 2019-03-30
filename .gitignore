@@ -14,6 +14,8 @@
 /components/com_cajobboard/admin/vendor
 /components/com_cajobboard/media/.sass-cache
 /components/com_cajobboard/media/css
+/scripts/.sass-cache
+.gitignore.swp
 
 /Tests/config.php
 node_modules

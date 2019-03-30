@@ -27,22 +27,39 @@
 //-----------------------------------------------------------------------------
 
 
+// The icon that shows in the title for each admin screen
+// @TODO: Replace the akeeba icon with a cajobboard one, see icon text file in component media directory. Maybe a little bit larger (24px)
+.icon-cajobboard {
+	background: transparent url(../images/akeebasubs-16.png) no-repeat;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+// This class is added by validate.js to form fields that are using client-side validation and do not pass
+.invalid {
+  border-color: red !important;
+}
 
 //-----------------------------------------------------------------------------
 // Custom HTML widgets: editwidgets and browsewidgets in Helper/Html
 //-----------------------------------------------------------------------------
 
-.form-vertical-control { margin-bottom: 15px; }
+.form-vertical-control {
+  margin-bottom: 15px;
+}
 
 
-/**
- *
- */
 //-----------------------------------------------------------------------------
 // Control panel
 //-----------------------------------------------------------------------------
 
-.cpanel-icon { width: 100px; height: 100px; margin-bottom: 10px; margin-right: 7px; text-align: center }
+.cpanel-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  margin-right: 7px;
+  text-align: center
+}
 
 
 //-----------------------------------------------------------------------------
@@ -50,9 +67,16 @@
 //-----------------------------------------------------------------------------
 
 // Joomla! 3.7 made success buttons fixed width.
-#toolbar .btn-success { width: auto !important; }
+#toolbar .btn-success {
+  width: auto !important;
+}
 
 // Joomla! 3.7 broke span6 margins x_x
-div#cajobboard-renderjoomla [class*="span"] { margin-left: 0; }
-div.joomla-version-3 { padding: 0 }
+div#cajobboard-renderjoomla [class*="span"] {
+  margin-left: 0;
+}
+
+div.joomla-version-3 {
+  padding: 0;
+}
 

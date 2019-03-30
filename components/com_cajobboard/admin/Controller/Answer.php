@@ -12,17 +12,13 @@
 
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
-// Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
-
-// Component classes
+use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Answer extends DataController
+class Answer extends BaseController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -34,8 +30,11 @@ class Answer extends DataController
 	{
     $this->modelName = 'Answers';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save'];
+    // parent constructor will add default admin tasks, add custom tasks here e.g. 'download'
+    $this->predefinedTaskList = [];
 
     parent::__construct($container, $config);
   }
 }
+
+

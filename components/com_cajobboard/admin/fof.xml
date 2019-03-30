@@ -10,14 +10,14 @@
   <!-- Administrator settings -->
   <backend>
     <container>
-      <option name="factoryClass"><![CDATA[FOF30\Factory\MagicFactory]]></option>
+      <option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
     </container>
 	</backend>
 
   <!-- Site settings -->
 	<frontend>
 		<container>
-			<option name="factoryClass"><![CDATA[FOF30\Factory\MagicSwitchFactory]]></option>
+			<option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
       <option name="scaffolding">0</option>
 		</container>
 	</frontend>

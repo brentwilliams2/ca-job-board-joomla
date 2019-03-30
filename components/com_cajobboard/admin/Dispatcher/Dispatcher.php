@@ -17,6 +17,9 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 
+// Load extended array functions, based on Laravel 4's "helpers.php"
+require_once(JPATH_LIBRARIES . DS . 'fof30' . DS . 'Utils' . DS . 'helpers.php');
+
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
 	/** @var   string  The name of the default view, in case none is specified */
@@ -24,8 +27,20 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
-		// Load common CSS and JavaScript
-		$this->container->template->addCSS('media://com_cajobboard/css/backend.css', $this->container->mediaVersion);
-		$this->container->template->addJS('media://com_cajobboard/js/backend.js', false, false, $this->container->mediaVersion);
+    // Add component's toolbar button path to Joomla!'s Toolbar singleton
+    $toolbar = \JToolBar::getInstance();
+    $toolbar->addButtonPath(realpath(__DIR__ . DS . '..' . DS . 'Toolbar' . DS . 'Buttons'));
+
+    // Load common CSS and JavaScript
+    if(JDEBUG)
+    {
+		  $this->container->template->addCSS('media://com_cajobboard/css/backend.css', $this->container->mediaVersion);
+      $this->container->template->addJS('media://com_cajobboard/js/backend.js', false, false, $this->container->mediaVersion);
+    }
+    else
+    {
+		  $this->container->template->addCSS('media://com_cajobboard/css/backend.min.css', $this->container->mediaVersion);
+      $this->container->template->addJS('media://com_cajobboard/js/backend.min.js', false, false, $this->container->mediaVersion);
+    }
 	}
 }

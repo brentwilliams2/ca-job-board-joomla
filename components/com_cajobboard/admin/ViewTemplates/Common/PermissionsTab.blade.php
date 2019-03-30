@@ -9,24 +9,24 @@
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
   */
 
-  use Calligraphic\Cajobboard\Admin\Helper\PermissionsHelper
+  use \Calligraphic\Cajobboard\Admin\Helper\PermissionsHelper;
 
   // no direct access
   defined('_JEXEC') or die;
 
   /** @var  FOF30\View\DataView\Html  $this */
 
-  JHtml::_('behavior.formvalidator');
+  /JHtml::_('behavior.formvalidator');
 
-  JHtml::_('bootstrap.tooltip');
+  /JHtml::_('bootstrap.tooltip');
 
   // Add Javascript for permission change
-  JHtml::_('script', 'system/permissions.js', array('version' => 'auto', 'relative' => true));
+  /JHtml::_('script', 'system/permissions.js', array('version' => 'auto', 'relative' => true));
 
   /*
-   *  JText::script allows using translation strings in javascript by first adding the translation key in PHP:
+   *  \JText::script allows using translation strings in javascript by first adding the translation key in PHP:
    *
-   *    JText::script('VALIDATION_ERROR');
+   *    \JText::script('VALIDATION_ERROR');
    *
    *  Then using the translation key in Javascript:
    *
@@ -34,22 +34,22 @@
    */
 
   // Add strings for JavaScript message translations.
-  JText::script('ERROR');
-  JText::script('WARNING');
-  JText::script('NOTICE');
-  JText::script('MESSAGE');
+  \JText::script('ERROR');
+  \JText::script('WARNING');
+  \JText::script('NOTICE');
+  \JText::script('MESSAGE');
 
   // Add strings for JavaScript error translations.
-  JText::script('JLIB_JS_AJAX_ERROR_CONNECTION_ABORT');
-  JText::script('JLIB_JS_AJAX_ERROR_NO_CONTENT');
-  JText::script('JLIB_JS_AJAX_ERROR_OTHER');
-  JText::script('JLIB_JS_AJAX_ERROR_PARSE');
-  JText::script('JLIB_JS_AJAX_ERROR_TIMEOUT');
+  \JText::script('JLIB_JS_AJAX_ERROR_CONNECTION_ABORT');
+  \JText::script('JLIB_JS_AJAX_ERROR_NO_CONTENT');
+  \JText::script('JLIB_JS_AJAX_ERROR_OTHER');
+  \JText::script('JLIB_JS_AJAX_ERROR_PARSE');
+  \JText::script('JLIB_JS_AJAX_ERROR_TIMEOUT');
 
   // This is to enable setting the permission's Calculated Setting when you change the permission's Setting.
   // The core javascript code for initiating the Ajax request looks for a field
   // with id="jform_title" and sets its value as the 'title' parameter to send in the Ajax request
-  JFactory::getDocument()->addScriptDeclaration('
+  \JFactory::getDocument()->addScriptDeclaration('
     jQuery(document).ready(function() {
       greeting = jQuery("#jform_greeting").val();
       jQuery("#jform_title").val(greeting);
@@ -57,7 +57,7 @@
   ');
 
   // Ajax request data.
-  $ajaxUri = JRoute::_('index.php?option=com_cajobboard&task=config.store&format=json&' . JSession::getFormToken() . '=1');
+  $ajaxUri = \JRoute::_('index.php?option=com_cajobboard&task=config.store&format=json&' . \JSession::getFormToken() . '=1');
 
   /*
     Values needed from PermissionsHelper:
@@ -78,7 +78,7 @@
 
 <fieldset class="adminform">
   <legend>
-    <?php echo JText::_('JCONFIG_PERMISSIONS_LABEL') ?>
+    <?php echo \JText::_('JCONFIG_PERMISSIONS_LABEL') ?>
   </legend>
 
   <div class="row-fluid">
@@ -98,7 +98,7 @@
 
             <li {{ $active }}>
               <a href="#permission-{{ $group->value }}" data-toggle="tab">
-                <?php JLayoutHelper::render('joomla.html.treeprefix', array('level' => $group->level + 1)) . $group->text; ?>
+                <?php \JLayoutHelper::render('joomla.html.treeprefix', array('level' => $group->level + 1)) . $group->text; ?>
               </a>
             </li>
           @endforeach
@@ -130,7 +130,7 @@
 
               <tbody>
                 {{--  Check if this group has super user permissions --}}
-                <?php $isSuperUserGroup = JAccess::checkGroup($group->value, 'core.admin'); ?>
+                <?php $isSuperUserGroup = \JAccess::checkGroup($group->value, 'core.admin'); ?>
 
                 @foreach($actions as $action)
                   <tr>
@@ -151,7 +151,7 @@
                         class="input-small novalidate"'
                         name="{{ $this->name }}[{{ $action->name }}][{{ $group->value }}]"
                         id="{{ $this->id }}_{{ $action->name }}_{{ $group->value }}"
-                        title="<?php strip_tags(JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->text))) ?>"
+                        title="<?php strip_tags(\JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', \JText::_($action->title), trim($group->text))) ?>"
                       >
                         {{--  Get the actual setting for the action for this group: true = allowed, false = denied, null = inherited--}}
                         <?php $assetRule = empty($assetId) ? $assetRules->allow($action->name, $group->value) : null; ?>
@@ -200,14 +200,14 @@
                         if ($inheritedGroupRule === null || $inheritedGroupRule === false)
                         {
                           $result['class'] = 'label label-important';
-                          $result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
+                          $result['text']  = \JText::_('JLIB_RULES_NOT_ALLOWED_INHERITED');
                         }
 
                         {{--  If recursive calculated setting is "Allowed". Calculated permission is "Allowed (Inherited)". --}}
                         else
                         {
                           $result['class'] = 'label label-success';
-                          $result['text']  = JText::_('JLIB_RULES_ALLOWED_INHERITED');
+                          $result['text']  = \JText::_('JLIB_RULES_ALLOWED_INHERITED');
                         }
 
                         {{--  Second part: Overwrite the calculated permissions labels if there is an explicit permission in the current group. --}}
@@ -220,14 +220,14 @@
                         if ($assetRule === false)
                         {
                           $result['class'] = 'label label-important';
-                          $result['text']  = JText::_('JLIB_RULES_NOT_ALLOWED');
+                          $result['text']  = \JText::_('JLIB_RULES_NOT_ALLOWED');
                         }
 
                         {{--  If there is an explicit permission is "Allowed". Calculated permission is "Allowed". --}}
                         elseif ($assetRule === true)
                         {
                           $result['class'] = 'label label-success';
-                          $result['text']  = JText::_('JLIB_RULES_ALLOWED');
+                          $result['text']  = \JText::_('JLIB_RULES_ALLOWED');
                         }
 
                         {{--  Third part: Overwrite the calculated permissions labels for special cases. --}}

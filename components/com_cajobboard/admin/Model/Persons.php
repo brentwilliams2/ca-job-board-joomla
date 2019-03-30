@@ -15,10 +15,12 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JLoader;
-use JFactory;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Log\Log;
+
+use \FOF30\Container\Container;
+use \FOF30\Model\DataModel;
 
 /**
  * Model class for Job Board users
@@ -286,7 +288,7 @@ class Persons extends DataModel
 	/**
 	 * Build the SELECT query for returning records.
 	 *
-	 * @param   \JDatabaseQuery  $query           The query being built
+	 * @param   \JDatabaseQuery  $query           The query being built. Class not namespaced in Joomla! yet.
 	 * @param   bool             $overrideLimits  Should I be overriding the limit state (limitstart & limit)?
 	 *
 	 * @return  void
@@ -328,7 +330,7 @@ class Persons extends DataModel
     // Key to store user extended profile information in EAV table
     $profile_key = 'cajobboard';
 
-    $user = JFactory::getUser();
+    $user = Factory::getUser();
 
     // Don't do anything if guest user
     if (!$userId && $user->id == 0) return;
@@ -336,7 +338,7 @@ class Persons extends DataModel
     // Use user id from state if not passed to function
 		if (!$userId) $userID = $user->id;
 
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 
     // Load the profile data from the user profile table for this user
     $query = $db->getQuery(true)
@@ -351,12 +353,12 @@ class Persons extends DataModel
       $db->setQuery($query);
       $results = $db->loadRowList();
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
-      JLog::add('Database error in class Persons, method getUserProfile: ' . $e->getMessage(), JLog::ERROR, 'database');
+      Log::add('Database error in class Persons, method getUserProfile: ' . $e->getMessage(), Log::ERROR, 'database');
 
       // Don't show the user a server error if there was an error in the database query
-      throw new Exception(JText::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
+      throw new \Exception(Text::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
     }
 
     $normalizedProfileKey = array
@@ -389,7 +391,7 @@ class Persons extends DataModel
       }
       else
       {
-        JLog::add('User profile key not in list, class Persons method getUserProfile(): ' . $key, JLog::ERROR, 'user-profile-error');
+        Log::add('User profile key not in list, class Persons method getUserProfile(): ' . $key, Log::ERROR, 'user-profile-error');
       }
     }
 
@@ -472,12 +474,12 @@ class Persons extends DataModel
         $db->setQuery($query);
         $joinResults = $db->loadAssoc();
       }
-      catch (Exception $e)
+      catch (\Exception $e)
       {
-        JLog::add('Database error in class Persons, method getUserProfile, load join tables: ' . $e->getMessage(), JLog::ERROR, 'database');
+        Log::add('Database error in class Persons, method getUserProfile, load join tables: ' . $e->getMessage(), Log::ERROR, 'database');
 
         // Don't show the user a server error if there was an error in the database query
-        throw new Exception(JText::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
+        throw new \Exception(Text::_('COM_CAJOBBOARD_DATABASE_ERROR'), 404);
       }
 
       $this->image = $joinResults['image'];

@@ -95,7 +95,7 @@ class Registration extends Controller
         $model->getState('password')
       );
     }
-    catch(Exception $e)
+    catch(\Exception $e)
     {
       $this->setRedirect('index.php?option=com_users&view=registration', $e, 'notice');
     }

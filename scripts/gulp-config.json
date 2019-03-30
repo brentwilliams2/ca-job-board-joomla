@@ -1,0 +1,106 @@
+{
+  "component": "com_cajobboard",
+  "template": "tpl_mfi",
+  "scss": [
+    {
+      "text": "component SCSS/CSS files",
+      "src":  "/components/com_cajobboard/media",
+      "dest": "/media/com_cajobboard"
+    },
+    {
+      "text": "template SCSS/CSS files",
+      "src":  "/templates/tpl_mfi",
+      "dest": "/templates/mfi"
+    }
+  ],
+  "js": [
+    {
+      "text": "component Javascript files",
+      "src":  "/components/com_cajobboard/media",
+      "dest": "/media/com_cajobboard"
+    },
+    {
+      "text": "template Javascript files",
+      "src":  "/templates/tpl_mfi",
+      "dest": "/templates/mfi"
+    }
+  ],
+  "php": [
+    {
+      "text": "component admin files",
+      "src":  "/components/com_cajobboard/admin",
+      "dest": "/administrator/components/com_cajobboard"
+    },
+    {
+      "text": "component site files",
+      "src":  "/components/com_cajobboard/site",
+      "dest": "/components/com_cajobboard"
+    },
+    {
+      "text": "template root PHP files",
+      "src":  "/templates/tpl_mfi/*.php",
+      "dest": "/templates/mfi"
+    },
+    {
+      "text": "template includes PHP files",
+      "src":  "/templates/tpl_mfi/includes",
+      "dest": "/templates/mfi/includes"
+    },
+    {
+      "text": "template PHP override files",
+      "src":  "/templates/tpl_mfi/html",
+      "dest": "/templates/mfi/html"
+    },
+    {
+      "text": "user group job board plugin files",
+      "src":  "/plugins/plg_user_cajobboard",
+      "dest": "/plugins/user/cajobboard"
+    }
+  ],
+  "language": [
+    {
+      "text": "template language files",
+      "src":  "/templates/tpl_mfi/language",
+      "dest": "/templates/mfi/language"
+    }
+  ],
+  "media": [
+    {
+      "text": "component image files",
+      "src":  "/components/com_cajobboard/media/images",
+      "dest": "/media/com_cajobboard/images"
+    },
+    {
+      "text": "template image files",
+      "src":  "/templates/tpl_mfi/images",
+      "dest": "/templates/mfi/images"
+    },
+    {
+      "text": "component schema files",
+      "src":  "/components/com_cajobboard/media/schema",
+      "dest": "/media/com_cajobboard/schema"
+    },
+    {
+      "text": "template favicon file",
+      "src":  "/templates/tpl_mfi/*.ico",
+      "dest": "/templates/mfi/*.ico"
+    },
+    {
+      "text": "template icon files",
+      "src":  "/templates/tpl_mfi/*.png",
+      "dest": "/templates/mfi"
+    },
+    {
+      "text": "template font files",
+      "src":  "/templates/tpl_mfi/fonts",
+      "dest": "/templates/mfi/fonts"
+    }
+  ],
+  "misc": [
+    {
+      "text": "template XML configuration files",
+      "src":  "/templates/tpl_mfi/*.xml",
+      "dest": "/templates/mfi"
+    }
+  ]
+}

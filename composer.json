@@ -13,9 +13,9 @@
     "vendor-dir": "components/com_cajobboard/admin/vendor"
   },
   "scripts": {
-    "test": "@php `pwd`/components/com_cajobboard/admin/vendor/phpunit/phpunit/phpunit -c `pwd`/phpunit.xml",
-    "seed": "@php `pwd`/administrator/components/com_cajobboard/Cli/PopulateSampleAssetData.php",
-    "build": "phing build"
+    "test": "php `pwd`/components/com_cajobboard/admin/vendor/phpunit/phpunit/phpunit -c `pwd`/phpunit.xml --colors=always",
+    "seed": "php `pwd`/administrator/components/com_cajobboard/Cli/PopulateSampleAssetData.php",
+    "build": "phing -f ./scripts/build.xml --ansi"
   },
   "require": {
     "php": "^7.2",

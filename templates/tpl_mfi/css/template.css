@@ -79,14 +79,14 @@ a {
 a:focus, a:hover {
   text-decoration: none; }
 
-/*TAGS CLUDS*/
+/*TAGS CLOUDS*/
 .module-content .tagspopular ul li {
   display: inline-block; }
 
 .module-content > .tagspopular ul li::before {
   content: none; }
 
-/*CALENDARIO*/
+/*CALENDAR*/
 .calendar {
   margin: 5px 0 0 1px !important; }
 
@@ -115,10 +115,6 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
   width: 100%; }
 
 /*LISTAS EN MODULOS*/
-.module-content ul li::before {
-  content: "\e080";
-  font-family: glyphicons halflings; }
-
 .module-content ul {
   margin: 0;
   padding: 0; }
@@ -473,7 +469,6 @@ body #overall {
   font-style: normal;
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Regular"), url("//fonts.gstatic.com/s/materialicons/v12/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2") format("woff2"); }
-
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -752,23 +747,24 @@ span.fa {
     line-height: 30px !important;
     padding-bottom: 5px !important;
     padding-top: 5px !important; }
+
   .layout-boxed .header--fixed {
     width: 100% !important;
     left: auto !important;
     right: auto !important; }
+
   body #wrap {
     /*padding-top: 70px!important;*/ } }
-
 /* Portrait tablet to landscape and desktop */
 /* Large desktop */
 @media (min-width: 1200px) {
   section {
     margin-top: auto; }
+
   .layout-boxed .header--fixed {
     width: 1240px;
     left: auto;
     right: auto; } }
-
 /* Fix disappearing tabs on editor page */
 .icons .btn-group,
 .icons .btn-group a[data-toggle="tab"][aria-expanded="false"],
@@ -844,3 +840,5 @@ div#jform_tags_chzn.chzn-container {
 
 .chzn-container .chzn-drop {
   width: 100px; }
+
+/*# sourceMappingURL=template.css.map */
