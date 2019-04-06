@@ -77,13 +77,6 @@ class CommonTemplate extends BaseTemplate
   public $params;
 
 	/**
-	 * Category ID for this item.
-	 *
-	 * @var    int
-   */
-  public $cat_id;
-
-	/**
 	 * Number of hits this item has received.
 	 *
 	 * @var    int
@@ -186,20 +179,6 @@ class CommonTemplate extends BaseTemplate
   public function params ($config, $faker)
   {
     $this->params = '{"image":"","image_alt":""}';
-  }
-
-  public function cat_id ($config, $faker)
-  {
-    foreach ($config->categories as $category)
-    {
-      if ($category->title = 'uncategorised')
-      {
-        $this->cat_id = $category->id;
-        return;
-      }
-    }
-
-    $this->cat_id = null;
   }
 
   public function hits ($config, $faker)

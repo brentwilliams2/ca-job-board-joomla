@@ -37,12 +37,12 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     if(JDEBUG)
     {
 		$this->container->template->addCSS('media://com_cajobboard/css/frontend.css');
-    $this->container->template->addJS('media://com_cajobboard/js/frontend.js', true, false);
+    $this->container->template->addJS('media://com_cajobboard/js/Site/frontend.js', true, false);
     }
     else
     {
       $this->container->template->addCSS('media://com_cajobboard/css/frontend.min.css');
-      $this->container->template->addJS('media://com_cajobboard/js/frontend.min.js', true, false);
+      $this->container->template->addJS('media://com_cajobboard/js/Site/frontend.min.js', true, false);
     }
 
     // @TODO: Is this really how we want to do this?

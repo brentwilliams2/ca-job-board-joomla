@@ -8,7 +8,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /**
- * Styles for Answer Views
+ * Styles for Site Answer Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -17,47 +17,39 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .answer-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .answer-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-answer {
   border-radius: 5px;
   margin-left: 5px; }
 
 .answer-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.answer-text-link {
+a .answer-text-link {
   color: #333333;
   text-decoration: none; }
 
-a.answer-text-link:hover, .answer-text-link:focus {
+a:hover, a:focus {
   color: #777777;
   text-decoration: none; }
 
-.answer-item {
-  background-color: #e3e3e4 !important;
-  margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px; }
-
 /**
- * Styles for Comment Views
+ * Styles for Site Comment Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -66,39 +58,39 @@ a.answer-text-link:hover, .answer-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .comment-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .comment-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-comment {
   border-radius: 5px;
   margin-left: 5px; }
 
 .comment-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.comment-text-link {
+a .comment-text-link {
   color: #333333;
   text-decoration: none; }
 
-a.comment-text-link:hover, .comment-text-link:focus {
+a:hover, a:focus {
   color: #777777;
   text-decoration: none; }
 
 /**
- * Styles for Image Page and Answer Page Views
+ * Styles for Site Image Page and Answer Page Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -107,47 +99,39 @@ a.comment-text-link:hover, .comment-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .image-object-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .image-object-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-image-object {
   border-radius: 5px;
   margin-left: 5px; }
 
 .image-object-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.image-object-text-link {
+a .image-object-text-link {
   color: #333333;
   text-decoration: none; }
 
-a.image-object-text-link:hover, .image-object-text-link:focus {
+a:hover, a:focus {
   color: #777777;
   text-decoration: none; }
 
-.image-object-item {
-  background-color: #e3e3e4 !important;
-  margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px; }
-
 /**
- * Styles for Job Posting Views
+ * Styles for Site Job Posting Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -156,31 +140,29 @@ a.image-object-text-link:hover, .image-object-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .job-posting-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-job-posting {
   border-radius: 5px; }
 
 .job-title span {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
 .job-title-tag {
-  /*basic styles*/
-  padding: 3px;
-  color: white;
   background-color: #5cb85c;
-  text-align: center;
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
   font-size: 12px;
   line-height: 20px;
-  /*border styles*/
-  border: 0px;
-  border-radius: 5px; }
+  padding: 3px;
+  text-align: center; }
 
 .save-job-button,
 .job-saved-button,
@@ -200,7 +182,7 @@ a.image-object-text-link:hover, .image-object-text-link:focus {
   border-left: 1px; }
 
 /**
- * Styles for Employer Profile Page and Answer Page Views
+ * Styles for Site Employer Profile Page and Answer Page Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -209,47 +191,38 @@ a.image-object-text-link:hover, .image-object-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .organization-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .organization-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-organization {
   border-radius: 5px;
   margin-left: 5px; }
 
 .organization-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.organization-text-link {
+a .organization-text-link {
   color: #333333;
   text-decoration: none; }
-
-a.organization-text-link:hover, .organization-text-link:focus {
-  color: #777777;
-  text-decoration: none; }
-
-.organization-item {
-  background-color: #e3e3e4 !important;
-  margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px; }
+  a .organization-text-link:hover, a .organization-text-link:focus {
+    color: #777777;
+    text-decoration: none; }
 
 /**
- *  Styles for Person Views
+ *  Styles for Site Person Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -258,7 +231,7 @@ a.organization-text-link:hover, .organization-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /**
- * Styles for Place Page and Answer Page Views
+ * Styles for Site Place Page and Answer Page Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -267,47 +240,38 @@ a.organization-text-link:hover, .organization-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .place-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .place-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-place {
   border-radius: 5px;
   margin-left: 5px; }
 
 .place-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.place-text-link {
+a .place-text-link {
   color: #333333;
   text-decoration: none; }
-
-a.place-text-link:hover, .place-text-link:focus {
-  color: #777777;
-  text-decoration: none; }
-
-.place-item {
-  background-color: #e3e3e4 !important;
-  margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px; }
+  a .place-text-link:hover, a .place-text-link:focus {
+    color: #777777;
+    text-decoration: none; }
 
 /**
- * Styles for Question Views
+ * Styles for Site Question Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -316,47 +280,43 @@ a.place-text-link:hover, .place-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .question-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .question-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-question {
   border-radius: 5px;
   margin-left: 5px; }
 
 .question-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.question-text-link {
+a .question-text-link {
   color: #333333;
   text-decoration: none; }
 
-a.question-text-link:hover, .question-text-link:focus {
+a:hover {
   color: #777777;
   text-decoration: none; }
 
-.question-item {
-  background-color: #e3e3e4 !important;
-  margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px; }
+.question-text-linkfocus {
+  color: #777777;
+  text-decoration: none; }
 
 /**
- *  Styles for Registration Views
+ *  Styles for Site Registration Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -365,7 +325,7 @@ a.question-text-link:hover, .question-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /**
- *  Styles for Review Views
+ *  Styles for Site Review Views
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -374,47 +334,42 @@ a.question-text-link:hover, .question-text-link:focus {
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 .review-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .review-list-item {
-  background-color: #e3e3e4 !important;
+  background-color: #e3e3e4;
   margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
   padding-bottom: 10px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 .btn-review {
   border-radius: 5px;
   margin-left: 5px; }
 
 .review-title {
-  font-weight: bold;
-  font-size: 18px; }
+  font-size: 18px;
+  font-weight: bold; }
 
-a.review-text-link {
+a .review-text-link {
   color: #333333;
   text-decoration: none; }
+  a .review-text-link:focus {
+    color: #777777;
+    text-decoration: none; }
 
-a.review-text-link:hover, .review-text-link:focus {
+a:hover {
   color: #777777;
   text-decoration: none; }
 
-.review-item {
-  background-color: #e3e3e4 !important;
-  margin-top: 12px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px; }
-
 /**
- *  Styles for Social Icon Widgets
+ *  Styles for Site Social Icon Widgets
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -439,11 +394,6 @@ a.review-text-link:hover, .review-text-link:focus {
  *    <a href="#" class="btn social-button social-button-text social-button-pill social-button-shadow-bottom social-button-facebook"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
  */
 .social-button {
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-  color: #fff;
-  text-align: center;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   border-radius: 0;
@@ -451,41 +401,46 @@ a.review-text-link:hover, .review-text-link:focus {
   -moz-transition: all .3s;
   -webkit-transition: all .3s;
   -ms-transition: all .3s;
-  transition: all .3s; }
+  transition: all .3s;
+  color: #fff;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: center; }
 
 .social-button:hover,
 .social-button:focus,
 .social-button:active {
-  outline: 0;
-  opacity: 0.8;
   color: #fff;
+  opacity: 0.8;
+  outline: 0;
   text-decoration: none;
   text-shadow: none;
   transition: all .3s; }
 
 .social-button-size-32 {
-  width: 32px;
+  font-size: 14px;
   height: 32px;
+  line-height: 14px;
   margin: 5px;
   padding-top: 8px;
-  font-size: 14px;
-  line-height: 14px; }
+  width: 32px; }
 
 .social-button-size-48 {
-  width: 48px;
+  font-size: 21px;
   height: 48px;
+  line-height: 21px;
   margin: 8px;
   padding-top: 13px;
-  font-size: 21px;
-  line-height: 21px; }
+  width: 48px; }
 
 .social-button-size-64 {
-  width: 64px;
+  font-size: 28px;
   height: 64px;
+  line-height: 28px;
   margin: 10px;
   padding-top: 16px;
-  font-size: 28px;
-  line-height: 28px; }
+  width: 64px; }
 
 .social-button-square {
   -moz-border-radius: 4px;
@@ -498,35 +453,35 @@ a.review-text-link:hover, .review-text-link:focus {
   border-radius: 50%; }
 
 .social-button-text {
-  height: 48px;
-  margin: 8px;
-  padding: 13px 17px;
-  font-size: 14px;
-  line-height: 21px;
-  font-weight: 300;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-  border-radius: 4px; }
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 300;
+  height: 48px;
+  line-height: 21px;
+  margin: 8px;
+  padding: 13px 17px; }
 
 .social-button-text i {
-  padding-right: 27px;
   font-size: 21px;
   line-height: 21px;
+  padding-right: 27px;
   vertical-align: top; }
 
 .social-button-text i:after {
+  background: #ccc;
+  background: rgba(255, 255, 255, 0.3);
   content: "";
+  height: 36px;
+  left: 70%;
   position: absolute;
   top: -8px;
-  left: 70%;
-  width: 1px;
-  height: 36px;
-  background: #ccc;
-  background: rgba(255, 255, 255, 0.3); }
+  width: 1px; }
 
 .social-button-border-bottom {
-  padding-top: 12px;
-  border-bottom: 4px solid rgba(0, 0, 0, 0.1); }
+  border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+  padding-top: 12px; }
 
 .social-button-pill {
   -moz-border-radius: 400px;
@@ -534,43 +489,43 @@ a.review-text-link:hover, .review-text-link:focus {
   border-radius: 400px; }
 
 .social-button-gradient {
-  position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
 
 .social-button-gradient:before {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
   content: "";
+  height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%); }
+  width: 100%; }
 
 .social-button-shadow-left {
-  position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
 
 .social-button-shadow-left:before {
+  background: rgba(0, 0, 0, 0.1);
   content: "";
+  height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.1); }
+  width: 50%; }
 
 .social-button-shadow-bottom {
-  position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  position: relative; }
 
 .social-button-shadow-bottom:before {
+  background: rgba(0, 0, 0, 0.1);
   content: "";
+  height: 50%;
+  left: 0;
   position: absolute;
   top: 50%;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: rgba(0, 0, 0, 0.1); }
+  width: 100%; }
 
 .social-button-facebook {
   background: #4862a3; }
@@ -606,37 +561,35 @@ a.review-text-link:hover, .review-text-link:focus {
   text-shadow: #4d9bd6 1px 1px, #4d9bd6 2px 2px, #4d9bd6 3px 3px, #4d9bd7 4px 4px, #4d9cd7 5px 5px, #4d9cd7 6px 6px, #4d9cd8 7px 7px, #4d9cd8 8px 8px, #4d9cd8 9px 9px, #4e9dd9 10px 10px, #4e9dd9 11px 11px, #4e9dd9 12px 12px, #4e9dd9 13px 13px, #4e9dda 14px 14px, #4e9eda 15px 15px, #4e9eda 16px 16px, #4e9edb 17px 17px, #4e9edb 18px 18px, #4e9fdb 19px 19px, #4f9fdc 20px 20px, #4f9fdc 21px 21px, #4f9fdc 22px 22px, #4f9fdc 23px 23px, #4fa0dd 24px 24px, #4fa0dd 25px 25px, #4fa0dd 26px 26px, #4fa0de 27px 27px, #4fa0de 28px 28px, #4fa1de 29px 29px, #50a1df 30px 30px, #50a1df 31px 31px, #50a1df 32px 32px, #50a2df 33px 33px, #50a2e0 34px 34px, #50a2e0 35px 35px, #50a2e0 36px 36px, #50a2e1 37px 37px, #50a3e1 38px 38px, #50a3e1 39px 39px, #51a3e2 40px 40px, #51a3e2 41px 41px, #51a3e2 42px 42px, #51a4e2 43px 43px, #51a4e3 44px 44px, #51a4e3 45px 45px, #51a4e3 46px 46px, #51a4e4 47px 47px, #51a5e4 48px 48px, #51a5e4 49px 49px, #52a5e5 50px 50px, #52a5e5 51px 51px, #52a6e5 52px 52px, #52a6e5 53px 53px, #52a6e6 54px 54px, #52a6e6 55px 55px, #52a6e6 56px 56px, #52a7e7 57px 57px, #52a7e7 58px 58px, #52a7e7 59px 59px, #53a7e8 60px 60px, #53a7e8 61px 61px, #53a8e8 62px 62px, #53a8e8 63px 63px, #53a8e9 64px 64px, #53a8e9 65px 65px, #53a9e9 66px 66px, #53a9ea 67px 67px, #53a9ea 68px 68px, #53a9ea 69px 69px, #54a9eb 70px 70px, #54aaeb 71px 71px, #54aaeb 72px 72px, #54aaeb 73px 73px, #54aaec 74px 74px, #54aaec 75px 75px, #54abec 76px 76px, #54abed 77px 77px, #54abed 78px 78px, #54abed 79px 79px, #55acee 80px 80px; }
 
 .invalid {
-  border-color: red !important; }
+  border-color: #f0ad4e !important; }
 
 .hr-text {
-  line-height: 1em;
-  position: relative;
-  outline: 0;
   border: 0;
-  color: black;
-  text-align: center;
+  color: #000;
   height: 1.5em;
-  opacity: .5; }
-  .hr-text:before {
-    content: '';
+  line-height: 1em;
+  opacity: .5;
+  outline: 0;
+  position: relative;
+  text-align: center; }
+  .hr-text::before {
     background: linear-gradient(to right, transparent, #818078, transparent);
-    position: absolute;
+    content: '';
+    height: 1px;
     left: 0;
+    position: absolute;
     top: 50%;
-    width: 100%;
-    height: 1px; }
-  .hr-text:after {
-    content: attr(data-content);
-    position: relative;
-    display: inline-block;
-    color: black;
-    padding: 0 .5em;
-    line-height: 1.5em;
+    width: 100%; }
+  .hr-text::after {
+    background-color: #fcfcfa;
     color: #818078;
-    background-color: #fcfcfa; }
+    content: attr(data-content);
+    display: inline-block;
+    line-height: 1.5em;
+    padding: 0 .5em;
+    position: relative; }
 
 .rating {
   font-size: 1.5em;
   /* 30px/20=1.5em */ }
-
 /*# sourceMappingURL=frontend.css.map */

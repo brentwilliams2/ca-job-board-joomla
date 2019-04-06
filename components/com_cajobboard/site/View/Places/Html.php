@@ -48,6 +48,6 @@ class Html extends \FOF30\View\DataView\Html
     $lang->load('places', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
     // Load javascript file for question-and-answer page views
-    $this->addJavascriptFile('media://com_cajobboard/js/places.js');
+    $this->addJavascriptFile('media://com_cajobboard/js/Site/places.js');
   }
 }

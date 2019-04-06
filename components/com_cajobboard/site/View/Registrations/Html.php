@@ -48,6 +48,6 @@ class Html extends \FOF30\View\DataView\Html
     $lang->load('registrations', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
     // Load javascript file for Registrations views
-    // $this->addJavascriptFile('media://com_cajobboard/js/registrations.js');
+    // $this->addJavascriptFile('media://com_cajobboard/js/Site/registrations.js');
   }
 }

@@ -13,7 +13,7 @@ namespace Calligraphic\Cajobboard\Admin\View\Answers;
 
 use \FOF30\Container\Container;
 
-use \Calligraphic\Cajobboard\Admin\View\BaseHtml;
+use \Calligraphic\Cajobboard\Admin\View\Common\BaseHtml;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -36,7 +36,8 @@ class Html extends BaseHtml
 
 	/**
 	 * Overridden. Executes before rendering the page for the Browse task.
-   * Modified to eager load Author relation to Persons model.
+   * Modified to eager load Author relation to Persons model and push the
+   * model to the view templates.
 	 */
 	protected function onBeforeBrowse()
 	{

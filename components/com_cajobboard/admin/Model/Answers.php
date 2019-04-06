@@ -5,7 +5,7 @@
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC, (c) 2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -110,7 +110,7 @@ class Answers extends BaseModel
 	{
     // Answer title ('name' column in DB) and description are required
     $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EDIT_TITLE_ERR');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_EDIT_DESCRIPTION_ERR');
+    $this->assertNotEmpty($this->text, 'COM_CAJOBBOARD_EDIT_TEXT_ERR');
 
 		parent::check();
 

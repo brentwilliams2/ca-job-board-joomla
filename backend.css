@@ -1,0 +1,44 @@
+/**
+ * Back-end styles
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/**
+ * Styles for Admin Control Panel Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+.icon-cajobboard {
+  background: transparent url(../images/akeebasubs-16.png) no-repeat;
+  width: 16px !important;
+  height: 16px !important; }
+
+.invalid {
+  border-color: #1788e0 !important; }
+
+.form-vertical-control {
+  margin-bottom: 15px; }
+
+.cpanel-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  margin-right: 7px;
+  text-align: center; }
+
+#toolbar .btn-success {
+  width: auto !important; }
+
+div#cajobboard-renderjoomla [class*="span"] {
+  margin-left: 0; }
+
+div.joomla-version-3 {
+  padding: 0; }

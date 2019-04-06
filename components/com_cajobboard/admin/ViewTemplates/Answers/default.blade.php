@@ -12,9 +12,9 @@
 use Joomla\CMS\HTML\HTMLHelper;
 use \Calligraphic\Cajobboard\Site\Model\Answers;
 use \Calligraphic\Cajobboard\Admin\Helper\FormatHelper;
+use \FOF30\View\DataView\Form;
 use \FOF30\Utils\FEFHelper\BrowseView;
 use \FOF30\Utils\SelectOptions;
-use \FOF30\Model\DataModel;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -24,13 +24,9 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
 /**
- * @var \FOF30\View\DataView\Form $this
- * @var  Answers                  $item
- * @var  Answers                  $model
+ * @var  Form       $this
+ * @var  Answers    $item
  */
-$model = $this->getModel();
-
- /** @var  FOF30\View\DataView\Html  $this */
 
 $modelName = strtolower($this->getContainer()->inflector->pluralize($this->getName()));
 
@@ -40,40 +36,13 @@ $widthPct = array
   '#1'  => '1',  // Drag-and-drop icons in record fields for ordering browse records
   '#2'  => '1',  // "select all" checkbox to apply Toolbar actions to all records
   '#3'  => '8',  // Filter on whether records are published, unpublished, or both
-  '#4'  => '30', // Answer title
+  '#4'  => '35', // Answer title
   '#5'  => '10', // Access, e.g. "public"
   '#6'  => '10', // Author name
   '#7'  => '10', // Language
   '#8'  => '10', // Date Created
   '#9'  => '5',  // Hits counter
-  '#10' => '5',  // Record id number in database (primary key)
 )
-
-/* UCM
- * @property int            $answer_id       Surrogate primary key.
- * @property string         $slug            Alias for SEF URL.
- * @property bool           $featured        Whether this answer is featured or not.
- * @property int            $hits            Number of hits this answer has received.
- * @property int            $created_by      Userid of the creator of this answer.
- * @property string         $createdOn       Date this answer was created.
- * @property int            $modifiedBy      Userid of person that last modified this answer.
- * @property string         $modifiedOn      Date this answer was last modified.
- *
- * SCHEMA: Thing
- * @property string         $name            A title to use for the answer.
- * @property string         $description     A description of the answer.
- *
- * SCHEMA: CreativeWork
- * @property QAPage         $isPartOf         This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id).
- * @property Organization   $Publisher        The company that wrote this answer. FK to #__organizations(organization)id).
- * @property string         $text             The actual text of the answer itself.
- * @property Person         $Author           The author of this comment.  FK to #__persons.
- *
- * SCHEMA: Answer
- * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questionss(question_id).
- * @property int            $upvote_count     Upvote count for this item.
- * @property int            $downvote_count   Downvote count for this item.
- */
 ?>
 
 @extends('admin:com_cajobboard/Common/browse')
@@ -85,6 +54,7 @@ $widthPct = array
 @section('browse-filters')
   <div class="filter-search btn-group pull-left">
     {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
+    {{-- @TODO: modal is empty, no drop-down of author list --}}
     @searchfilter('created-by', null, \JText::_('COM_CAJOBBOARD_ANSWERS_FILTER_BY_AUTHOR'))
   </div>
 
@@ -153,22 +123,6 @@ $widthPct = array
         {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
         @sortgrid('hits', 'JGLOBAL_HITS')
       </th>
-
-      {{-- COLUMN #10: Record id number in database (primary key) --}}
-      <th width="{{ $widthPct['#10'] }}%" class="center header-id">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        <?php
-          // pk field is usually singular model name with '_id' appended, e.g. 'answer_id'
-          // but identity field can be overridden with aliases, and user model uses Joomla! 'id'
-          $id = 'id';
-          if ($this->items)
-          {
-            // array doesn't have zero-indexed element (Collection of DataModel objects)
-            $id = $this->items[1]->getIdFieldName();
-          }
-        ?>
-        @sortgrid($id, 'JGRID_HEADING_ID')
-      </th>
     </tr>
 @stop
 
@@ -199,53 +153,11 @@ $widthPct = array
       {{-- COLUMN #3: Icon (checkmark or "X") to show whether record is in published or unpublished state. --}}
       <td width="{{ $widthPct['#3'] }}%" class="center row-published">
         <div class="btn-group">
-          @jhtml('helper.browseWidgets.published', $item->enabled, $modelName, $i)
-          @jhtml('helper.browseWidgets.featured', $item->featured, $modelName, $i)
-          @jhtml('actionsdropdown.' . ((int) $item->state === 2  ? 'un' : '') . 'archive', 'cb' . $i, 'banners');
-          @jhtml('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'banners');
-          @jhtml('actionsdropdown.render', $this->escape($item->name));
+          @jhtml('helper.browseWidgets.published', $item->enabled, $i)
+          @jhtml('helper.browseWidgets.featured', $item->featured, $i)
+          @jhtml('helper.browseWidgets.publishedDropdown', $item->enabled, $item->name, $i)
         </div>
       </td>
-
-
-<?php
-
-/*
-HTML from the publish/feature combo control (not showing the checkmark icon):
-
-<div class="btn-group">
-  <aclass="btn btn-micro="" hastooltip"href="javascript:void(0);" onclick="return listItemTask('cb1', 'answers.publish')" title="Published" data-original-title="Unpublish Item">
-    <span class="icon-publish" aria-hidden="true"></span>
-
-    <a href="javascript:void(0)" onclick="return listItemTask('cb1', 'answers.featured')" class="btn btn-micro hasTooltip" title="" data-original-title="Toggle featured status.">
-      <span class="icon-unfeatured" aria-hidden="true"></span>
-    </a>;;
-
-    <button data-toggle="dropdown" class="dropdown-toggle btn btn-micro">
-      <span class="caret"></span>
-      <span class="element-invisible">Actions for: Consciousness consists of electromagnetic resonance of quantum energy. “Quantum” means a maturing of the archetypal.</span>
-    </button>
-
-    <ul class="dropdown-menu">
-      <li>
-        <a href="javascript://" onclick="listItemTask('cb1', 'banners.archive')">
-          <span class="icon-archive" aria-hidden="true"></span>
-          Archive
-        </a>
-      </li>
-      <li>
-        <a href="javascript://" onclick="listItemTask('cb1', 'banners.trash')">
-          <span class="icon-trash" aria-hidden="true"></span>
-          Trash
-        </a>
-      </li>
-    </ul>;
-  </aclass="btn>
-</div>
-*/
-?>
-
-
 
       {{-- COLUMN #4: Answer title and category --}}
       <td width="{{ $widthPct['#4'] }}%" class="row-title">
@@ -285,11 +197,6 @@ HTML from the publish/feature combo control (not showing the checkmark icon):
       {{-- COLUMN #9: Hits Counter --}}
       <td width="{{ $widthPct['#9'] }}%" class="center row-hits">
         @jhtml('helper.commonWidgets.hits', $item->hits)
-      </td>
-
-      {{-- COLUMN #10: Primary key (id number in database) --}}
-      <td width="{{ $widthPct['#10'] }}%" class="center row-id">
-        {{ $item->getId() }}
       </td>
     </tr>
   @endforeach

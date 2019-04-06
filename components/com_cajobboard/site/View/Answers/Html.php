@@ -51,6 +51,6 @@ class Html extends \FOF30\View\DataView\Html
     $lang->load('answers', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
     // Load javascript file for Job Posting views
-    $this->addJavascriptFile('media://com_cajobboard/js/answers.js');
+    //$this->addJavascriptFile('media://com_cajobboard/js/Site/answers.js');
   }
 }

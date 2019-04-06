@@ -19,7 +19,7 @@
   $item = $this->getItem();
 
   $isEditTask = $this->task == 'edit';
-  
+
   // model data fields
   $reviewID               = $item->review_id;
   //$author                 = $item->Author;                  // The author of this content or rating (always hidden), FK to #__users
@@ -45,9 +45,6 @@
   $action = 'index.php?option=' . $this->getContainer()->componentName . '&view=' . $this->getName();
   if ($task === 'edit') $action .= '&id=' . $this->getItem()->getId();
 ?>
-
-{{-- @TODO: move JQuery module loads to View file --}}
-@js('media://com_cajobboard/js/rater.min.js')
 
 {{--
   #1 - Employer reviewed

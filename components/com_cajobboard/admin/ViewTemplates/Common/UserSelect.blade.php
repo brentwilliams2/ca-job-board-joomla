@@ -77,7 +77,6 @@ $url = 'index.php' . $uri->toString(['query']);
       <span class="icon-user" aria-hidden="true"></span>
     </button>
   </a>
-
 </div>
 
 @unless($readonly)

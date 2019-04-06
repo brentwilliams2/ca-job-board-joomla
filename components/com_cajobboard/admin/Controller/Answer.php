@@ -10,18 +10,18 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Controller;
-
-use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
+ namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // no direct access
 defined('_JEXEC') or die;
 
+use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
+
 class Answer extends BaseController
 {
 	/*
-	 * Overridden. Limit the tasks we're allowed to execute.
+	 * Overridden. Limit the tasks that are allowed to execute.
 	 *
 	 * @param   Container $container
 	 * @param   array     $config

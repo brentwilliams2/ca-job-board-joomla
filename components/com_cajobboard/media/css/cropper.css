@@ -20,8 +20,8 @@
   user-select: none; }
 
 .cropper-container img {
-                       /*Avoid margin top issue (Occur only when margin-top <= -height)
-*/
+  /*Avoid margin top issue (Occur only when margin-top <= -height)
+ */
   display: block;
   height: 100%;
   image-orientation: 0deg;
@@ -210,15 +210,18 @@
   .cropper-point.point-se {
     height: 15px;
     width: 15px; } }
+
 @media (min-width: 992px) {
   .cropper-point.point-se {
     height: 10px;
     width: 10px; } }
+
 @media (min-width: 1200px) {
   .cropper-point.point-se {
     height: 5px;
     opacity: .75;
     width: 5px; } }
+
 .cropper-point.point-se:before {
   background-color: #39f;
   bottom: -50%;
@@ -256,5 +259,4 @@
 .cropper-disabled .cropper-line,
 .cropper-disabled .cropper-point {
   cursor: not-allowed; }
-
 /*# sourceMappingURL=cropper.css.map */

@@ -2,7 +2,7 @@
   "name": "calligraphic-job-board-joomla",
   "version": "0.0.1",
   "description": "",
-  "main": "frontend.js",
+  "main": "Site/frontend.js",
   "scripts": {
     "test": "test"
   },

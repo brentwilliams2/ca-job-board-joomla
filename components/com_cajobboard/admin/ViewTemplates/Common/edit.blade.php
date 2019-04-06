@@ -36,8 +36,7 @@
   use \FOF30\Utils\FEFHelper\Html as FEFHtml;
 
   /** @var  FOF30\View\DataView\Html  $this */
-
-  $item = $this->getItem();
+  $item = $this->item;
 ?>
 
 {{--
@@ -69,7 +68,11 @@
 
 @section('header')
   <div class="form-inline form-inline-header">
-    <fieldset name="title" class="control-group">
+    <fieldset
+      name="title"
+      class="control-group hasTip"
+      title="@lang('JFIELD_TITLE_DESC')::@lang('COM_CAJOBBOARD_FIELD_TITLE_DESC')"
+    >
       <div class="control-label">
         <label for="name">
           @lang('JFIELD_TITLE_DESC')
@@ -89,7 +92,11 @@
       </div>
     </fieldset>
 
-    <fieldset name="alias" class="control-group">
+    <fieldset
+      name="alias"
+      class="control-group hasTip"
+      title="@lang('JFIELD_ALIAS_LABEL')::@lang('JFIELD_ALIAS_DESC')"
+    >
       <div class="control-label">
         <label for="alias">
           @lang('JFIELD_ALIAS_LABEL')

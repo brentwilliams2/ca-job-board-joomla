@@ -87,6 +87,8 @@
   <!-- Call Component Build Tasks                                 -->
   <!-- ========================================================== -->
   <target name="build" depends="prepare">
+    <!-- Compile, minify, and compress Javascript and SASS assets -->
+    <exec command="gulp build" dir="." />
 
     <!-- BUILD: Call Component Build Tasks -->
     <if>

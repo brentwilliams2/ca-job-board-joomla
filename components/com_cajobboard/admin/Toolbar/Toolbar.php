@@ -49,12 +49,27 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
   }
 
 
+  /**
+	 * Renders the toolbar for the current view and task
+	 *
+	 * @param   string   $view  The view of the component
+	 * @param   string   $task  The exact task of the view
+	 *
+	 * @return  void
+	 */
+  /*
+	public function renderToolbar($view = null, $task = null)
+	{
+
+  }
+*/
+
 	/**
 	 * Renders the toolbar for the Control Panel page
 	 *
 	 * @return  void
 	 */
-	public function onCpanelsBrowse()
+	public function onControlPanelsDefault()
 	{
     if ( !$this->container->platform->isBackend() )
     {
@@ -63,11 +78,9 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
     $this->renderSubmenu();
 
-    $this->renderTitle('cpanel');
+    $this->renderTitle('default');
 
-    JToolBarHelper::divider();
-
-    $this->isDataView() && JToolBarHelper::preferences($this->option);
+    JToolBarHelper::preferences($this->option);
   }
 
 
@@ -127,20 +140,20 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
     // @TODO: move this into the job board widget helper class and use a nicer Bootstrap modal, and lose the all caps
     ($model && $model->hasField('locked_on') && $this->perms->edit) && JToolBarHelper::checkin();
 
-    $this->perms->delete && JToolBarHelper::trash();
+    $this->perms->delete && JToolBarHelper::trash('trash');
 
     $this->perms->delete && JToolBarHelper::deleteList(strtoupper(Text::_($this->option . '_CONFIRM_DELETE')));
 
     JToolBarHelper::divider();
 
     // "Options" button that launches a modal of com_config view for this component
-    JToolBarHelper::preferences('com_cajobboard');
+    JToolBarHelper::preferences($this->option);
 
     // string  $ref        The name of the popup file (excluding the file extension for an xml file).
     // bool    $com        Use the help file in the component directory.
     // string  $override   Use this URL instead of any other
     // string  $component  Name of component to get Help (null for current component)
-    //
+    // @TODO: Add "Help" button
     // JToolBarHelper::help($ref, $com = false, $override = null, $component = null);
   }
 
@@ -179,17 +192,12 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 	 */
 	public function onAdd()
 	{
-    if ( !$this->container->platform->isBackend() )
+    if ( !$this->container->platform->isBackend() || !$this->isDataView() )
     {
       return;
     }
 
     $this->renderTitle('add');
-
-		if (!$this->isDataView())
-		{
-			return;
-    }
 
 		($this->perms->edit || $this->perms->editown) && JToolBarHelper::apply();
 
@@ -208,17 +216,12 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 	 */
 	public function onEdit()
 	{
-    if ( !$this->container->platform->isBackend() )
+    if ( !$this->container->platform->isBackend() || !$this->isDataView() )
     {
       return;
     }
 
     $this->renderTitle('edit');
-
-		if (!$this->isDataView())
-		{
-			return;
-    }
 
 		($this->perms->edit || $this->perms->editown) && JToolBarHelper::apply();
 

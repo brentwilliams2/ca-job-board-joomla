@@ -2,105 +2,49 @@
   "component": "com_cajobboard",
   "template": "tpl_mfi",
   "scss": [
-    {
-      "text": "component SCSS/CSS files",
-      "src":  "/components/com_cajobboard/media",
-      "dest": "/media/com_cajobboard"
-    },
-    {
-      "text": "template SCSS/CSS files",
-      "src":  "/templates/tpl_mfi",
-      "dest": "/templates/mfi"
-    }
+    "/components/com_cajobboard/media/scss",
+    "/templates/tpl_mfi/scss"
+  ],
+  "css": [
+    "/components/com_cajobboard/media/css",
+    "/templates/tpl_mfi/css"
   ],
   "js": [
-    {
-      "text": "component Javascript files",
-      "src":  "/components/com_cajobboard/media",
-      "dest": "/media/com_cajobboard"
-    },
-    {
-      "text": "template Javascript files",
-      "src":  "/templates/tpl_mfi",
-      "dest": "/templates/mfi"
-    }
+    "/components/com_cajobboard/media/js",
+    "/templates/tpl_mfi/js"
   ],
   "php": [
-    {
-      "text": "component admin files",
-      "src":  "/components/com_cajobboard/admin",
-      "dest": "/administrator/components/com_cajobboard"
-    },
-    {
-      "text": "component site files",
-      "src":  "/components/com_cajobboard/site",
-      "dest": "/components/com_cajobboard"
-    },
-    {
-      "text": "template root PHP files",
-      "src":  "/templates/tpl_mfi/*.php",
-      "dest": "/templates/mfi"
-    },
-    {
-      "text": "template includes PHP files",
-      "src":  "/templates/tpl_mfi/includes",
-      "dest": "/templates/mfi/includes"
-    },
-    {
-      "text": "template PHP override files",
-      "src":  "/templates/tpl_mfi/html",
-      "dest": "/templates/mfi/html"
-    },
-    {
-      "text": "user group job board plugin files",
-      "src":  "/plugins/plg_user_cajobboard",
-      "dest": "/plugins/user/cajobboard"
-    }
+    "/components/com_cajobboard/admin",
+    "/components/com_cajobboard/site",
+    "/templates/tpl_mfi/includes",
+    "/templates/tpl_mfi/html",
+    "/templates/tpl_mfi/*.php",
+    "/plugins/plg_user_cajobboard"
   ],
-  "language": [
-    {
-      "text": "template language files",
-      "src":  "/templates/tpl_mfi/language",
-      "dest": "/templates/mfi/language"
-    }
+  "other": [
+    "/components/com_cajobboard/media/images",
+    "/templates/tpl_mfi/images",
+    "/components/com_cajobboard/media/schema",
+    "/templates/tpl_mfi/fonts",
+    "/templates/tpl_mfi/language",
+    "/templates/tpl_mfi/*.ico",
+    "/templates/tpl_mfi/*.png",
+    "/templates/tpl_mfi/*.xml"
   ],
-  "media": [
-    {
-      "text": "component image files",
-      "src":  "/components/com_cajobboard/media/images",
-      "dest": "/media/com_cajobboard/images"
-    },
-    {
-      "text": "template image files",
-      "src":  "/templates/tpl_mfi/images",
-      "dest": "/templates/mfi/images"
-    },
-    {
-      "text": "component schema files",
-      "src":  "/components/com_cajobboard/media/schema",
-      "dest": "/media/com_cajobboard/schema"
-    },
-    {
-      "text": "template favicon file",
-      "src":  "/templates/tpl_mfi/*.ico",
-      "dest": "/templates/mfi/*.ico"
-    },
-    {
-      "text": "template icon files",
-      "src":  "/templates/tpl_mfi/*.png",
-      "dest": "/templates/mfi"
-    },
-    {
-      "text": "template font files",
-      "src":  "/templates/tpl_mfi/fonts",
-      "dest": "/templates/mfi/fonts"
-    }
-  ],
-  "misc": [
-    {
-      "text": "template XML configuration files",
-      "src":  "/templates/tpl_mfi/*.xml",
-      "dest": "/templates/mfi"
-    }
-  ]
+  "pathMap": {
+    "/components/com_cajobboard/admin/": "/administrator/components/com_cajobboard",
+    "/components/com_cajobboard/site/": "/components/com_cajobboard",
+    "/components/com_cajobboard/media/scss/": "/media/com_cajobboard/css",
+    "/components/com_cajobboard/media/images/": "/media/com_cajobboard/images",
+    "/components/com_cajobboard/media/js/": "/media/com_cajobboard/js",
+    "/components/com_cajobboard/media/schema/": "/media/com_cajobboard/schema",
+    "/templates/tpl_mfi/fonts/": "/templates/mfi/fonts",
+    "/templates/tpl_mfi/html/": "/templates/mfi/html",
+    "/templates/tpl_mfi/images/": "/templates/mfi/images",
+    "/templates/tpl_mfi/includes/": "/templates/mfi/includes",
+    "/templates/tpl_mfi/language/": "/templates/mfi/language",
+    "/templates/tpl_mfi/scss/": "/templates/mfi/css",
+    "/templates/tpl_mfi/js/": "/templates/mfi/js",
+    "/plugins/plg_user_cajobboard/": "/plugins/user/cajobboard"
+  }
 }

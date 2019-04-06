@@ -17,4 +17,5 @@ defined('_JEXEC') or die;
 
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {
+  // @TODO: Remove if not used
 }

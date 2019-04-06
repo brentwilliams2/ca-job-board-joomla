@@ -40,6 +40,9 @@ class Html extends \FOF30\View\DataView\Html
     $lang->load('reviews', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
     // Load javascript file for Job Posting views
-    $this->addJavascriptFile('media://com_cajobboard/js/reviews.js');
+    $this->addJavascriptFile('media://com_cajobboard/js/Site/reviews.js');
+
+    // Vendor lib for the star-rating widget
+    $this->addJavascriptFile('media://com_cajobboard/js/Vendor/rater.min.js');
   }
 }

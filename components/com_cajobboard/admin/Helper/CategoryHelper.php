@@ -94,16 +94,18 @@ abstract class CategoryHelper
 
 
   /**
-   * Sets the 'selected' flag to the default 'uncategorised' job board category if this is a new item, or returns the category id of the selected category
+   * Sets the 'selected' flag to the default category for a view job board category
+   * if this is a new item, or returns the category id of the selected category
    *
    * @param   Object   $categories  An array of category POPO objects with the properties 'id', 'title', 'level', and 'language' for each category
    * @param   string   $cat_id      The category id of this item
+   * @param   string   $view        The name of the view, for setting a category on new records. Should be plural e.g. 'Answers'
    *
    * @return  int      The category id that should have the 'selected' flag added to its HTML: <option value="" selected>
    *
    * @since   0.0.1
    */
-  public static function selectedHelper(&$categories, $cat_id)
+  public static function selectedHelper(&$categories, $cat_id, $view='uncategorised')
   {
     foreach ($categories as $category)
     {
@@ -112,7 +114,7 @@ abstract class CategoryHelper
         return $category->id;
       }
 
-      if (strtolower($category->title) == 'uncategorised')
+      if (strtolower($category->title) == strtolower($view))
       {
         $uncategorisedId = $category->id;
       }
@@ -120,7 +122,7 @@ abstract class CategoryHelper
 
     if(!$uncategorisedId)
     {
-      throw new Exception("The default Calligraphic Job Board category \(\"uncategorised\"\) is missing from Joomla's #__categories table. It should have been added on installation of this component.");
+      throw new Exception("The default Calligraphic Job Board category \(\"$view\"\) is missing from Joomla's #__categories table. It should have been added on installation of this component.");
     }
 
     return $uncategorisedId;

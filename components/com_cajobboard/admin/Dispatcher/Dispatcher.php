@@ -23,7 +23,7 @@ require_once(JPATH_LIBRARIES . DS . 'fof30' . DS . 'Utils' . DS . 'helpers.php')
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
 	/** @var   string  The name of the default view, in case none is specified */
-  public $defaultView = 'ControlPanel';
+  public $defaultView = 'ControlPanels';
 
 	public function onBeforeDispatch()
 	{
@@ -35,12 +35,12 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     if(JDEBUG)
     {
 		  $this->container->template->addCSS('media://com_cajobboard/css/backend.css', $this->container->mediaVersion);
-      $this->container->template->addJS('media://com_cajobboard/js/backend.js', false, false, $this->container->mediaVersion);
+      $this->container->template->addJS('media://com_cajobboard/js/Admin/backend.js', false, false, $this->container->mediaVersion);
     }
     else
     {
 		  $this->container->template->addCSS('media://com_cajobboard/css/backend.min.css', $this->container->mediaVersion);
-      $this->container->template->addJS('media://com_cajobboard/js/backend.min.js', false, false, $this->container->mediaVersion);
+      $this->container->template->addJS('media://com_cajobboard/js/Admin/backend.min.js', false, false, $this->container->mediaVersion);
     }
 	}
 }

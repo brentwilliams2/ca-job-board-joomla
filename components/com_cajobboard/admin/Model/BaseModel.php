@@ -29,7 +29,7 @@ use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissionsException;
  */
 class BaseModel extends DataModel
 {
-  use \Calligraphic\Cajobboard\Admin\Helper\AssetHelperTrait;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\AssetHelper;
 
   /**
 	 * Public constructor. Overrides the parent constructor.
@@ -45,10 +45,6 @@ class BaseModel extends DataModel
 	{
     // Parent constructor
     parent::__construct($container, $config);
-
-    // Set `filter_order` state variable to use the ordering column, for Joomla!'s
-    // administrator browse view panel drag-and-drop ordering functionality
-    $this->setState('filter_order', 'ordering');
   }
 
 
@@ -299,4 +295,36 @@ class BaseModel extends DataModel
 
     return false;
   }
+
+
+	/**
+	 * Archive the record, i.e. set enabled to -1.
+   * @TODO: Submit PR. DataModel is incorrectly setting this value to 2 so method over-ridden here.
+	 *
+	 * @return   $this  For chaining
+	 */
+	public function archive()
+	{
+		if(!$this->getId())
+		{
+			throw new RecordNotLoaded("Can't archive a not loaded DataModel");
+    }
+
+		if (!$this->hasField('enabled'))
+		{
+			return $this;
+    }
+
+    $this->triggerEvent('onBeforeArchive', array());
+
+    $enabled = $this->getFieldAlias('enabled');
+
+    $this->$enabled = -1;
+
+    $this->save();
+
+    $this->triggerEvent('onAfterArchive');
+
+		return $this;
+	}
 }

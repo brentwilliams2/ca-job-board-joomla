@@ -1,11 +1,11 @@
 {
+  "seed": 1,
   "scaling": 1,
   "models": [
     "Answers"
   ],
   "count": {
-    "Answers": 4,
-    "Organizations": 30
-  },
-  "seed": 1
+    "Answers": 100,
+    "Organizations": 100
+  }
 }

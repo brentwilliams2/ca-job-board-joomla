@@ -19,6 +19,13 @@ defined('_JEXEC') or die;
 class AnswersTemplate extends CommonTemplate
 {
 	/**
+	 * Category ID for this item.
+	 *
+	 * @var    int
+   */
+  public $cat_id;
+
+	/**
 	 * This property points to a QAPage entity associated with this answer.
 	 *
 	 * @var    QAPage
@@ -72,6 +79,20 @@ class AnswersTemplate extends CommonTemplate
 	 * Setters for Answer fields
    */
 
+
+  public function cat_id ($config, $faker)
+  {
+    foreach ($config->categories as $category)
+    {
+      if ($category->title = 'answers')
+      {
+        $this->cat_id = $category->id;
+        return;
+      }
+    }
+    $this->cat_id = null;
+  }
+
   // $this->hasOne('isPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'qapage_id');
   public function is_part_of ($config, $faker)
   {
@@ -108,5 +129,10 @@ class AnswersTemplate extends CommonTemplate
   public function created_by ($config, $faker)
   {
     $this->created_by = $config->userIds[$faker->numberBetween(0, count($config->userIds))];
+  }
+
+  public function created_on ($config, $faker)
+  {
+    $this->created_on = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
   }
 }

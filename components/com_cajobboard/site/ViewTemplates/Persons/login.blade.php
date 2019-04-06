@@ -28,7 +28,7 @@
   $privacy_policy = JRoute::_('index.php?Itemid=' . $params->get('privacy_policy'));
 ?>
 
-@js('media:com_cajobboard/js/loginForm.js')
+@js('media:com_cajobboard/js/Site/loginForm.js')
 
 {{--
   Login to account with email

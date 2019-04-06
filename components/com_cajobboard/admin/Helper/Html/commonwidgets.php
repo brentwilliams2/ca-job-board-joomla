@@ -11,7 +11,7 @@
  * Usage in Blade templates:
  *     @jhtml('helper.commonWidgets.methodName', parameter1, ...)
  *
- * These are based on the Akeeba FEF (front-end framework) helperrs included in FOF with revised HTML output
+ * These are based on the Akeeba FEF (front-end framework) helpers included in FOF with revised HTML output
  */
 
 // Can't namespace since this class is used through Joomla's autoloader and JHtml system
@@ -23,25 +23,6 @@ use \FOF30\Utils\SelectOptions;
 
 abstract class HelperCommonWidgets
 {
-	/**
-	 * Hits counter widget
-   *
-   * @param   int   How many counts this item has
-	 *
-	 * @return  string
-	 *
-	 * @since   0.1
-	 */
-	public static function hits($count)
-	{
-    $html  = '<span class="badge badge-info">';
-    $html .= $count;
-    $html .= '</span>';
-
-		return $html;
-  }
-
-
 	/**
 	 * Access (e.g. "Public") widget
    *
@@ -70,6 +51,25 @@ abstract class HelperCommonWidgets
     }
 
     $html = '<label for="access">' . $levelName . '</label>';
+
+		return $html;
+  }
+
+
+	/**
+	 * Hits counter widget
+   *
+   * @param   int   How many counts this item has
+	 *
+	 * @return  string
+	 *
+	 * @since   0.1
+	 */
+	public static function hits($count)
+	{
+    $html  = '<span class="badge badge-info">';
+    $html .= $count;
+    $html .= '</span>';
 
 		return $html;
   }

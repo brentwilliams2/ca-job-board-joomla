@@ -58,7 +58,10 @@ class Html extends \FOF30\View\DataView\Html
     $this->componentParams = \JComponentHelper::getParams('com_cajobboard');
 
     // Load javascript file for Job Posting views
-    $this->addJavascriptFile('media://com_cajobboard/js/jobPostings.js');
+    $this->addJavascriptFile('media://com_cajobboard/js/Site/jobPostings.js');
+
+    // Vendor lib for the star-rating widget
+    $this->addJavascriptFile('media://com_cajobboard/js/Vendor/rater.min.js');
   }
 
   /*
@@ -68,8 +71,6 @@ class Html extends \FOF30\View\DataView\Html
    */
 	protected function onBeforeBrowse()
 	{
-    $this->addJavascriptFile('media://com_cajobboard/js/rater.min.js');
-
 		// Create the lists object
     $this->lists = new \stdClass();
 

@@ -23,8 +23,18 @@ defined('_JEXEC') or die;
 
 class ControlPanel extends Controller
 {
-  public function onBeforeDefault()
-  {
-    return true;
+  use Mixin\PredefinedTaskList;
+
+	/*
+	 * Overridden. Limit the tasks that are allowed to execute.
+	 *
+	 * @param   Container $container
+	 * @param   array     $config
+	 */
+	public function __construct(Container $container, array $config = array())
+	{
+    parent::__construct($container, $config);
+
+    $this->predefinedTaskList = ['default'];
   }
 }

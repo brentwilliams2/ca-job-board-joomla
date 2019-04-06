@@ -39,9 +39,11 @@ trait PredefinedTaskList
 	 */
 	public function execute($task)
 	{
-		if (!in_array($task, $this->predefinedTaskList))
+		if (!in_array($task, $this->predefinedTaskList) && $task != 'default')
 		{
-			$task = reset($this->predefinedTaskList);
+      // notify user that the task they've requested isn't valid
+      \JFactory::getApplication()->enqueueMessage(\JText::sprintf( 'COM_CAJOBBOARD_TASK_NOT_IN_LIST', $task ), 'error');
+      $task = 'browse';
     }
 
 		return parent::execute($task);

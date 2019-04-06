@@ -12,13 +12,9 @@
 
   // no direct access
   defined('_JEXEC') or die;
+
+  use \Calligraphic\Cajobboard\Admin\Helper\LinkBarHelper;
 ?>
-
-
-@section('header')
-  <h1>@lang('COM_CAJOBBOARD_ADMIN_CONTROL_PANEL_PAGE_TITLE')</h1>
-@overwrite
-
 
 @section('sidebar')
   <p></p>
@@ -42,19 +38,9 @@
 <div class="clearfix"></div>
 
 <div>
-  <div class="row">
-    <div class="span12 control-panel-header">
-      @yield('header')
-    </div>
-  </div>
-
   <div class="row control-panel-body">
-    <div class="span4">
-      @yield('sidebar')
-    </div>
-
-    <div class="span8">
-        @yield('item')
+    <div class="span12">
+      @yield('item')
     </div>
   </div>
 
@@ -64,3 +50,4 @@
     </div>
   </div>
 </div>
+

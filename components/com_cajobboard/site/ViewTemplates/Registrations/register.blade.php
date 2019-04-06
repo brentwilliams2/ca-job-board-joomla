@@ -49,7 +49,7 @@
   }
 ?>
 
-@js('media:com_cajobboard/js/registerForm.js')
+@js('media:com_cajobboard/js/Site/registerForm.js')
 
 {{--
   Create account with email

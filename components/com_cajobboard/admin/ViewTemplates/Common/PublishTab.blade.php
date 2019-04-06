@@ -38,7 +38,6 @@
     'JGLOBAL_INDEX_NOFOLLOW' => 'index, nofollow',
     'JGLOBAL_NOINDEX_NOFOLLOW' => 'noindex, nofollow',
   );
-
 ?>
 
 {{-----------------------------------------------------------------------------------}}
@@ -46,35 +45,55 @@
 {{-----------------------------------------------------------------------------------}}
 
 @section('publishing-data')
-  <fieldset name="created_date">
+  <fieldset
+    name="created_date"
+    class="control-group hasTip"
+    title="@lang('JGLOBAL_FIELD_CREATED_DESC')::@lang('JGLOBAL_FIELD_CREATED_LABEL')"
+  >
     <label for="created_date">
       @lang('JGLOBAL_FIELD_CREATED_DESC')
     </label>
     @jhtml('calendar', $item->created_on, 'created_on', 'created_on', '%Y-%m-%d %H:%M:%S')
   </fieldset>
 
-  <fieldset name="created_by">
+  <fieldset
+    name="created_by"
+    class="control-group hasTip"
+    title="@lang('JGLOBAL_FIELD_CREATED_BY_LABEL')::@lang('JGLOBAL_FIELD_CREATED_BY_DESC')"
+  >
     <label for="created_by">
       @lang('JGLOBAL_FIELD_CREATED_BY_LABEL')
     </label>
     @include('admin:com_cajobboard/Common/UserSelect', ['userID' => $item->created_by, 'name' => 'created_by', 'item' => $item, 'required' => true])
   </fieldset>
 
-  <fieldset name="modified_date">
+  <fieldset
+    name="modified_date"
+    class="control-group hasTip"
+    title="@lang('JGLOBAL_FIELD_MODIFIED_LABEL')::@lang('COM_CAJOBBOARD_FIELD_MODIFIED_DATE_DESC')"
+  >
     <label for="modified_date">
       @lang('JGLOBAL_FIELD_MODIFIED_LABEL')
     </label>
     @jhtml('calendar', $item->modified_on, 'modified_on', 'modified_on', '%Y-%m-%d %H:%M:%S')
   </fieldset>
 
-  <fieldset name="modified_by">
+  <fieldset
+    name="modified_by"
+    class="control-group hasTip"
+    title="@lang('JGLOBAL_FIELD_MODIFIED_BY_LABEL')::@lang('JGLOBAL_FIELD_MODIFIED_BY_DESC')"
+  >
     <label for="modified_by">
       @lang('JGLOBAL_FIELD_MODIFIED_BY_LABEL')
     </label>
     @include('admin:com_cajobboard/Common/UserSelect', ['userID' => $item->modified_by, 'name' => 'modified_by', 'item' => $item, 'required' => true])
   </fieldset>
 
-  <fieldset name="hits">
+  <fieldset
+    name="hits"
+    class="control-group hasTip"
+    title="@lang('JGLOBAL_RECORD_HITS_LABEL')::@lang('JGLOBAL_RECORD_HITS_DESC')"
+  >
     <label for="hits">
       @lang('JGLOBAL_HITS')
     </label>
@@ -89,7 +108,11 @@
 
 @section('metadata')
   {{-- Metadata Description field --}}
-  <fieldset name="meta_description">
+  <fieldset
+    name="meta_description"
+    class="control-group hasTip"
+    title="@lang('JFIELD_META_DESCRIPTION_LABEL')::@lang('JFIELD_META_DESCRIPTION_DESC')"
+  >
     <label for="metadesc">
       @lang('JFIELD_META_DESCRIPTION_LABEL')
     </label>
@@ -97,7 +120,11 @@
   </fieldset>
 
   {{-- Metadata Keywords field --}}
-  <fieldset name="meta_keywords">
+  <fieldset
+    name="meta_keywords"
+    class="control-group hasTip"
+    title="@lang('JFIELD_META_KEYWORDS_LABEL')::@lang('JFIELD_META_KEYWORDS_DESC')"
+  >
     <label for="metakey">
       @lang('JFIELD_META_KEYWORDS_LABEL')
     </label>
@@ -105,7 +132,11 @@
   </fieldset>
 
   {{-- Metadata Author field --}}
-  <fieldset name="author">
+  <fieldset
+    name="author"
+    class="control-group hasTip"
+    title="@lang('JFIELD_METADATA_AUTHOR_DESC')::@lang('COM_CAJOBBOARD_FIELD_METADATA_AUTHOR_DESC')"
+  >
     <label for="metadata_author">
       @lang('JAUTHOR')
     </label>
@@ -113,7 +144,11 @@
   </fieldset>
 
   {{-- Metadata Robots field --}}
-  <fieldset name="robots">
+  <fieldset
+    name="robots"
+    class="control-group hasTip"
+    title="@lang('JFIELD_METADATA_ROBOTS_LABEL')::@lang('JFIELD_METADATA_ROBOTS_DESC')"
+  >
     <label for="metadata_robots">
       @lang('JFIELD_METADATA_ROBOTS_LABEL')
     </label>

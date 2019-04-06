@@ -12,14 +12,14 @@
 // Core variables and mixins from template
 //-----------------------------------------------------------------------------
 
-@import "../../../../templates/tpl_mfi/scss/variables";
+@import '../../../../templates/tpl_mfi/scss/variables';
 
 
 //-----------------------------------------------------------------------------
 // Component partial includes
 //-----------------------------------------------------------------------------
 
-@import "admin_control_panel";
+@import 'Admin/admin_control_panel';
 
 
 //-----------------------------------------------------------------------------
@@ -28,17 +28,15 @@
 
 
 // The icon that shows in the title for each admin screen
-// @TODO: Replace the akeeba icon with a cajobboard one, see icon text file in component media directory. Maybe a little bit larger (24px)
+// @TODO: Replace the akeeba icon with a cajobboard one, see icon text file in
+//        component media directory. Maybe a little bit larger (24px)
 .icon-cajobboard {
-	background: transparent url(../images/akeebasubs-16.png) no-repeat;
-	width: 16px !important;
-	height: 16px !important;
+  background: transparent url('../images/akeebasubs-16.png') no-repeat;
+  height: 14px;
+  width: 16px;
 }
 
-// This class is added by validate.js to form fields that are using client-side validation and do not pass
-.invalid {
-  border-color: red !important;
-}
+
 
 //-----------------------------------------------------------------------------
 // Custom HTML widgets: editwidgets and browsewidgets in Helper/Html
@@ -54,11 +52,11 @@
 //-----------------------------------------------------------------------------
 
 .cpanel-icon {
-  width: 100px;
   height: 100px;
   margin-bottom: 10px;
   margin-right: 7px;
-  text-align: center
+  text-align: center;
+  width: 100px;
 }
 
 
@@ -67,16 +65,20 @@
 //-----------------------------------------------------------------------------
 
 // Joomla! 3.7 made success buttons fixed width.
-#toolbar .btn-success {
-  width: auto !important;
+#toolbar { // sass-lint:disable-line no-ids
+  .btn-success {
+    width: auto !important; // sass-lint:disable-line no-important
+  }
 }
 
 // Joomla! 3.7 broke span6 margins x_x
-div#cajobboard-renderjoomla [class*="span"] {
+#cajobboard-renderjoomla [class*='span'] { // sass-lint:disable-line no-ids
   margin-left: 0;
 }
 
-div.joomla-version-3 {
-  padding: 0;
+div {
+  .joomla-version-3 {
+    padding: 0;
+  }
 }
 

@@ -23,9 +23,6 @@
   $userId = $this->container->platform->getUser()->id;
 ?>
 
-{{-- @TODO: move JQuery module loads to View file --}}
-@js('media://com_cajobboard/js/rater.min.js')
-
 @section('header')
   <h4>Reviews</h4>
 @show

@@ -11,7 +11,7 @@
  * Usage in Blade templates:
  *     @jhtml('helper.browseWidgets.methodName', parameter1, ...)
  *
- * These are based on the Akeeba FEF (front-end framework) helperrs included in FOF with revised HTML output
+ * These are based on the Akeeba FEF (front-end framework) helpers included in FOF with revised HTML output
  */
 
 // Can't namespace since this class is used through Joomla's autoloader and JHtml system
@@ -20,6 +20,9 @@
 defined('_JEXEC') or die;
 
 use \FOF30\Utils\SelectOptions;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Pagination\Pagination;
 
 use Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
 
@@ -38,10 +41,15 @@ abstract class HelperBrowseWidgets
 	 */
 	public static function alias($slug)
 	{
-    // @TODO: Implement
-    // <span></span>
+    $html  = '<span class="admin-browse-alias">';
+    $html .= '(';
+    $html .= Text::_('JFIELD_ALIAS_LABEL');
+    $html .= ': ';
+    $html .= $slug;
+    $html .= ')';
+    $html .= '</span>';
 
-    return $alias;
+    return $html;
   }
 
 
@@ -58,14 +66,14 @@ abstract class HelperBrowseWidgets
 	 */
 	public static function category($cat_id)
 	{
-    $html = '<div class="small">';
-    $html .= JText::_('JCATEGORY');
+    $html  = '<div class="small">';
+    $html .= Text::_('JCATEGORY');
     $html .= ': ';
     $html .= '<a ';
     $html .= 'class="hasTooltip" ';
     $html .= 'href="/administrator/index.php?option=com_categories&amp;task=category.edit&amp;id=' . $cat_id . '&amp;extension=com_cajobboard" ';
     $html .= 'title="" ';
-    $html .= 'data-original-title="' . JText::_('JCATEGORY') . JText::_('JACTION_EDIT') . '"';
+    $html .= 'data-original-title="' . Text::_('JCATEGORY') . Text::_('JACTION_EDIT') . '"';
     $html .= '>';
     $html .= CategoryHelper::getCategoryTitleById($cat_id);
     $html .= '</a>';
@@ -79,23 +87,25 @@ abstract class HelperBrowseWidgets
 	 * Featured button to add to Published widget
    *
    * @param   bool    $isFeatured   Whether the item is currently set to "featured" or not
-   * @param   string  $modelName    The name of the current model
+   * @param   int     $i            The index of this item in the browse view list
 	 *
 	 * @return  string
 	 *
 	 * @since   0.1
 	 */
-	public static function featured($isFeatured, $modelName, $i)
+	public static function featured($isFeatured, $i)
 	{
-    $task = $isFeatured ? 'featured' : 'unfeatured';
-    $alt = JText::_('JGLOBAL_TOGGLE_FEATURED');
+    // $task is FSM showing subsequent task, not current task
+    $task = $isFeatured ? 'unfeature' : 'feature';
+
+    $alt = Text::_('JGLOBAL_TOGGLE_FEATURED');
     $icon = $isFeatured ? 'icon-featured' : 'icon-unfeatured';
-    $action = $isFeatured ? JText::_('JFEATURED') : JText::_('JUNFEATURED');
+    $action = $isFeatured ? Text::_('JFEATURED') : Text::_('JUNFEATURED');
 
     $html = '<a href="javascript:void(0)"';
     // listItemTask( id, task ) in core-uncompressed.js, 'id' is the checkbox id name
     // for the item e.g. 'cb0', 'task' is given to window.submitform() handler
-    $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $modelName . '.featured\')"';
+    $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $task . '\')"';
     $html .= 'class="btn btn-micro hasTooltip"';
     $html .= 'title="'. $alt . '"';
     $html .= 'data-original-title="'. $action . '"';
@@ -131,7 +141,7 @@ abstract class HelperBrowseWidgets
       // 'value' property is the short form of language name, e.g. en-GB
       if ($languageOption->value === '*' && $language === '*')
       {
-        $label = JText::_('COM_CAJOBBOARD_ALL');
+        $label = Text::_('COM_CAJOBBOARD_ALL');
       }
       elseif ($languageOption->value === $language)
       {
@@ -148,7 +158,7 @@ abstract class HelperBrowseWidgets
   /**
 	 * "Pagination" widget for browse view footer
    *
-   * @param   \JPagination  $paginationObject  The Joomla! pagination object
+   * @param   Pagination  $paginationObject  The Joomla! pagination object
 	 *
 	 * @return  string
 	 *
@@ -168,35 +178,92 @@ abstract class HelperBrowseWidgets
   /**
 	 * Method to create a clickable icon to change the state of an item
 	 *
-	 * @param   mixed    $isPublished   Either boolean or an object with a 'published' property (for b/c, deprecated)
-   * @param   string   $modelName     The name of the current model
-	 * @param   integer  $i             The index
+	 * @param   mixed    $status        Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
+	 * @param   integer  $i             The index of this item in the browse view list
 	 *
 	 * @return  string
 	 *
 	 * @since   1.0
 	 */
-	public static function published($isPublished, $modelName, $i)
+	public static function published($status, $i)
 	{
-		if (is_object($isPublished))
-		{
-			$isPublished = $isPublished->published;
-		}
+    switch ($status) {
+      // $task is FSM showing subsequent task, not current task
+      case 1: // published
+          $task = 'unpublish';
+          $alt = Text::_('JPUBLISHED');
+          $icon = 'icon-publish';
+          break;
 
-    $task = $isPublished ? 'unpublish' : 'publish';
-    $alt = $isPublished ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
-    $icon = $isPublished ? 'icon-publish' : 'icon-unpublish';
-    $action = $isPublished ? JText::_('JLIB_HTML_UNPUBLISH_ITEM') : JText::_('JLIB_HTML_PUBLISH_ITEM');
+      case 0: // unpublished
+          $task = 'publish';
+          $alt = Text::_('JUNPUBLISHED');
+          $icon = 'icon-unpublish';
+          break;
 
-    $html  = '<a';
+      case -1: // archived
+          $task = 'archive';
+          $alt = Text::_('JTOOLBAR_ARCHIVE');
+          $icon = 'icon-archive';
+          break;
+
+      case -2: // trashed
+          $task = 'trash';
+          $alt = Text::_('JTRASH');
+          $icon = 'icon-trash';
+          break;
+      default:
+        throw new \InvalidArgumentException('In browserwidgets::published, the value of the enabled field for a record in ' . $modelName . ' is not valid');
+    }
+
+    $html  = '<a ';
     $html .= 'class="btn btn-micro hasTooltip"';
     $html .= 'href="javascript:void(0);"';
-    $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $modelName . '.publish\')"';
+    $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $task . '\')"';
     $html .= 'title="'. $alt . '"';
-    $html .= 'data-original-title="' . $action . '"';
     $html .= '>';
     $html .= '<span class="' . $icon . '" aria-hidden="true"></span>';
     $html .= '</a>';
+
+		return $html;
+  }
+
+
+  /**
+	 * Method to create a clickable icon to change the state of an item
+	 *
+	 * @param   mixed    $status        Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
+	 * @param   integer  $i             The index of this item in the browse view list
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	public static function publishedDropdown($status, $name, $i)
+	{
+    $status = (int) $status;
+
+    if ($status != 1)
+    {
+      $html  = HTMLHelper::_('actionsdropdown.publish', 'cb' . $i, '');
+    }
+
+    if ($status)
+    {
+      $html  = HTMLHelper::_('actionsdropdown.unpublish', 'cb' . $i, '');
+    }
+
+    if ($status != -1)
+    {
+      $html .= HTMLHelper::_('actionsdropdown.archive', 'cb' . $i, '');
+    }
+
+    if ($status != -2)
+    {
+      $html .= HTMLHelper::_('actionsdropdown.trash',   'cb' . $i, '');
+    }
+
+    $html .= HTMLHelper::_('actionsdropdown.render', $name);
 
 		return $html;
   }
@@ -220,7 +287,7 @@ abstract class HelperBrowseWidgets
     if (!$title)
     {
       $titleArray = explode(' ', $text);
-      $title = JText::_('COM_CAJOBBOARD_ANSWER_TITLE_EMPTY') . ' ' . implode(' ', array_slice($titleArray, 0, 7));
+      $title = Text::_('COM_CAJOBBOARD_ANSWER_TITLE_EMPTY') . ' ' . implode(' ', array_slice($titleArray, 0, 7));
     }
 
     (str_word_count($title) > 15) && $title = implode(' ', array_slice(explode(' ', $title), 0, 15)) . '...';

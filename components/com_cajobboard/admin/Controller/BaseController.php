@@ -25,8 +25,6 @@ class BaseController extends DataController
   // Overrides execute() to provide predefined tasks
   use Mixin\PredefinedTaskList;
 
-  // @TODO: Make sure all tasks have similar error handling
-
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
 	 *
@@ -39,11 +37,53 @@ class BaseController extends DataController
 
     $this->setPredefinedTaskList([
       'browse', 'read', 'edit', 'add',
-      'apply', 'save', 'cancel',
-      'archive', 'trash', 'delete',
+      'apply', 'save', 'cancel', 'savenew',
+      'archive', 'trash', 'remove',
       'feature', 'unfeature',
       'publish', 'unpublish'
     ]);
+  }
+
+
+  /**
+	 * Override default DataModel ordering by primary key for browse views
+	 *
+	 * @return  void
+	 */
+  protected function onBeforeBrowse()
+  {
+    $this->setOrdering();
+  }
+
+
+  /**
+	 * Set DataModel ordering for browse views
+   *
+   * Ordering and order direction are checked for validity in the DataModel
+   * before use so no danger here of setting them to request state
+	 *
+	 * @return  void
+	 */
+	public function setOrdering($order = 'created_on', $orderDir = 'DESC')
+	{
+    $model = $this->getModel();
+
+    // if filter_order is set to primary key field (assuming it was set by
+    // default), change it to order by created_on date or passed parameter.
+    if ( $model->getState('filter_order') == $model->getIdFieldName() )
+    {
+      $model->setState('filter_order', $order);
+    }
+
+    // if filter_order_Dir is already set in either the user input or user session,
+    // respect the user's choice. Otherwise, override the default set in DataModel.
+    $requestOrderDir = $model->getState('filter_order_Dir');
+    $sessionOrderDir = $this->input->get('filter_order_Dir');
+
+    if (!$requestOrderDir && !$sessionOrderDir)
+    {
+      $model->setState('filter_order_Dir', $orderDir);
+    }
   }
 
 
@@ -66,7 +106,7 @@ class BaseController extends DataController
       $this->setRedirect($this->getRedirectUrl(), $error, 'error');
     }
 
-    $this->setRedirect($this->getRedirectUrl(), getRedirectFlashMsg('feature'), 'message');
+    $this->setRedirect($this->getRedirectUrl(), $this->getRedirectFlashMsg('feature'), 'message');
   }
 
 
@@ -89,7 +129,7 @@ class BaseController extends DataController
       $this->setRedirect($this->getRedirectUrl(), $error, 'error');
     }
 
-    $this->setRedirect($this->getRedirectUrl(), getRedirectFlashMsg('unfeature'), 'message');
+    $this->setRedirect($this->getRedirectUrl(), $this->getRedirectFlashMsg('unfeature'), 'message');
   }
 
 
@@ -153,14 +193,14 @@ class BaseController extends DataController
 	 */
 	public function getRedirectFlashMsg($task)
 	{
-    $textKey = strtoupper(
+    $translationKey = \JText::_(strtoupper(
       $this->container->componentName
-      . 'REDIRECT_MSG_VIEW_'
-      . $this->container->inflector->singularize($this->view)
-      . '_TASK_'
+      . '_REDIRECT_MSG_TASK_'
       . $task
-    );
+    ));
 
-    return \JText::_($textKey);
+    $viewName = $this->container->inflector->singularize($this->view);
+
+    return $viewName . ' ' . $translationKey;
   }
 }

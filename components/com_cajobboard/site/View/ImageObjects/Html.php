@@ -48,6 +48,6 @@ class Html extends \FOF30\View\DataView\Html
     $lang->load('image_objects', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
     // Load javascript file for Job Posting views
-    $this->addJavascriptFile('media://com_cajobboard/js/imageObjects.js');
+    $this->addJavascriptFile('media://com_cajobboard/js/Site/imageObjects.js');
   }
 }

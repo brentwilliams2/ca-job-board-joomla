@@ -1,0 +1,80 @@
+/**
+ * Styles for Site Question Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+//-----------------------------------------------------------------------------
+// Questions ViewTemplate - SASS variables
+//-----------------------------------------------------------------------------
+
+$question-color: #e3e3e4;
+
+//-----------------------------------------------------------------------------
+// Questions ViewTemplate - list view                      default.blade.php
+//-----------------------------------------------------------------------------
+
+.question-item {
+  background-color: $question-color;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+//-----------------------------------------------------------------------------
+// Questions ViewTemplate - list view item            default_item.blade.php
+//-----------------------------------------------------------------------------
+
+// The container for the entire job posting item in list view
+.question-list-item {
+  background-color: $question-color;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+// Generic items
+.btn-question {
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+// Class applied to the job posting title anchor (link to item view of job posting)
+.question-title {
+  font-size: $font-size-large;
+  font-weight: bold;
+}
+
+// question body text when link applied to it
+a {
+  .question-text-link {
+    color: $text-color;
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: $gray-light;
+    text-decoration: none;
+  }
+}
+
+.question-text-link {
+  &focus {
+    color: $gray-light;
+    text-decoration: none;
+  }
+}
+
+
+//-----------------------------------------------------------------------------
+// Questions ViewTemplate - item view                             item.blade.php
+//-----------------------------------------------------------------------------
+
