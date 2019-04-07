@@ -1,6 +1,6 @@
 <?php
 /**
- * Job Occupational Category Groups Model
+ * Admin Job Occupational Category Groups Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -16,10 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JLog;
-
-JLog::add('Job Occupational Category Groups model called', JLog::DEBUG, 'cajobboard');
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
  * Model class description
@@ -37,15 +34,11 @@ JLog::add('Job Occupational Category Groups model called', JLog::DEBUG, 'cajobbo
  *
  * @method  $this  myField() typehint
  */
-class JobOccupationalCategoryGroups extends DataModel
+class JobOccupationalCategoryGroups extends BaseModel
 {
   use Mixin\Assertions;
 
 	/**
-	 * Public constructor. Overrides the parent constructor.
-	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *

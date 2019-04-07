@@ -1,0 +1,133 @@
+/**
+ * SASS Variables and Color Classes for Admin Control Panel Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+//-----------------------------------------------------------------------------
+// ControlPanel ViewTemplate SASS Variables
+//-----------------------------------------------------------------------------
+
+$header-border-bottom: #d9dee4;
+$header-border-left: #adb2b5;
+
+$black: #000;
+$white: #fff;
+$blue: #3498db;
+$purple: #9b59b6;
+$green: #1abb9c;
+$aero: #9cc2cb;
+$red: #e74c3c;
+$dark: #34495e;
+$border-blue: #3498db;
+$border-purple: #9b59b6;
+$border-green: #1abb9c;
+$border-aero: #9cc2cb;
+$border-red: #e74c3c;
+$border-dark: #34495e;
+$bg-white: #73879c;
+$bg-green: #1abb9c;
+$bg-red: #e74c3c;
+$bg-blue: #3498db;
+$bg-orange: #f39c12;
+$bg-purple: #9b59b6;
+$bg-blue-sky: #50c1cf;
+
+
+//-----------------------------------------------------------------------------
+// ControlPanel ViewTemplate Color Classes
+//-----------------------------------------------------------------------------
+
+.blue {
+  color: $blue;
+}
+
+.purple {
+  color: $purple;
+}
+
+.green {
+  color: $green;
+}
+
+.aero {
+  color: $aero;
+}
+
+.red {
+  color: $red;
+}
+
+.dark {
+  color: $dark;
+}
+
+.border-blue {
+  border-color: $border-blue;
+}
+
+.border-purple {
+  border-color: $border-purple;
+}
+
+.border-green {
+  border-color: $border-green;
+}
+
+.border-aero {
+  border-color: $border-aero;
+}
+
+.border-red {
+  border-color: $border-red;
+}
+
+.border-dark {
+  border-color: $border-dark;
+}
+
+.bg-white {
+  background: $white;
+  border: 1px solid $white;
+  color: $bg-white;
+}
+
+.bg-green {
+  background: $bg-green;
+  border: 1px solid $bg-green;
+  color: $white;
+}
+
+.bg-red {
+  background: $bg-red;
+  border: 1px solid $bg-red;
+  color: $white;
+}
+
+.bg-blue {
+  background: $bg-blue;
+  border: 1px solid $bg-blue;
+  color: $white;
+}
+
+.bg-orange {
+  background: $bg-orange;
+  border: 1px solid $bg-orange;
+  color: $white;
+}
+
+.bg-purple {
+  background: $bg-purple;
+  border: 1px solid $bg-purple;
+  color: $white;
+}
+
+.bg-blue-sky {
+  background: $bg-blue-sky;
+  border: 1px solid $bg-blue-sky;
+  color: $white;
+}

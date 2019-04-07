@@ -18,11 +18,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
- * Model class for Job Board categories
- *
  * Fields:
  *
  * @property  int     $id                 Surrogate primary key
@@ -53,12 +51,15 @@ use FOF30\Model\DataModel;
  * @property  string  $language 	        Language for this category or '*' for all
  * @property  string  $version            Version history for this category
  */
-class Categories extends DataModel
+class Categories extends BaseModel
 {
 // @TODO: See note in ImageObjects model about whether this model is needed, or we could use JTable\Categories instead
 
   /*
-   * Overridden constructor
+	 * @param   Container $container The configuration variables to this model
+	 * @param   array     $config    Configuration values for this model
+	 *
+	 * @throws NoTableColumns
    */
 	public function __construct(Container $container, array $config = array())
 	{

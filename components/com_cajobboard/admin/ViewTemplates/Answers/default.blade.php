@@ -52,16 +52,33 @@ $widthPct = array
 {{-------------------------------------------------------------------------------------}}
 
 @section('browse-filters')
-  <div class="filter-search btn-group pull-left">
+  <span class="filter-search btn-group pull-left">
     {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
-    {{-- @TODO: modal is empty, no drop-down of author list --}}
+    {{-- @TODO: modal is empty, no drop-down of author list: need to write helper to do join and get author names --}}
     @searchfilter('created-by', null, \JText::_('COM_CAJOBBOARD_ANSWERS_FILTER_BY_AUTHOR'))
-  </div>
+  </span>
 
-  <div class="filter-search btn-group pull-left">
-    {{-- \FOF30\Utils\FEFHelper\BrowseView::publishedFilter --}}
-    {{ BrowseView::publishedFilter('enabled', 'JENABLED') }}
-  </div>
+  {{-- @TODO: Expand search options --}}
+
+  {{-- @TODO: Clear filters --}}
+
+  {{-- @TODO: Choose sort order (lists different options - by date, name, etc.) --}}
+
+  {{-- @TODO: Number of results to show per page --}}
+
+  <span class="filter-search btn-group pull-left">
+    {{ BrowseView::publishedFilter('enabled', 'JSTATUS') }}
+  </span>
+
+  <span class="filter-search btn-group pull-left">
+    {{ BrowseView::accessFilter('access', 'JFIELD_ACCESS_LABEL') }}
+  </span>
+
+  {{-- @TODO: Filter by category --}}
+
+  {{-- @TODO: Filter by language, need to helper to handle '*'  --}}
+
+  {{-- @TODO: Filter by  tags --}}
 @stop
 
 
@@ -179,7 +196,7 @@ $widthPct = array
 
       {{-- COLUMN #6: Author name --}}
       <td width="{{ $widthPct['#6'] }}%" class="row-author">
-        @if($item->Author instanceof DataModel)
+        @if( is_subclass_of($item->Author, '\FOF30\Model\DataModel') )
           {{{ $item->Author->name }}}
         @endif
       </td>

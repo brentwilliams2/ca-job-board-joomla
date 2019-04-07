@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Job Posting Model
+ * Site Job Posting Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,14 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
-use JRegistry;
 
 /**
  * Fields:
@@ -79,16 +77,9 @@ use JRegistry;
  * @property JobEmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
  * @property OccupationalCategories  $occupationalCategory  The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
- *
- * Filters / state:
- *
- * @method  $this  myField() typehint
  */
-class JobPostings extends BaseModel
+class JobPostings extends \Calligraphic\Cajobboard\Admin\Model\JobPostings
 {
-  // Needed for content history component
-  public $typeAlias = 'com_cajobboard.jobpostings';
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -97,76 +88,6 @@ class JobPostings extends BaseModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'JobPostings', array('typeAlias' => 'com_cajobboard.jobpostings'));
-
-    // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_job_postings';
-    $config['idFieldName'] = 'job_posting_id';
-
-        // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.jobpostings';
-
-    // Add behaviours to the model
-    $config['behaviours'] = array('Filters', 'Language', 'Tags');
-
     parent::__construct($container, $config);
-
-    /*
-     * Set up relations
-     */
-
-    // many-to-one FK to  #__cajobboard_places
-    $this->belongsTo('jobLocation', 'Places@com_cajobboard', 'job_location', 'place_id');
-
-    // many-to-one FK to  #__cajobboard_organizations
-    $this->belongsTo('hiringOrganization', 'Organizations@com_cajobboard', 'hiring_organization', 'organization_id');
-
-    // many-to-one FK to  #__cajobboard_job_employment_types
-    $this->belongsTo('employmentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');
-
-    // many-to-one FK to #__cajobboard_job_occupational_categories
-    $this->belongsTo('occupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
-  }
-
-  /**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-   *
-	 * @since 1.0
-	 */
-	public function bind($array, $ignore = '')
-	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			// Convert the params field to a string.
-      $parameter = new JRegistry;
-
-      $parameter->loadArray($array['params']);
-
-			$array['params'] = (string)$parameter;
-    }
-
-		return parent::bind($array, $ignore);
-  }
-
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_JOB_POSTING_ERR_TITLE');
-
-		parent::check();
-
-    return $this;
   }
 }

@@ -3,16 +3,17 @@
 die();
 
 use \Joomla\CMS\Factory;
+use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Component\ComponentHelper;
 use \Joomla\CMS\Log\Log;
 use \Joomla\CMS\Table\Table;
 use \Joomla\CMS\Table\Asset;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Access\Rules;
-use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Helper\TagsHelper;
 use \Joomla\CMS\Editor\Editor;
 use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Pagination\Pagination;
 
 

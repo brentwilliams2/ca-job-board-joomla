@@ -18,13 +18,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /*
- * Places model
- *
- * Describes more of less fixed physical places
- *
  * Fields:
  *
  * @property int      $organization_type_id       Surrogate primary key
@@ -37,13 +33,13 @@ use FOF30\Model\DataModel;
  * @property string   $description                A description of the type of organization.
  * @property string   $url                        Link to schema for organization type, e.g. wikipedia page on Employer.
  */
-class OrganizationTypes extends \FOF30\Model\DataModel
+class OrganizationTypes extends BaseModel
 {
 	/**
-	 * Public constructor. Adds behaviours and sets up the behaviours and the relations
+	 * @param   Container $container The configuration variables to this model
+	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @param   Container  $container
-	 * @param   array      $config
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{

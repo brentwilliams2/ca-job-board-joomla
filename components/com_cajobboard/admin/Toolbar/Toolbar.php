@@ -79,8 +79,6 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
     $this->renderSubmenu();
 
     $this->renderTitle('default');
-
-    JToolBarHelper::preferences($this->option);
   }
 
 

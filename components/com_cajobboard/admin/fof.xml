@@ -11,6 +11,7 @@
   <backend>
     <container>
       <option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
+      <option name="rendererClass"><![CDATA[Calligraphic\Cajobboard\Admin\Render\AdminRender]]></option>
     </container>
 	</backend>
 
@@ -18,6 +19,7 @@
 	<frontend>
 		<container>
 			<option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
+      <option name="rendererClass"><![CDATA[Calligraphic\Cajobboard\Site\Render\SiteRender]]></option>
       <option name="scaffolding">0</option>
 		</container>
 	</frontend>

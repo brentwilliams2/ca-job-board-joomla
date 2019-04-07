@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Organization Model
+ * Admin Persons Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -23,8 +23,6 @@ use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
 
 /**
- * Model class for Job Board users
- *
  * Fields:
  *
  * @property  int     $id
@@ -66,8 +64,7 @@ use \FOF30\Model\DataModel;
  */
 class Persons extends DataModel
 {
-  // User Profile Properties - SCHEMA: Thing
-
+  // @TODO: This schema to load stuff into class properties doesn't work, they need bound into RecordData
   /*
   * A description of this person.
   *
@@ -229,7 +226,10 @@ class Persons extends DataModel
   use Mixin\JsonData;
 
   /*
-   * Overridden constructor
+	 * @param   Container $container The configuration variables to this model
+	 * @param   array     $config    Configuration values for this model
+	 *
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
    */
 	public function __construct(Container $container, array $config = array())
 	{
@@ -258,7 +258,7 @@ class Persons extends DataModel
 	 *
 	 * @return  bool
 	 */
-	function onBeforeSave(&$data)
+	function onBeforeSave($data)
 	{
     $pluginData = $data;
 
@@ -276,7 +276,7 @@ class Persons extends DataModel
 
     $this->container->platform->importPlugin('cajobboard');
 
-    $jResponse = $this->container->platform->runPlugins('onUserSaveData', array(&$pluginData));
+    $jResponse = $this->container->platform->runPlugins('onUserSaveData', array($pluginData));
 
 		if (in_array(false, $jResponse))
 		{
@@ -298,19 +298,6 @@ class Persons extends DataModel
     $userProfileFields = $this->getUserProfile();
 
     $db = $this->getDbo();
-
-    // Apply custom filters here, e.g.:
-    /*
-      $username = $this->getState('username', null, 'string');
-      if ($username)
-      {
-        $this->whereHas('user', function(\JDatabaseQuery $subQuery) use($username, $db) {
-          $subQuery->where($db->qn('username') . ' LIKE ' . $db->q('%' . $username . '%'));
-        });
-      }
-    */
-
-    // Add faceted search functionality here
   }
 
 

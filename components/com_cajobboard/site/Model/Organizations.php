@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Organization Model
+ * Site Organization Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,13 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /*
  * Fields:
@@ -88,68 +87,16 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * @property string         $Branches             Properties managed by this organization, FK to #__cajobboard_places
  */
-class Organizations extends BaseModel
+class Organizations extends \Calligraphic\Cajobboard\Admin\Model\Organizations
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // override default table names and primary key id
-    $this->tableName = "#__cajobboard_organizations";
-    $this->idFieldName = "organization_id";
-
-    // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.organizations';
-
     parent::__construct($container, $config);
-
-    // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
-
-    /*
-     * Set up relations
-     */
-
-    // many-to-one FK to  #__cajobboard_places
-    $this->belongsTo('Location', 'Places@com_cajobboard', 'location', 'place_id');
-
-    // many-to-many FK to  #__cajobboard_places via join table
-    $this->belongsToMany('Branches', 'Places@com_cajobboard', 'organization_id', 'place_id', '#__cajobboard_organizations_places');
-
-    // many-to-one FK to  #__cajobboard_image_objects
-    $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
-
-    // many-to-many FK to  #__cajobboard_image_objects via join table
-    $this->belongsToMany('Images', 'ImageObjects@com_cajobboard', 'image', 'image_object_id', '#__cajobboard_organizations_images');
-
-    // one-to-one FK to  #__content through DiversityPolicies model
-    $this->belongsTo('DiversityPolicy', 'DiversityPolicies@com_cajobboard', 'diversity_policy', 'diversity_policy_id');
-
-    // one-to-one FK to  #__cajobboard_employer_aggregate_ratings
-    $this->hasOne('AggregateRating', 'EmployerAggregateRatings@com_cajobboard', 'aggregate_rating', 'employer_aggregate_rating_id');
-
-    // one-to-many FK to #__cajobboard_reviews
-    $this->hasMany('Reviews', 'Reviews@com_cajobboard', 'organization_id', 'review_id');
-
-    // many-to-many FK to #__cajobboard_persons
-    $this->belongsToMany('Employees', 'Persons@com_cajobboard', 'organization_id', 'id', '#__cajobboard_organizations_employees', 'organization_id', 'employee_id');
-
-    // many-to-many FK to #__cajobboard_organizations
-    $this->belongsToMany('MemberOf', 'Organizations@com_cajobboard', 'organization_id', 'organization_id', '#__cajobboard_organizations_organizations', 'organization_id', 'member_of_organization_id');
-
-    // one-to-one FK to  #__cajobboard_organizations
-    $this->hasOne('ParentOrganization', 'Organizations@com_cajobboard', 'parent_organization', 'organization_id');
-
-    // many-to-one FK to  #__cajobboard_organization_types
-    $this->belongsTo('RoleName', 'OrganizationRoles@com_cajobboard', 'role_name', 'organization_role_id');
-
-    // many-to-one FK to  #__cajobboard_organization_types
-    $this->belongsTo('OrganizationType', 'OrganizationTypes@com_cajobboard', 'organization_type', 'organization_type_id');
   }
 }

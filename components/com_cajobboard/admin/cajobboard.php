@@ -35,6 +35,3 @@ include_once JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Autoloader.php';
 
 // Dispatch the application
 $container = Container::getInstance('com_cajobboard')->dispatcher->dispatch();
-
-// HMVC variant for controllers
-// FOFDispatcher::getTmpInstance('com_cajobboard')->dispatch();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Image Objects Model
+ * Site Image Objects Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,13 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /*
  * Fields:
@@ -51,44 +50,16 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property  string	      $description       A long description of this image
  * @property  Object        $Author            The author of this content or rating, FK to #__users
  */
-class ImageObjects extends BaseModel
+class ImageObjects extends \Calligraphic\Cajobboard\Admin\Model\ImageObjects
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // override default table names and primary key id
-    $this->tableName = "#__cajobboard_image_objects";
-    $this->idFieldName = "image_object_id";
-
-    // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.image_objects';
-
     parent::__construct($container, $config);
-
-    // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
-
-    /*
-     * Set up relations
-     */
-
-    // Place depicted or described in the image, many-to-one FK to  #__cajobboard_places
-    $this->belongsTo('ContentLocation', 'Places@com_cajobboard', 'content_location', 'place_id');
-
-    // Relation to users table for $author
-    $this->belongsTo('Author', 'Persons@com_cajobboard', 'author', 'id');
-
-// @TODO: Could this be done using JTable\Categories, and the FOF Categories model removed from this project?
-// @TODO: Something like: $category = \JTable::getInstance('Category');
-
-    // Relation to category table for $Category
-    $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
   }
 }

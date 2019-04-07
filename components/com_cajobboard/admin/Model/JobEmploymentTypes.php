@@ -1,6 +1,6 @@
 <?php
 /**
- * Job Employment Types Model
+ * Admin Job Employment Types Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -16,13 +16,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JLog;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
-JLog::add('Job Employment Types model called', JLog::DEBUG, 'cajobboard');
 /**
- * Model class description
- *
  * Fields:
  *
  * @property int      $job_employment_type_id   Surrogate primary key
@@ -35,13 +31,9 @@ JLog::add('Job Employment Types model called', JLog::DEBUG, 'cajobboard');
  *
  * @method  $this  myField() typehint
  */
-class JobEmploymentTypes extends DataModel
+class JobEmploymentTypes extends BaseModel
 {
 	/**
-	 * Public constructor. Overrides the parent constructor.
-	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *

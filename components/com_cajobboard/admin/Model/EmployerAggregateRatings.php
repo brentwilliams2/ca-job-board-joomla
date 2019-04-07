@@ -16,10 +16,8 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JLog;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
-JLog::add('Employer Aggregate Ratings model called', JLog::DEBUG, 'cajobboard');
 /**
  * Model class for Job Board Employer_Aggregate_Ratings
  *
@@ -57,10 +55,13 @@ JLog::add('Employer Aggregate Ratings model called', JLog::DEBUG, 'cajobboard');
  * SCHEMA: Rating
  * @property  int		  $rating_value               The total rating sum for this employer. Get average by dividing with rating_count. Default worstRating 1 and bestRating 5 assumed.
  */
-class EmployerAggregateRatings extends DataModel
+class EmployerAggregateRatings extends BaseModel
 {
   /*
-   * Overridden constructor
+	 * @param   Container $container The configuration variables to this model
+	 * @param   array     $config    Configuration values for this model
+	 *
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
    */
 	public function __construct(Container $container, array $config = array())
 	{

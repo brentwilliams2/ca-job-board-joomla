@@ -16,28 +16,22 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JLog;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
-JLog::add('Address Regions model called', JLog::DEBUG, 'cajobboard');
 /*
- * Address Regions model
- *
- * Enumerated list of regions (states)
- *
  * Fields:
  *
  * @property int      $address_region_id      Surrogate primary key
  * @property string   $name                   The name of the region, e.g. California
  * @property string   $item_list_element      The abbreviation for the region, e.g. CA
  */
-class AddressRegions extends \FOF30\Model\DataModel
+class AddressRegions extends BaseModel
 {
 	/**
-	 * Public constructor. Adds behaviours and sets up the behaviours and the relations
+	 * @param   Container $container The configuration variables to this model
+	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @param   Container  $container
-	 * @param   array      $config
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{

@@ -24,14 +24,11 @@ use FOF30\Model\Model;
  class ControlPanels extends Model
  {
    /**
-    * Public constructor.
-    *
     * @param   Container  $container
     * @param   array      $config
     */
    public function __construct(Container $container, array $config = array())
    {
-    var_dump($this); die();
      parent::__construct($container, $config);
    }
 }

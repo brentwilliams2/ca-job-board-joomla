@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Places Model
+ * Site Place Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,13 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /*
  * Fields:
@@ -49,41 +48,16 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property  int			      $Logo                           A logo image that represents this place. FK to #__cajobboard_images(image_id)
  * @property  int			      $Photo                          One or more photographs of this place. FK M:M relationship in to #__cajobboard_images(image_id)
  */
-class Places extends BaseModel
+class Places extends \Calligraphic\Cajobboard\Admin\Model\Places
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // override default table names and primary key id
-    $this->tableName = "#__cajobboard_places";
-    $this->idFieldName = "place_id";
-
-    // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.places';
-
     parent::__construct($container, $config);
-
-    // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
-
-    /*
-     * Set up relations
-     */
-
-    // many-to-one FK to  #__cajobboard_address_regions
-    $this->belongsTo('addressRegions', 'AddressRegions@com_cajobboard', 'organization_type', 'address_region_id');
-
-    // many-to-one FK to  #__cajobboard_image_objects
-    $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
-
-    // many-to-many FK to  #__cajobboard_image_objects via join table
-    $this->belongsToMany('Photo', 'ImageObjects@com_cajobboard', 'photo', 'image_object_id', '#__cajobboard_places_images');
   }
 }

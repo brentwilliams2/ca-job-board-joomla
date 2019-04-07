@@ -1,6 +1,6 @@
 <?php
 /**
- *Registration Pages Model
+ * Admin Registration Pages Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -24,10 +24,6 @@ use FOF30\Model\Model;
 class Registrations extends Model
 {
 	/**
-	 * Public constructor. Overrides the parent constructor.
-	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *

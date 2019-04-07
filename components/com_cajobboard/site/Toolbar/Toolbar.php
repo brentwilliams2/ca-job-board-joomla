@@ -17,5 +17,6 @@ defined('_JEXEC') or die;
 
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {
-  // @TODO: Remove if not used
+  // See also Common/ToolBar.blade.php
+  // also renderToolBar() method in FOF30 Toolbar.php, it has switches for front-end rendering built in
 }

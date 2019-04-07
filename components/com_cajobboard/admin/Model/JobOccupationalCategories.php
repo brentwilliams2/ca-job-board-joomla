@@ -1,6 +1,6 @@
 <?php
 /**
- * Job Occupational Categories Model
+ * Admin Job Occupational Categories Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -16,14 +16,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use JLog;
-
-JLog::add('Job Occupational Categories model called', JLog::DEBUG, 'cajobboard');
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
- * Model class description
- *
  * Fields:
  *
  * @property int      $job_occupational_category_id   Surrogate primary key', UCM (unified content model) properties for internal record metadata
@@ -37,15 +32,11 @@ JLog::add('Job Occupational Categories model called', JLog::DEBUG, 'cajobboard')
  *
  * @method  $this  myField() typehint
  */
-class JobOccupationalCategories extends DataModel
+class JobOccupationalCategories extends BaseModel
 {
   use Mixin\Assertions;
 
 	/**
-	 * Public constructor. Overrides the parent constructor.
-	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *

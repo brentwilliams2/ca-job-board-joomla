@@ -1,6 +1,6 @@
 <?php
 /**
- * Question and Answer Pages Model
+ * Admin Question and Answer Pages Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -16,11 +16,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
- * Model class description
- *
  * Fields:
  *
  * UCM
@@ -37,23 +35,19 @@ use FOF30\Model\DataModel;
  * @property string             $name               A name for this question and answer page.
  * @property string             $description        A long description of this question and answer page.
  * @property int                $mainEntityOfPage   FK to question this page is about
- * 
+ *
  * SCHEMA: CreativeWork
  * @property Organizations      $About              The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id)
- * 
+ *
  * SCHEMA: QAPage
  * @property QAPageCategories   $Specialty          A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id)
  *
  * RELATIONS
  * @property Questions          $Question           The Question this page is about
  */
-class QAPages extends DataModel
+class QAPages extends BaseModel
 {
 	/**
-	 * Public constructor. Overrides the parent constructor.
-	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
@@ -96,7 +90,7 @@ class QAPages extends DataModel
 	{
 		// Join category table specialty field to QAPages table
     $db = $this->getDbo();
-    
+
 		$query = $db->getQuery(true)
       ->select(array(
         $db->quoteName('qapages.*'),
@@ -116,26 +110,26 @@ class QAPages extends DataModel
 				$query->where($clause);
 			}
     }
-    
+
     // Handle checking state for order and setting it if needed
     $order = $this->getState('filter_order', null, 'cmd');
-    
+
 		if (!array_key_exists($order, $this->knownFields))
 		{
 			$order = $this->getIdFieldName();
 			$this->setState('filter_order', $order);
     }
-    
+
     $order = $db->qn($order);
-    
+
     $dir = strtoupper($this->getState('filter_order_Dir', null, 'cmd'));
-    
+
 		if (!in_array($dir, array('ASC', 'DESC')))
 		{
 			$dir = 'ASC';
 			$this->setState('filter_order_Dir', $dir);
     }
-    
+
 		$query->order($order . ' ' . $dir);
 
   	return $query;

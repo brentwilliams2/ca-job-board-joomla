@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Reports Model
+ * Site Reports Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,13 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
  * Fields:
@@ -38,7 +37,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $keywords        The reasons this content is being reported, usually set from a predefined system list of reasons.
  * @property string         $text            The actual text of this report.
  */
-class Reports extends BaseModel
+class Reports extends \Calligraphic\Cajobboard\Admin\Model\Reports
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -48,41 +47,6 @@ class Reports extends BaseModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_reports';
-    $config['idFieldName'] = 'report_id';
-
-    // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.reports';
-
-    // Add behaviours to the model
-    $config['behaviours'] = array('Filters', 'Language', 'Tags');
-
     parent::__construct($container, $config);
-
-    /*
-     * Set up relations
-     */
-
-    // @TODO: Waiting on PR request for custom relation types (to create relation type for table inheritance)
-    //$this->hasOne('about', $about__model' . @com_cajobboard', 'about__id', $this->container->inflector->singularize($about__model) . '_id');
-  }
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_REPORT_ERR_TITLE');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_REPORT_ERR_DESCRIPTION');
-    $this->assertNotEmpty($this->url, 'COM_CAJOBBOARD_REPORT_ERR_URL');
-
-		parent::check();
-
-    return $this;
   }
 }

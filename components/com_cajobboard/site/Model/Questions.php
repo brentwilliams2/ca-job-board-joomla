@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Questions Model
+ * Site Questions Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,15 +10,16 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
 /**
+ * Model class description
+ *
  * Fields:
  *
  * UCM
@@ -46,7 +47,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $downvote_count   Downvote count for this item.
  *
  */
-class Questions extends BaseModel
+class Questions extends \Calligraphic\Cajobboard\Admin\Model\Questions
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -56,47 +57,6 @@ class Questions extends BaseModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_questions';
-    $config['idFieldName'] = 'question_id';
-
-    // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.questions';
-
-    // Add behaviours to the model
-    $config['behaviours'] = array('Filters', 'Language', 'Tags');
-
     parent::__construct($container, $config);
-
-    /*
-     * Set up relations
-     */
-
-    // one-to-one FK to #__cajobboard_qapage
-    $this->hasOne('isPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'qapage_id');
-
-    // many-to-one FK to  #__organizations
-    $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
-
-    // one-to-one FK to  #__cajobboard_answers
-    $this->hasOne('acceptedAnswer', 'Answers@com_cajobboard', 'accepted_answer', 'answer_id');
-  }
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_QUESTION_ERR_TITLE');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_QUESTION_ERR_DESCRIPTION');
-    $this->assertNotEmpty($this->url, 'COM_CAJOBBOARD_QUESTION_ERR_URL');
-
-		parent::check();
-
-    return $this;
   }
 }

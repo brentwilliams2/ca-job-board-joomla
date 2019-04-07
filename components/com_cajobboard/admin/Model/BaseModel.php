@@ -32,10 +32,6 @@ class BaseModel extends DataModel
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\AssetHelper;
 
   /**
-	 * Public constructor. Overrides the parent constructor.
-	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
@@ -49,8 +45,6 @@ class BaseModel extends DataModel
 
 
   /**
-	 * Perform checks on data for validity
-	 *
 	 * @return  static  Self, for chaining
 	 *
 	 * @throws \RuntimeException  When the data bound to this record is invalid

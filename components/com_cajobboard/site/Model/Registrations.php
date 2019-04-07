@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Reviews Model
+ * Site Registration Pages Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -13,64 +13,23 @@
 namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
-defined( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use FOF30\Model\Model;
 
 /**
- * Model class for User Registrations
- *
- * @param   string $email           The email address of the user to create
- * @param   string $userName        Screen name to use for the user
- * @param   string $name            The full name of the user
- * @param   string $language        The language to set for the user
- * @param   string $password        The user's password
+ * Model class description
  */
-class Registrations extends Model
+class Registrations extends \Calligraphic\Cajobboard\Admin\Model\Registrations
 {
-  /**
-  * User's screen name
-  *
-  * @param string $userName
-  */
-  public $userName;
-
-  /**
-  * User's full name
-  *
-  * @param string $name
-  */
-  public $name;
-
-  /**
-  * User's email address
-  *
-  * @param string $email
-  */
-  public $email;
-
-  /**
-  * Language set by the user
-  *
-  * @param string $language
-  */
-  public $language;
-
-  /**
-  * User's password
-  *
-  * @param string $password
-  */
-  public $password;
-
-  /*
-   * Overridden constructor
-   */
+	/**
+	 * @param   Container $container The configuration variables to this model
+	 * @param   array     $config    Configuration values for this model
+	 *
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // @TODO: Move validation logic from RegistrationHelper to here
-
     parent::__construct($container, $config);
   }
 }
