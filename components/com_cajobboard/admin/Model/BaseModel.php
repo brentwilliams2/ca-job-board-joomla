@@ -15,7 +15,6 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Log\Log;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Filter\OutputFilter;
 use \FOF30\Container\Container;
@@ -24,12 +23,14 @@ use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
 use \FOF30\Model\DataModel\Exception\NoTableColumns;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissionsException;
 
+
 /**
  * Model class description
  */
 class BaseModel extends DataModel
 {
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\AssetHelper;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\RulesHelper;
 
   /**
 	 * @param   Container $container The configuration variables to this model
@@ -42,7 +43,6 @@ class BaseModel extends DataModel
     // Parent constructor
     parent::__construct($container, $config);
   }
-
 
   /**
 	 * @return  static  Self, for chaining
@@ -68,36 +68,15 @@ class BaseModel extends DataModel
   }
 
 
-   /*
-   * Handle creating ACL record after creating a new Answer record
-   */
-  protected function onAfterCreate()
-  {
-    if($this->isAssetsTracked())
-    {
-      // Get the JTableAsset object for this item's asset name
-      $assetModel = $this->getAsset();
-
-      // Get the ID of the parent asset object for this item
-      $assetModel->parent_id = $this->getCategoryAssetID();
-      $assetModel->name = $this->getAssetName();
-      $assetModel->rules = (string) $this->getRules();
-
-      $assetId = $this->saveAssetRecord($assetModel);
-
-      $this->setFieldValue('asset_id', $assetId);
-
-      $this->save();
-    }
-  }
-
-
   /*
    * Handle deleting the ACL record after an Answer record is deleted
    */
-  protected function onAfterDelete()
+  protected function onBeforeDelete()
   {
-    $this->removeAssetRecord();
+    if ( $this->isAssetsTracked() )
+    {
+      $this->removeAssetRecord();
+    }
   }
 
 
@@ -106,7 +85,32 @@ class BaseModel extends DataModel
    */
   protected function onAfterUpdate()
   {
-    // @TODO: implement to check when the permissions page is changed on an admin edit screen
+    if ( $this->isAssetsTracked() )
+    {
+      $this->setAssetRules();
+    }
+  }
+
+
+  /*
+   * Handle creating ACL record after creating a new Answer record
+   */
+  protected function onAfterCreate()
+  {
+    if ( $this->isAssetsTracked() )
+    {
+      $this->getAsset();
+
+      $this->setAssetParentId();
+      $this->setAssetName();
+      $this->setAssetRules();
+
+      $assetId = $this->saveAssetRecord();
+
+      $this->setFieldValue('asset_id', $assetId);
+
+      $this->saveItemAssetId($assetId);
+    }
   }
 
 
@@ -115,16 +119,31 @@ class BaseModel extends DataModel
    */
   protected function onBeforeSave($data)
   {
-    Log::add('onBeforeSave in model called', Log::DEBUG, 'cajobboard');
-    // @TODO: author and robot fields are not handling JRegistry metadata field correctly.
     // Set 'metadata' field to new JRegistry object when save is for a new item (add task)
     if (!is_object($this->metadata) && (!$this->metadata instanceof Registry))
     {
       $this->metadata = new Registry();
     }
 
-    $this->metadata->set('author', $this->input->get('metadata_author'));
-    $this->metadata->set('robots', $this->input->get('metadata_robots'));
+    // save() method doesn't save state by default, but redirect to edit() after an
+    // apply() will call save() for checkIn and lose the transformed data (model
+    // repopulates from state by default).
+
+    $author = $this->input->get('metadata_author');
+
+    if ($author)
+    {
+      $this->metadata->set('author', $author);
+      $this->setState('author', $author);
+    }
+
+    $robots = $this->input->get('metadata_robots');
+
+    if ($robots)
+    {
+      $this->metadata->set('robots', $robots);
+      $this->setState('robots', $robots);
+    }
   }
 
 
@@ -137,7 +156,6 @@ class BaseModel extends DataModel
 	 */
   protected function getMetadataAttribute($value)
   {
-    Log::add('getMetadataAttribute', Log::DEBUG, 'cajobboard');
     // Make sure it's not a JRegistry already
     if (is_object($value) && ($value instanceof Registry))
     {
@@ -158,9 +176,8 @@ class BaseModel extends DataModel
 	 */
   protected function setMetadataAttribute($value)
   {
-    Log::add('setMetadataAttribute in model called', Log::DEBUG, 'cajobboard');
     // Make sure it a JRegistry object, otherwise return the value
-    if (!is_object($value) || !($value instanceof Registry))
+    if ( !($value instanceof Registry) )
     {
       return $value;
     }
@@ -204,7 +221,7 @@ class BaseModel extends DataModel
 			throw new RecordNotLoaded("Can't feature without a loaded DataModel");
     }
 
-    if (!$this->checkRecordACL())
+    if (!$this->checkRecordEditACL())
     {
       throw new NoPermissionsException($e);
     }
@@ -232,62 +249,6 @@ class BaseModel extends DataModel
     {
       throw new \Exception($e);
     }
-  }
-
-
-  /**
-	 * Check ACL for this model item
-	 *
-	 * @return  bool   True if user has permissions
-	 */
-	public function checkRecordACL()
-	{
-		// Get the component privileges
-		$platform = $this->container->platform;
-    $component = $this->container->componentName;
-
-		$privileges = array
-		(
-			'editown'	   => $platform->authorise('core.edit.own'  , $component),
-			'editstate'	 => $platform->authorise('core.edit.state', $component),
-			'admin'	     => $platform->authorise('core.admin'     , $component),
-			'manage'	   => $platform->authorise('core.manage'    , $component),
-    );
-
-		// If we are tracking assets get the item's privileges
-		if ($this->isAssetsTracked())
-		{
-      $assetKey = $this->getAssetKey();
-
-			$assetPrivileges = array
-			(
-				'editown'	   => $platform->authorise('core.edit.own'  , $assetKey),
-				'editstate'	 => $platform->authorise('core.edit.state', $assetKey),
-      );
-
-			foreach ($assetPrivileges as $k => $v)
-			{
-				$privileges[$k] = $privileges[$k] || $v;
-			}
-    }
-
-    $owner = 0;
-
-		if ($this->hasField('created_by'))
-		{
-			$owner = $this->getFieldValue('created_by');
-    }
-
-    // Owner of the record and have core.edit.own privilege is allowed
-    $ownerCanEditOwn = $privileges['editown'] && ($owner == $this->created_by);
-
-		// Super User, component manager or user allowed to edit the state of records are allowed
-    if ( $ownerCanEditOwn || $privileges['admin'] || $privileges['manage'] || $privileges['editstate'])
-    {
-      return true;
-    }
-
-    return false;
   }
 
 

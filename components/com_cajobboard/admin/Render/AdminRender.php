@@ -18,6 +18,7 @@ use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Language\Text;
+use \JHtmlSidebar;
 
 // For unused method signatures
 use \FOF30\Model\DataModel;
@@ -82,11 +83,16 @@ class AdminRender implements RenderInterface
       'view-' . $viewForCssClass,
       'layout-' . $layout,
       'task-' . $taskForCssClass,
+      'j-toggle-main',
+      'j-toggle-transition',
+      'row-fluid'
     );
 
     $classes = array_unique($classes);
 
     echo '<div id="cajobboard" class="' . implode($classes, ' ') . "\">\n";
+
+    $this->renderLinkbarItems();
   }
 
 
@@ -110,8 +116,54 @@ class AdminRender implements RenderInterface
 			return;
     }
 
-    echo "</div>\n";
+    // JHtmlSidebar is not namespaced in Joomla! 3.9
+    $sidebarEntries = JHtmlSidebar::getEntries();
+
+    if (!empty($sidebarEntries))
+    {
+      echo '</div><!-- sidebar links -->';
+    }
+
+    echo "</div><!-- id=cajobboard -->\n";
   }
+
+
+  /**
+	 * Render the linkbar
+	 *
+	 * @param   Toolbar  $toolbar  A toolbar object
+	 */
+	protected function renderLinkbarItems()
+	{
+    $toolbar = $this->container->toolbar;
+
+    $links = $toolbar->getLinks();
+
+		if (empty($links))
+		{
+      return;
+    }
+
+    foreach ($links as $link)
+    {
+      JHtmlSidebar::addEntry($link['name'], $link['link'], $link['active']);
+
+      $dropdown = false;
+
+      if (array_key_exists('dropdown', $link))
+      {
+        $dropdown = $link['dropdown'];
+      }
+
+      if ($dropdown)
+      {
+        foreach ($link['items'] as $item)
+        {
+          JHtmlSidebar::addEntry('– ' . $item['name'], $item['link'], $item['active']);
+        }
+      }
+    }
+	}
 
 
 	/**

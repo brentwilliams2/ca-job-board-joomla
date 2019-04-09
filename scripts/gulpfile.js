@@ -73,6 +73,13 @@ const cleanCSS = require('gulp-clean-css');
 // Javascript linter
 const eslint = require('gulp-eslint');
 
+// SASS linter rules, merged with default rules
+const esLintOptions = {
+  rules: {
+    'indent': [ 'warn', 2 ] // Two-space rule instead of Crockford's default 4
+  }
+}
+
 // Minify JavaScript with UglifyJS3
 const uglify = require('gulp-uglify');
 
@@ -179,7 +186,7 @@ function watchRepoJs () {
 
     src(Vinyl.path)
       .pipe( plumber({ errorHandler: onError }) )
-      .pipe( eslint() )
+      .pipe( eslint(esLintOptions) )
       // outputs the lint results to the console
       .pipe( eslint.format() )
       .pipe(rename(function (path) {

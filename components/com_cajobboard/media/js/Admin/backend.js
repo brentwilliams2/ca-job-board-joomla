@@ -53,32 +53,19 @@ const updateEmptySlug = (function($) {
   */
   const bindEventListeners = function() {
     // add event listener to "Title" input box in Common/edit.blade.php
-    elementRef.nameInput.click( function() { updateSlug(); } );
-    elementRef.nameInput.input( function() { updateSlug(); } );
-    .on('input', 'input:text', function() { updateSlug(); } );
-    elementRef.nameInput.change( function() { updateSlug(); } );
-    elementRef.nameInput.keyup( function(key) {
+    // elementRef.nameInput.click( function() { updateSlug(); } );
+    elementRef.nameInput.on( 'input', function() { updateSlug(); } );
+    elementRef.nameInput.on( 'keyup', function(key) {
       // ignore control characters from keyboard
       if (key.which !== 0 && !key.ctrlKey && !key.metaKey && !key.altKey) updateSlug();
     });
 
     // add event listener to "Alias" input box in Common/edit.blade.php
-    elementRef.slugInput.click( function() { onSlugUpdate(); } );
-    elementRef.slugInput.keyup( function(key) {
+    elementRef.slugInput.on( 'input', function() { onSlugUpdate(); } );
+    elementRef.slugInput.on( 'keyup', function(key) {
       // ignore control characters from keyboard
       if (key.which !== 0 && !key.ctrlKey && !key.metaKey && !key.altKey) onSlugUpdate();
     });
-  };
-
-  /**
-  * Remove event listeners
-  */
-  const removeEventListeners = function() {
-    // remove event listeners from "Title" input box in Common/edit.blade.php
-    elementRef.nameInput.off('click keyup');
-
-    // remove event listeners from "Alias" input box in Common/edit.blade.php
-    elementRef.slugInput.off('click keyup');
   };
 
   /*
@@ -90,8 +77,8 @@ const updateEmptySlug = (function($) {
   };
 
   /*
-  * Check if the user entered their own text into the slug/
-  * alias input box, and remove event listeners if so
+  * Check if the user entered their own text into the slug / alias input box, and remove event
+  * listeners if the user's entered their own value to stop auto-updating it from the title box
   */
   const onSlugUpdate = function() {
     if (isSlugUserGenerated()) removeEventListeners();
@@ -118,6 +105,17 @@ const updateEmptySlug = (function($) {
     return true;
   };
 
+  /**
+  * Remove event listeners
+  */
+  const removeEventListeners = function() {
+    // remove event listeners from "Title" input box in Common/edit.blade.php
+    elementRef.nameInput.off('input keyup');
+
+    // remove event listeners from "Alias" input box in Common/edit.blade.php
+    elementRef.slugInput.off('input keyup');
+  };
+
   /*
   * Create a slug with the data from the name/title input box text
   *
@@ -136,7 +134,6 @@ const updateEmptySlug = (function($) {
         .replace(/[^a-zA-Z0-9-]/g,'')
         .toLowerCase();
     }
-
     return slugValue;
   };
 

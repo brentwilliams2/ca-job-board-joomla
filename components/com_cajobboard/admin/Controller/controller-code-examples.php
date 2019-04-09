@@ -12,9 +12,11 @@ use \Joomla\Registry\Registry;
 use \Joomla\CMS\Access\Rules;
 use \Joomla\CMS\Helper\TagsHelper;
 use \Joomla\CMS\Editor\Editor;
-use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\HTML\HTMLHelper; // JHtml
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Pagination\Pagination;
+
+Log::add('Job Occupational Categories model called', Log::DEBUG, 'cajobboard');
 
 
 // Akeeba Subs FOF Controller Method examples

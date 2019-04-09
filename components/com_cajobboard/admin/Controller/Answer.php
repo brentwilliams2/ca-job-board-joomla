@@ -31,7 +31,7 @@ class Answer extends BaseController
     $this->modelName = 'Answers';
 
     // parent constructor will add default admin tasks, add custom tasks here e.g. 'download'
-    $this->predefinedTaskList = [];
+    // $this->addPredefinedTaskList();
 
     parent::__construct($container, $config);
   }

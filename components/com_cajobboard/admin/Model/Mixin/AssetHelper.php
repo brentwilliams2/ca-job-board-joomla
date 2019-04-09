@@ -37,7 +37,6 @@ namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 defined('_JEXEC') or die;
 
 use \Joomla\CMS\Log\Log;
-use \Joomla\CMS\Table\Table;
 use \Joomla\CMS\Table\Asset;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Access\Rules;
@@ -45,67 +44,156 @@ use \Joomla\CMS\Access\Rules;
 trait AssetHelper
 {
   /**
-	 * Overridden method to get the rules for the record from the $_rules property
+	 * Reference to a Joomla! Asset table object
 	 *
-	 * @return  Rules object
+	 * @var   Asset
 	 */
-	public function getRules()
-	{
-    if (!$this->_rules)
-    {
-      $this->loadRules();
-    }
-
-		return $this->_rules;
-  }
+  protected $asset = null;
 
 
-	/**
-	 * Method to load this item's asset rules from the database and set the $_rules property with them
+  /**
+	 * Check ACL for this model item. Handles FOF record-level access control.
 	 *
-	 * @since   0.0.1
+	 * @return  bool   True if user has permissions
 	 */
-	public function loadRules()
+	public function checkRecordEditACL()
 	{
-    // Get the \JDatabaseQuery object
-    $db = $this->container->db;
+    $platform = $this->container->platform;
 
-    $query = $db->getQuery(true);
-
-    $query->select($db->quoteName('rules'))
-      ->from  ($db->quoteName('#__assets'))
-      ->where ($db->quoteName('name') . ' = ' . $db->quote($this->getAssetName()));
-
-    $db->setQuery($query);
-
-    try
+    if ( $this->isAssetsTracked() )
     {
-      $assetRule = $db->loadResult();
+      $assetname = $this->getAssetName();
     }
-    catch (\Exception $e)
+    else
     {
-      throw new \Exception("Error loading asset rules in loadRules() method of Asset Helper Trait:\n" . $e);
+      $assetname = $this->container->componentName;
     }
 
-		$this->setRules($assetRule);
+		$privileges = array
+		(
+      // authorise($action, $assetname)
+			'editown'	   => $platform->authorise('core.edit.own'  , $assetname),
+			'editstate'	 => $platform->authorise('core.edit.state', $assetname),
+			'admin'	     => $platform->authorise('core.admin'     , $assetname),
+			'manage'	   => $platform->authorise('core.manage'    , $assetname),
+    );
+
+    if ( $privileges['editown'] || $privileges['admin'] || $privileges['manage'] || $privileges['editstate'])
+    {
+      return true;
+    }
+
+    return false;
   }
 
 
   /**
-   * Update a JRegistry rules object with new rules
+	 * Loads the Joomla! ACL asset table (nested table). Overridden to throw
+   * exception on failure and save reference in class property.
+	 *
+   * @throws  \Exception
+	 * @return  Asset
+	 */
+  protected function getAsset()
+	{
+    if (!$this->asset)
+    {
+      $this->asset = Asset::getInstance('Asset');
+    }
+
+    if (!$this->asset)
+		{
+      throw new \Exception('Could not load an empty asset to save with this item.');
+    }
+
+    return $this->asset;
+  }
+
+
+  /**
+	 * Loads the Joomla! ACL asset table record for the current model item.
+	 *
+   * @throws  \Exception
+	 * @return  Asset
+	 */
+  protected function getAssetByName()
+	{
+    if (!$this->asset)
+    {
+      $this->getAsset();
+    }
+
+    $name = $this->getAssetName();
+
+    $isAssetRecordLoaded = $this->asset->loadByName($name);
+
+		if (!$isAssetRecordLoaded)
+		{
+      throw new \Exception('Could not load the asset record for this item.');
+    }
+
+    return $this->asset;
+  }
+
+
+  /**
+   * Sets the parent ID for the current item's asset record, based on the category of the item.
    *
-   * @var     mixed      $rule     The rule to update e.g. 'core.edit', or an array of rules as array($rule => $value)
-   * @var     string     $value    The value to set the rule to (false = denied, true = allowed, null = inherited)
-   * @var     Registry   $asset    The existing rule from the #__assets table record that will be updated, if null an empty rule object is returned
-   *
-   * @return  Registry
+   * @throws    \Exception  Throws if category doesn't have an asset record created for it
    */
-  public function updateRules($rule, $value = null, $asset = null)
+  public function setAssetParentId()
   {
-    // @TODO: This is for the "permissions" tab to update in admin views
+    if (!$this->asset)
+    {
+      $this->getAsset();
+    }
+
+    $categoryAsset = Asset::getInstance('Asset');
+
+    // should look like: com_cajobboard.category.n where n is the number of the category
+    $categoryAssetName = $this->container->componentName . '.category.' . $this->getFieldValue('cat_id');
+
+    $isCategoryAssetRecordLoaded = $categoryAsset->loadByName($categoryAssetName);
+
+		if (!$isCategoryAssetRecordLoaded)
+		{
+      throw new \Exception('Could not load the asset record for this item\s category.');
+    }
+
+    $this->asset->bind( array( 'parent_id' => $categoryAsset->getPrimaryKey()['id'] ) );
+  }
+
+
+  /**
+   * Sets the name property on the current item's asset record
+   */
+  public function setAssetName()
+  {
+    if (!$this->asset)
+    {
+      $this->getAsset();
+    }
+
+    $this->asset->bind( array( 'name' => $this->getAssetName() ) );
+  }
+
+
+  /**
+   * Sets the name property on the current item's asset record
+   */
+  public function setAssetRules()
+  {
+    if (!$this->asset)
+    {
+      $this->getAsset();
+    }
+
+    // @TODO: Need to add data transformations to handle sending permissions
+    // back from edit form, or use Joomla's javascript AJAX method
+
   /*
-    // Asset record rule values are Joomla! JRegistry objects
-    $rules = new \JRegistry();
+    // Asset record rule values are Joomla! Registry objects
+    $rules = new Registry();
 
     // Load the Current ACL rules into the Registry
     $rules->loadString($asset);
@@ -121,113 +209,113 @@ trait AssetHelper
 
     return $rules;
   */
-  }
 
+    $rules = new \stdClass();
 
-	/**
-	 * Overridden to return the JTableAsset object for this record, or an empty object if new
-	 *
-	 * @return Asset     Return a JTableAsset object
-	 */
-	protected function getAsset()
-	{
-    $assetModel = Table::getInstance('Asset');
-
-    $assetModel->loadByName($this->getAssetName());
-
-    return $assetModel;
-  }
-
-
-  /**
-   * Get the primary key (id) value for the category that this item belongs to
-   *
-   * @returns   int         Returns the primary key (id) value for the category asset record
-   *
-   * @throws    \Exception  Throws if category doesn't have an asset record created for it
-   */
-  public function getCategoryAssetID()
-  {
-    $assetModel = Table::getInstance('Asset');
-
-    // should look like: com_cajobboard.category.n where n is the number of the category
-    $category = $this->container->componentName . '.category.' . $this->getFieldValue('cat_id');
-
-    // load the data and bind for the category asset record
-    $assetModel->loadByName('com_cajobboard.category.42'); // com_cajobboard.category.42
-
-    $pk = $assetModel->id;
-
-    if (!$pk)
-    {
-      throw new \Exception('This model\'s category doesn\'t have an asset record in #__assets');
-    }
-
-    return $pk;
+    $this->asset->bind( array( 'rules' => json_encode($rules) ) );
   }
 
 
   /**
    * Create or save a single asset record with passed rules
    *
-   * @param   JTableAsset   A model instance for the '#__assets' table
+   * @throws    \Exception  Throws if unable to save asset record
    *
    * @return  int   Returns the primary key value (`id`) for the asset record created
    *                in #__assets to store in item's `asset_id` foreign key field
    */
-  public function saveAssetRecord($assetModel)
+  public function saveAssetRecord()
   {
-    // @TODO: This is saving the asset with a parent ID of "0", instead of pointing to the category asset id. Should there be one category per model?
-    // @TODO: Level is being set wrong, as "0" instead of "2"
-    $assetModel->store();
+    if (!$this->asset)
+    {
+      $this->getAsset();
+    }
 
-    return $assetModel->id;
+    $isAssetSaved = $this->asset->store();
+
+		if (!$isAssetSaved)
+		{
+      throw new \Exception('Could not save asset record for this item.');
+    }
+
+    return $this->asset->getPrimaryKey()['id'];
   }
 
 
   /**
    * Alias to saveAssetRecord()
    *
-   * @param   Asset   A model instance for the '#__assets' table
-   *
    * @return  int   Returns the primary key value (`id`) for the asset record created
    *                in #__assets to store in item's `asset_id` foreign key field
    */
-  public function createAssetRecord($assetModel)
+  public function createAssetRecord()
   {
-    return $this->saveAssetRecord($assetModel);
+    return $this->saveAssetRecord();
   }
 
 
   /**
-   * Remove an asset record for a given model
+   * Save the asset ID in the model's asset_id field, avoid on/afterUpdate methods
+   * using model save methods and their associated asset rules handling methods
    *
-   * @var     string  $modelName  The name of the model with records to remove asset rules for
+   * @param   int   $assetId  The primary key value of the asset record
+   *
+   * @throws  \Exception
    */
-  public function removeAssetRecord()
+  public function saveItemAssetId($assetId)
   {
     // Get the \JDatabaseQuery object
     $db = $this->container->db;
 
-    // Remove the item-level access control records from the '#__assets' table for this model
     $query = $db->getQuery(true);
 
-    // Build a "LIKE" SQL clause to match asset records for this model
-    $condition = array($db->quoteName('id') . ' = ' . $db->quote($this->getFieldValue('asset_id')));
-
     $query
-      ->delete($db->quoteName('#__assets'))
-      ->where($condition);
+      ->update($db->quoteName( $this->getTableName() ))
+      ->set   ($db->quoteName('asset_id') . ' = ' . $db->quote($assetId))
+      ->where ($db->quoteName( $this->getIdFieldName() ) . ' = ' . $db->quote( $this->getId() ));
 
     $db->setQuery($query);
 
     try
     {
-      $result = $db->execute();
+      $assetRule = $db->execute();
     }
     catch (\Exception $e)
     {
-      Log::add('Could not remove asset record for ' . $this->getTableName() . 'model, record number ' . $this->getId() . ': ' . $e, Log::DEBUG);
+      throw new \Exception("Error updating asset record ID in this item:\n" . $e);
+    }
+  }
+
+
+  /**
+   * Remove an asset record for this item
+   *
+   * @throws    \Exception  Throws if unable to delete asset record or the asset_id field was blank for the model
+   */
+  public function removeAssetRecord()
+  {
+    if (!$this->asset)
+    {
+      $this->getAsset();
+    }
+
+    $assetPk = $this->getFieldValue('asset_id');
+
+    if ($assetPk)
+    {
+      $isAssetRemoved = $this->asset->delete($assetPk);
+    }
+    else
+    {
+      throw new \Exception(
+          'The asset record field for item number ' . $this->getId()
+        . ' was empty, so no asset record was removed (asset tracking is enabled though)'
+      );
+    }
+
+    if (!$isAssetRemoved)
+    {
+      throw new \Exception('Could not remove asset record for item number ' . $this->getId() );
     }
   }
 }

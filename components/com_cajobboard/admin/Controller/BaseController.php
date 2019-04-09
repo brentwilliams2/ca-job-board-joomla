@@ -16,6 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Controller;
 use \FOF30\Container\Container;
 use \FOF30\Controller\DataController;
 use \FOF30\View\Exception\AccessForbidden;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -35,9 +36,9 @@ class BaseController extends DataController
 	{
     parent::__construct($container, $config);
 
-    $this->setPredefinedTaskList([
-      'browse', 'read', 'edit', 'add',
-      'apply', 'save', 'cancel', 'savenew',
+    $this->addPredefinedTaskList([
+      'browse',  'read',  'edit', 'add',
+      'apply',   'save',  'cancel', 'savenew',
       'archive', 'trash', 'remove',
       'feature', 'unfeature',
       'publish', 'unpublish'
@@ -94,7 +95,6 @@ class BaseController extends DataController
 	 */
 	public function feature()
 	{
-		// CSRF prevention
     $this->csrfProtection();
 
     try
@@ -117,7 +117,6 @@ class BaseController extends DataController
 	 */
 	public function unfeature()
 	{
-		// CSRF prevention
     $this->csrfProtection();
 
     try
@@ -193,7 +192,7 @@ class BaseController extends DataController
 	 */
 	public function getRedirectFlashMsg($task)
 	{
-    $translationKey = \JText::_(strtoupper(
+    $translationKey = Text::_(strtoupper(
       $this->container->componentName
       . '_REDIRECT_MSG_TASK_'
       . $task

@@ -16,6 +16,8 @@
   use \Joomla\CMS\Uri\Uri;
 
   $root = Uri::base(false);
+
+  // @TODO: See the code in FOF30\Toolbar renderSubmenu() for ideas
 ?>
 
 <div class="control-panel-sidebar-nav">

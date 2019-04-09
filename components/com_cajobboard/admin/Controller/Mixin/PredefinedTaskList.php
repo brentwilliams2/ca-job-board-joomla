@@ -51,18 +51,23 @@ trait PredefinedTaskList
 
 
 	/**
-	 * Sets the predefined task list and registers the first task in the list as the Controller's default task
-	 *
+	 * Sets the predefined task list and registers the first task in the list as the Controller's
+   * default task. Merges tasks from each call so that child Controller classes can simply add
+   * tasks to a default set, call resetPredefinedTaskList() to start fresh in child classes
+   *
 	 * @param   array  $taskList  The task list to register
 	 */
-	public function setPredefinedTaskList(array $taskList)
+	public function addPredefinedTaskList(array $taskList)
 	{
+    // merge existing tasks with new tasks
+    $tasks = array_merge($this->predefinedTaskList, $taskList);
+
 		// First, unregister all known tasks which are not in the taskList
     $allTasks = $this->getTasks();
 
 		foreach ($allTasks as $task)
 		{
-			if (in_array($task, $taskList))
+			if (in_array($task, $tasks))
 			{
 				continue;
       }
@@ -71,10 +76,19 @@ trait PredefinedTaskList
     }
 
 		// Set the predefined task list
-    $this->predefinedTaskList = $taskList;
+    $this->predefinedTaskList = $tasks;
 
 		// Set the default task
 		$this->registerDefaultTask(reset($this->predefinedTaskList));
-	}
+  }
+
+
+	/**
+	 * Reset the predefined task list
+	 */
+	public function resetPredefinedTaskList()
+	{
+    $this->predefinedTaskList = array();
+  }
 }
 
