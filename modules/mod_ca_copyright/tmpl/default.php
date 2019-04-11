@@ -18,14 +18,15 @@
 ?>
 
 <div class="<?php echo $moduleclass_sfx ?>">
-  <?php echo $copyright; ?><?php echo $year; ?>
+  <?php echo $copyright; ?>
+  <?php echo $year; ?>
 
-  <?php if ($showSitename==1):?>
+  <?php if ($showSitename == 1):?>
     &nbsp;<?php echo $csiteName; ?>
   <?php endif;?>
 
-  <?php if ($params -> get('freeText')):?>
-    &nbsp;<?php echo $params -> get('freeText'); ?>
+  <?php if ($params -> get('freeform_text')):?>
+    &nbsp;<?php echo $params -> get('freeform_text'); ?>
   <?php endif;?>
 </div>
 

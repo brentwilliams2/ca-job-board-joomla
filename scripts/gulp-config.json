@@ -46,7 +46,6 @@
     "/templates/tpl_mfi/language/": "/templates/mfi/language",
     "/templates/tpl_mfi/scss/": "/templates/mfi/css",
     "/templates/tpl_mfi/js/": "/templates/mfi/js",
-    "/plugins/plg_user_cajobboard/": "/plugins/user/cajobboard",
-    "/modules/mod_ca_copyright/": "/modules/mod_ca_copyright"
+    "/plugins/plg_user_cajobboard/": "/plugins/user/cajobboard"
   }
 }

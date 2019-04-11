@@ -30,9 +30,9 @@
 
   // get parameters
   $csiteName     = $app->get('sitename');
-  $startYear     = $params->get('startYear', '');
-  $showCopyright = $params->get('showCopyright', '');
-  $showSitename  = $params->get('showSitename', '1');
+  $startYear     = $params->get('start_year', '');
+  $showCopyright = $params->get('show_copyright', '');
+  $showSitename  = $params->get('show_sitename', '1');
 
   // only add startyear if different
   if ($startYear && $startYear != $year)
