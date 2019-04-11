@@ -41,10 +41,12 @@
     "/templates/tpl_mfi/fonts/": "/templates/mfi/fonts",
     "/templates/tpl_mfi/html/": "/templates/mfi/html",
     "/templates/tpl_mfi/images/": "/templates/mfi/images",
-    "/templates/tpl_mfi/includes/": "/templates/mfi/includes",
+    "/templates/tpl_mfi/Includes/": "/templates/mfi/Includes",
+    "/templates/tpl_mfi/Partials/": "/templates/mfi/Partials",
     "/templates/tpl_mfi/language/": "/templates/mfi/language",
     "/templates/tpl_mfi/scss/": "/templates/mfi/css",
     "/templates/tpl_mfi/js/": "/templates/mfi/js",
-    "/plugins/plg_user_cajobboard/": "/plugins/user/cajobboard"
+    "/plugins/plg_user_cajobboard/": "/plugins/user/cajobboard",
+    "/modules/mod_ca_copyright/": "/modules/mod_ca_copyright"
   }
 }
