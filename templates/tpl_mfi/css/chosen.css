@@ -5,7 +5,7 @@
   vertical-align: middle;
   font-size: 13px;
   zoom: 1;
-  *display: inline;
+  display: inline;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none; }
@@ -424,6 +424,6 @@
     background-image: url("chosen-sprite@2x.png") !important;
     background-size: 52px 37px !important;
     background-repeat: no-repeat !important; } }
-/* @end */
 
+/* @end */
 /*# sourceMappingURL=chosen.css.map */

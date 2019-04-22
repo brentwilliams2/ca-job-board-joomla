@@ -1,0 +1,25 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Ten-column grid layout framework
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC, based on Bootstrap _grid_framework.scss
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+@mixin make-10-grid-columns($i: 1, $list: '.col-10-xs-#{$i}, .col-10-sm-#{$i}, .col-10-md-#{$i}, .col-10-lg-#{$i}') {
+  @for $i from (1 + 1) through $grid-columns {
+    $list: '#{$list}, .col-10-xs-#{$i}, .col-10-sm-#{$i}, .col-10-md-#{$i}, .col-10-lg-#{$i}';
+  }
+
+  #{$list} {
+    min-height: 1px;  // Prevent columns from collapsing when empty
+    padding-left:  ceil(($grid-gutter-width / 2)); // Inner gutter via padding
+    padding-right: floor(($grid-gutter-width / 2));
+    position: relative;
+  }
+}

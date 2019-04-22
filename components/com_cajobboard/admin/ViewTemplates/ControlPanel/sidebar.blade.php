@@ -18,6 +18,45 @@
   $root = Uri::base(false);
 
   // @TODO: See the code in FOF30\Toolbar renderSubmenu() for ideas
+
+  /*
+(link title, icon, url, submenu items)
+
+Analytics
+Job Postings
+ATS
+  Applications
+  References
+  Recommendations
+  Questionnaires
+  Score Cards
+  Candidates
+  Tasks
+  Scheduling
+Subscriptions
+Job Alerts
+Resumes
+Profiles
+  Employer
+  Job Seeker
+  Recruiter
+  Connector
+Social Media
+  Facebook
+  Linkedin
+  Twitter
+  Instagram
+Other
+  Q&A
+  Messages
+  Reviews
+  Places
+  Media
+    Images
+    Audio
+    Video
+  Comments
+  */
 ?>
 
 <div class="control-panel-sidebar-nav">

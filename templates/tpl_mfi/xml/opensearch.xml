@@ -1,0 +1,10 @@
+<!-- @TODO: Finish the OpenSearch templates and XML form -->
+<opensearchdescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <shortname>Multi Family Insiders Search</shortname>
+  <description>Search for the Multi Family Insiders Website</description>
+  <url type="text/html" method="get" template="http://www.multifamilyinsiders.com/blog?q={searchTerms}">
+    <img width="16" height="16">http://www.multifamilyinsiders.com/favicon.ico
+    <inputencoding>UTF-8</inputencoding>
+    <searchform>http://www.multifamilyinsiders.com/</searchform>
+  </url>
+</opensearchdescription>

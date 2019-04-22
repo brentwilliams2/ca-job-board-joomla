@@ -9,6 +9,8 @@
  *
  */
 
+  use \Joomla\CMS\HTML\HTMLHelper;
+
   // no direct access
   defined('_JEXEC') or die;
 
@@ -18,33 +20,45 @@
 <div class="icons">
 	<?php if (empty($displayData['print'])) : ?>
 
-		<?php if ($canEdit || $displayData['params']->get('show_print_icon') || $displayData['params']->get('show_email_icon')) : ?>
+    <?php if ($canEdit || $displayData['params']->get('show_print_icon') || $displayData['params']->get('show_email_icon')) : ?>
+
 			<div class="btn-group pull-right">
+
 				<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-          <span class="fa fa-gear"></span>
-          <span class="fa fa-caret-down"></span>
+          <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
         </a>
 
 				<ul class="dropdown-menu">
-  				<?php if ($displayData['params']->get('show_print_icon')) : ?>
-						<li class="print-icon"> <?php echo JHtml::_('icon.print_popup', $displayData['item'], $displayData['params']); ?> </li>
+
+          <?php if ($displayData['params']->get('show_print_icon')) : ?>
+
+            <li class="print-icon"> <?php echo HTMLHelper::_('icon.print_popup', $displayData['item'], $displayData['params']); ?> </li>
+
 					<?php endif; ?>
 
-					<?php if ($displayData['params']->get('show_email_icon')) : ?>
-						<li class="email-icon"> <?php echo JHtml::_('icon.email', $displayData['item'], $displayData['params']); ?> </li>
+          <?php if ($displayData['params']->get('show_email_icon')) : ?>
+
+            <li class="email-icon"> <?php echo HTMLHelper::_('icon.email', $displayData['item'], $displayData['params']); ?> </li>
+
 					<?php endif; ?>
 
-					<?php if ($canEdit) : ?>
-						<li class="edit-icon"> <?php echo JHtml::_('icon.edit', $displayData['item'], $displayData['params']); ?> </li>
-					<?php endif; ?>
+          <?php if ($canEdit) : ?>
+
+            <li class="edit-icon"> <?php echo HTMLHelper::_('icon.edit', $displayData['item'], $displayData['params']); ?> </li>
+
+          <?php endif; ?>
+
 				</ul>
 
-			</div>
+      </div>
+
 		<?php endif; ?>
 
-	<?php else : ?>
+  <?php else : ?>
+
 		<div class="pull-right">
-			<?php echo JHtml::_('icon.print_screen', $displayData['item'], $displayData['params']); ?>
-		</div>
+			<?php echo HTMLHelper::_('icon.print_screen', $displayData['item'], $displayData['params']); ?>
+    </div>
+
 	<?php endif; ?>
 </div>

@@ -2,7 +2,7 @@
 <!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "https://www.joomla.org/xml/dtd/2.5/template-install.dtd">
 
 <extension version="3.5" type="template" method="upgrade">
-	<name>mfi</name>
+	<name>MFI</name>
 	<creationDate>August 2018</creationDate>
 	<author>Kevin Brown</author>
 	<copyright>Copyright © 2018 Calligraphic</copyright>
@@ -17,76 +17,101 @@
   </description>
 
 	<files>
+
 		<folder>css</folder>
 		<folder>fonts</folder>
 		<folder>html</folder>
 		<folder>images</folder>
-		<folder>includes</folder>
+    <folder>Includes</folder>
 		<folder>js</folder>
     <folder>language</folder>
-		<folder>scss</folder>
+    <folder>Partials</folder>
+    <folder>xml</folder>
+    <filename>apple-touch-icon-114x114.png</filename>
+    <filename>apple-touch-icon-57x57.png</filename>
+    <filename>apple-touch-icon-72x72.png</filename>
 		<filename>component.php</filename>
+    <filename>error.php</filename>
+		<filename>favicon.ico</filename>
 		<filename>index.php</filename>
 		<filename>offline.php</filename>
-		<filename>favicon.ico</filename>
 		<filename>templateDetails.xml</filename>
 	</files>
 
   <positions>
-    <position>top</position>
-    <position>navigation</position>
-    <position>fullwidth</position>
-    <position>showcase</position>
-    <position>feature</position>
+    <position>banner-bottom</position>
+    <position>banner-content-left-first</position>
+    <position>banner-content-left-second</position>
+    <position>banner-content-lower-right</position>
+    <position>banner-content-right-first</position>
+    <position>banner-content-right-second</position>
+    <position>banner-top</position>
     <position>breadcrumbs</position>
-    <position>left</position>
-    <position>right</position>
-    <position>content-top</position>
-    <position>content-bottom</position>
-    <position>bottom</position>
-    <position>footer</position>
+    <position>content-editor</position>
+    <position>content-info</position>
+    <position>content-left-sidebar</position>
+    <position>content-main</position>
+    <position>content-reactions</position>
+    <position>content-references</position>
+    <position>content-related</position>
+    <position>content-right-sidebar</position>
+    <position>content-share-reactions</position>
+    <position>content-social-share</position>
+    <position>content-sponsored</position>
     <position>copyright</position>
-    <position>menuslider</position>
     <position>debug</position>
+    <position>feature</position>
+    <position>login</position>
+    <position>logo-footer</position>
+    <position>logo-header</position>
+    <position>message</position>
+    <position>nav-component-action</position>
+    <position>nav-component</position>
+    <position>nav-footer</position>
+    <position>nav-primary</position>
+    <position>nav-secondary</position>
+    <position>search-footer</position>
+    <position>search-header</position>
+    <position>shopping-cart</position>
+    <position>showcase</position>
+    <position>social-icons</position>
 	</positions>
 
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-        <!-- LEFT COLUMN WIDTH-->
+        <!-- LEFT COLUMN WIDTH -->
 				<field
-          name="leftColumnWidth"
+          name="left_column_width"
           type="list"
-          default="3"
+          default="0"
           label="TPL_MFI_PARAMS_LEFT_COLUMN_WIDTH_LABEL"
           description="TPL_MFI_PARAMS_LEFT_COLUMN_WIDTH_DESC"
         >
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
-					<option value="5">5</option>
 				</field>
 
-        <!-- RIGHT COLUMN WIDTH-->
+        <!-- RIGHT COLUMN WIDTH -->
 				<field
-          name="rightColumnWidth"
+          name="right_column_width"
           type="list"
-          default="3"
+          default="0"
           label="TPL_MFI_PARAMS_RIGHT_COLUMN_WIDTH_LABEL"
           description="TPL_MFI_PARAMS_RIGHT_COLUMN_WIDTH_DESC"
         >
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
-					<option value="5">5</option>
 				</field>
 
-				<!-- SHOW FRONTPAGE-->
+				<!-- SHOW FRONTPAGE -->
 				<field
-          name="frontpageshow"
+          name="show_mssgs_on_home_page"
           type="radio"
           class="btn-group"
-          default="1"
+          default="0"
           label="TPL_MFI_PARAMS_SHOW_FRONT_PAGE_LABEL"
           description="TPL_MFI_PARAMS_SHOW_FRONT_PAGE_DESC"
         >
@@ -94,163 +119,84 @@
 					<option value="0">JNO</option>
 				</field>
 
-				<!-- MODERNIZR-->
-				<field
-          name="modernizr"
-          type="radio"
-          class="btn-group"
-          default="0"
-          label="TPL_MFI_PARAMS_MODERNIZR_LABEL"
-          description="TPL_MFI_PARAMS_MODERNIZR_DESC"
-        >
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-				</field>
-
-				<!-- GLYPHICONS -->
-				<field name="glyphicons"
-          type="radio"
-          class="btn-group"
-          default="0"
-          label="TPL_MFI_PARAMS_LOAD_GLYPHICONS_LABEL"
-          description="TPL_MFI_PARAMS_LOAD_GLYPHICONS_DESC"
-        >
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-				</field>
-
-  				<!-- FONT-AWESOME -->
-				<field
-          name="fontawesome"
-          type="radio"
-          class="btn-group"
-          default="1"
-          label="TPL_MFI_PARAMS_LOAD_FONTAWESOME_LABEL"
-          description="TPL_MFI_PARAMS_LOAD_FONTAWESOME_DESC"
-        >
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-				</field>
-
-				<!-- PIE-->
-				<field
-          name="pie"
-          type="radio"
-          class="btn-group"
-          default="0"
-          label="TPL_MFI_PARAMS_PIE_LABEL"
-          description="TPL_MFI_PARAMS_PIE_DESC"
-        >
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-				</field>
-			</fieldset>
-
-			<!-- LOGO-->
-			<fieldset
-        name="logo"
-        type="upload_func"
-        label="Logo"
-      >
+			  <!-- PAGE TO REDIRECT 404 AND 410 PAGE NOT FOUND ERRORS TO -->
         <field
-          name="logo_file"
-          type="media"
-          label="TPL_MFI_PARAMS_LOGO_FILE_LABEL"
-          description="TPL_MFI_PARAMS_LOGO_FILE_DESC"
-        />
-
-        <field
-          name="logo_link"
-          type="text"
-          label="TPL_MFI_PARAMS_LOGO_LINK_LABEL"
-          description="TPL_MFI_PARAMS_LOGO_LINK_DESC"
+          name="page_not_found_redirect"
+          type="menuitem"
           default="index.php"
+          label="TPL_MFI_PARAMS_404_ERROR_LABEL"
+          description="TPL_MFI_PARAMS_404_ERROR_LINK_DESC"
+        />
+
+			  <!-- HEADER LOGO -->
+        <field
+          name="header_logo_link"
+          type="menuitem"
+          default="index.php"
+          label="TPL_MFI_PARAMS_HEADER_LOGO_LINK_LABEL"
+          description="TPL_MFI_PARAMS_HEADER_LOGO_LINK_DESC"
         />
 
         <field
-          name="logo_width"
-          type="text"
-          label="TPL_MFI_PARAMS_LOGO_WIDTH_LABEL"
-          description="TPL_MFI_PARAMS_LOGO_WIDTH_DESC"
-          default="173"
+          name="header_logo_filename"
+          type="file"
+          default="image.png"
+          label="TPL_MFI_PARAMS_HEADER_LOGO_FILENAME_LABEL"
+          description="TPL_MFI_PARAMS_HEADER_LOGO_FILENAME_DESC"
+          accept="image/*"
         />
 
         <field
-          name="logo_height"
-          type="text"
-          label="TPL_MFI_PARAMS_LOGO_HEIGHT_LABEL"
-          description="TPL_MFI_PARAMS_LOGO_HEIGHT_DESC"
-          default="26"
+          name="header_logo_height"
+          type="number"
+          label="TPL_MFI_PARAMS_HEADER_LOGO_HEIGHT_LABEL"
+          description="TPL_MFI_PARAMS_HEADER_LOGO_HEIGHT_DESC"
+        />
+
+        <field
+          name="header_logo_width"
+          type="number"
+          default="100"
+          label="TPL_MFI_PARAMS_HEADER_LOGO_WIDTH_LABEL"
+          description="TPL_MFI_PARAMS_HEADER_LOGO_WIDTH_DESC"
+        />
+
+			  <!-- FOOTER LOGO -->
+        <field
+          name="footer_logo_link"
+          type="menuitem"
+          default="index.php"
+          label="TPL_MFI_PARAMS_FOOTER_LOGO_LINK_LABEL"
+          description="TPL_MFI_PARAMS_FOOTER_LOGO_LINK_DESC"
+        />
+
+        <field
+          name="footer_logo_filename"
+          type="file"
+          default="logo.png"
+          label="TPL_MFI_PARAMS_FOOTER_LOGO_HEIGHT_LABEL"
+          description="TPL_MFI_PARAMS_FOOTER_LOGO_HEIGHT_DESC"
+          accept="image/*"
+        />
+
+        <field
+          name="footer_logo_height"
+          type="number"
+          label="TPL_MFI_PARAMS_FOOTER_LOGO_HEIGHT_LABEL"
+          description="TPL_MFI_PARAMS_FOOTER_LOGO_HEIGHT_DESC"
+        />
+
+        <field
+          name="footer_logo_width"
+          type="number"
+          default="100"
+          label="TPL_MFI_PARAMS_FOOTER_LOGO_WIDTH_LABEL"
+          description="TPL_MFI_PARAMS_FOOTER_LOGO_WIDTH_DESC"
         />
 			</fieldset>
-
-			<!-- GOOGLE FONTS-->
-			<fieldset name="Font" label="Fonts">
-        <field
-          name="googleFont"
-          type="radio"
-          class="btn-group btn-group-yesno"
-          default="0"
-          label="TPL_MFI_PARAMS_LOAD_GOOGLE_FONT_LABEL"
-          description="TPL_MFI_PARAMS_LOAD_GOOGLE_FONT_DESC"
-        >
-          <option value="1">JYES</option>
-          <option value="0">JNO</option>
-        </field>
-
-        <field
-          name="googleFontName"
-          class=""
-          type="text"
-          default="Open+Sans"
-          label="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_LABEL"
-          description="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_DESC"
-          showon="googleFont:1"
-        />
-
-        <field
-          name="bodyFont"
-          class="btn-group btn-group-yesno"
-          type="radio"
-          default="0"
-          label="TPL_MFI_PARAMS_GOOGLE_BODY_FONT_LABEL"
-          description="TPL_MFI_PARAMS_GOOGLE_BODY_FONT_DESC"
-        >
-          <option value="1">JYES</option>
-          <option value="0">JNO</option>
-        </field>
-
-        <field
-          name="bodyFontName"
-          type="text"
-          default="Open+Sans"
-          label="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_LABEL"
-          description="TPL_MFI_PARAMS_GOOGLE_FONT_NAME_DESC"
-          showon="bodyFont:1"
-        />
-
-        <field
-          name="navigationFont"
-          class="btn-group btn-group-yesno"
-          type="radio"
-          default="0"
-          label="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_LABEL"
-          description="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_DESC"
-        >
-          <option value="1">JYES</option>
-          <option value="0">JNO</option>
-        </field>
-
-        <field
-          name="navigationFontname"
-          type="text"
-          default="Open+Sans"
-          label="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_NAME_LABEL"
-          description="TPL_MFI_PARAMS_GOOGLE_NAVIGATION_FONT_NAME_DESC"
-          showon="navigationFont:1"
-        />
-      </fieldset>
 
 		</fields>
 	</config>
 </extension>
+
+

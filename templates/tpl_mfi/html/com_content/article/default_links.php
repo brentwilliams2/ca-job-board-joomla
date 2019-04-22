@@ -9,6 +9,11 @@
  *
  */
 
+  use \Joomla\CMS\Factory;
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 
@@ -65,7 +70,7 @@
 							break;
 						case 3:
 							// Open in a modal window
-							JHtml::_('behavior.modal', 'a.modal');
+							HTMLHelper::_('behavior.modal', 'a.modal');
 							echo '<a class="modal" href="' . htmlspecialchars($link, ENT_COMPAT, 'UTF-8') . '"  rel="{handler: \'iframe\', size: {x:600, y:600}} noopener noreferrer">' .
 								htmlspecialchars($label, ENT_COMPAT, 'UTF-8') . ' </a>';
 							break;

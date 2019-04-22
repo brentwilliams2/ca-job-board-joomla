@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="3.9">
+  <name>LIB_CAJOBBOARD_NAME</name>
+  <libraryname>calligraphic</libraryname>
+  <author>Kevin Brown</author>
+  <creationDate>April 2019</creationDate>
+  <copyright>Copyright (C) 2019</copyright>
+  <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+  <authorEmail>kevin.brown@calligraphic.systems</authorEmail>
+  <authorUrl>www.calligraphic.systems</authorUrl>
+  <version>1.0</version>
+  <description>LIB_CAJOBBOARD_DESC</description>
+
+  <files>
+    <folder>cajobboard</folder>
+    <folder>language</folder>
+  </files>
+  <languages>
+    <language tag="en-GB">language/en-GB/en-GB.lib_calligraphic.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.lib_calligraphic.sys.ini</language>
+  </languages>
+</extension>

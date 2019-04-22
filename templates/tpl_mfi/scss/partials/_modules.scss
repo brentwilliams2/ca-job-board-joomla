@@ -1,0 +1,115 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for modules template file
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
+
+/*
+ * SASS color variables
+ */
+$cart-dropdown-color: #d9d9d9;
+
+/*
+ * Wrapper for default template in mod_mfi_template_cart_hikashop, displays small shopping cart icon
+ */
+.cart-module {
+  .hikashop_cart_dropdown_content { // sass-lint:disable-line class-name-format
+    border: 1px solid $cart-dropdown-color;
+  }
+
+  label {
+    display: inline-block;
+  }
+
+  .hikashop_cart_module_product_total_title { // sass-lint:disable-line class-name-format
+    text-align: right;
+  }
+
+  .hikashop_product_price, // sass-lint:disable-line class-name-format
+  .hikashop_product_price_full { // sass-lint:disable-line class-name-format
+    text-align: left;
+  }
+
+  .hikashop_checkout_cart_print_link { // sass-lint:disable-line class-name-format
+    display: none;
+  }
+}
+
+/*
+ * Wrapper for default template in mod_mfi_template_copyright, displays footer copyright notice
+ */
+// @TODO: Need to see if Joomla! or Bootstrap v3 define a class with this name
+.copyright {}
+
+
+/*
+ * Social links module stylings
+ */
+.mfi-social {
+  .default {
+    text-align: center;
+
+    .mfi-intro {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .mfi-list {
+      margin: -5px -5px 0;
+
+      li {
+        display: inline-block;
+        margin: 5px 5px 0;
+        vertical-align: top;
+      }
+    }
+  }
+
+  .mfi-link {
+    display: block;
+    text-decoration: none;
+
+    .mfi-ico {
+      @supports (transition: initial) {
+        transition: .3s;
+      }
+      background: $gray;
+      color: $body-bg;
+      font-size: 22px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      transition: .3s;
+      width: 50px;
+    }
+
+    &:hover {
+      .mfi-ico {
+        background: $gray-darker;
+      }
+    }
+
+    .mfi-name {
+      margin: 0 5px;
+    }
+  }
+
+  .view-2 {
+    .mfi-list {
+      li {
+        text-align: left;
+        width: 100%;
+      }
+    }
+  }
+}

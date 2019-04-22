@@ -9,6 +9,13 @@
  *
  */
 
+  use \Joomla\CMS\Factory;
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Layout\FileLayout;
+  use \Joomla\CMS\Layout\LayoutHelper;
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 
@@ -19,15 +26,15 @@
   $info    = $this->item->params->get('info_block_position', 0);
 ?>
 
-<?php if ($this->item->state == 0 || strtotime($this->item->publish_up) > strtotime(JFactory::getDate())
-	|| ((strtotime($this->item->publish_down) < strtotime(JFactory::getDate())) && $this->item->publish_down != '0000-00-00 00:00:00' )) : ?>
+<?php if ($this->item->state == 0 || strtotime($this->item->publish_up) > strtotime(Factory::getDate())
+	|| ((strtotime($this->item->publish_down) < strtotime(Factory::getDate())) && $this->item->publish_down != '0000-00-00 00:00:00' )) : ?>
 	<div class="system-unpublished">
 <?php endif; ?>
 
 <?php if ($params->get('show_title')) : ?>
 	<h2 class="item-title" itemprop="name">
 	<?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
-		<a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>" itemprop="url">
+		<a href="<?php echo Route::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>" itemprop="url">
 			<?php echo $this->escape($this->item->title); ?>
 		</a>
 	<?php else : ?>
@@ -37,19 +44,19 @@
 <?php endif; ?>
 
 <?php if ($this->item->state == 0) : ?>
-	<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
+	<span class="label label-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
 <?php endif; ?>
 
-<?php if (strtotime($this->item->publish_up) > strtotime(JFactory::getDate())) : ?>
-	<span class="label label-warning"><?php echo JText::_('JNOTPUBLISHEDYET'); ?></span>
+<?php if (strtotime($this->item->publish_up) > strtotime(Factory::getDate())) : ?>
+	<span class="label label-warning"><?php echo Text::_('JNOTPUBLISHEDYET'); ?></span>
 <?php endif; ?>
 
-<?php if ((strtotime($this->item->publish_down) < strtotime(JFactory::getDate())) && $this->item->publish_down != '0000-00-00 00:00:00') : ?>
-	<span class="label label-warning"><?php echo JText::_('JEXPIRED'); ?></span>
+<?php if ((strtotime($this->item->publish_down) < strtotime(Factory::getDate())) && $this->item->publish_down != '0000-00-00 00:00:00') : ?>
+	<span class="label label-warning"><?php echo Text::_('JEXPIRED'); ?></span>
 <?php endif; ?>
 
 <?php if ($canEdit || $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
-	<?php echo JLayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item, 'print' => false)); ?>
+	<?php echo LayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item, 'print' => false)); ?>
 <?php endif; ?>
 
 <?php // Todo Not that elegant would be nice to group the params ?>
@@ -59,7 +66,7 @@
 <?php if ($useDefList && ($info == 0 ||  $info == 2)) : ?>
 	<dl class="article-info  text-muted">
 		<dt class="article-info-term hide">
-		<?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?>
+		<?php echo Text::_('COM_CONTENT_ARTICLE_INFO'); ?>
 		</dt>
 
 		<?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
@@ -68,9 +75,9 @@
 				<?php $author = ($this->item->created_by_alias) ? $this->item->created_by_alias : $this->item->author; ?>
 				<?php $author = '<span itemprop="name">' . $author . '</span>'; ?>
 				<?php if (!empty($this->item->contact_link) && $params->get('link_author') == true) : ?>
-					<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', JHtml::_('link', $this->item->contact_link, $author, array('itemprop' => 'url'))); ?>
+					<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', HTMLHelper::_('link', $this->item->contact_link, $author, array('itemprop' => 'url'))); ?>
 				<?php else: ?>
-					<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
+					<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
 				<?php endif; ?>
 			</dd>
 		<?php endif; ?>
@@ -80,10 +87,10 @@
 				<i class="fa fa-folder-open"></i>
 				<?php $title = $this->escape($this->item->parent_title); ?>
 				<?php if ($params->get('link_parent_category') && !empty($this->item->parent_slug)) : ?>
-					<?php $url = '<a href="' . JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)) . '" itemprop="genre">' . $title . '</a>'; ?>
-					<?php echo JText::sprintf('COM_CONTENT_PARENT', $url); ?>
+					<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)) . '" itemprop="genre">' . $title . '</a>'; ?>
+					<?php echo Text::sprintf('COM_CONTENT_PARENT', $url); ?>
 				<?php else : ?>
-					<?php echo JText::sprintf('COM_CONTENT_PARENT', '<span itemprop="genre">' . $title . '</span>'); ?>
+					<?php echo Text::sprintf('COM_CONTENT_PARENT', '<span itemprop="genre">' . $title . '</span>'); ?>
 				<?php endif; ?>
 			</dd>
 		<?php endif; ?>
@@ -93,10 +100,10 @@
 				<i class="fa fa-folder-open"></i>
 				<?php $title = $this->escape($this->item->category_title); ?>
 				<?php if ($params->get('link_category') && $this->item->catslug) : ?>
-					<?php $url = '<a href="' . JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
-					<?php echo JText::sprintf('COM_CONTENT_CATEGORY', $url); ?>
+					<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
+					<?php echo Text::sprintf('COM_CONTENT_CATEGORY', $url); ?>
 				<?php else : ?>
-					<?php echo JText::sprintf('COM_CONTENT_CATEGORY', '<span itemprop="genre">' . $title . '</span>'); ?>
+					<?php echo Text::sprintf('COM_CONTENT_CATEGORY', '<span itemprop="genre">' . $title . '</span>'); ?>
 				<?php endif; ?>
 			</dd>
 		<?php endif; ?>
@@ -104,8 +111,8 @@
 		<?php if ($params->get('show_publish_date')) : ?>
 			<dd class="published">
 				<i class="fa fa-calendar"></i>
-				<time datetime="<?php echo JHtml::_('date', $this->item->publish_up, 'c'); ?>" itemprop="datePublished">
-					<?php echo JText::sprintf('COM_CONTENT_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC3'))); ?>
+				<time datetime="<?php echo HTMLHelper::_('date', $this->item->publish_up, 'c'); ?>" itemprop="datePublished">
+					<?php echo Text::sprintf('COM_CONTENT_PUBLISHED_DATE_ON', HTMLHelper::_('date', $this->item->publish_up, Text::_('DATE_FORMAT_LC3'))); ?>
 				</time>
 			</dd>
 		<?php endif; ?>
@@ -114,8 +121,8 @@
 			<?php if ($params->get('show_modify_date')) : ?>
 				<dd class="modified">
 					<i class="fa fa-calendar"></i>
-					<time datetime="<?php echo JHtml::_('date', $this->item->modified, 'c'); ?>" itemprop="dateModified">
-						<?php echo JText::sprintf('COM_CONTENT_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC3'))); ?>
+					<time datetime="<?php echo HTMLHelper::_('date', $this->item->modified, 'c'); ?>" itemprop="dateModified">
+						<?php echo Text::sprintf('COM_CONTENT_LAST_UPDATED', HTMLHelper::_('date', $this->item->modified, Text::_('DATE_FORMAT_LC3'))); ?>
 					</time>
 				</dd>
 			<?php endif; ?>
@@ -123,8 +130,8 @@
 			<?php if ($params->get('show_create_date')) : ?>
 				<dd class="create">
 					<i class="fa fa-calendar"></i>
-					<time datetime="<?php echo JHtml::_('date', $this->item->created, 'c'); ?>" itemprop="dateCreated">
-						<?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC3'))); ?>
+					<time datetime="<?php echo HTMLHelper::_('date', $this->item->created, 'c'); ?>" itemprop="dateCreated">
+						<?php echo Text::sprintf('COM_CONTENT_CREATED_DATE_ON', HTMLHelper::_('date', $this->item->created, Text::_('DATE_FORMAT_LC3'))); ?>
 					</time>
 				</dd>
 			<?php endif; ?>
@@ -133,7 +140,7 @@
 				<dd class="hits">
 					<i class="fa fa-eye"></i>
 					<meta itemprop="interactionCount" content="UserPageVisits:<?php echo $this->item->hits; ?>" />
-					<?php echo JText::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits); ?>
+					<?php echo Text::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits); ?>
 				</dd>
 			<?php endif; ?>
 
@@ -160,7 +167,7 @@
 <?php if ($useDefList && ($info == 1 ||  $info == 2)) : ?>
 	<dl class="article-info text-muted">
 		<dt class="article-info-term hide">
-			<?php echo JText::_('COM_CONTENT_ARTICLE_INFO'); ?>
+			<?php echo Text::_('COM_CONTENT_ARTICLE_INFO'); ?>
 		</dt>
 		<?php if ($info == 1) : ?>
 			<?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
@@ -169,9 +176,9 @@
 					<?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
 					<?php $author = '<span itemprop="name">' . $author . '</span>'; ?>
 					<?php if (!empty($this->item->contact_link) && $params->get('link_author') == true) : ?>
-						<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', JHtml::_('link', $this->item->contact_link, $author, array('itemprop' => 'url'))); ?>
+						<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', HTMLHelper::_('link', $this->item->contact_link, $author, array('itemprop' => 'url'))); ?>
 					<?php else : ?>
-						<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
+						<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
 					<?php endif; ?>
 				</dd>
 			<?php endif; ?>
@@ -181,10 +188,10 @@
 					<i class="fa fa-folder-open"></i>
 					<?php $title = $this->escape($this->item->parent_title); ?>
 					<?php if ($params->get('link_parent_category') && $this->item->parent_slug) : ?>
-						<?php $url = '<a href="' . JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)) . '" itemprop="genre">' . $title . '</a>'; ?>
-						<?php echo JText::sprintf('COM_CONTENT_PARENT', $url); ?>
+						<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)) . '" itemprop="genre">' . $title . '</a>'; ?>
+						<?php echo Text::sprintf('COM_CONTENT_PARENT', $url); ?>
 					<?php else : ?>
-						<?php echo JText::sprintf('COM_CONTENT_PARENT', '<span itemprop="genre">' . $title . '</span>'); ?>
+						<?php echo Text::sprintf('COM_CONTENT_PARENT', '<span itemprop="genre">' . $title . '</span>'); ?>
 					<?php endif; ?>
 				</dd>
 			<?php endif; ?>
@@ -194,10 +201,10 @@
 					<i class="fa fa-folder-open"></i>
 					<?php $title = $this->escape($this->item->category_title); ?>
 					<?php if ($params->get('link_category') && $this->item->catslug) : ?>
-						<?php $url = '<a href="' . JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
-						<?php echo JText::sprintf('COM_CONTENT_CATEGORY', $url); ?>
+						<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
+						<?php echo Text::sprintf('COM_CONTENT_CATEGORY', $url); ?>
 					<?php else : ?>
-						<?php echo JText::sprintf('COM_CONTENT_CATEGORY', '<span itemprop="genre">' . $title . '</span>'); ?>
+						<?php echo Text::sprintf('COM_CONTENT_CATEGORY', '<span itemprop="genre">' . $title . '</span>'); ?>
 					<?php endif; ?>
 				</dd>
 			<?php endif; ?>
@@ -205,8 +212,8 @@
 			<?php if ($params->get('show_publish_date')) : ?>
 				<dd class="published">
 					<i class="fa fa-calendar"></i>
-					<time datetime="<?php echo JHtml::_('date', $this->item->publish_up, 'c'); ?>" itemprop="datePublished">
-						<?php echo JText::sprintf('COM_CONTENT_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC3'))); ?>
+					<time datetime="<?php echo HTMLHelper::_('date', $this->item->publish_up, 'c'); ?>" itemprop="datePublished">
+						<?php echo Text::sprintf('COM_CONTENT_PUBLISHED_DATE_ON', HTMLHelper::_('date', $this->item->publish_up, Text::_('DATE_FORMAT_LC3'))); ?>
 					</time>
 				</dd>
 			<?php endif; ?>
@@ -215,8 +222,8 @@
 		<?php if ($params->get('show_create_date')) : ?>
 			<dd class="create">
 				<i class="fa fa-calendar"></i>
-				<time datetime="<?php echo JHtml::_('date', $this->item->created, 'c'); ?>" itemprop="dateCreated">
-					<?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC3'))); ?>
+				<time datetime="<?php echo HTMLHelper::_('date', $this->item->created, 'c'); ?>" itemprop="dateCreated">
+					<?php echo Text::sprintf('COM_CONTENT_CREATED_DATE_ON', HTMLHelper::_('date', $this->item->created, Text::_('DATE_FORMAT_LC3'))); ?>
 				</time>
 			</dd>
 		<?php endif; ?>
@@ -224,8 +231,8 @@
 		<?php if ($params->get('show_modify_date')) : ?>
 			<dd class="modified">
 				<i class="fa fa-calendar"></i>
-				<time datetime="<?php echo JHtml::_('date', $this->item->modified, 'c'); ?>" itemprop="dateModified">
-					<?php echo JText::sprintf('COM_CONTENT_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC3'))); ?>
+				<time datetime="<?php echo HTMLHelper::_('date', $this->item->modified, 'c'); ?>" itemprop="dateModified">
+					<?php echo Text::sprintf('COM_CONTENT_LAST_UPDATED', HTMLHelper::_('date', $this->item->modified, Text::_('DATE_FORMAT_LC3'))); ?>
 				</time>
 			</dd>
 		<?php endif; ?>
@@ -234,12 +241,12 @@
 			<dd class="hits">
 				<i class="fa fa-eye"></i>
 				<meta itemprop="interactionCount" content="UserPageVisits:<?php echo $this->item->hits; ?>" />
-				<?php echo JText::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits); ?>
+				<?php echo Text::sprintf('COM_CONTENT_ARTICLE_HITS', $this->item->hits); ?>
 			</dd>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_tags', 1)) : ?>
-			<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
+			<?php $this->item->tagLayout = new FileLayout('joomla.content.tags'); ?>
 			<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>
 		<?php endif; ?>
 	</dl>
@@ -247,23 +254,23 @@
 
 <?php if ($params->get('show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :
-		$link = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
+		$link = Route::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
 	else :
-		$menu = JFactory::getApplication()->getMenu();
+		$menu = Factory::getApplication()->getMenu();
 		$active = $menu->getActive();
 		$itemId = $active->id;
-		$link1 = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
-		$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
+		$link1 = Route::_('index.php?option=com_users&view=login&Itemid=' . $itemId);
+		$returnURL = Route::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
 		$link = new JUri($link1);
 		$link->setVar('return', base64_encode($returnURL));
 	endif; ?>
 
-	<?php echo JLayoutHelper::render('joomla.content.readmore', array('item' => $this->item, 'params' => $params, 'link' => $link)); ?>
+	<?php echo LayoutHelper::render('joomla.content.readmore', array('item' => $this->item, 'params' => $params, 'link' => $link)); ?>
 
 <?php endif; ?>
 
-<?php if ($this->item->state == 0 || strtotime($this->item->publish_up) > strtotime(JFactory::getDate())
-	|| ((strtotime($this->item->publish_down) < strtotime(JFactory::getDate())) && $this->item->publish_down != '0000-00-00 00:00:00' )) : ?>
+<?php if ($this->item->state == 0 || strtotime($this->item->publish_up) > strtotime(Factory::getDate())
+	|| ((strtotime($this->item->publish_down) < strtotime(Factory::getDate())) && $this->item->publish_down != '0000-00-00 00:00:00' )) : ?>
 </div>
 <?php endif; ?>
 

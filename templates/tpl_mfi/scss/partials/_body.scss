@@ -1,0 +1,196 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for body structural stylings
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
+
+/*
+ * HTML5 Header section, has three rows:
+ *
+ *   top w/ main nav
+ *   middle w/ component nav
+ *   bottom w/ breadcrumbs
+ *
+ * @header, nested @container-fluid as first-child
+ */
+.header {}
+
+/*
+ * Has nested left and right container columns
+ *
+ * @row
+ */
+.header-top {}
+
+/*
+ * @column
+ */
+.header-top-left {}
+
+.logo-header-container {}
+
+/*
+ * Has two rows for primary and secondary nav
+ *
+ * @column
+ */
+.header-top-right {}
+
+/*
+ * @row
+ */
+.header-top-right-secondary-nav {}
+
+.search-header-container {}
+
+/*
+ * @row
+ */
+.nav-secondary-container {}
+
+.login-container {}
+
+.shopping-cart-container {}
+
+/*
+ * @row
+ */
+.header-top-right-primary-nav {}
+
+.nav-primary-container {}
+
+/*
+ * @row
+ */
+.header-middle {}
+
+.nav-component-container {}
+
+.nav-component-action-container {}
+
+/*
+ * @row
+ */
+.header-bottom {}
+
+.breadcrumbs-container {
+  background-color: $body-bg;
+  list-style: none;
+  margin: 0 0 $line-height-computed;
+  padding: 8px 15px;
+
+  > li {
+    display: inline-block;
+    text-shadow: 0 1px 0 $body-bg-light;
+
+    > .divider {
+      color: $text-color;
+      padding: 0 5px;
+    }
+  }
+}
+
+/*
+ * @section
+ */
+.content {}
+
+/*
+ * Non-bootstrap grid full width div
+ */
+.container-full-width {}
+
+.showcase-container {}
+
+.feature-container {}
+
+/*
+ * Three-column arrangement for content area, w/ left and right sidebars
+ *
+ * @row, nested in @container-fluid
+ */
+.container-content {}
+
+/*
+ * @col
+ */
+.aside-left-sidebar {}
+
+.content-left-sidebar-container {}
+
+/*
+ * @column
+ */
+.content-center {}
+
+.banner-top-container {}
+
+.content-message-container {}
+
+.content-error-container {}
+
+.content-component-container {}
+
+.content-info-container {}
+
+.content-social-share-container {}
+
+.content-references-container {}
+
+.content-sponsored-container {}
+
+.content-related-container {}
+
+.content-share-reactions-container {}
+
+.banner-bottom-container {}
+
+/*
+ * @column
+ */
+.aside-right-sidebar {}
+
+.content-right-sidebar-container {}
+
+/*
+ * Non-bootstrap grid full width div
+ */
+.debug-container {}
+
+/*
+ * Left and right column arrangement for footer
+ *
+ * @footer
+ */
+.footer {}
+
+/*
+ * @column
+ */
+.footer-left {}
+
+.logo-footer-container {}
+
+.copyright-container {}
+
+
+/*
+ * @column
+ */
+.footer-right {}
+
+.social-icons-container {}
+
+.search-footer-container {}
+
+.nav-footer-container {}

@@ -309,6 +309,7 @@ function rsyncRepoToLiveSite() {
           emptyDirectories: true,
           chown: config.chown
         }))
+        .on('error', function() { log(colors.red('Error in rsyncing. Source:\n' + Vinyl.path + '\nDestination:\n' + getDestDirFromBase(Vinyl.base) )); })
         .on('end', function() { log(colors.green('Rsyncing: ' + Vinyl.base)); });
     }))
 }

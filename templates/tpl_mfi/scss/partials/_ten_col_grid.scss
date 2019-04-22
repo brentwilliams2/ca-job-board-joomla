@@ -1,0 +1,62 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Ten-column grid layout
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+//** Number of columns in the grid.
+$grid-columns:              10;
+
+//** Padding between columns. Gets divided in half for the left and right.
+$grid-gutter-width:         30px;
+
+@import 'bootstrap/mixins/grid-framework';
+@import 'partials/mixins/ten_col_grid_framework';
+
+/*
+ * Columns
+ *
+ * Common styles for small and large grid columns
+ */
+@include make-10-grid-columns;
+
+/*
+ * Extra small grid
+ *
+ * Columns, offsets, pushes, and pulls for extra small devices like smartphones.
+ */
+@include make-grid(10-xs);
+
+/*
+ * Small grid
+ *
+ * Columns, offsets, pushes, and pulls for the small device range, from phones to tablets.
+ */
+@media (min-width: $screen-sm-min) {
+  @include make-grid(10-sm);
+}
+
+/*
+ * Medium grid
+ *
+ * Columns, offsets, pushes, and pulls for the desktop device range.
+ */
+@media (min-width: $screen-md-min) {
+  @include make-grid(10-md);
+}
+
+/*
+ * Large grid
+ *
+ * Columns, offsets, pushes, and pulls for the large desktop device range.
+ */
+@media (min-width: $screen-lg-min) {
+  @include make-grid(10-lg);
+}

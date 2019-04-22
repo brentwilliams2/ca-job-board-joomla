@@ -9,15 +9,19 @@
  *
  */
 
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 
-  JHtml::_('behavior.tabstate');
-  JHtml::_('behavior.keepalive');
-  JHtml::_('behavior.calendar');
-  JHtml::_('behavior.formvalidation');
-  JHtml::_('formbehavior.chosen', 'select');
-  JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
+  HTMLHelper::_('behavior.tabstate');
+  HTMLHelper::_('behavior.keepalive');
+  HTMLHelper::_('behavior.calendar');
+  HTMLHelper::_('behavior.formvalidation');
+  HTMLHelper::_('formbehavior.chosen', 'select');
+  HTMLHelper::_('behavior.modal', 'a.modal_jform_contenthistory');
 
   // Create shortcut to parameters.
   $params = $this->state->get('params');
@@ -26,6 +30,7 @@
 
   // This checks if the editor config options have ever been saved. If they haven't they will fall back to the original settings.
   $editoroptions = isset($params->show_publishing_options);
+
   if (!$editoroptions)
   {
     $params->show_urls_images_frontend = '0';
@@ -52,18 +57,18 @@
 	</div>
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_content&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical" role="form">
+	<form action="<?php echo Route::_('index.php?option=com_content&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical" role="form">
 		<div class="btn-toolbar">
 
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('article.save')">
-					<span class="fa fa-check"></span>&#160;<?php echo JText::_('JSAVE') ?>
+					<span class="fa fa-check"></span>&#160;<?php echo Text::_('JSAVE') ?>
 				</button>
 			</div>
 
 			<div class="btn-group">
 				<button type="button" class="btn btn-default" onclick="Joomla.submitbutton('article.cancel')">
-					<span class="fa fa-times-circle-o"></span>&#160;<?php echo JText::_('JCANCEL') ?>
+					<span class="fa fa-times-circle-o"></span>&#160;<?php echo Text::_('JCANCEL') ?>
 				</button>
 			</div>
 
@@ -77,13 +82,13 @@
 		<fieldset>
 
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#editor" data-toggle="tab"><?php echo JText::_('COM_CONTENT_ARTICLE_CONTENT') ?></a></li>
+				<li class="active"><a href="#editor" data-toggle="tab"><?php echo Text::_('COM_CONTENT_ARTICLE_CONTENT') ?></a></li>
 				<?php if ($params->get('show_urls_images_frontend') ) : ?>
-				<li><a href="#images" data-toggle="tab"><?php echo JText::_('COM_CONTENT_IMAGES_AND_URLS') ?></a></li>
+				<li><a href="#images" data-toggle="tab"><?php echo Text::_('COM_CONTENT_IMAGES_AND_URLS') ?></a></li>
 				<?php endif; ?>
-				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_CONTENT_PUBLISHING') ?></a></li>
-				<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
-				<li><a href="#metadata" data-toggle="tab"><?php echo JText::_('COM_CONTENT_METADATA') ?></a></li>
+				<li><a href="#publishing" data-toggle="tab"><?php echo Text::_('COM_CONTENT_PUBLISHING') ?></a></li>
+				<li><a href="#language" data-toggle="tab"><?php echo Text::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
+				<li><a href="#metadata" data-toggle="tab"><?php echo Text::_('COM_CONTENT_METADATA') ?></a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -163,7 +168,7 @@
 							<div class="control-label">
 							</div>
 							<div class="form-control">
-								<?php echo JText::_('COM_CONTENT_ORDERING'); ?>
+								<?php echo Text::_('COM_CONTENT_ORDERING'); ?>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -186,7 +191,7 @@
 					<?php endif; ?>
 				</div>
 			</div>
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
 		</fieldset>
 	</form>
 </div>

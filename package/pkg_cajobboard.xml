@@ -15,9 +15,18 @@
 
   <files folder="packages">
     <file type="component" id="com_cajobboard" >com_cajobboard.zip</file>
-    <file type="library" id="  lib_fof30">lib_fof30-3.3.3.zip</file>
+    <file type="library" id="lib_fof30">lib_fof30-3.3.3.zip</file>
     <file type="library" id="lib_cajobboard">lib_cajobboard.zip</file>
-    <file type="plugin" id="plg_system_cajobboard" group="system">plg_sys_cajobboard.zip</file>
-    <file type="template" id="tpl_calligraphic" client="site">tpl_calligraphic.zip</file>
+    <file type="module" id="mod_mfi_template_cart_hikashop">mod_mfi_template_cart_hikashop.zip</file>
+    <file type="module" id="mod_mfi_template_copyright">mod_mfi_template_copyright.zip</file>
+    <file type="module" id="mod_mfi_template_finder">mod_mfi_template_finder.zip</file>
+    <file type="module" id="mod_mfi_template_login">mod_mfi_template_login.zip</file>
+    <file type="module" id="mod_mfi_template_social_links">mod_mfi_template_social_links.zip</file>
+    <file type="module" id="mod_mfi_template_social_share">mod_mfi_template_social_share.zip</file>
+    <file type="plugin" id="plg_system_cajobboard_library_loader" group="system">plg_system_cajobboard_library_loader.zip</file>
+    <file type="plugin" id="plg_system_mfi_template_exception_handler" group="system">plg_system_mfi_template_exception_handler.zip</file>
+    <file type="plugin" id="plg_user_cajobboard" group="user">plg_user_cajobboard.zip</file>
+    <file type="plugin" id="plg_user_mfi_template_social_login" group="user">plg_user_mfi_template_social_login.zip</file>
+    <file type="template" id="tpl_mfi" client="site">tpl_mfi.zip</file>
   </files>
 </extension>

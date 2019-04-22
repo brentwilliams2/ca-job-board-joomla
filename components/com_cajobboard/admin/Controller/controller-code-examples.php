@@ -2,21 +2,43 @@
 
 die();
 
-use \Joomla\CMS\Factory;
+/*
+@TODO: putting this in manifest files:
+    <help key="JHELP_EXTENSIONS_MODULE_MANAGER_LOGIN" />
+*/
+
 use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\Log\Log;
 use \Joomla\CMS\Table\Table;
 use \Joomla\CMS\Table\Asset;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Access\Rules;
 use \Joomla\CMS\Helper\TagsHelper;
 use \Joomla\CMS\Editor\Editor;
-use \Joomla\CMS\HTML\HTMLHelper; // JHtml
-use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Pagination\Pagination;
+use \Joomla\CMS\Helper\ModuleHelper;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Router\Route;
+use \Joomla\CMS\HTML\HTMLHelper; // JHtml
+use \Joomla\CMS\Log\Log;
+use \Joomla\CMS\Document\Document;
+use \Joomla\CMS\Document\ErrorDocument;
+use \Joomla\CMS\Document\HtmlDocument;
+
+use \Joomla\CMS\Plugin\CMSPlugin; // JPlugin
 
 Log::add('Job Occupational Categories model called', Log::DEBUG, 'cajobboard');
+
+// Old Joomla! API had methods like raiseWarning(), raiseNotice(), and raiseError()
+// Now just throw an exception on error, and/or use:
+//
+//   \Joomla\CMS\Factory::getApplication()->enqueueMessage($msg, 'notice')
+//
+// when wou want to notify the UI. These JError::raiseSomething() methods
+// call jexit() (wrapper to PHP's exit function) if they encounter recursion,
+// otherwise just return and continue processing on the next line.
+
 
 
 // Akeeba Subs FOF Controller Method examples

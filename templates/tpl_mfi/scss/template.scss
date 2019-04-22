@@ -1,14 +1,31 @@
-/*!
- * Multi Family Insiders
- * Copyright 2019 Calligraphic Design
- * Licensed under GPL v2 (http://www.gnu.org/licenses/gpl-2.0.html)
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Main template file
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
+// Bootstrap variables
+@import 'partials/variables';
+
+// Ten-column grid framework
+@import 'partials/ten_col_grid';
+
 // Template elements
-@import "template/main";
-@import "template/forms";
-@import "template/chosen";
+@import 'partials/bootstrap_overrides';
+@import 'partials/chosen';
+@import 'partials/forms';
 
-// User customisations
-@import "template/custom";
-
+// Template position stylings
+@import 'partials/banners';
+@import 'partials/body';
+@import 'partials/content';
+@import 'partials/modules';
+@import 'partials/navigation';
+@import 'partials/other';
