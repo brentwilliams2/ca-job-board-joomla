@@ -12,50 +12,143 @@
  */
 
 // @TODO: Remove for production and fix empty blocks
-// sass-lint:disable no-empty-rulesets
+// sass-lint:disable no-empty-rulesets no-important
 
 @import '../bootstrap/mixins/clearfix';
 
-/*
- *
- */
-.nav-primary {}
 
 /*
  * This is the smaller navigation menu at the top of the page, with "About Us",
  * "Files and Tools", and "Contact", and login/register and shopping cart modules
  */
-.nav-secondary {}
+.header-top-right-secondary-nav {
+  ul {
+    margin: 0;
+  }
+}
+
+// <li> elements in the menu
+.nav-secondary-container {
+  display: inline;
+  margin-bottom: $nav-secondary-margin-bottom;
+  margin-left:   $nav-secondary-margin-left;
+  margin-right:  $nav-secondary-margin-right;
+  margin-top:    $nav-secondary-margin-top;
+  position: relative;
+  text-decoration: none;
+
+  a {
+    color: $text-color-dark;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-small;
+    font-weight: $font-weight-heavy;
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:focus {
+    color: $text-color;
+    text-decoration: none;
+  }
+}
+
+
+/*
+ * The primary site navigation with links to "Discuss", "Blogs", "Events", "Community", and "Jobs"
+ */
+.header-top-right-primary-nav {
+  ul {
+    margin: 0;
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+.nav-primary-container {
+  display: inline;
+  padding: $nav-link-padding;
+  position: relative;
+  text-decoration: none;
+
+  a {
+    color: $link-color;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-small;
+    font-weight: $font-weight-heavy;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background-color: $link-color;
+      color: $text-color-light;
+      text-decoration: none;
+    }
+  }
+}
+
 
 /*
  * The component-specific navigation menu above breadcrumbs, output varies
  * based on what component is being shown
  */
-.nav-component-action {}
+.component-navigation {
+  ul {
+    margin: 0;
+  }
+}
+
+.nav-component-container {
+  display: inline;
+  position: relative;
+
+  a {
+    color: $text-color-light;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-small;
+    font-weight: $font-weight-heavy;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      border-bottom-color: $brand-primary;
+      border-bottom-width: 5px;
+      color: $body-bg-light;
+    }
+  }
+}
+
 
 /*
  * The footer navigation with links to "Jobs", "Community", "Events",
  * "Blogs", "About Us", "Files and Tools", and "Contact"
  */
-.nav-footer {}
+.footer-navigation {
+  ul {
+    margin: 0;
+  }
+}
 
+.nav-footer-container {
+  color: $body-bg;
+  display: inline !important;
 
-// div that should behave like .nav > li
-.search-header-container,
-.login-container,
-.shopping-cart-container {
-  display: block;
-  position: relative;
-
-  > span {
-    display: block;
-    padding: $nav-link-padding;
-    position: relative;
+  a {
+    color: $text-color-light;
+    display: inline !important;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-small;
+    font-weight: $font-weight-heavy;
+    padding: 10px 5px !important;
+    text-decoration: none;
 
     &:hover,
     &:focus {
-      background-color: $nav-link-hover-bg;
-      text-decoration: none;
+      color: $gray-lighter;
     }
   }
 }

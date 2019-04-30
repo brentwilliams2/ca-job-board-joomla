@@ -60,6 +60,7 @@ class ModFinderHelper
 		return implode('', $fields);
 	}
 
+
 	/**
 	 * Get Smart Search query object.
 	 *

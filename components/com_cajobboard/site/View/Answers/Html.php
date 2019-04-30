@@ -15,19 +15,17 @@ namespace Calligraphic\Cajobboard\Site\View\Answers;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Factory;
-use \Joomla\Registry\Registry;
-use \Joomla\CMS\\Component\ComponentHelper;
 use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
 
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
-class Html extends \FOF30\View\DataView\Html
+class Html extends BaseHtml
 {
 	/**
 	 * The component-level parameters stored in #__extensions by com_config
 	 *
-	 * @var  Registry
+	 * @var  \Joomla\Registry\Registry
 	 */
   protected $componentParams;
 
@@ -41,16 +39,27 @@ class Html extends \FOF30\View\DataView\Html
 	{
     parent::__construct($container, $config);
 
-    // Get component parameters
-    $this->componentParams = ComponentHelper::getParams('com_cajobboard');
+    $this->loadLanguageFileForView('answers');
 
-    // Using view-specific language files for maintainability
-    $lang = Factory::getLanguage();
-
-    // Load Answers language file
-    $lang->load('answers', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
-
-    // Load javascript file for Job Posting views
+    // Load javascript file for Answer views
     //$this->addJavascriptFile('media://com_cajobboard/js/Site/answers.js');
+  }
+
+
+	/**
+	 * Overridden. Executes before rendering the page for the Browse task.
+   * Modified to eager load Author relation to Persons model and push the
+   * model to the view templates.
+	 */
+	protected function onBeforeBrowse()
+	{
+    $this->setupBrowse(array('Author', 'Publisher'));
+  }
+
+
+	protected function onAfterEdit()
+	{
+    $model = $this->getModel();
+    $model->getAssetJTable();
   }
 }

@@ -23,6 +23,9 @@
 
 <?php else: // render static HTML for social-icons pages ?>
 
-  <p>paste static html in social-icons > <?php echo $this->getTitle(); ?></p>
+  <a href="#" class="fb" title="Join us on Facebook"><img src="<?php echo $this->templatePath; ?>/images/facebook.png" alt="Facebook" height="24" width="24"></a>
+  <a href="#" class="tw" title="Join us on Twitter"><img src="<?php echo $this->templatePath; ?>/images/twitter.png" alt="Twitter" height="24" width="24"></a>
+  <a href="#" class="in" title="Join us on Linked In"><img src="<?php echo $this->templatePath; ?>/images/linkedin.png" alt="Linked In" height="24" width="24"></a>
+  <a href="#" class="insta" title="Join us on Instagram"><img src="<?php echo $this->templatePath; ?>/images/instagram.png" alt="Instagram" height="24" width="24"></a>
 
 <?php endif; ?>

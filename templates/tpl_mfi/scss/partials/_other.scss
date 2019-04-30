@@ -15,41 +15,35 @@
 // sass-lint:disable no-empty-rulesets
 
 /*
- * Toggles between Login / Register and the username / avatar for logged in users
- */
-.login {}
-
-/*
  * Shows the copyright notice
  */
-.copyright {}
+.copyright-container {
+  color: $body-bg;
+  // font-size: ;
+}
+
 
 /*
- * Debug display for development
+ * Debug display for development, non-bootstrap grid full width div
  */
-.debug {}
+.debug-container {}
+
 
 /*
- * Show a shopping cart icon in the top navigation menu row
+ * The Showcase module position for a large full-width element. The Feature
+ * position is designed if this needs to extend with more content on some pages.
  */
-.shopping-cart {}
+ .showcase-container {}
+
 
 /*
- * The Search module that displays in the footer of the site
+ * Provides a full-width module position right below the Showcase module position
  */
-.search-footer {}
+.feature-container {}
+
 
 /*
- * The Search module that displays in the header of the site
+ * An action button that is show to the right of the
+ * component-specific navigation menu above breadcrumbs
  */
-.search-header {}
-
-/*
- * Site logo in header with anchor URI set in template parameters
- */
-.logo-header {}
-
-/*
- * Site logo in footer with anchor URI set in template parameters
- */
-.logo-footer {}
+.nav-component-action-container {}

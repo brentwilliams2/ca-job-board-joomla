@@ -15,9 +15,41 @@
 // sass-lint:disable no-empty-rulesets
 
 /*
- * Applied to all banner divs, not used alone
+ * Banner that displays right below breadcrumbs
+ *
+ * 550 x 75  - Non-standard size per Brent's specs
+ *
+ * Standard alternative sizes:
+ *
+ * 728 × 90  - Leaderboard
+ * 468 x 60  - Banner
+ * 320 × 100 - Large Mobile Banner
  */
-.banner {}
+
+// Joomla! controlled HTML output
+.banneritem {
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+
+/*
+ * Banner that displays right below breadcrumbs
+ *
+ * 550 x 75  - Non-standard size per Brent's specs
+ *
+ * See banner-top for standard alternative sizes
+ */
+.banner-bottom-container {
+  // Joomla! controlled HTML output
+  img {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 /*
   * These banners are displayed in the editor area on Jomsocial pages
@@ -25,7 +57,9 @@
   * 160 x 100 Non-standard size per Brent's specs
   */
 .banner-content-right-first {}
+
 .banner-content-right-second {}
+
 
 /*
   * These banners are displayed in the editor area on Jomsocial pages,
@@ -34,7 +68,9 @@
   * 160 x 100 Non-standard size, matching the right-hand side equivelants
   */
 .banner-content-left-first {}
+
 .banner-content-left-second {}
+
 
 /*
   * This banner is displayed in the lower editor area on the Forum's "Create a New Topic" page
@@ -42,30 +78,3 @@
   * 160 x 100 Non-standard size per Brent's specs
   */
 .banner-content-lower-second {}
-
-/*
-  * Banner that displays right below breadcrumbs
-  *
-  * 550 x 75  - Non-standard size per Brent's specs
-  *
-  * Standard alternative sizes:
-  *
-  * 728 × 90  - Leaderboard
-  * 468 x 60  - Banner
-  * 320 × 100 - Large Mobile Banner
-  */
-.banner-top {}
-
-/*
-  * Banner that displays right below breadcrumbs
-  *
-  * 550 x 75  - Non-standard size per Brent's specs
-  *
-  * See banner-top for standard alternative sizes
-  */
-.banner-bottom {}
-
-/*
-  * Breadcrumbs with angle brack separator
-  */
-.breadcrumbs {}

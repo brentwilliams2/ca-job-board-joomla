@@ -1,0 +1,192 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for login partial
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets nesting-depth no-transition-all
+
+/*
+ * Container in nav-secondary navigation bar that toggles between
+ * Login / Register and the username / avatar for logged in users
+ */
+.login-container {
+  display: inline;
+  margin-bottom: $nav-secondary-margin-bottom;
+  margin-left:   $nav-secondary-margin-left;
+  margin-right:  $nav-secondary-margin-right;
+  margin-top:    $nav-secondary-margin-top;
+  position: relative;
+}
+
+/*
+ * classes for "login" view of module (shown to guest users)
+ */
+
+// "LOGIN" and "REGISTER" <span> links shown to guest users.  Shows modal when clicked.
+.login-and-register {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-small;
+  font-weight: $font-weight-heavy;
+
+  // "login" <span>, shows modal when clicked
+  .login,
+  // "register" anchor <a>, link to registration page
+  .register {
+    color: $text-color-dark !important; // sass-lint:disable-line no-important
+
+    &:hover,
+    &:focus {
+      color: $text-color !important; // sass-lint:disable-line no-important
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}
+
+// Modal to show when the "LOGIN" element is clicked
+.login-modal {
+  // Bootstrap modal classes are wrapped inside the form
+  .login-modal-form {}
+}
+
+// <h4> in Bootstrap modal header
+.login-modal-greeting {
+  color: $brand-secondary;
+}
+
+
+.form-login-username,
+.form-login-password {
+  .animation-label {
+    color: $gray-light;
+    font-size: $font-size-small;
+    font-weight: 500;
+  }
+
+  .animation-border {
+    background: $brand-primary;
+  }
+
+  .animation-input {
+    border-bottom-color: $gray-lighter;
+    color: $brand-secondary;
+    font-family: inherit;
+    font-size: $font-size-small;
+    font-weight: 500;
+
+    &:hover {
+      background: $body-bg;
+    }
+
+    &:not(:placeholder-shown) {
+      + span {
+        color: $body-bg;
+      }
+    }
+
+    &:focus {
+      + span {
+        color: $brand-secondary;
+      }
+    }
+  }
+}
+
+
+.form-login-remember {
+  display: block;
+  line-height: $input-height-small;
+  margin-top: 5px;
+
+  input {
+    margin: 0 0 5px;
+  }
+
+  // "remember me" text
+  label {
+    color: $text-color;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-small;
+    margin-left: 5px;
+  }
+}
+
+
+// wrapper for 'form-register' and 'form-login-submit' buttons
+.login-modal-buttons {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-register {
+  a {
+    button {
+      margin: 5px 0 10px;
+    }
+  }
+}
+
+.form-login-submit {
+  button {
+    margin: 5px 0 10px 15px;
+  }
+}
+
+
+.form-forgot-username,
+.form-forgot-password {
+  display: block;
+  text-align: left;
+
+  a {
+    color: $text-color;
+    font-family: $font-family-sans-serif;
+    font-size: $font-size-small;
+
+    &:hover,
+    &:focus {
+      color: $brand-secondary !important; // sass-lint:disable-line no-important
+      text-decoration: none;
+    }
+  }
+}
+
+
+/*
+ * classes for "logout" view of module (shown to logged-in users)
+ */
+
+
+// Avatar and greeting <span>, shown to logged-in users. Shows modal when clicked.
+.logged-in {
+  // This <span> should show the user avatar
+  .logged-in-avatar {}
+
+  // This <span> shows the formatted username / name of logged-in user
+  .logged-in-greeting {}
+}
+
+// Modal to show when the wrapper for the avatar and greeting is clicked
+.logout-modal {
+  .logout-form {
+    // <div> with link to logged-in user's profile page
+    .logout-profile-link {
+      a {}
+    }
+
+    // <div> with the logout button form element, an <input>
+    .logout-button {
+      input {}
+    }
+  }
+}

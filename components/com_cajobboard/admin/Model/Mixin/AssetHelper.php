@@ -157,7 +157,7 @@ trait AssetHelper
 
 		if (!$isCategoryAssetRecordLoaded)
 		{
-      throw new \Exception('Could not load the asset record for this item\s category.');
+      throw new \Exception('Could not load the asset record for this item\'s category.');
     }
 
     $this->asset->bind( array( 'parent_id' => $categoryAsset->getPrimaryKey()['id'] ) );

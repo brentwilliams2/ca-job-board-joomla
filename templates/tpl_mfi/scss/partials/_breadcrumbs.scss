@@ -1,0 +1,26 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for breadcrumbs partial
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
+
+/*
+ * Breadcrumbs with angle brack separator
+ */
+.breadcrumbs-container {
+  background-color: $body-bg;
+  list-style: none;
+  margin: 0 0 $line-height-computed;
+  padding: 8px 15px;
+  color: $text-color;
+}

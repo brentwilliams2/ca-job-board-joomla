@@ -15,182 +15,68 @@
 // sass-lint:disable no-empty-rulesets
 
 /*
- * HTML5 Header section, has three rows:
+ * HTML5 <header>, has three rows:
+ *
+ *   header-top w/ main nav
+ *   header-middle w/ component nav
+ *   header-bottom w/ breadcrumbs
+ */
+.header {}
+
+.header-top {
+  background-color: $body-bg-light;
+}
+
+.header-top-left {}
+
+.header-top-right {}
+
+.header-middle {
+  background-color: $brand-secondary;
+}
+
+.header-bottom {
+  background-color: $body-bg;
+  border-bottom: 1px;
+  border-bottom-color: $gray-light;
+}
+
+/*
+ * HTML5 <section>, has three rows:
  *
  *   top w/ main nav
  *   middle w/ component nav
  *   bottom w/ breadcrumbs
- *
- * @header, nested @container-fluid as first-child
  */
-.header {}
-
-/*
- * Has nested left and right container columns
- *
- * @row
- */
-.header-top {}
-
-/*
- * @column
- */
-.header-top-left {}
-
-.logo-header-container {}
-
-/*
- * Has two rows for primary and secondary nav
- *
- * @column
- */
-.header-top-right {}
-
-/*
- * @row
- */
-.header-top-right-secondary-nav {}
-
-.search-header-container {}
-
-/*
- * @row
- */
-.nav-secondary-container {}
-
-.login-container {}
-
-.shopping-cart-container {}
-
-/*
- * @row
- */
-.header-top-right-primary-nav {}
-
-.nav-primary-container {}
-
-/*
- * @row
- */
-.header-middle {}
-
-.nav-component-container {}
-
-.nav-component-action-container {}
-
-/*
- * @row
- */
-.header-bottom {}
-
-.breadcrumbs-container {
+.content {
   background-color: $body-bg;
-  list-style: none;
-  margin: 0 0 $line-height-computed;
-  padding: 8px 15px;
-
-  > li {
-    display: inline-block;
-    text-shadow: 0 1px 0 $body-bg-light;
-
-    > .divider {
-      color: $text-color;
-      padding: 0 5px;
-    }
-  }
 }
 
-/*
- * @section
- */
-.content {}
+// contains 'content-center' and 'aside-*-sidebar' columns
+.content-container-with-sidebars {}
 
-/*
- * Non-bootstrap grid full width div
- */
-.container-full-width {}
-
-.showcase-container {}
-
-.feature-container {}
-
-/*
- * Three-column arrangement for content area, w/ left and right sidebars
- *
- * @row, nested in @container-fluid
- */
-.container-content {}
-
-/*
- * @col
- */
-.aside-left-sidebar {}
-
-.content-left-sidebar-container {}
-
-/*
- * @column
- */
 .content-center {}
 
-.banner-top-container {}
+.aside-left-sidebar {}
 
-.content-message-container {}
-
-.content-error-container {}
-
-.content-component-container {}
-
-.content-info-container {}
-
-.content-social-share-container {}
-
-.content-references-container {}
-
-.content-sponsored-container {}
-
-.content-related-container {}
-
-.content-share-reactions-container {}
-
-.banner-bottom-container {}
-
-/*
- * @column
- */
 .aside-right-sidebar {}
 
-.content-right-sidebar-container {}
 
 /*
- * Non-bootstrap grid full width div
- */
-.debug-container {}
-
-/*
- * Left and right column arrangement for footer
+ * HTML5 <footer>, has three rows:
  *
- * @footer
+ *   footer-top w/ logo and social icons
+ *   footer-middle w/ copyright and search
+ *   bottom w/ footer nav links
  */
-.footer {}
+.footer {
+  background-color: $brand-primary;
+  margin-top: 15px;
+  padding-top: 10px;
+}
 
-/*
- * @column
- */
-.footer-left {}
+.footer-top {}
 
-.logo-footer-container {}
+.footer-middle {}
 
-.copyright-container {}
-
-
-/*
- * @column
- */
-.footer-right {}
-
-.social-icons-container {}
-
-.search-footer-container {}
-
-.nav-footer-container {}
+.footer-bottom {}

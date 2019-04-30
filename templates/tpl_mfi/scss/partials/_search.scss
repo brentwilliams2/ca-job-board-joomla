@@ -1,0 +1,140 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for search box (finderr)
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
+
+/*
+ * The Search module (search icon) that displays in the header of the site
+ */
+.search-header-container {
+  display: inline;
+  margin-bottom: $nav-secondary-margin-bottom;
+  margin-left:   0;
+  margin-right:  $nav-secondary-margin-right;
+  margin-top:    $nav-secondary-margin-top;
+  position: relative;
+}
+
+// <span> to open modal, wraps header-search-icon
+.header-search-toggle-modal {}
+
+// The actual icon in menu bar
+.header-search-icon {
+  color: $text-color-dark;
+  font-size: $font-size-small;
+
+  &:hover,
+  &:focus {
+    color: $text-color;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+// Set font properties on container to cascade down
+.header-modal-search {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-small;
+  font-weight: $font-weight-heavy;
+}
+
+
+// <label> element wrapping searchterm input text box for animation effect
+.form-search-input {
+  .animation-label {
+    color: $gray-light;
+    font-size: $font-size-small;
+    font-weight: 500;
+  }
+
+  .animation-border {
+    background: $brand-primary;
+  }
+
+  .animation-input {
+    border-bottom-color: $gray-lighter;
+    color: $brand-primary;
+    font-family: inherit;
+    font-size: $font-size-small;
+    font-weight: 500;
+
+    &:hover {
+      background: $body-bg-light;
+    }
+
+    &:not(:placeholder-shown) {
+      + span {
+        color: $gray;
+      }
+    }
+
+    &:focus {
+      + span {
+        color: $brand-primary;
+      }
+    }
+  }
+}
+
+.header-modal-search-footer {
+  // Submit <button>
+  .submit {
+    margin-left: 15px;
+  }
+
+  // Close <button>
+  .close {
+  }
+
+  // anchor <a> to advanced search page
+  .advanced-search {
+    color: $text-color;
+    text-decoration: none;
+    text-decoration-style: none;
+
+    &:hover,
+    &:focus {
+      color: $brand-primary;
+    }
+  }
+}
+
+
+/*
+ * The Search module that displays in the footer of the site
+ */
+.search-footer-container {
+  color: $body-bg;
+
+  // <input> element for search query
+  .footer-search-query {}
+
+  //
+  .footer-search-icon {}
+}
+
+
+/*
+ * Joomla!-specific menu stylings
+ */
+
+.search-result {
+  .mime-pdf {
+    background: url('../../system/images/pdf_button.png') no-repeat;
+    padding-left: 20px;
+  }
+}
+
+// styles targeting #search-results, .autocompleter-choices,
+// .autocomplete-*, and .finder-* in Joomla CSS

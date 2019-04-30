@@ -23,6 +23,10 @@
 
 <?php else: // render static HTML for error pages ?>
 
-  <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+  <li id="shopping-cart-container" class="shopping-cart-container pull-right">
+    <span class="shopping-cart-in-nav" type="button" data-toggle="modal" data-target="#shopping-cart-modal">
+      <span class="shopping-cart-icon glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+    </span>
+  </li>
 
 <?php endif; ?>

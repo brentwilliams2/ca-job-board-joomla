@@ -41,13 +41,12 @@
 <?php else: // render static HTML for error pages ?>
 
   <a id="logo-header" class="logo-header" href="index.php">
-
     <img
       src="<?php echo $this->templatePath . '/images/mfi/MFI_logo_color.svg'; ?>"
+      style="width:277px; height:87.5px;"
       class="img-responsive"
       alt="<?php Text::_('TPL_MFI_LOGO_LABEL'); ?>"
     >
-
   </a>
 
 <?php endif; ?>

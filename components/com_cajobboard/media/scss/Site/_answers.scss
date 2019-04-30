@@ -8,62 +8,79 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-//-----------------------------------------------------------------------------
-// Answers ViewTemplate - SASS variables
-//-----------------------------------------------------------------------------
-$answers-background: #e3e3e4;
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
 
 //-----------------------------------------------------------------------------
-// Answers ViewTemplate - list view                      default.blade.php
+// Answers ViewTemplate - Common Classes
 //-----------------------------------------------------------------------------
 
-.answer-item {
-  background-color: $answers-background;
-  margin-top: 12px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-}
-
-//-----------------------------------------------------------------------------
-// Answers ViewTemplate - list view item            default_item.blade.php
-//-----------------------------------------------------------------------------
-
-// The container for the entire job posting item in list view
-.answer-list-item {
-  background-color: $answers-background;
-  margin-top: 12px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-}
-
-// Generic items
+// Common class applied to "Upvotes", "Downvotes", "Report Answer",
+// and (for users with permission) the "Edit" buttons
 .btn-answer {
   border-radius: 5px;
   margin-left: 5px;
 }
 
-// Class applied to the job posting title anchor (link to item view of job posting)
-.answer-title {
-  font-size: $font-size-large;
-  font-weight: bold;
-}
+//-----------------------------------------------------------------------------
+// Answers ViewTemplate - list view                      default.blade.php
+//                      - list view item            default_item.blade.php
+//-----------------------------------------------------------------------------
 
-// answer body text when link applied to it
-a {
-  .answer-text-link {
+.answers-list {
+
+  // Wrapper for answer item in browse view
+  .answer-list-item {
+    background-color: $body-bg-light;
+    margin-top: 12px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+  }
+
+  // Answer title (link to item view of answer)
+  .answer-title {
+    color: $brand-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+
+    &:hover,
+    &:focus {
+      color: $brand-info;
+      text-decoration: none;
+    }
+  }
+
+  // answer body text
+  .answer-text {
     color: $text-color;
-    text-decoration: none;
   }
 
-  &:hover,
-  &:focus {
-    color: $gray-light;
-    text-decoration: none;
+  .authors-name {}
+
+  // <img> element
+  .authors-avatar {}
+
+  // "Last seen ..." text
+  .author-last-seen {
+    color: $text-color-lighter;
   }
+
+  // "Posted on ..." text
+  .answer-posted-date {
+    color: $text-color-lighter;
+  }
+
+  // <button> elements
+  .answer-upvotes {}
+  .answer-downvotes {}
+  .report-answer {}
+  .edit-answer-button {}
+
+  // Link <a> anchor around the "Edit" button (edit-answer-button)
+  .edit-answer-link {}
+
 }
 
 
@@ -71,3 +88,62 @@ a {
 // Answers ViewTemplate - item view                             item.blade.php
 //-----------------------------------------------------------------------------
 
+.answer-item {
+  background-color: $body-bg-light;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+
+  .answer-title {}
+  .answer-text {}
+  .answer-authors-name {}
+
+  // "Last seen ..." text
+  .author-last-seen {}
+
+  // "Posted on ..." text
+  .answer-posted-date {}
+
+  // <img> element
+  .answer-author-avatar {}
+
+  // <button> elements
+  .answer-upvotes {}
+  .answer-downvotes {}
+  .report-answer {}
+  .edit-answer-button {}
+
+  // Link <a> anchor around the "Edit" button (edit-answer-button)
+  .edit-answer-link {}
+}
+
+//-----------------------------------------------------------------------------
+// Answers ViewTemplate - edit and add view                     form.blade.php
+//-----------------------------------------------------------------------------
+
+.answer-edit-container {
+
+  // Edit form header text
+  .block-header {
+    h3 {}
+  }
+
+  .answer-title {
+    h4 {}
+    input {}
+  }
+
+  .answer-text {
+    h4 {}
+    textarea {}
+  }
+
+  .answer-posted-date {}
+
+  .answer-modified-date {}
+
+  .answer-submit {}
+
+}

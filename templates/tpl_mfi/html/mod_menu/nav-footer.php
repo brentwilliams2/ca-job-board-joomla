@@ -10,28 +10,6 @@
  * @author      Calligraphic, LLC http://www.calligraphic.design
  * @copyright   Copyright (C) 2018 Calligraphic, LLC
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
- * Menu Types:
- *
- *  -separator:
- *  -component:
- *  -heading: The
- *  -url: link to an external URI
- *
- * Menu item class properties:
- *
- * $item->id
- * $item->type
- * $item->params \JRegistry
- * $item->anchor_title
- * $item->anchor_css
- * $item->title
- * $item->deeper
- * $item->parent
- * $item->shallower
- * $item->level_diff
- * $item->menu_image
- * $item->menu_image_css
  */
 
   // no direct access

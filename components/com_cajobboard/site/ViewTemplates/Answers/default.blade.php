@@ -12,9 +12,6 @@
 
   // no direct access
   defined('_JEXEC') or die;
-
-  // collection of answer model objects for this list view
-  $items = $this->getItems();
 ?>
 
 @section('header')
@@ -27,7 +24,7 @@
 
 @section('item')
   <div class="container-fluid answers-list">
-    @each('site:com_cajobboard/Answers/default_item', $items, 'item', 'text|COM_CAJOBBOARD_ANSWERS_NO_ANSWERS_FOUND')
+    @each('site:com_cajobboard/Answers/default_item', $this->items, 'item', 'text|COM_CAJOBBOARD_ANSWERS_NO_ANSWERS_FOUND')
   </div>
 @show
 

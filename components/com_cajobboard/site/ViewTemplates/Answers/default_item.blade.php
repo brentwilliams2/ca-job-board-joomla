@@ -58,9 +58,7 @@
 --}}
 @section('answer_text')
   <p class="answer-text">
-    <a class="answer-text-link" href="@route('index.php?option=com_cajobboard&view=answer&task=read&id='. (int) $answerID)">
-      <b>{{{ $text }}}</b>
-    </a>
+    <b>{{{ $text }}}</b>
   </p>
 @overwrite
 
@@ -133,14 +131,14 @@
   #9 - "Report answer" Button
 --}}
 @section('report_answer')
-  <button type="button" class="btn btn-primary btn-xs btn-answer guest-report-answer-button pull-right" data-toggle="modal" data-target="#report-answer">
+  <button type="button" class="btn btn-primary btn-xs btn-answer report-answer pull-right" data-toggle="modal" data-target="#report-answer">
     @lang('COM_CAJOBBOARD_REPORT_ANSWERS_BUTTON_LABEL')
   </button>
 @overwrite
 
 
 {{--
-  #10 - Edit Button for logged-in users
+  #10 - Edit Button for logged-in users that have permission to edit the item
 --}}
 @section('edit_answer')
   {{-- @TODO: Fix access control on edit answer button --}}

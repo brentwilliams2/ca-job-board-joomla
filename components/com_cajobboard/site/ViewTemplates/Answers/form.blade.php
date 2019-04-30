@@ -46,60 +46,64 @@
 #1 - Answer Title
 --}}
 @section('answer_title')
-{{-- link to individual answer --}}
-<h4>
-  <label>
-    @lang('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_LABEL')
-  </label>
-</h4>
-<input
-  type="text"
-  class="form-control"
-  name="name"
-  id="answer_title"
-  value="{{{ $title }}}"
-  placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_PLACEHOLDER')); ?>"
-/>
+  <div class="answer_title">
+    {{-- link to individual answer --}}
+    <h4>
+      <label for="name">
+        @lang('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_LABEL')
+      </label>
+    </h4>
+
+    <input
+      type="text"
+      class="form-control"
+      name="name"
+      id="answer-title-input"
+      value="{{{ $title }}}"
+      placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_PLACEHOLDER')); ?>"
+    />
+  </div>
 @overwrite
 
 {{--
 #2 - Answer Text
 --}}
 @section('answer_text')
-<div class="answer_text">
-  <h4>
-    <label for="text">
-      @lang('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_LABEL')
-    </label>
-  </h4>
-  <textarea name="text" id="answer_text" class="form-control" rows="8">
-    <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_PLACEHOLDER')); ?>
-  </textarea>
-</div>
+  <div class="answer_text">
+    <h4>
+      <label for="text">
+        @lang('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_LABEL')
+      </label>
+    </h4>
+
+    <textarea name="text" id="answer-text" class="form-control" rows="8">
+      <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_PLACEHOLDER')); ?>
+    </textarea>
+  </div>
 @overwrite
 
 {{--
 #3 - Answer Posted Date
 --}}
 @section('answer_posted_date')
-{{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
-<span class="answer-posted-date">
-  @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
-  <?php echo date("d/m/Y", strtotime($createdOn)); ?>
-</span>
+  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+  <span class="answer-posted-date">
+    @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
+    <?php echo date("d/m/Y", strtotime($createdOn)); ?>
+  </span>
 @overwrite
 
 {{--
 #4 - Answer Last Modified Date
 --}}
 @section('answer_modified_date')
-@if ($modifiedOn)
-  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
-  <span class="answer-posted-date">
-    @lang('COM_CAJOBBOARD_ANSWERS_MODIFIED_ON_BUTTON_LABEL')
-    <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
-  </span>
-@endif
+  @if ($modifiedOn)
+    {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
+    <span class="answer-modified-date">
+      @lang('COM_CAJOBBOARD_ANSWERS_MODIFIED_ON_BUTTON_LABEL')
+      <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
+    </span>
+  @endif
 @overwrite
 
 {{--
@@ -107,41 +111,38 @@
 --}}
 @section('answer-edit-container')
   <form action="{{{ $action }}}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
-
     <div class="answer-edit-container">
-      <div class="cajobboard-edit-form" id="cajobboard-answer-edit-form">
 
-        <header class="block-header">
-          <h3>
-            @if($task === 'edit')
-              @lang('COM_CAJOBBOARD_ANSWERS_EDIT_HEADER')
-            @else
-              @lang('COM_CAJOBBOARD_ANSWERS_ADD_HEADER')
-            @endif
-          </h3>
-        </header>
+      <header class="block-header">
+        <h3>
+          @if($task === 'edit')
+            @lang('COM_CAJOBBOARD_ANSWERS_EDIT_HEADER')
+          @else
+            @lang('COM_CAJOBBOARD_ANSWERS_ADD_HEADER')
+          @endif
+        </h3>
+      </header>
 
-        <div class="form-group">
-          <h4>@yield('answer_title')</h4>
-        </div>
-
-        <div class="form-group">
-          <p>@yield('answer_text')</p>
-        </div>
-
-        <div class="form-group">
-          @yield('answer_posted_date')
-        </div>
-
-        <div class="form-group">
-          @yield('answer_modified_date')
-        </div>
-
-        <button class="btn btn-primary pull-right answer-submit" type="submit">
-          @lang('COM_CAJOBBOARD_SUBMIT_BUTTON_LABEL')
-        </button>
-
+      <div class="form-group">
+        <h4>@yield('answer_title')</h4>
       </div>
+
+      <div class="form-group">
+        <p>@yield('answer_text')</p>
+      </div>
+
+      <div class="form-group">
+        @yield('answer_posted_date')
+      </div>
+
+      <div class="form-group">
+        @yield('answer_modified_date')
+      </div>
+
+      <button class="btn btn-primary pull-right answer-submit" type="submit">
+        @lang('COM_CAJOBBOARD_SUBMIT_BUTTON_LABEL')
+      </button>
+
     </div>
 
     {{-- Hidden form fields --}}

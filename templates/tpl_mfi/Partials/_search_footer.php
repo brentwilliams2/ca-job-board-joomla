@@ -13,6 +13,8 @@
  *
  */
 
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
@@ -23,6 +25,15 @@
 
 <?php else: // render static HTML for error pages ?>
 
-    <p>paste static html in search-footer</p>
+  <div class="finder">
+    <form id="mod-finder-searchform181" action="<?php echo Route::_('index.php?option=com_finder&view=search'); ?>" method="get" class="form-search" role="search">
+      <span class="footer-search-icon icon-search"></span>
+      <input class="footer-search-query search-query input-medium" id="mod-finder-searchword181" name="q" placeholder="Search ..." size="25" type="text" value="">
+      <input type="hidden" name="option" value="com_finder"><input type="hidden" name="view" value="search"><input type="hidden" name="Itemid" value="">
+    </form>
+  </div>
 
 <?php endif; ?>
+
+
+

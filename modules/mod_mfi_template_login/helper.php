@@ -1,19 +1,25 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  mod_login
+ * Multi Family Insiders Bootstrap V3 Template Login Module
  *
- * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * Helper for module
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-use Joomla\CMS\Helper\AuthenticationHelper;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Multilanguage;
-use \Joomla\CMS\Log\Log;
-use \Joomla\CMS\Uri\Uri;
+  use Joomla\CMS\Helper\AuthenticationHelper;
+  use \Joomla\CMS\Factory;
+  use \Joomla\CMS\Language\Multilanguage;
+  use \Joomla\CMS\Log\Log;
+  use \Joomla\CMS\Uri\Uri;
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
 /**
  * Helper for mod_login
@@ -39,6 +45,9 @@ class ModLoginHelper
 		// Stay on the same page
 		$url = Uri::getInstance()->toString();
 
+    // @TODO: Need logic to check if we are returning to a restricted page, or
+    //        if the user is just trying to login on a general page
+    /*
 		if ($item)
 		{
 			$lang = '';
@@ -50,9 +59,11 @@ class ModLoginHelper
 
 			$url = 'index.php?Itemid=' . $item->id . $lang;
 		}
+    */
 
 		return base64_encode($url);
 	}
+
 
 	/**
 	 * Returns the current users type
@@ -64,19 +75,5 @@ class ModLoginHelper
 		$user = Factory::getUser();
 
 		return (!$user->get('guest')) ? 'logout' : 'login';
-	}
-
-	/**
-	 * Get list of available two factor methods
-	 *
-	 * @return array
-	 *
-	 * @deprecated  4.0  Use JAuthenticationHelper::getTwoFactorMethods() instead.
-	 */
-	public static function getTwoFactorMethods()
-	{
-		Log::add(__METHOD__ . ' is deprecated, use JAuthenticationHelper::getTwoFactorMethods() instead.', Log::WARNING, 'deprecated');
-
-		return AuthenticationHelper::getTwoFactorMethods();
 	}
 }

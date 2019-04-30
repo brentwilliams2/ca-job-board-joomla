@@ -1,194 +1,137 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  mod_login
+ * Multi Family Insiders Bootstrap V3 Template Login Module
  *
- * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * Default Login Template
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-USE \Joomla\CMS\Component\ComponentHelper;
-USE \Joomla\CMS\Plugin\PluginHelper;
-use \Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Router\Route;
+  use \Joomla\CMS\Component\ComponentHelper;
+  use \Joomla\CMS\Plugin\PluginHelper;
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Router\Route;
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
-JLoader::register('UsersHelperRoute', JPATH_SITE . '/components/com_users/helpers/route.php');
+  JLoader::register('UsersHelperRoute', JPATH_SITE . '/components/com_users/helpers/route.php');
 
-HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('bootstrap.tooltip');
-
+  HTMLHelper::_('behavior.keepalive');
+  HTMLHelper::_('bootstrap.tooltip');
 ?>
 
-<form action="<?php echo Route::_('index.php', true, $params->get('usesecure', 0)); ?>" method="post" id="login-form" class="form-inline">
+<span class="login-and-register">
+  <span class="login" type="button" data-toggle="modal" data-target="#login-modal">
+    <?php echo strtoupper(Text::_('MOD_MFI_TEMPLATE_LOGIN_LABEL_LOGIN')); ?>
+  </span>
 
-  <?php if ($params->get('pretext')) : ?>
+  &#160;&#47;&#160;
 
-		<div class="pretext">
-			<p><?php echo $params->get('pretext'); ?></p>
-    </div>
+  <a class="register" href="<?php echo Route::_('index.php?option=com_users&view=registration'); ?>">
+		<?php echo strtoupper(Text::_('MOD_MFI_TEMPLATE_LOGIN_LABEL_REGISTER')); ?>
+  </a>
+</span>
 
-  <?php endif; ?>
 
-	<div class="userdata">
-		<div id="form-login-username" class="control-group">
-			<div class="controls">
+<div class="login-modal modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
 
-        <?php if (!$params->get('usetext', 0)) : ?>
+    <form
+      action="<?php echo Route::_('index.php', true, $params->get('usesecure', 0)); ?>"
+      method="post"
+      id="login-form"
+      class="login-modal-form"
+    >
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="login-modal-greeting"><?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_GREETING'); ?></h4>
+        </div>
 
-					<div class="input-prepend">
-						<span class="add-on">
-              <span class="icon-user hasTooltip" title="<?php echo Text::_('MOD_LOGIN_VALUE_USERNAME'); ?>"></span>
+        <div class="modal-body">
 
-							<label for="modlgn-username" class="element-invisible">
-                <?php echo Text::_('MOD_LOGIN_VALUE_USERNAME'); ?>
-              </label>
-            </span>
-
-						<input id="modlgn-username" type="text" name="username" class="input-small" tabindex="0" size="18" placeholder="<?php echo Text::_('MOD_LOGIN_VALUE_USERNAME'); ?>" />
-          </div>
-
-        <?php else : ?>
-
-          <label for="modlgn-username">
-            <?php echo Text::_('MOD_LOGIN_VALUE_USERNAME'); ?>
+          <label id="form-login-username" class="form-login-username input-text-animation" for="modlgn-username">
+            <input class="animation-input" type="text" id="modlgn-username" name="username" placeholder="&nbsp;">
+            <span class="animation-label"><?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_VALUE_USERNAME'); ?></span>
+            <span class="animation-border"></span>
           </label>
 
-          <input id="modlgn-username" type="text" name="username" class="input-small" tabindex="0" size="18" placeholder="<?php echo Text::_('MOD_LOGIN_VALUE_USERNAME'); ?>" />
-
-        <?php endif; ?>
-
-			</div>
-    </div>
-
-		<div id="form-login-password" class="control-group">
-			<div class="controls">
-
-        <?php if (!$params->get('usetext', 0)) : ?>
-
-					<div class="input-prepend">
-						<span class="add-on">
-              <span class="icon-lock hasTooltip" title="<?php echo Text::_('JGLOBAL_PASSWORD'); ?>"></span>
-
-              <label for="modlgn-passwd" class="element-invisible">
-                <?php echo Text::_('JGLOBAL_PASSWORD'); ?>
-              </label>
-            </span>
-
-						<input id="modlgn-passwd" type="password" name="password" class="input-small" tabindex="0" size="18" placeholder="<?php echo Text::_('JGLOBAL_PASSWORD'); ?>" />
-          </div>
-
-        <?php else : ?>
-
-          <label for="modlgn-passwd">
-            <?php echo Text::_('JGLOBAL_PASSWORD'); ?>
+          <label id="form-login-password" class="form-login-password input-text-animation" for="modlgn-passwd">
+            <input class="animation-input" type="password" id="modlgn-passwd" name="password" placeholder="&nbsp;">
+            <span class="animation-label"><?php echo Text::_('JGLOBAL_PASSWORD'); ?></span>
+            <span class="animation-border"></span>
           </label>
 
-          <input id="modlgn-passwd" type="password" name="password" class="input-small" tabindex="0" size="18" placeholder="<?php echo Text::_('JGLOBAL_PASSWORD'); ?>" />
 
-        <?php endif; ?>
+          <?php /* remember-me check box */ ?>
+          <?php if (PluginHelper::isEnabled('system', 'remember')) : ?>
 
-			</div>
-    </div>
-
-    <?php if (count($twofactormethods) > 1) : ?>
-
-      <div id="form-login-secretkey" class="control-group">
-        <div class="controls">
-
-          <?php if (!$params->get('usetext', 0)) : ?>
-
-            <div class="input-prepend input-append">
-              <span class="add-on">
-                <span class="icon-star hasTooltip" title="<?php echo Text::_('JGLOBAL_SECRETKEY'); ?>"></span>
-
-                <label for="modlgn-secretkey" class="element-invisible">
-                  <?php echo Text::_('JGLOBAL_SECRETKEY'); ?>
-                </label>
-              </span>
-
-              <input id="modlgn-secretkey" autocomplete="off" type="text" name="secretkey" class="input-small" tabindex="0" size="18" placeholder="<?php echo Text::_('JGLOBAL_SECRETKEY'); ?>" />
-
-              <span class="btn width-auto hasTooltip" title="<?php echo Text::_('JGLOBAL_SECRETKEY_HELP'); ?>">
-                <span class="icon-help"></span>
-              </span>
+            <div id="form-login-remember" class="form-login-remember">
+              <input class="modlgn-remember" id="modlgn-remember" type="checkbox" name="remember"value="yes"/>
+              <label for="modlgn-remember" class="control-label">
+                <?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_REMEMBER_ME'); ?>
+              </label>
             </div>
-
-          <?php else : ?>
-
-            <label for="modlgn-secretkey"><?php echo Text::_('JGLOBAL_SECRETKEY'); ?></label>
-
-            <input id="modlgn-secretkey" autocomplete="off" type="text" name="secretkey" class="input-small" tabindex="0" size="18" placeholder="<?php echo Text::_('JGLOBAL_SECRETKEY'); ?>" />
-
-            <span class="btn width-auto hasTooltip" title="<?php echo Text::_('JGLOBAL_SECRETKEY_HELP'); ?>">
-              <span class="icon-help"></span>
-            </span>
 
           <?php endif; ?>
 
+          <div class="clearfix"></div>
+
+          <div class="login-modal-buttons">
+
+            <?php /* "Log in" button */ ?>
+            <span id="form-login-submit" class="form-login-submit">
+              <button type="submit" name="Submit" class="btn btn-sm btn-primary">
+                <?php echo Text::_('JLOGIN'); ?>
+              </button>
+            </span>
+
+            <?php /* "Register" link */ ?>
+            <span id="form-register" class="form-register">
+              <a href="<?php echo Route::_('index.php?option=com_users&view=registration'); ?>">
+                <button type="button" name="register" class="btn btn-sm btn-default">
+                  <?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_LABEL_REGISTER'); ?>
+                </button>
+              </a>
+            </span>
+
+          </div>
+
+          <div class="clearfix"></div>
+
+
+        <div class="modal-footer">
+
+          <?php /* "Forgot your..." links */ ?>
+            <div id="form-forgot-username" class="form-forgot-username">
+              <a href="<?php echo Route::_('index.php?option=com_users&view=remind'); ?>">
+                <?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_FORGOT_YOUR_USERNAME'); ?>
+              </a>
+            </div>
+
+            <div id="form-forgot-password" class="form-forgot-password">
+              <a href="<?php echo Route::_('index.php?option=com_users&view=reset'); ?>">
+                <?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_FORGOT_YOUR_PASSWORD'); ?>
+              </a>
+            </div>
+          </div>
+
+          <input type="hidden" name="option" value="com_users" />
+          <input type="hidden" name="task" value="user.login" />
+          <input type="hidden" name="return" value="<?php echo $return; ?>" />
+          <?php echo HTMLHelper::_('form.token'); ?>
+
         </div>
-      </div>
-    <?php endif; ?>
 
-    <?php if (PluginHelper::isEnabled('system', 'remember')) : ?>
+      </form>
 
-      <div id="form-login-remember" class="control-group checkbox">
-        <label for="modlgn-remember" class="control-label">
-          <?php echo Text::_('MOD_LOGIN_REMEMBER_ME'); ?>
-        </label>
-
-        <input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
-      </div>
-
-    <?php endif; ?>
-
-		<div id="form-login-submit" class="control-group">
-			<div class="controls">
-				<button type="submit" tabindex="0" name="Submit" class="btn btn-primary login-button">
-          <?php echo Text::_('JLOGIN'); ?>
-        </button>
-			</div>
     </div>
-
-		<?php
-      $usersConfig = ComponentHelper::getParams('com_users'); ?>
-
-			<ul class="unstyled">
-
-      <?php if ($usersConfig->get('allowUserRegistration')) : ?>
-
-				<li>
-					<a href="<?php echo Route::_('index.php?option=com_users&view=registration'); ?>">
-					<?php echo Text::_('MOD_LOGIN_REGISTER'); ?> <span class="icon-arrow-right"></span></a>
-        </li>
-
-      <?php endif; ?>
-
-				<li>
-					<a href="<?php echo Route::_('index.php?option=com_users&view=remind'); ?>">
-					<?php echo Text::_('MOD_LOGIN_FORGOT_YOUR_USERNAME'); ?></a>
-        </li>
-
-				<li>
-					<a href="<?php echo Route::_('index.php?option=com_users&view=reset'); ?>">
-					<?php echo Text::_('MOD_LOGIN_FORGOT_YOUR_PASSWORD'); ?></a>
-        </li>
-
-      </ul>
-
-		<input type="hidden" name="option" value="com_users" />
-		<input type="hidden" name="task" value="user.login" />
-		<input type="hidden" name="return" value="<?php echo $return; ?>" />
-		<?php echo HTMLHelper::_('form.token'); ?>
   </div>
-
-  <?php if ($params->get('posttext')) : ?>
-
-		<div class="posttext">
-			<p><?php echo $params->get('posttext'); ?></p>
-    </div>
-
-	<?php endif; ?>
-</form>
+</div>

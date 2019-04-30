@@ -34,8 +34,8 @@ $this->requiredPositions = array(
   'social-icons',
   // system positions that don't have corresponding module positions defined
   'content-component-output',
-  'content-error',
   'content-message',
+  'error-trace',
   'logo-footer',
   'logo-header'
 );

@@ -1,0 +1,66 @@
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for shopping cart partial, displayed in header nav-secondary
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
+
+/*
+ * Show a shopping cart icon in the top navigation menu row
+ */
+.shopping-cart-container {
+  display: inline;
+  margin-bottom: $nav-secondary-margin-bottom;
+  margin-left:   $nav-secondary-margin-left;
+  margin-right:  0;
+  margin-top:    $nav-secondary-margin-top;
+  position: relative;
+}
+
+/*
+ * Icon with link in menu, <span> type=button
+ */
+.shopping-cart-in-nav {
+  // Glyphicon shopping cart
+  .shopping-cart-icon {
+    color: $text-color-dark;
+    font-size: $font-size-small;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  // amount e.g. '$10.50' that shows to the right of the shopping cart icon
+  .shopping-cart-amount {
+    color: $text-color-dark;
+    font-size: $font-size-small;
+  }
+}
+
+/*
+ * Modal drop down showing contents of cart or "Cart Empty"
+ */
+.shopping-cart-modal {
+  // <h4> in modal header
+  .shopping-cart-modal-title {}
+}
+
+
+// Hikashop internal HTML output
+.cart-module {
+  // inner html is text message about cart contents
+  .hikashop_cart {} // sass-lint:disable-line class-name-format
+}

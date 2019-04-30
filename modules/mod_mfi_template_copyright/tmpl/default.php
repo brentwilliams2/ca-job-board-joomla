@@ -17,10 +17,7 @@
    defined('_JEXEC') or die;
 ?>
 
-<div class="copyright">
-  <?php echo $copyright; ?>
-  <?php echo $year; ?>
-
+<span class="copyright-module">
   <?php if ($showSitename == 1):?>
     &nbsp;<?php echo $siteName; ?>
   <?php endif;?>
@@ -28,5 +25,8 @@
   <?php if ($params -> get('freeform_text')):?>
     &nbsp;<?php echo $params -> get('freeform_text'); ?>
   <?php endif;?>
-</div>
+
+  <?php echo $copyright; ?>
+  <?php echo $year; ?>
+</span>
 

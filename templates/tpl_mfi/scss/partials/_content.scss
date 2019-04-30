@@ -15,56 +15,55 @@
 // sass-lint:disable no-empty-rulesets
 
 /*
- * The Showcase module position for a large full-width element. The Feature
- * position is designed if this needs to extend with more content on some pages.
+ * Flash message module position
  */
-.showcase {}
+.content-message-container {}
 
 /*
- * Provides a content area right below the Showcase module position
+ * Content body to show when the template is being used
+ * to display an Error Document page
  */
-.feature {}
+.content-error-container {}
 
 /*
- * Main component content output
+ * Main component output
  */
-.content {}
-
+.content-component-container {}
 
 /*
  * Module for example on Webinar pages with "What
  * people have been saying about our seminars"
  */
-.content-info {}
+.content-info-container {}
 
 /*
  * This is the "Reactions" module that publishes what users
  * add from the "Share Your Reactions" text box below it
  */
-.content-reactions {}
+.content-reactions-container {}
 
 /*
  * This is the "Some of the companies who've
  * attended our seminars" and similar position
  */
-.content-references {}
+.content-references-container {}
 
 /*
  * The "Related Events" module on Webinar pages
  */
-.content-related {}
+.content-related-container {}
 
 /*
  * The "Share your reactions" text input box that feeds into the "Reactions" module
  */
-.content-share-reactions {}
+.content-share-reactions-container {}
 
 /*
  * Social share icons, broken out of the component into a module position
  */
-.content-social-share {}
+.content-social-share-container {}
 
 /*
  * The "Proudly Sponsored By" module position
  */
-.content-sponsored {}
+.content-sponsored-container {}

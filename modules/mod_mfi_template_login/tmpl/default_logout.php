@@ -1,53 +1,81 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  mod_login
+ * Multi Family Insiders Bootstrap V3 Template Login Module
  *
- * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * Default logout template
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-use \Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Router\Route;
+  use \Joomla\CMS\Factory;
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Router\Route;
 
-defined('_JEXEC') or die;
+  // no direct access
+  defined('_JEXEC') or die;
 
-HTMLHelper::_('behavior.keepalive');
+  HTMLHelper::_('behavior.keepalive');
+
+  /* @var   string   */
+  $templatePath = Factory::getURI()->base() . 'templates/' . Factory::getApplication()->getTemplate();
 ?>
-<form action="<?php echo Route::_('index.php', true, $params->get('usesecure', 0)); ?>" method="post" id="login-form" class="form-vertical">
 
-  <?php if ($params->get('greeting', 1)) : ?>
-    <div class="login-greeting">
+<span class="logged-in" type="button" data-toggle="modal" data-target="#logout-modal">
+  <!-- @TODO: Fix this to show user avatar -->
+  <span class="logged-in-avatar hasTooltip" title="<?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_VALUE_USERNAME'); ?>">
+    <img src="<?php echo $templatePath; ?>/images/avatar-man-24.png"  alt="Avatar" height="24" width="24">
+  </span>
 
-    <?php if (!$params->get('name', 0)) : ?>
+  <span class="logged-in-greeting">
+    <?php echo htmlspecialchars($user->get('name'), ENT_COMPAT, 'UTF-8'); ?>
+  </span>
+</span>
 
-      <?php echo Text::sprintf('MOD_LOGIN_HINAME', htmlspecialchars($user->get('name'), ENT_COMPAT, 'UTF-8')); ?>
+<!-- Modal -->
+<div class="logout-modal modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
 
-    <?php else : ?>
+      <form
+        action="<?php echo Route::_('index.php', true, $params->get('usesecure', 0)); ?>"
+        method="post"
+        id="logout-form"
+        class="logout-form form-vertical"
+      >
 
-      <?php echo Text::sprintf('MOD_LOGIN_HINAME', htmlspecialchars($user->get('username'), ENT_COMPAT, 'UTF-8')); ?>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
 
-    <?php endif; ?>
+        <div class="modal-body">
+
+          <div class="logout-profile-link">
+            <a href="<?php echo Route::_('index.php?option=com_users&view=profile'); ?>">
+              <?php echo Text::_('MOD_MFI_TEMPLATE_LOGIN_PROFILE'); ?>
+            </a>
+          </div>
+
+          <div class="logout-button">
+            <input type="submit" name="Submit" class="btn btn-primary" value="<?php echo Text::_('JLOGOUT'); ?>" />
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <input type="hidden" name="option" value="com_users" />
+          <input type="hidden" name="task" value="user.logout" />
+          <input type="hidden" name="return" value="<?php echo $return; ?>" />
+          <?php echo HTMLHelper::_('form.token'); ?>
+        </div>
+
+      </form>
 
     </div>
-  <?php endif; ?>
-
-  <?php if ($params->get('profilelink', 0)) : ?>
-    <ul class="unstyled">
-      <li>
-        <a href="<?php echo Route::_('index.php?option=com_users&view=profile'); ?>">
-        <?php echo Text::_('MOD_LOGIN_PROFILE'); ?></a>
-      </li>
-    </ul>
-  <?php endif; ?>
-
-	<div class="logout-button">
-		<input type="submit" name="Submit" class="btn btn-primary" value="<?php echo Text::_('JLOGOUT'); ?>" />
-		<input type="hidden" name="option" value="com_users" />
-		<input type="hidden" name="task" value="user.logout" />
-		<input type="hidden" name="return" value="<?php echo $return; ?>" />
-		<?php echo HTMLHelper::_('form.token'); ?>
   </div>
-
-</form>
+</div>

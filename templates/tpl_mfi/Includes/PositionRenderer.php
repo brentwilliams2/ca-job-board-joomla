@@ -56,6 +56,7 @@ class PositionRenderer
   }
 
 
+  // Scan the Partials directory for files and populate a class property for checking includes
   private function initPartialFilesProp()
   {
     $fileArray = scandir( realpath(  dirname(__FILE__) . '/../Partials' ) );
@@ -77,7 +78,7 @@ class PositionRenderer
 
 
   /*
-   * Function to render a module position with no wrapper
+   * Function to render a module position with no wrapper element
    *
    * @param  string   $className        The classname for this include, matching a module position
    *                                    and a partial: 'banner-top' to include '_banner_top.php'
@@ -89,9 +90,11 @@ class PositionRenderer
     return $this->includePartial($className);
   }
 
+  // @TODO: Factor out the "AddedClasses" methods and check for parameters, need to redo all method signatures
 
   /*
-   * Function to render a module position with a single div wrapper
+   * Function to render a module position with a single div wrapper and a
+   * default '*-container' class, where the wildcard is the position name
    *
    * @param  string   $className        The classname for this include, matching a module position
    *                                    and a partial: 'banner-top' to include '_banner_top.php'
@@ -121,7 +124,8 @@ class PositionRenderer
 
 
   /*
-   * Function to render a Bootstrap v3 column container
+   * Function to render a module position wrapped in a <div> element with a default
+   * '*-container' class and add'l classes, where the wildcard is the position name
    *
    * @param  string   $className        The classname for this include, matching a module position
    *                                    and a partial: 'banner-top' to include '_banner_top.php'
@@ -135,7 +139,36 @@ class PositionRenderer
    *
    * @return string   Returns a string of html to echo to the output buffer
    */
-  public function withColumnWrapper($className, $colClasses = null, $classNameSuffix = 'container', $setClassNameOnCol = true)
+  public function withAddedClassesDivWrapper($className, $colClasses = null, $classNameSuffix = 'container', $setClassNameOnCol = true)
+  {
+    return $this->withAddedClassesElementWrapper($className, $colClasses, $classNameSuffix, $setClassNameOnCol, 'div');
+  }
+
+
+  /*
+   * Function to render a module position wrapped in a <div> element with a default
+   * '*-container' class and add'l classes, where the wildcard is the position name
+   *
+   * @param  string   $className        The classname for this include, matching a module position
+   *                                    and a partial: 'banner-top' to include '_banner_top.php'
+   *
+   * @param  string   $colClasses       Bootstrap v3 column classes to apply, e.g. 'col-xs-12'. Defaults to null.
+   *
+   * @param  string   $classNameSuffix  A suffix to add to the container div class, as the classname
+   *                                    is used in the partial as a class. Default is 'container'.
+   *
+   * @param  bool     $setClassNameOnCol   Whether the classname should be set on the column div or not
+   *
+   * @return string   Returns a string of html to echo to the output buffer
+   */
+  public function withAddedClassesLiWrapper($className, $colClasses = null, $classNameSuffix = 'container', $setClassNameOnCol = true)
+  {
+    return $this->withAddedClassesElementWrapper($className, $colClasses, $classNameSuffix, $setClassNameOnCol, 'li');
+  }
+
+
+  // logic to wrap a partial include with a default class and id, any additional classes, and to specify the wrapping element
+  private function withAddedClassesElementWrapper($className, $colClasses = null, $classNameSuffix = 'container', $setClassNameOnCol = true, $element = 'div')
   {
     $class = $className . '-' . $classNameSuffix;
 
@@ -143,7 +176,7 @@ class PositionRenderer
 
     if( $this->shouldInclude($className) )
     {
-      $html .= '<div ';
+      $html .= '<' . $element . ' ';
 
       if ($setClassNameOnCol)
       {
@@ -170,7 +203,7 @@ class PositionRenderer
       // here we need to include, and then close the tag
       $html .= $this->includePartial($className);
 
-      $html .= '</div>';
+      $html .= '</'. $element . '>';
     }
 
     return $html;
@@ -178,7 +211,9 @@ class PositionRenderer
 
 
   /*
-   * Decorator function to render a Bootstrap v3 row container.
+   * Decorator function to render a Bootstrap v3 row container, and a module position's output
+   * wrapped in a <div> with a default '*-container' class and add'l classes, where the wildcard
+   * is the position name.
    *
    * @param  string   $className        The classname for this include, matching a module position
    *                                    and a partial: 'banner-top' to include '_banner_top.php'
@@ -200,7 +235,7 @@ class PositionRenderer
 
       $html .= '<div id="' . $classId . '" class="' . $classId . ' row">';
 
-      $html .= $this->withColumnWrapper($className, $colClasses, $classNameSuffix, false);
+      $html .= $this->withAddedClassesDivWrapper($className, $colClasses, $classNameSuffix, false);
 
       $html .= '</div>';
     }
@@ -209,6 +244,8 @@ class PositionRenderer
   }
 
 
+  // Buffer output of a partial include, named after template module
+  // positions. The partial should render the module(s) for the position.
   public function includePartial($className)
   {
     if ( in_array($className, $this->partialFiles) )
@@ -239,6 +276,8 @@ class PositionRenderer
   }
 
 
+  // Check whether the module position will be shown in the template, based on whether
+  // any modules are enabled for the position in Joomla!'s administrative module manager
   private function shouldInclude($className)
   {
     if ( in_array($className, $this->requiredPositions) || $this->moduleCount[$className] > 0 )
@@ -250,6 +289,7 @@ class PositionRenderer
   }
 
 
+  // Normalize parameter input for additional classes to add to element
   private function getColClass($colClasses)
   {
     $colClass = null;

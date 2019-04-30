@@ -20,3 +20,87 @@
 .hide-from-print {
   visibility: hidden;
 }
+
+
+.left-sidebar-spacer {
+
+}
+
+
+.right-sidebar-spacer {
+
+}
+
+
+// for full-width showcase and feature sections, should work like
+// Bootstrap 'container-fluid' class
+.container-full-width {
+
+}
+
+
+// used on navigation elements
+.display-inline {
+  display: inline !important; // sass-lint:disable-line no-important
+}
+
+
+// animated effect to move the input text box's placeholder text
+// up to the label position when the user enters the text box
+.input-text-animation {
+  display: block;
+  position: relative;
+  width: 100%;
+
+  //transform: rotateX(45deg) rotateY(-10deg) rotate(25deg) scale(2)
+  .animation-label {
+    left: 0;
+    position: absolute;
+    top: 14px;
+    transform-origin: 0 0;
+    transition: all .2s ease; // sass-lint:disable-line no-transition-all
+  }
+
+  .animation-border {
+    bottom: 0;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    transform: scaleX(0);
+    transform-origin: 0 0;
+    transition: all .15s ease; // sass-lint:disable-line no-transition-all
+    width: 100%;
+  }
+
+  .animation-input {
+    -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
+    background: none;
+    border: 0;
+    border-bottom: 1px solid;
+    border-radius: 0;
+    height: 32px;
+    margin-top: 5px; // @TODO: see if it works
+    padding: 12px 0;
+    transition: all .15s ease; // sass-lint:disable-line no-transition-all
+    width: 100%;
+
+    &:not(:placeholder-shown) {
+      + span {
+        transform: translateY(-26px) scale(.75);
+      }
+    }
+
+    &:focus {
+      background: none;
+      outline: none;
+
+      + span {
+        transform: translateY(-26px) scale(.75);
+
+        + .login-border {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+}

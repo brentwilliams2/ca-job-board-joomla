@@ -21,13 +21,12 @@ use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Router\Route;
 use \Joomla\CMS\HTML\HTMLHelper; // JHtml
-use \Joomla\CMS\Log\Log;
 use \Joomla\CMS\Document\Document;
 use \Joomla\CMS\Document\ErrorDocument;
 use \Joomla\CMS\Document\HtmlDocument;
-
 use \Joomla\CMS\Plugin\CMSPlugin; // JPlugin
 
+use \Joomla\CMS\Log\Log;
 Log::add('Job Occupational Categories model called', Log::DEBUG, 'cajobboard');
 
 // Old Joomla! API had methods like raiseWarning(), raiseNotice(), and raiseError()

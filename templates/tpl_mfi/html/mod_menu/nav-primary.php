@@ -34,8 +34,11 @@
  * $item->menu_image_css
  */
 
-  // no direct access
-  defined('_JEXEC') or die;
+// no direct access
+defined('_JEXEC') or die;
+
+// Reverse the menu item order since 'pull-right' class is applied
+$list = array_reverse($list);
 
 foreach ($list as $i => &$item)
 {
@@ -54,7 +57,7 @@ foreach ($list as $i => &$item)
     $class .= ' current';
   }
 
-  echo '<li class="nav-secondary-container ' . $class . ' col-10-xs-2">';
+  echo '<li class="nav-primary-container ' . $class . ' pull-right">';
 
   $attributes = array();
 

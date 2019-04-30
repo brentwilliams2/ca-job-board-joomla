@@ -14,6 +14,8 @@
  *
  */
 
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
@@ -24,6 +26,10 @@
 
 <?php else: // render static HTML for error pages ?>
 
-  <p>paste static html in nav-secondary</p>
+  <li class="nav-primary-container pull-right"><a href="<?php echo Route::_('index.php?option=com_kunena&view=home'); ?>">Discuss</a></li>
+  <li class="nav-primary-container pull-right"><a href="<?php echo Route::_('index.php?option=com_publisher&view=publications'); ?>">Blogs</a></li>
+  <li class="nav-primary-container pull-right"><a href="<?php echo Route::_('index.php?option=com_community&view=events'); ?>">Events</a></li>
+  <li class="nav-primary-container pull-right"><a href="<?php echo Route::_('index.php?option=com_community&view=frontpage'); ?>">Community</a></li>
+  <li class="nav-primary-container pull-right"><a href="<?php echo Route::_('index.php?option=com_cajobboard&view=JobPostings'); ?>">Jobs</a></li>
 
 <?php endif; ?>

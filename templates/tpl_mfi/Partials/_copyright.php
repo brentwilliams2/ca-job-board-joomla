@@ -23,6 +23,8 @@
 
 <?php else: // render static HTML for error pages ?>
 
-  <p>paste static html in copyright</p>
+  <span class="copyright-module">
+    &nbsp;Multifamily Insiders © 2019
+  </span>
 
 <?php endif; ?>

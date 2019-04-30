@@ -18,7 +18,6 @@ use \Joomla\CMS\Helper\ModuleHelper;
 defined('_JEXEC') or die;
 
 \JLoader::register('FinderHelperRoute', JPATH_SITE . '/components/com_finder/helpers/route.php');
-\JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/language.php');
 \JLoader::register('ModFinderHelper', __DIR__ . '/helper.php');
 
 if (!defined('FINDER_PATH_INDEXER'))
@@ -28,19 +27,10 @@ if (!defined('FINDER_PATH_INDEXER'))
 
 \JLoader::register('FinderIndexerQuery', FINDER_PATH_INDEXER . '/query.php');
 
-// Initialize module parameters.
-$params->def('field_size', 20);
-
 // Get the route.
 $route = FinderHelperRoute::getSearchRoute($params->get('searchfilter', null));
-
-// Load component language file.
-FinderHelperLanguage::loadComponentLanguage();
-
-// Load plugin language files.
-FinderHelperLanguage::loadPluginLanguage();
 
 // Get Smart Search query object.
 $query = ModFinderHelper::getQuery($params);
 
-require ModuleHelper::getLayoutPath('mod_finder', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_mfi_template_finder', $params->get('layout', 'default'));

@@ -3,6 +3,10 @@ $bootstrap-sass-asset-helper: false !default;
 // Variables
 // --------------------------------------------------
 
+$nav-secondary-margin-top:    5px;
+$nav-secondary-margin-bottom: 5px;
+$nav-secondary-margin-left:   5px;
+$nav-secondary-margin-right:  5px;
 
 //== Colors
 //
@@ -36,6 +40,7 @@ $sidebar:               #f8f8f8 !default;
 $text-color:              $gray-light !default;
 $text-color-dark:       #020202 !default;
 $text-color-accent:      #009fd6 !default;
+$text-color-light:         $body-bg;
 
 //** Global textual link color.
 $link-color:              $brand-primary !default;
@@ -67,6 +72,10 @@ $font-size-h3:            ceil(($font-size-base * 1.7)) !default; // ~24px
 $font-size-h4:            ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-h5:            $font-size-base !default;
 $font-size-h6:            ceil(($font-size-base * .85)) !default; // ~12px
+
+//**
+$font-weight-normal: 400 !default;
+$font-weight-heavy:  700 !default;
 
 //** Unit-less `line-height` for use in components like buttons.
 $line-height-base:        1.428571429 !default; // 20/14

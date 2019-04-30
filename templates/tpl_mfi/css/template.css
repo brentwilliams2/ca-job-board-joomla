@@ -14,7 +14,7 @@
 /*
  * Multi Family Insiders Bootstrap V3 Template
  *
- * Ten-column grid layout
+ * Utility class stylings
  *
  * @package     Calligraphic Job Board
  *
@@ -24,449 +24,53 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * Multi Family Insiders Bootstrap V3 Template
- *
- * Ten-column grid layout framework
- *
- * @package     Calligraphic Job Board
- *
- * @version     0.1 May 1, 2018
- * @author      Calligraphic, LLC http://www.calligraphic.design
- * @copyright   Copyright (C) 2018 Calligraphic, LLC, based on Bootstrap _grid_framework.scss
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ * Used on header and footer for component (print) templates
  */
-/*
- * Columns
- *
- * Common styles for small and large grid columns
- */
-.col-10-xs-1, .col-10-sm-1, .col-10-md-1, .col-10-lg-1, .col-10-xs-2, .col-10-sm-2, .col-10-md-2, .col-10-lg-2, .col-10-xs-3, .col-10-sm-3, .col-10-md-3, .col-10-lg-3, .col-10-xs-4, .col-10-sm-4, .col-10-md-4, .col-10-lg-4, .col-10-xs-5, .col-10-sm-5, .col-10-md-5, .col-10-lg-5, .col-10-xs-6, .col-10-sm-6, .col-10-md-6, .col-10-lg-6, .col-10-xs-7, .col-10-sm-7, .col-10-md-7, .col-10-lg-7, .col-10-xs-8, .col-10-sm-8, .col-10-md-8, .col-10-lg-8, .col-10-xs-9, .col-10-sm-9, .col-10-md-9, .col-10-lg-9, .col-10-xs-10, .col-10-sm-10, .col-10-md-10, .col-10-lg-10 {
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative; }
+.hide-from-print {
+  visibility: hidden; }
 
-/*
- * Extra small grid
- *
- * Columns, offsets, pushes, and pulls for extra small devices like smartphones.
- */
-.col-10-xs-1, .col-10-xs-2, .col-10-xs-3, .col-10-xs-4, .col-10-xs-5, .col-10-xs-6, .col-10-xs-7, .col-10-xs-8, .col-10-xs-9, .col-10-xs-10 {
-  float: left; }
+.display-inline {
+  display: inline !important; }
 
-.col-10-xs-1 {
-  width: 10%; }
-
-.col-10-xs-2 {
-  width: 20%; }
-
-.col-10-xs-3 {
-  width: 30%; }
-
-.col-10-xs-4 {
-  width: 40%; }
-
-.col-10-xs-5 {
-  width: 50%; }
-
-.col-10-xs-6 {
-  width: 60%; }
-
-.col-10-xs-7 {
-  width: 70%; }
-
-.col-10-xs-8 {
-  width: 80%; }
-
-.col-10-xs-9 {
-  width: 90%; }
-
-.col-10-xs-10 {
+.input-text-animation {
+  display: block;
+  position: relative;
   width: 100%; }
-
-.col-10-xs-pull-0 {
-  right: auto; }
-
-.col-10-xs-pull-1 {
-  right: 10%; }
-
-.col-10-xs-pull-2 {
-  right: 20%; }
-
-.col-10-xs-pull-3 {
-  right: 30%; }
-
-.col-10-xs-pull-4 {
-  right: 40%; }
-
-.col-10-xs-pull-5 {
-  right: 50%; }
-
-.col-10-xs-pull-6 {
-  right: 60%; }
-
-.col-10-xs-pull-7 {
-  right: 70%; }
-
-.col-10-xs-pull-8 {
-  right: 80%; }
-
-.col-10-xs-pull-9 {
-  right: 90%; }
-
-.col-10-xs-pull-10 {
-  right: 100%; }
-
-.col-10-xs-push-0 {
-  left: auto; }
-
-.col-10-xs-push-1 {
-  left: 10%; }
-
-.col-10-xs-push-2 {
-  left: 20%; }
-
-.col-10-xs-push-3 {
-  left: 30%; }
-
-.col-10-xs-push-4 {
-  left: 40%; }
-
-.col-10-xs-push-5 {
-  left: 50%; }
-
-.col-10-xs-push-6 {
-  left: 60%; }
-
-.col-10-xs-push-7 {
-  left: 70%; }
-
-.col-10-xs-push-8 {
-  left: 80%; }
-
-.col-10-xs-push-9 {
-  left: 90%; }
-
-.col-10-xs-push-10 {
-  left: 100%; }
-
-.col-10-xs-offset-0 {
-  margin-left: 0%; }
-
-.col-10-xs-offset-1 {
-  margin-left: 10%; }
-
-.col-10-xs-offset-2 {
-  margin-left: 20%; }
-
-.col-10-xs-offset-3 {
-  margin-left: 30%; }
-
-.col-10-xs-offset-4 {
-  margin-left: 40%; }
-
-.col-10-xs-offset-5 {
-  margin-left: 50%; }
-
-.col-10-xs-offset-6 {
-  margin-left: 60%; }
-
-.col-10-xs-offset-7 {
-  margin-left: 70%; }
-
-.col-10-xs-offset-8 {
-  margin-left: 80%; }
-
-.col-10-xs-offset-9 {
-  margin-left: 90%; }
-
-.col-10-xs-offset-10 {
-  margin-left: 100%; }
-
-/*
- * Small grid
- *
- * Columns, offsets, pushes, and pulls for the small device range, from phones to tablets.
- */
-@media (min-width: 768px) {
-  .col-10-sm-1, .col-10-sm-2, .col-10-sm-3, .col-10-sm-4, .col-10-sm-5, .col-10-sm-6, .col-10-sm-7, .col-10-sm-8, .col-10-sm-9, .col-10-sm-10 {
-    float: left; }
-  .col-10-sm-1 {
-    width: 10%; }
-  .col-10-sm-2 {
-    width: 20%; }
-  .col-10-sm-3 {
-    width: 30%; }
-  .col-10-sm-4 {
-    width: 40%; }
-  .col-10-sm-5 {
-    width: 50%; }
-  .col-10-sm-6 {
-    width: 60%; }
-  .col-10-sm-7 {
-    width: 70%; }
-  .col-10-sm-8 {
-    width: 80%; }
-  .col-10-sm-9 {
-    width: 90%; }
-  .col-10-sm-10 {
+  .input-text-animation .animation-label {
+    left: 0;
+    position: absolute;
+    top: 14px;
+    transform-origin: 0 0;
+    transition: all .2s ease; }
+  .input-text-animation .animation-border {
+    bottom: 0;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    transform: scaleX(0);
+    transform-origin: 0 0;
+    transition: all .15s ease;
     width: 100%; }
-  .col-10-sm-pull-0 {
-    right: auto; }
-  .col-10-sm-pull-1 {
-    right: 10%; }
-  .col-10-sm-pull-2 {
-    right: 20%; }
-  .col-10-sm-pull-3 {
-    right: 30%; }
-  .col-10-sm-pull-4 {
-    right: 40%; }
-  .col-10-sm-pull-5 {
-    right: 50%; }
-  .col-10-sm-pull-6 {
-    right: 60%; }
-  .col-10-sm-pull-7 {
-    right: 70%; }
-  .col-10-sm-pull-8 {
-    right: 80%; }
-  .col-10-sm-pull-9 {
-    right: 90%; }
-  .col-10-sm-pull-10 {
-    right: 100%; }
-  .col-10-sm-push-0 {
-    left: auto; }
-  .col-10-sm-push-1 {
-    left: 10%; }
-  .col-10-sm-push-2 {
-    left: 20%; }
-  .col-10-sm-push-3 {
-    left: 30%; }
-  .col-10-sm-push-4 {
-    left: 40%; }
-  .col-10-sm-push-5 {
-    left: 50%; }
-  .col-10-sm-push-6 {
-    left: 60%; }
-  .col-10-sm-push-7 {
-    left: 70%; }
-  .col-10-sm-push-8 {
-    left: 80%; }
-  .col-10-sm-push-9 {
-    left: 90%; }
-  .col-10-sm-push-10 {
-    left: 100%; }
-  .col-10-sm-offset-0 {
-    margin-left: 0%; }
-  .col-10-sm-offset-1 {
-    margin-left: 10%; }
-  .col-10-sm-offset-2 {
-    margin-left: 20%; }
-  .col-10-sm-offset-3 {
-    margin-left: 30%; }
-  .col-10-sm-offset-4 {
-    margin-left: 40%; }
-  .col-10-sm-offset-5 {
-    margin-left: 50%; }
-  .col-10-sm-offset-6 {
-    margin-left: 60%; }
-  .col-10-sm-offset-7 {
-    margin-left: 70%; }
-  .col-10-sm-offset-8 {
-    margin-left: 80%; }
-  .col-10-sm-offset-9 {
-    margin-left: 90%; }
-  .col-10-sm-offset-10 {
-    margin-left: 100%; } }
-
-/*
- * Medium grid
- *
- * Columns, offsets, pushes, and pulls for the desktop device range.
- */
-@media (min-width: 992px) {
-  .col-10-md-1, .col-10-md-2, .col-10-md-3, .col-10-md-4, .col-10-md-5, .col-10-md-6, .col-10-md-7, .col-10-md-8, .col-10-md-9, .col-10-md-10 {
-    float: left; }
-  .col-10-md-1 {
-    width: 10%; }
-  .col-10-md-2 {
-    width: 20%; }
-  .col-10-md-3 {
-    width: 30%; }
-  .col-10-md-4 {
-    width: 40%; }
-  .col-10-md-5 {
-    width: 50%; }
-  .col-10-md-6 {
-    width: 60%; }
-  .col-10-md-7 {
-    width: 70%; }
-  .col-10-md-8 {
-    width: 80%; }
-  .col-10-md-9 {
-    width: 90%; }
-  .col-10-md-10 {
+  .input-text-animation .animation-input {
+    -webkit-appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid;
+    border-radius: 0;
+    height: 32px;
+    margin-top: 5px;
+    padding: 12px 0;
+    transition: all .15s ease;
     width: 100%; }
-  .col-10-md-pull-0 {
-    right: auto; }
-  .col-10-md-pull-1 {
-    right: 10%; }
-  .col-10-md-pull-2 {
-    right: 20%; }
-  .col-10-md-pull-3 {
-    right: 30%; }
-  .col-10-md-pull-4 {
-    right: 40%; }
-  .col-10-md-pull-5 {
-    right: 50%; }
-  .col-10-md-pull-6 {
-    right: 60%; }
-  .col-10-md-pull-7 {
-    right: 70%; }
-  .col-10-md-pull-8 {
-    right: 80%; }
-  .col-10-md-pull-9 {
-    right: 90%; }
-  .col-10-md-pull-10 {
-    right: 100%; }
-  .col-10-md-push-0 {
-    left: auto; }
-  .col-10-md-push-1 {
-    left: 10%; }
-  .col-10-md-push-2 {
-    left: 20%; }
-  .col-10-md-push-3 {
-    left: 30%; }
-  .col-10-md-push-4 {
-    left: 40%; }
-  .col-10-md-push-5 {
-    left: 50%; }
-  .col-10-md-push-6 {
-    left: 60%; }
-  .col-10-md-push-7 {
-    left: 70%; }
-  .col-10-md-push-8 {
-    left: 80%; }
-  .col-10-md-push-9 {
-    left: 90%; }
-  .col-10-md-push-10 {
-    left: 100%; }
-  .col-10-md-offset-0 {
-    margin-left: 0%; }
-  .col-10-md-offset-1 {
-    margin-left: 10%; }
-  .col-10-md-offset-2 {
-    margin-left: 20%; }
-  .col-10-md-offset-3 {
-    margin-left: 30%; }
-  .col-10-md-offset-4 {
-    margin-left: 40%; }
-  .col-10-md-offset-5 {
-    margin-left: 50%; }
-  .col-10-md-offset-6 {
-    margin-left: 60%; }
-  .col-10-md-offset-7 {
-    margin-left: 70%; }
-  .col-10-md-offset-8 {
-    margin-left: 80%; }
-  .col-10-md-offset-9 {
-    margin-left: 90%; }
-  .col-10-md-offset-10 {
-    margin-left: 100%; } }
-
-/*
- * Large grid
- *
- * Columns, offsets, pushes, and pulls for the large desktop device range.
- */
-@media (min-width: 1200px) {
-  .col-10-lg-1, .col-10-lg-2, .col-10-lg-3, .col-10-lg-4, .col-10-lg-5, .col-10-lg-6, .col-10-lg-7, .col-10-lg-8, .col-10-lg-9, .col-10-lg-10 {
-    float: left; }
-  .col-10-lg-1 {
-    width: 10%; }
-  .col-10-lg-2 {
-    width: 20%; }
-  .col-10-lg-3 {
-    width: 30%; }
-  .col-10-lg-4 {
-    width: 40%; }
-  .col-10-lg-5 {
-    width: 50%; }
-  .col-10-lg-6 {
-    width: 60%; }
-  .col-10-lg-7 {
-    width: 70%; }
-  .col-10-lg-8 {
-    width: 80%; }
-  .col-10-lg-9 {
-    width: 90%; }
-  .col-10-lg-10 {
-    width: 100%; }
-  .col-10-lg-pull-0 {
-    right: auto; }
-  .col-10-lg-pull-1 {
-    right: 10%; }
-  .col-10-lg-pull-2 {
-    right: 20%; }
-  .col-10-lg-pull-3 {
-    right: 30%; }
-  .col-10-lg-pull-4 {
-    right: 40%; }
-  .col-10-lg-pull-5 {
-    right: 50%; }
-  .col-10-lg-pull-6 {
-    right: 60%; }
-  .col-10-lg-pull-7 {
-    right: 70%; }
-  .col-10-lg-pull-8 {
-    right: 80%; }
-  .col-10-lg-pull-9 {
-    right: 90%; }
-  .col-10-lg-pull-10 {
-    right: 100%; }
-  .col-10-lg-push-0 {
-    left: auto; }
-  .col-10-lg-push-1 {
-    left: 10%; }
-  .col-10-lg-push-2 {
-    left: 20%; }
-  .col-10-lg-push-3 {
-    left: 30%; }
-  .col-10-lg-push-4 {
-    left: 40%; }
-  .col-10-lg-push-5 {
-    left: 50%; }
-  .col-10-lg-push-6 {
-    left: 60%; }
-  .col-10-lg-push-7 {
-    left: 70%; }
-  .col-10-lg-push-8 {
-    left: 80%; }
-  .col-10-lg-push-9 {
-    left: 90%; }
-  .col-10-lg-push-10 {
-    left: 100%; }
-  .col-10-lg-offset-0 {
-    margin-left: 0%; }
-  .col-10-lg-offset-1 {
-    margin-left: 10%; }
-  .col-10-lg-offset-2 {
-    margin-left: 20%; }
-  .col-10-lg-offset-3 {
-    margin-left: 30%; }
-  .col-10-lg-offset-4 {
-    margin-left: 40%; }
-  .col-10-lg-offset-5 {
-    margin-left: 50%; }
-  .col-10-lg-offset-6 {
-    margin-left: 60%; }
-  .col-10-lg-offset-7 {
-    margin-left: 70%; }
-  .col-10-lg-offset-8 {
-    margin-left: 80%; }
-  .col-10-lg-offset-9 {
-    margin-left: 90%; }
-  .col-10-lg-offset-10 {
-    margin-left: 100%; } }
+    .input-text-animation .animation-input:not(:placeholder-shown) + span {
+      transform: translateY(-26px) scale(0.75); }
+    .input-text-animation .animation-input:focus {
+      background: none;
+      outline: none; }
+      .input-text-animation .animation-input:focus + span {
+        transform: translateY(-26px) scale(0.75); }
+        .input-text-animation .animation-input:focus + span + .login-border {
+          transform: scaleX(1); }
 
 /*
  * Multi Family Insiders Bootstrap V3 Template
@@ -507,6 +111,70 @@
 /*
  * Multi Family Insiders Bootstrap V3 Template
  *
+ * Stylings for body structural stylings
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/*
+ * HTML5 <header>, has three rows:
+ *
+ *   header-top w/ main nav
+ *   header-middle w/ component nav
+ *   header-bottom w/ breadcrumbs
+ */
+.header-top {
+  background-color: #eee; }
+
+.header-middle {
+  background-color: #346688; }
+
+.header-bottom {
+  background-color: #fff;
+  border-bottom: 1px;
+  border-bottom-color: #777777; }
+
+/*
+ * HTML5 <section>, has three rows:
+ *
+ *   top w/ main nav
+ *   middle w/ component nav
+ *   bottom w/ breadcrumbs
+ */
+.content {
+  background-color: #fff; }
+
+/*
+ * HTML5 <footer>, has three rows:
+ *
+ *   footer-top w/ logo and social icons
+ *   footer-middle w/ copyright and search
+ *   bottom w/ footer nav links
+ */
+.footer {
+  background-color: #00a0d6;
+  margin-top: 15px;
+  padding-top: 10px; }
+
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for content sidebar (asides) partial
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
  * Banner stylings
  *
  * @package     Calligraphic Job Board
@@ -517,8 +185,31 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * Applied to all banner divs, not used alone
+ * Banner that displays right below breadcrumbs
+ *
+ * 550 x 75  - Non-standard size per Brent's specs
+ *
+ * Standard alternative sizes:
+ *
+ * 728 × 90  - Leaderboard
+ * 468 x 60  - Banner
+ * 320 × 100 - Large Mobile Banner
  */
+.banneritem img {
+  display: block;
+  margin: 0 auto; }
+
+/*
+ * Banner that displays right below breadcrumbs
+ *
+ * 550 x 75  - Non-standard size per Brent's specs
+ *
+ * See banner-top for standard alternative sizes
+ */
+.banner-bottom-container img {
+  margin-left: auto;
+  margin-right: auto; }
+
 /*
   * These banners are displayed in the editor area on Jomsocial pages
   *
@@ -536,30 +227,9 @@
   * 160 x 100 Non-standard size per Brent's specs
   */
 /*
-  * Banner that displays right below breadcrumbs
-  *
-  * 550 x 75  - Non-standard size per Brent's specs
-  *
-  * Standard alternative sizes:
-  *
-  * 728 × 90  - Leaderboard
-  * 468 x 60  - Banner
-  * 320 × 100 - Large Mobile Banner
-  */
-/*
-  * Banner that displays right below breadcrumbs
-  *
-  * 550 x 75  - Non-standard size per Brent's specs
-  *
-  * See banner-top for standard alternative sizes
-  */
-/*
-  * Breadcrumbs with angle brack separator
-  */
-/*
  * Multi Family Insiders Bootstrap V3 Template
  *
- * Stylings for body structural stylings
+ * Stylings for breadcrumbs partial
  *
  * @package     Calligraphic Job Board
  *
@@ -569,88 +239,15 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * HTML5 Header section, has three rows:
- *
- *   top w/ main nav
- *   middle w/ component nav
- *   bottom w/ breadcrumbs
- *
- * @header, nested @container-fluid as first-child
- */
-/*
- * Has nested left and right container columns
- *
- * @row
- */
-/*
- * @column
- */
-/*
- * Has two rows for primary and secondary nav
- *
- * @column
- */
-/*
- * @row
- */
-/*
- * @row
- */
-/*
- * @row
- */
-/*
- * @row
- */
-/*
- * @row
+ * Breadcrumbs with angle brack separator
  */
 .breadcrumbs-container {
-  padding: 8px 15px;
-  margin: 0 0 20px;
+  background-color: #fff;
   list-style: none;
-  background-color: #fff; }
-  .breadcrumbs-container > li {
-    display: inline-block;
-    text-shadow: 0 1px 0 #eee; }
-    .breadcrumbs-container > li > .divider {
-      padding: 0 5px;
-      color: #777777; }
+  margin: 0 0 20px;
+  padding: 8px 15px;
+  color: #777777; }
 
-/*
- * @section
- */
-/*
- * Non-bootstrap grid full width div
- */
-/*
- * Three-column arrangement for content area, w/ left and right sidebars
- *
- * @row, nested in @container-fluid
- */
-/*
- * @col
- */
-/*
- * @column
- */
-/*
- * @column
- */
-/*
- * Non-bootstrap grid full width div
- */
-/*
- * Left and right column arrangement for footer
- *
- * @footer
- */
-/*
- * @column
- */
-/*
- * @column
- */
 /*
  * Multi Family Insiders Bootstrap V3 Template
  *
@@ -664,14 +261,14 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * The Showcase module position for a large full-width element. The Feature
- * position is designed if this needs to extend with more content on some pages.
+ * Flash message module position
  */
 /*
- * Provides a content area right below the Showcase module position
+ * Content body to show when the template is being used
+ * to display an Error Document page
  */
 /*
- * Main component content output
+ * Main component output
  */
 /*
  * Module for example on Webinar pages with "What
@@ -697,6 +294,139 @@
 /*
  * The "Proudly Sponsored By" module position
  */
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for login partial
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/*
+ * Container in nav-secondary navigation bar that toggles between
+ * Login / Register and the username / avatar for logged in users
+ */
+.login-container {
+  display: inline;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  position: relative; }
+
+/*
+ * classes for "login" view of module (shown to guest users)
+ */
+.login-and-register {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: 700; }
+  .login-and-register .login,
+  .login-and-register .register {
+    color: #020202 !important; }
+    .login-and-register .login:hover, .login-and-register .login:focus,
+    .login-and-register .register:hover,
+    .login-and-register .register:focus {
+      color: #777777 !important;
+      cursor: pointer;
+      text-decoration: none; }
+
+.login-modal-greeting {
+  color: #346688; }
+
+.form-login-username .animation-label,
+.form-login-password .animation-label {
+  color: #777777;
+  font-size: 12px;
+  font-weight: 500; }
+
+.form-login-username .animation-border,
+.form-login-password .animation-border {
+  background: #00a0d6; }
+
+.form-login-username .animation-input,
+.form-login-password .animation-input {
+  border-bottom-color: #eeeeee;
+  color: #346688;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500; }
+  .form-login-username .animation-input:hover,
+  .form-login-password .animation-input:hover {
+    background: #fff; }
+  .form-login-username .animation-input:not(:placeholder-shown) + span,
+  .form-login-password .animation-input:not(:placeholder-shown) + span {
+    color: #fff; }
+  .form-login-username .animation-input:focus + span,
+  .form-login-password .animation-input:focus + span {
+    color: #346688; }
+
+.form-login-remember {
+  display: block;
+  line-height: 30px;
+  margin-top: 5px; }
+  .form-login-remember input {
+    margin: 0 0 5px; }
+  .form-login-remember label {
+    color: #777777;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    margin-left: 5px; }
+
+.login-modal-buttons {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
+.form-register a button {
+  margin: 5px 0 10px; }
+
+.form-login-submit button {
+  margin: 5px 0 10px 15px; }
+
+.form-forgot-username,
+.form-forgot-password {
+  display: block;
+  text-align: left; }
+  .form-forgot-username a,
+  .form-forgot-password a {
+    color: #777777;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px; }
+    .form-forgot-username a:hover, .form-forgot-username a:focus,
+    .form-forgot-password a:hover,
+    .form-forgot-password a:focus {
+      color: #346688 !important;
+      text-decoration: none; }
+
+/*
+ * classes for "logout" view of module (shown to logged-in users)
+ */
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for header and footer logo partial
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/*
+ * Site logo in header with anchor URI set in template parameters
+ */
+/*
+ * Site logo in footer with anchor URI set in template parameters
+ */
+.logo-footer-container {
+  color: #fff; }
+
 /*
  * Multi Family Insiders Bootstrap V3 Template
  *
@@ -786,38 +516,98 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- *
- */
-/*
  * This is the smaller navigation menu at the top of the page, with "About Us",
  * "Files and Tools", and "Contact", and login/register and shopping cart modules
  */
+.header-top-right-secondary-nav ul {
+  margin: 0; }
+
+.nav-secondary-container {
+  display: inline;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  position: relative;
+  text-decoration: none; }
+  .nav-secondary-container a {
+    color: #020202;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none; }
+  .nav-secondary-container:hover, .nav-secondary-container:focus {
+    color: #777777;
+    text-decoration: none; }
+
+/*
+ * The primary site navigation with links to "Discuss", "Blogs", "Events", "Community", and "Jobs"
+ */
+.header-top-right-primary-nav ul {
+  margin: 0; }
+  .header-top-right-primary-nav ul:last-child {
+    padding-right: 0; }
+
+.nav-primary-container {
+  display: inline;
+  padding: 10px 15px;
+  position: relative;
+  text-decoration: none; }
+  .nav-primary-container a {
+    color: #00a0d6;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none; }
+    .nav-primary-container a:hover, .nav-primary-container a:focus {
+      background-color: #00a0d6;
+      color: #fff;
+      text-decoration: none; }
+
 /*
  * The component-specific navigation menu above breadcrumbs, output varies
  * based on what component is being shown
  */
+.component-navigation ul {
+  margin: 0; }
+
+.nav-component-container {
+  display: inline;
+  position: relative; }
+  .nav-component-container a {
+    color: #fff;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    text-decoration: none; }
+    .nav-component-container a:hover, .nav-component-container a:focus {
+      border-bottom-color: #00a0d6;
+      border-bottom-width: 5px;
+      color: #eee; }
+
 /*
  * The footer navigation with links to "Jobs", "Community", "Events",
  * "Blogs", "About Us", "Files and Tools", and "Contact"
  */
-.search-header-container,
-.login-container,
-.shopping-cart-container {
-  display: block;
-  position: relative; }
-  .search-header-container > span,
-  .login-container > span,
-  .shopping-cart-container > span {
-    display: block;
-    padding: 10px 15px;
-    position: relative; }
-    .search-header-container > span:hover, .search-header-container > span:focus,
-    .login-container > span:hover,
-    .login-container > span:focus,
-    .shopping-cart-container > span:hover,
-    .shopping-cart-container > span:focus {
-      background-color: #eeeeee;
-      text-decoration: none; }
+.footer-navigation ul {
+  margin: 0; }
+
+.nav-footer-container {
+  color: #fff;
+  display: inline !important; }
+  .nav-footer-container a {
+    color: #fff;
+    display: inline !important;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 5px !important;
+    text-decoration: none; }
+    .nav-footer-container a:hover, .nav-footer-container a:focus {
+      color: #eeeeee; }
 
 /*
  * Multi Family Insiders Bootstrap V3 Template
@@ -832,27 +622,170 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * Toggles between Login / Register and the username / avatar for logged in users
- */
-/*
  * Shows the copyright notice
  */
+.copyright-container {
+  color: #fff; }
+
 /*
- * Debug display for development
+ * Debug display for development, non-bootstrap grid full width div
+ */
+/*
+ * The Showcase module position for a large full-width element. The Feature
+ * position is designed if this needs to extend with more content on some pages.
+ */
+/*
+ * Provides a full-width module position right below the Showcase module position
+ */
+/*
+ * An action button that is show to the right of the
+ * component-specific navigation menu above breadcrumbs
+ */
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for search box (finderr)
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/*
+ * The Search module (search icon) that displays in the header of the site
+ */
+.search-header-container {
+  display: inline;
+  margin-bottom: 5px;
+  margin-left: 0;
+  margin-right: 5px;
+  margin-top: 5px;
+  position: relative; }
+
+.header-search-icon {
+  color: #020202;
+  font-size: 12px; }
+  .header-search-icon:hover, .header-search-icon:focus {
+    color: #777777;
+    cursor: pointer;
+    text-decoration: none; }
+
+.header-modal-search {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: 700; }
+
+.form-search-input .animation-label {
+  color: #777777;
+  font-size: 12px;
+  font-weight: 500; }
+
+.form-search-input .animation-border {
+  background: #00a0d6; }
+
+.form-search-input .animation-input {
+  border-bottom-color: #eeeeee;
+  color: #00a0d6;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500; }
+  .form-search-input .animation-input:hover {
+    background: #eee; }
+  .form-search-input .animation-input:not(:placeholder-shown) + span {
+    color: #555555; }
+  .form-search-input .animation-input:focus + span {
+    color: #00a0d6; }
+
+.header-modal-search-footer .submit {
+  margin-left: 15px; }
+
+.header-modal-search-footer .advanced-search {
+  color: #777777;
+  text-decoration: none;
+  text-decoration-style: none; }
+  .header-modal-search-footer .advanced-search:hover, .header-modal-search-footer .advanced-search:focus {
+    color: #00a0d6; }
+
+/*
+ * The Search module that displays in the footer of the site
+ */
+.search-footer-container {
+  color: #fff; }
+
+/*
+ * Joomla!-specific menu stylings
+ */
+.search-result .mime-pdf {
+  background: url("../../system/images/pdf_button.png") no-repeat;
+  padding-left: 20px; }
+
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for shopping cart partial, displayed in header nav-secondary
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
  * Show a shopping cart icon in the top navigation menu row
  */
+.shopping-cart-container {
+  display: inline;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 0;
+  margin-top: 5px;
+  position: relative; }
+
 /*
- * The Search module that displays in the footer of the site
+ * Icon with link in menu, <span> type=button
+ */
+.shopping-cart-in-nav .shopping-cart-icon {
+  color: #020202;
+  font-size: 12px; }
+  .shopping-cart-in-nav .shopping-cart-icon:hover, .shopping-cart-in-nav .shopping-cart-icon:focus {
+    color: #777777;
+    cursor: pointer;
+    text-decoration: none; }
+
+.shopping-cart-in-nav .shopping-cart-amount {
+  color: #020202;
+  font-size: 12px; }
+
+/*
+ * Modal drop down showing contents of cart or "Cart Empty"
  */
 /*
- * The Search module that displays in the header of the site
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Stylings for social icons partial, displayed in footer
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * Site logo in header with anchor URI set in template parameters
+ * Social icons shown in footer
  */
-/*
- * Site logo in footer with anchor URI set in template parameters
- */
+.social-icons-container {
+  color: #fff; }
+  .social-icons-container a {
+    float: right !important;
+    padding: 10px; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Source Sans Pro Regular"), local("SourceSansPro-Regular"), url("../fonts/SourceSansPro-Regular.ttf") format("truetype"); }
 /*# sourceMappingURL=template.css.map */

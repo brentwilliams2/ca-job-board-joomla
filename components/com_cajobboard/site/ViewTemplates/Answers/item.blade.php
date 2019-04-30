@@ -57,11 +57,10 @@
   #2 - Answer Text
 --}}
 @section('answer_text')
-  <p class="answer-text">
-    <b>{{{ $text }}}</b>
-  </p>
+  <span class="answer-text">
+    {{{ $text }}}
+  </span>
 @overwrite
-
 
 {{--
   #3 - Answer Author's name
@@ -131,7 +130,7 @@
   #9 - "Report answer" Button
 --}}
 @section('report_answer')
-  <button type="button" class="btn btn-primary btn-xs btn-answer guest-report-answer-button pull-right" data-toggle="modal" data-target="#report-answer">
+  <button type="button" class="btn btn-primary btn-xs btn-answer report-answer pull-right" data-toggle="modal" data-target="#report-answer">
     @lang('COM_CAJOBBOARD_REPORT_ANSWERS_BUTTON_LABEL')
   </button>
 @overwrite

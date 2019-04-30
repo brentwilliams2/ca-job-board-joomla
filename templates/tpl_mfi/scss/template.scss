@@ -15,17 +15,43 @@
 @import 'partials/variables';
 
 // Ten-column grid framework
-@import 'partials/ten_col_grid';
+//@import 'partials/ten_col_grid';
 
-// Template elements
+// Template utilities
+@import 'partials/utility';
+
+// Template-specific Bootstrap overrides
 @import 'partials/bootstrap_overrides';
+
+// Helpers
 @import 'partials/chosen';
 @import 'partials/forms';
 
-// Template position stylings
-@import 'partials/banners';
+// Main layout for template - grid stylings
 @import 'partials/body';
+
+// Layout for module position output, targetable with prepending '-container'
+// to position name e.g. 'breadcrumbs-container' is a class on a <div>
+// wrapping the breadcrumb position's module output. Nav (menu modules)
+// output has the '-container' class applied directly to the menu item
+// <li> element
+@import 'partials/asides';
+@import 'partials/banners';
+@import 'partials/breadcrumbs';
 @import 'partials/content';
+@import 'partials/login';
+@import 'partials/logo';
 @import 'partials/modules';
 @import 'partials/navigation';
 @import 'partials/other';
+@import 'partials/search';
+@import 'partials/shopping_cart';
+@import 'partials/social_icons';
+
+// Load Google font locally
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url('../fonts/SourceSansPro-Regular.ttf') format('truetype');
+}

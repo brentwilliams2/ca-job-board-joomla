@@ -13,6 +13,8 @@
  *
  */
 
+  use \Joomla\CMS\Language\Text;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
@@ -23,6 +25,8 @@
 
 <?php else: // render static HTML for error pages ?>
 
-  <span>&#62; <?php echo $this->getTitle(); ?></span>
+  <span>
+    <?php echo Text::_('ERROR'); ?>&nbsp;&gt;&nbsp;<?php echo $this->error->getCode() . ' ' . $this->error->getMessage(); ?>
+  </span>
 
 <?php endif; ?>

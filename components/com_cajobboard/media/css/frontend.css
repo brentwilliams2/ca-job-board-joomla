@@ -16,37 +16,36 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-.answer-item {
-  background-color: #e3e3e4;
+.answer-list-item {
+  background-color: #eee;
   margin-top: 12px;
   padding-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px; }
 
-.answer-list-item {
-  background-color: #e3e3e4;
-  margin-top: 12px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px; }
+.answer-title {
+  color: #00a0d6;
+  font-size: 18px;
+  font-weight: bold; }
+  .answer-title:hover, .answer-title:focus {
+    color: #5bc0de;
+    text-decoration: none; }
+
+.answer-text {
+  color: #020202; }
 
 .btn-answer {
   border-radius: 5px;
   margin-left: 5px; }
 
-.answer-title {
-  font-size: 18px;
-  font-weight: bold; }
-
-a .answer-text-link {
-  color: #333333;
-  text-decoration: none; }
-
-a:hover, a:focus {
-  color: #777777;
-  text-decoration: none; }
+.answer-item {
+  background-color: #eee;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
 
 /**
  * Styles for Site Comment Views
@@ -82,7 +81,7 @@ a:hover, a:focus {
   font-weight: bold; }
 
 a .comment-text-link {
-  color: #333333;
+  color: #777777;
   text-decoration: none; }
 
 a:hover, a:focus {
@@ -123,7 +122,7 @@ a:hover, a:focus {
   font-weight: bold; }
 
 a .image-object-text-link {
-  color: #333333;
+  color: #777777;
   text-decoration: none; }
 
 a:hover, a:focus {
@@ -155,7 +154,7 @@ a:hover, a:focus {
   font-weight: bold; }
 
 .job-title-tag {
-  background-color: #5cb85c;
+  background-color: #00d635;
   border: 0;
   border-radius: 5px;
   color: #fff;
@@ -215,7 +214,7 @@ a:hover, a:focus {
   font-weight: bold; }
 
 a .organization-text-link {
-  color: #333333;
+  color: #777777;
   text-decoration: none; }
   a .organization-text-link:hover, a .organization-text-link:focus {
     color: #777777;
@@ -264,7 +263,7 @@ a .organization-text-link {
   font-weight: bold; }
 
 a .place-text-link {
-  color: #333333;
+  color: #777777;
   text-decoration: none; }
   a .place-text-link:hover, a .place-text-link:focus {
     color: #777777;
@@ -304,7 +303,7 @@ a .place-text-link {
   font-weight: bold; }
 
 a .question-text-link {
-  color: #333333;
+  color: #777777;
   text-decoration: none; }
 
 a:hover {
@@ -358,7 +357,7 @@ a:hover {
   font-weight: bold; }
 
 a .review-text-link {
-  color: #333333;
+  color: #777777;
   text-decoration: none; }
   a .review-text-link:focus {
     color: #777777;
@@ -561,7 +560,7 @@ a:hover {
   text-shadow: #4d9bd6 1px 1px, #4d9bd6 2px 2px, #4d9bd6 3px 3px, #4d9bd7 4px 4px, #4d9cd7 5px 5px, #4d9cd7 6px 6px, #4d9cd8 7px 7px, #4d9cd8 8px 8px, #4d9cd8 9px 9px, #4e9dd9 10px 10px, #4e9dd9 11px 11px, #4e9dd9 12px 12px, #4e9dd9 13px 13px, #4e9dda 14px 14px, #4e9eda 15px 15px, #4e9eda 16px 16px, #4e9edb 17px 17px, #4e9edb 18px 18px, #4e9fdb 19px 19px, #4f9fdc 20px 20px, #4f9fdc 21px 21px, #4f9fdc 22px 22px, #4f9fdc 23px 23px, #4fa0dd 24px 24px, #4fa0dd 25px 25px, #4fa0dd 26px 26px, #4fa0de 27px 27px, #4fa0de 28px 28px, #4fa1de 29px 29px, #50a1df 30px 30px, #50a1df 31px 31px, #50a1df 32px 32px, #50a2df 33px 33px, #50a2e0 34px 34px, #50a2e0 35px 35px, #50a2e0 36px 36px, #50a2e1 37px 37px, #50a3e1 38px 38px, #50a3e1 39px 39px, #51a3e2 40px 40px, #51a3e2 41px 41px, #51a3e2 42px 42px, #51a4e2 43px 43px, #51a4e3 44px 44px, #51a4e3 45px 45px, #51a4e3 46px 46px, #51a4e4 47px 47px, #51a5e4 48px 48px, #51a5e4 49px 49px, #52a5e5 50px 50px, #52a5e5 51px 51px, #52a6e5 52px 52px, #52a6e5 53px 53px, #52a6e6 54px 54px, #52a6e6 55px 55px, #52a6e6 56px 56px, #52a7e7 57px 57px, #52a7e7 58px 58px, #52a7e7 59px 59px, #53a7e8 60px 60px, #53a7e8 61px 61px, #53a8e8 62px 62px, #53a8e8 63px 63px, #53a8e9 64px 64px, #53a8e9 65px 65px, #53a9e9 66px 66px, #53a9ea 67px 67px, #53a9ea 68px 68px, #53a9ea 69px 69px, #54a9eb 70px 70px, #54aaeb 71px 71px, #54aaeb 72px 72px, #54aaeb 73px 73px, #54aaec 74px 74px, #54aaec 75px 75px, #54abec 76px 76px, #54abed 77px 77px, #54abed 78px 78px, #54abed 79px 79px, #55acee 80px 80px; }
 
 .invalid {
-  border-color: #f0ad4e !important; }
+  border-color: #d6a000 !important; }
 
 .hr-text {
   border: 0;

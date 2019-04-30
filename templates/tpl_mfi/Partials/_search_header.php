@@ -13,6 +13,8 @@
  *
  */
 
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
@@ -23,6 +25,17 @@
 
 <?php else: // render static HTML for error pages ?>
 
-  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+  <li id="search-header-container" class="search-header-container pull-right">
+    <div class="finder">
+      <a href="<?php echo Route::_('index.php?option=com_finder'); ?>">
+        <span class="header-search-toggle-modal">
+          <span class="header-search-icon icon-search"></span>
+        </span>
+      </a>
+    </div>
+  </li>
 
 <?php endif; ?>
+
+
+

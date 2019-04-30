@@ -14,6 +14,8 @@
  *
  */
 
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
@@ -24,6 +26,12 @@
 
 <?php else: // render static HTML for error pages ?>
 
-  <p>paste static html in nav-footer</p>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_cajobboard&view=JobPostings'); ?>">Jobs</a></li>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_community&view=groups'); ?>">Community</a></li>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_community&view=events'); ?>">Events</a></li>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_publisher&view=publisher'); ?>">Blogs</a></li>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_content&view=article&id=4'); ?>">About Us</a></li>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_phocadownload&view=categories'); ?>">Files & Tools</a></li>
+  <li class="nav-footer-container"><a href="<?php echo Route::_('index.php?option=com_content&view=article&id=8'); ?>">Contact</a></li>
 
 <?php endif; ?>

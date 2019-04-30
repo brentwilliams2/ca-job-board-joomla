@@ -10,32 +10,13 @@
  * @author      Calligraphic, LLC http://www.calligraphic.design
  * @copyright   Copyright (C) 2018 Calligraphic, LLC
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
- * Menu Types:
- *
- *  -separator:
- *  -component:
- *  -heading: The
- *  -url: link to an external URI
- *
- * Menu item class properties:
- *
- * $item->id
- * $item->type
- * $item->params \JRegistry
- * $item->anchor_title
- * $item->anchor_css
- * $item->title
- * $item->deeper
- * $item->parent
- * $item->shallower
- * $item->level_diff
- * $item->menu_image
- * $item->menu_image_css
  */
 
-  // no direct access
-  defined('_JEXEC') or die;
+// no direct access
+defined('_JEXEC') or die;
+
+// Reverse the menu item order since 'pull-right' class is applied
+$list = array_reverse($list);
 
 foreach ($list as $i => &$item)
 {
@@ -54,7 +35,7 @@ foreach ($list as $i => &$item)
     $class .= ' current';
   }
 
-  echo '<li class="nav-secondary-container ' . $class . ' col-xs-2">';
+  echo '<li class="nav-secondary-container ' . $class . ' pull-right">';
 
   $attributes = array();
 

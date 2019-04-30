@@ -36,65 +36,79 @@
     $leftColumnWidth = 2;
     $rightColumnWidth = 2;
   }
+
+  $middleColumnWidth = (12-$leftColumnWidth-$rightColumnWidth);
 ?>
 <body>
 
-  <header id="header" class="header hide-from-print">
+  <header id="header" class="header">
     <div class="container-fluid">
 
       <div class="header-top row">
+        <?php /* Space to match main body sidebar widths */ ?>
+        <div class="left-sidebar-spacer col-xs-<?php echo $leftColumnWidth ?>"></div>
 
-        <?php /* Start at 100% width on phone, then 50% width on desktop */ ?>
-        <div class="header-top-left col-xs-4">
+        <div class="col-xs-<?php  echo $middleColumnWidth; ?>">
+          <div class="row">
 
-          <?php /* logo-header-container */ ?>
-          <?php echo $positionRenderer->withDivWrapper('logo-header'); ?>
+            <?php /* Start at 100% width on phone, then 50% width on desktop */ ?>
+            <div class="header-top-left col-xs-4">
 
-        </div>
+              <?php /* logo-header-container */ ?>
+              <?php echo $positionRenderer->withDivWrapper('logo-header'); ?>
 
-        <div class="header-top-right col-xs-8">
+            </div>
 
-          <!--div class="header-top-right-secondary-nav row"-->
+            <div class="header-top-right col-xs-8">
 
-          <nav id="header-top-right-secondary-nav" class="header-top-right-secondary-nav navbar" aria-labelledby="secondary-navigation">
-            <div class="secondary-navigation container-fluid">
-              <ul class="nav row">
+              <!--div class="header-top-right-secondary-nav row"-->
 
-                <?php /* search-header-container */ ?>
-                <?php echo $positionRenderer->withColumnWrapper('search-header', 'col-xs-2'); ?>
-
-                <?php /* nav-secondary-container */ ?>
-                <?php echo $positionRenderer->withNoWrapper('nav-secondary'); ?>
-
-                <?php /* login-container */ ?>
-                <?php echo $positionRenderer->withColumnWrapper('login', 'col-xs-2'); ?>
+              <nav id="header-top-right-secondary-nav" class="header-top-right-secondary-nav" aria-labelledby="secondary-navigation">
+                <ul>
 
                 <?php /* shopping-cart-container */ ?>
-                <?php echo $positionRenderer->withColumnWrapper('shopping-cart', 'col-xs-2'); ?>
+                  <?php echo $positionRenderer->withAddedClassesLiWrapper('shopping-cart', 'pull-right'); ?>
 
-              </ul>
+                  <?php /* login-container */ ?>
+                  <?php echo $positionRenderer->withAddedClassesLiWrapper('login', 'pull-right'); ?>
+
+                  <?php /* nav-secondary-container */ ?>
+                  <?php echo $positionRenderer->withNoWrapper('nav-secondary'); ?>
+
+                  <?php /* search-header-container */ ?>
+                  <?php echo $positionRenderer->withAddedClassesLiWrapper('search-header', 'pull-right'); ?>
+
+                </ul>
+              </nav>
+
+              <div class="clearfix"></div>
+
+              <nav id="header-top-right-primary-nav" class="header-top-right-primary-nav" aria-labelledby="primary-navigation">
+                <ul>
+
+                  <?php /* nav-primary-container */ ?>
+                  <?php echo $positionRenderer->withNoWrapper('nav-primary'); ?>
+
+                </ul>
+              </nav>
+
             </div>
-          </nav>
 
-          <nav id="header-top-right-primary-nav" class="header-top-right-primary-nav navbar" aria-labelledby="primary-navigation">
-            <div class="primary-navigation container-fluid">
-              <ul class="nav row">
-
-              <?php /* nav-primary-container */ ?>
-              <?php echo $positionRenderer->withNoWrapper('nav-primary'); ?>
-
-              </ul>
-            </div>
-          </nav>
-
+          </div>
         </div>
+
+        <?php /* Space to match main body sidebar widths */ ?>
+        <div class="right-sidebar-spacer col-xs-<?php echo $rightColumnWidth ?>"></div>
       </div>
 
       <?php if ( $this->moduleCount['nav-component'] || $this->moduleCount['nav-component-action'] ) : ?>
 
-        <nav class="header-middle navbar" aria-labelledby="component-navigation">
-          <div class="component-navigation container-fluid">
-            <ul class="nav">
+        <nav class="header-middle row" aria-labelledby="component-navigation">
+          <?php /* Space to match main body sidebar widths */ ?>
+          <div class="left-sidebar-spacer col-xs-<?php echo $leftColumnWidth ?>"></div>
+
+          <div class="component-navigation">
+            <ul>
 
               <?php /* nav-component-container */ ?>
               <?php echo $positionRenderer->withNoWrapper('nav-component'); ?>
@@ -103,15 +117,25 @@
               <?php echo $positionRenderer->withDivWrapper('nav-component-action', 'container pull-right'); ?>
 
             </ul>
+
           </div>
+
+          <?php /* Space to match main body sidebar widths */ ?>
+          <div class="right-sidebar-spacer col-xs-<?php echo $rightColumnWidth ?>"></div>
         </nav>
 
       <?php endif; ?>
 
       <div class="header-bottom row">
 
+        <?php /* Space to match main body sidebar widths */ ?>
+        <div class="left-sidebar-spacer col-xs-<?php echo $leftColumnWidth ?>"></div>
+
         <?php /* breadcrumbs-container */ ?>
-        <?php echo $positionRenderer->withColumnWrapper('breadcrumbs', 'col-xs-12'); ?>
+        <?php echo $positionRenderer->withAddedClassesDivWrapper('breadcrumbs', 'col-xs-' . $middleColumnWidth); ?>
+
+        <?php /* Space to match main body sidebar widths */ ?>
+        <div class="right-sidebar-spacer col-xs-<?php echo $rightColumnWidth ?>"></div>
 
       </div>
 
@@ -135,7 +159,7 @@
     <?php /* Content */ ?>
     <div class="container-fluid">
 
-      <div id="container-content" class="container-content row">
+      <div id="content-container-with-sidebars" class="content-container-with-sidebars row">
 
         <aside id="aside-left-sidebar" class="aside-left-sidebar col-xs-<?php echo $leftColumnWidth ?>">
 
@@ -145,7 +169,7 @@
         </aside>
 
         <?php /* Center content column */ ?>
-        <div id="content-center" class="content-center col-xs-<?php  echo (12-$leftColumnWidth-$rightColumnWidth); ?>">
+        <div id="content-center" class="content-center col-xs-<?php echo $middleColumnWidth; ?>">
 
           <?php /* banner-top-container */ ?>
           <?php echo $positionRenderer->withDivWrapper('banner-top'); ?>
@@ -156,9 +180,8 @@
           <?php endif; ?>
 
           <?php /* Both component and error pages use this template */ ?>
-          <?php if ($this->isErrorPage) : ?>
-            <?php /* content-error-container */ ?>
-            <?php echo $positionRenderer->withDivWrapper('content-error'); ?>
+            <?php if ($this->isErrorPage) : ?>
+             <?php echo $positionRenderer->withDivWrapper($errorPartial); ?>
           <?php else : ?>
             <?php /* content-component-container */ ?>
             <?php echo $positionRenderer->withDivWrapper('content-component-output'); ?>
@@ -201,31 +224,54 @@
     <?php echo $positionRenderer->withDivWrapper('debug'); ?>
   </section>
 
-  <footer id="footer" class="footer hide-from-print">
-    <div class="container-fluid">
+  <footer id="footer" class="footer container-fluid">
+    <div class="row">
 
-      <div class="footer-left col-xs-4">
+      <?php /* Space to match main body sidebar widths */ ?>
+      <div class="left-sidebar-spacer col-xs-<?php echo $leftColumnWidth ?>"></div>
 
-        <?php /* logo-footer-container */ ?>
-        <?php echo $positionRenderer->withDivWrapper('logo-footer'); ?>
+      <div class="footer-column col-xs-<?php echo $middleColumnWidth; ?>">
 
-        <?php /* copyright-container */ ?>
-        <?php echo $positionRenderer->withDivWrapper('copyright'); ?>
+
+        <div class="footer-top row">
+
+          <?php /* logo-footer-container */ ?>
+          <?php echo $positionRenderer->withAddedClassesDivWrapper('logo-footer', 'col-xs-6'); ?>
+
+          <?php /* social-icons-container */ ?>
+          <?php echo $positionRenderer->withAddedClassesDivWrapper('social-icons', 'col-xs-6'); ?>
+
+        </div>
+
+
+        <div class="footer-middle row">
+
+          <?php /* search-footer-container */ ?>
+          <?php echo $positionRenderer->withAddedClassesDivWrapper('search-footer', 'col-xs-6 pull-right'); ?>
+
+        </div>
+
+
+        <div class="footer-bottom row">
+
+          <?php /* copyright-container */ ?>
+          <?php echo $positionRenderer->withAddedClassesDivWrapper('copyright', 'col-xs-6'); ?>
+
+          <nav class="footer-navigation" aria-labelledby="footer-navigation col-xs-6">
+            <ul>
+
+              <?php /* nav-footer-container */ ?>
+              <?php echo $positionRenderer->withNoWrapper('nav-footer'); ?>
+
+            </ul>
+          </nav>
+
+        </div>
 
       </div>
 
-      <div class="footer-right col-xs-8">
-
-        <?php /* social-icons-container */ ?>
-        <?php echo $positionRenderer->withDivWrapper('social-icons'); ?>
-
-        <?php /* search-footer-container */ ?>
-        <?php echo $positionRenderer->withDivWrapper('search-footer'); ?>
-
-        <?php /* nav-footer-container */ ?>
-        <?php echo $positionRenderer->withDivWrapper('nav-footer'); ?>
-
-      </div>
+      <?php /* Space to match main body sidebar widths */ ?>
+      <div class="right-sidebar-spacer col-xs-<?php echo $rightColumnWidth ?>"></div>
 
     </div>
   </footer>

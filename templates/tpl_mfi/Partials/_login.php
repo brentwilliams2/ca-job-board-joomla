@@ -13,16 +13,46 @@
  *
  */
 
+  use \Joomla\CMS\Factory;
+
   // no direct access
   defined('_JEXEC') or die;
+
+  $user = JFactory::getUser();
 ?>
 
 <?php if ( in_array('login', $this->moduleCount) && $this->moduleCount['login'] ) : ?>
 
   <jdoc:include type="modules" name="login" style="none" />
 
-<?php else: // render static HTML for error pages ?>
+<?php elseif ($user->guest == 1): // render static HTML for guest user error pages ?>
 
-  <span><a href="#" class="navbar-link">LOGIN</a> / <a href="#" class="navbar-link"">REGISTER</a></span>
+  <span class="login-and-register">
+    <span class="login" type="button" data-toggle="modal" data-target="#login-modal">
+      <?php echo strtoupper(Text::_('MOD_MFI_TEMPLATE_LOGIN_LABEL_LOGIN')); ?>
+    </span>
+
+    &#160;&#47;&#160;
+
+    <a class="register" href="<?php echo Route::_('index.php?option=com_users&view=registration'); ?>">
+      <?php echo strtoupper(Text::_('MOD_MFI_TEMPLATE_LOGIN_LABEL_REGISTER')); ?>
+    </a>
+  </span>
+
+<?php else: // render static HTML for logged-in user error pages ?>
+
+  <li id="login-container" class="login-container pull-right">
+    <span class="logged-in" type="button" data-toggle="modal" data-target="#logout-modal">
+      <!-- @TODO: Fix this to show user avatar -->
+      <span class="logged-in-avatar hasTooltip" title="Username">
+        <img src="http://joomla.test/templates/multifamilyinsidersbootstrapv3template/images/avatar-man-24.png" alt="Avatar" width="24" height="24">
+      </span>
+
+      <span class="logged-in-greeting">steve</span>
+    </span>
+  </li>
 
 <?php endif; ?>
+
+
+
