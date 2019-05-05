@@ -63,6 +63,8 @@ class BaseHtml extends Html
 	 */
 	public function loadLanguageFileForView($view)
 	{
+    // @TODO: is FOF30 Dispatcher already loading the component language file?
+    
     // Using view-specific language files for maintainability
     $lang = Factory::getLanguage();
 

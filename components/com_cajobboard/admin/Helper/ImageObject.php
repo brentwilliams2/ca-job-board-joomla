@@ -21,7 +21,7 @@
 	/**
 	* View helpers for job postings
 	*/
-  class ImageObjectHelper {
+  class ImageObject {
     /**
     * Handle saving an image
     *

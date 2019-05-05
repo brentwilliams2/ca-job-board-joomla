@@ -10,37 +10,45 @@
   *
   */
 
-  // Identicon avatar generator
-  use \Identicon\Identicon;
+  use \Calligraphic\Cajobboard\Site\Helper\User;
+  use \Calligraphic\Cajobboard\Site\Helper\Format;
 
   // no direct access
   defined('_JEXEC') or die;
 
+  /** @var \Calligraphic\Cajobboard\Site\Model\Answers $item */
+
   // model data fields
-  $answerID       = $item->answer_id;
-  $created_by     = $item->created_by;      // userid of the creator of this answer.
-  $createdOn      = $item->created_on;
-  $description    = $item->description;     // Text of the answer.
-  $downvoteCount  = $item->downvote_count;  // Downvote count for this item.
-  $featured       = $item->featured;        // bool whether this answer is featured or not
-  $hits           = $item->hits;            // Number of hits this answer has received
-  $isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
-  $modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
-  $modifiedOn     = $item->modified_on;
-  $title          = $item->name;            // A title to use for the answer.
-  $parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
-  $Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
-  $slug           = $item->slug;            // Alias for SEF URL
-  $text           = $item->text;            // The actual text of the answer itself.
-  $upvoteCount    = $item->upvote_count;    // Upvote count for this item.
+  $answerID       = $item->getFieldValue('answer_id');
+  $createdBy      = $item->getFieldValue('created_by');      // userid of the creator of this answer.
+  $createdOn      = $item->getFieldValue('created_on');
+  // $description    = $item->getFieldValue('description');     // Text of the answer.
+  $downvoteCount  = $item->getFieldValue('downvote_count');  // Downvote count for this item.
+  $featured       = $item->getFieldValue('featured');        // bool whether this answer is featured or not
+  $hits           = $item->getFieldValue('hits');            // Number of hits this answer has received
+  // $isPartOf       = $item->getFieldValue('isPartOf');        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
+  // $modifiedBy     = $item->getFieldValue('modified_by');     // userid of person that modified this answer.
+  // $modifiedOn     = $item->getFieldValue('modified_on');
+  $title          = $item->getFieldValue('name');            // A title to use for the answer.
+  // $parentItem     = $item->getFieldValue('parentItem');      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
+  // $Publisher      = $item->getFieldValue('Publisher');       // The company that wrote this answer. FK to #__organizations(organization)id).
+  // $slug           = $item->getFieldValue('slug');            // Alias for SEF URL
+  $text           = $item->getFieldValue('text');            // The actual text of the answer itself.
+  $upvoteCount    = $item->getFieldValue('upvote_count');    // Upvote count for this item.
 
-  // current user ID
-  $userId = $this->container->platform->getUser()->id;
+  // authorisation
+  $user = $this->container->platform->getUser();
 
-    // create identicon avatar 24X24
-  $identicon = new Identicon();
-  $authorAvatarUri = $identicon->getImageDataUri($answerID, 24);
+  $userId = $user->id;
+  $authorId = $item->Author->getId();
 
+  $canUserEdit = User::canEdit($user, $item);
+
+  $authorAvatarUri = User::getAvatar($authorId);
+  $authorProfileLink = User::getLinkToUserProfile($authorId);
+  $lastSeen = User::lastSeen($item->Author->lastvisitDate);
+  $name = $item->Author->getFieldValue('name');
+  $postedOn = Format::getCreatedOnText($createdOn);
 ?>
 
 {{--
@@ -67,28 +75,26 @@
   #3 - Answer Author's name
 --}}
 @section('authors_name')
-  {{-- @TODO: add user table relationship and get user name --}}
-  <span class="answer-authors-name">
-    Jane Q. Public
-  </span>
+  <a href="{{ $authorProfileLink }}" class="author-name">
+    {{{ $name }}}
+  </a>
 @overwrite
 
 {{--
   #4 - Answer Author's avatar
 --}}
 @section('authors_avatar')
-  {{-- @TODO: Implement author avatar, need to add to user profile? --}}
-  <img src="{{{ $authorAvatarUri }}}" alt="Avatar" class="img-thumbnail answer-author-avatar" height="24" width="24" />
+  <a href="{{ $authorProfileLink }}" class="author-avatar">
+    <img src="{{{ $authorAvatarUri }}}" alt="Avatar" class="img-thumbnail" height="24" width="24">
+  </a>
 @overwrite
 
 {{--
   #5 - Answer Author's last seen
 --}}
 @section('author_last_seen')
-  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
   <span class="author-last-seen">
-    @lang('COM_CAJOBBOARD_ANSWERS_AUTHOR_LAST_SEEN_BUTTON_LABEL')
-    1 week ago
+    {{ $lastSeen }}
   </span>
 @overwrite
 
@@ -96,10 +102,9 @@
   #6 - Answer Posted Date
 --}}
 @section('answer_posted_date')
-  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
   <span class="answer-posted-date">
     @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
-    <?php echo date("d/m/Y", strtotime($createdOn)); ?>
+    {{ $postedOn }}
   </span>
 @overwrite
 
@@ -141,8 +146,7 @@
   #10 - Edit Button for logged-in users that have permission to edit the item
 --}}
 @section('edit_answer')
-  {{-- @TODO: Fix access control on edit answer button --}}
-  @if ($userId != 0)
+  @if ($canUserEdit)
     <a class="edit-answer-link" href="@route('index.php?option=com_cajobboard&view=answer&task=edit&id='. (int) $answerID)">
       <button type="button" class="btn btn-warning btn-xs btn-answer edit-answer-button pull-right">
         @lang('COM_CAJOBBOARD_EDIT_ANSWERS_BUTTON_LABEL')
@@ -155,36 +159,34 @@
 {{--
   Responsive container for desktop and mobile
 --}}
-{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
-<div class="row answer-list-item media">
-    <h4>@yield('answer_title')</h4>
-    <p>@yield('answer_text')</p>
+<div class="row answer-list-item media <?php echo ($featured) ? 'featured' : ''; ?>">
+  <h4>@yield('answer_title')</h4>
+  <p>@yield('answer_text')</p>
 
-    <div>
-      @yield('answer_posted_date')
-    </div>
+  <div>
+    @yield('answer_posted_date')
+  </div>
 
-    <div class="clearfix"></div>
+  <div class="clearfix"></div>
 
-    <div>
-      <a href="#">
-        @yield('authors_avatar')
-      </a>
-      <a href="#">
-        @yield('authors_name')
-      </a>
-      @yield('author_last_seen')
-    </div>
+  <div>
+    <a href="#">
+      @yield('authors_avatar')
+    </a>
+    <a href="#">
+      @yield('authors_name')
+    </a>
+    @yield('author_last_seen')
+  </div>
 
-    <div class="clearfix"></div>
+  <div class="clearfix"></div>
 
-    <div>
-      @yield('edit_answer')
-      @yield('report_answer')
-      @yield('answer_downvotes')
-      @yield('answer_upvotes')
-    </div>
-
-
+  <div>
+    @yield('edit_answer')
+    @yield('report_answer')
+    @yield('answer_downvotes')
+    @yield('answer_upvotes')
+  </div>
 </div>{{-- End responsive container --}}
+
 <div class="clearfix"></div>

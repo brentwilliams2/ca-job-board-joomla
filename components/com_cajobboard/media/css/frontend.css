@@ -16,36 +16,83 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-.answer-list-item {
-  background-color: #eee;
-  margin-top: 12px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px; }
-
-.answer-title {
-  color: #00a0d6;
-  font-size: 18px;
-  font-weight: bold; }
-  .answer-title:hover, .answer-title:focus {
-    color: #5bc0de;
-    text-decoration: none; }
-
-.answer-text {
-  color: #020202; }
-
 .btn-answer {
   border-radius: 5px;
   margin-left: 5px; }
 
-.answer-item {
+.answers-header {
+  background-color: #eee;
+  margin: 10px 0;
+  padding: 10px; }
+  .answers-header h4 {
+    display: inline; }
+
+.answers-list .answer-list-item {
   background-color: #eee;
   margin-top: 12px;
   padding-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px; }
+
+.answers-list .answer-list-item.featured {
+  background-attachment: scroll;
+  background-image: url("../images/featured-label-72.png");
+  background-position: right top;
+  background-repeat: no-repeat; }
+
+.answers-list .answer-title {
+  color: #00a0d6;
+  font-size: 18px;
+  font-weight: bold; }
+  .answers-list .answer-title:hover, .answers-list .answer-title:focus {
+    color: #5bc0de;
+    text-decoration: none; }
+
+.answers-list .answer-text {
+  color: #777777; }
+
+.answers-list .author-name {
+  color: #00a0d6;
+  text-decoration: none; }
+  .answers-list .author-name:hover, .answers-list .author-name:focus {
+    color: #777777;
+    text-decoration: none; }
+
+.answers-list .author-last-seen {
+  color: #777777; }
+
+.answers-list .answer-posted-date {
+  color: #777777; }
+
+.answer-item {
+  background-color: #eee;
+  margin-top: 12px !important;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
+  .answer-item .answer-title {
+    color: #00a0d6;
+    font-size: 18px;
+    font-weight: bold; }
+  .answer-item .answer-text {
+    color: #777777; }
+  .answer-item .author-name {
+    color: #00a0d6;
+    text-decoration: none; }
+    .answer-item .author-name:hover, .answer-item .author-name:focus {
+      color: #777777;
+      text-decoration: none; }
+  .answer-item .author-last-seen {
+    color: #777777; }
+  .answer-item .answer-posted-date {
+    color: #777777; }
+
+.answer-edit-container .form-header {
+  text-align: center; }
+  .answer-edit-container .form-header h3 {
+    color: #00a0d6; }
 
 /**
  * Styles for Site Comment Views

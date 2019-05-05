@@ -11,7 +11,7 @@
 
 use Joomla\CMS\HTML\HTMLHelper;
 use \Calligraphic\Cajobboard\Site\Model\Answers;
-use \Calligraphic\Cajobboard\Admin\Helper\FormatHelper;
+use \Calligraphic\Cajobboard\Admin\Helper\Format;
 use \FOF30\View\DataView\Form;
 use \FOF30\Utils\FEFHelper\BrowseView;
 use \FOF30\Utils\SelectOptions;
@@ -72,6 +72,10 @@ $widthPct = array
 
   <span class="filter-search btn-group pull-left">
     {{ BrowseView::accessFilter('access', 'JFIELD_ACCESS_LABEL') }}
+  </span>
+
+  <span class="pagination-select btn-group pull-right">
+    {{ $this->pagination->getLimitBox() }}
   </span>
 
   {{-- @TODO: Filter by category --}}
@@ -208,7 +212,7 @@ $widthPct = array
 
       {{-- COLUMN #8: Date Created --}}
       <td width="{{ $widthPct['#8'] }}%" class="center row-created">
-        {{ FormatHelper::date($item->created_on) }}
+        {{ Format::date($item->created_on) }}
       </td>
 
       {{-- COLUMN #9: Hits Counter --}}

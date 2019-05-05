@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
  *
  * @since  0.0.1
  */
-abstract class JsonHelper
+abstract class Json
 {
   /**
    * Since PHP has poor handling for JSON errors on decode, this utility gives a more human-readable description of the error

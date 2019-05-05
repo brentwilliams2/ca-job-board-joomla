@@ -1,5 +1,7 @@
 <?php
 /**
+ * Override of the core Joomla! pagination count-per-page select widget
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -8,7 +10,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
-
+die('page!');
   // no direct access
   defined('_JEXEC') or die;
 

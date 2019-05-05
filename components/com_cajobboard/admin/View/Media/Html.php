@@ -17,7 +17,7 @@ use JComponentHelper;
 use JFactory;
 use JHtml;
 use JHtmlSidebar;
-use Calligraphic\Cajobboard\Admin\Helper\MediaCategoriesHelper;
+use Calligraphic\Cajobboard\Admin\Helper\MediaCategories;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -71,7 +71,7 @@ class Html extends \FOF30\View\DataView\Html
     parent::onBeforeBrowse();
 
     // Use helper to add sidebar menu to page
-    MediaCategoriesHelper::addSubmenu('media');
+    MediaCategories::addSubmenu('media');
 
     // Output the sidebar HTML
     $this->sidebar = JHtmlSidebar::render();

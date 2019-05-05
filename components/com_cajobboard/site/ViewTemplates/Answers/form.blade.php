@@ -10,36 +10,55 @@
   *
   */
 
+  use \Calligraphic\Cajobboard\Site\Helper\Format;
+  use \Joomla\CMS\Language\Text;
+
   // no direct access
   defined('_JEXEC') or die;
 
+  /** @var \Calligraphic\Cajobboard\Site\Model\Answers $item */
   $item = $this->getItem();
 
   // model data fields
-  $answerID       = $item->answer_id;
-  $created_by     = $item->created_by;      // userid of the creator of this answer.
-  $createdOn      = $item->created_on;
-  $description    = $item->description;     // Text of the answer.
-  $downvoteCount  = $item->downvote_count;  // Downvote count for this item.
-  $featured       = $item->featured;        // bool whether this answer is featured or not
-  $hits           = $item->hits;            // Number of hits this answer has received
-  $isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
-  $modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
-  $modifiedOn     = $item->modified_on;
+  //$answerID       = $item->answer_id;
+  //$created_by     = $item->created_by;      // userid of the creator of this answer.
+  $createdOn      = Format::getCreatedOnText($item->created_on);
+  //$description    = $item->description;     // Text of the answer.
+  //$downvoteCount  = $item->downvote_count;  // Downvote count for this item.
+  //$featured       = $item->featured;        // bool whether this answer is featured or not
+  //$hits           = $item->hits;            // Number of hits this answer has received
+  //$isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
+  //$modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
+  $modifiedOn     = Format::getCreatedOnText($item->modified_on);
   $title          = $item->name;            // A title to use for the answer.
-  $parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
-  $Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
-  $slug           = $item->slug;            // Alias for SEF URL
+  //$parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
+  //$Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
+  //$slug           = $item->slug;            // Alias for SEF URL
   $text           = $item->text;            // The actual text of the answer itself.
-  $upvoteCount    = $item->upvote_count;    // Upvote count for this item.
+  //$upvoteCount    = $item->upvote_count;    // Upvote count for this item.
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
 
   // URL to post the form to
   $task = $this->getTask();
-  $action = 'index.php?option=' . $this->getContainer()->componentName . '&view=' . $this->getName();
-  if ($task === 'edit') $action .= '&id=' . $this->getItem()->getId();
+
+  $action  = 'index.php?option=' . $this->getContainer()->componentName;
+  $action .= '&view=' . $this->getName();
+
+  if ('edit' == $task) 
+  {
+    $action .= '&task=save&id=' . $this->getItem()->getId();
+  }
+  elseif ('add' == $task)
+  {
+    $action .= '&task=save';
+  }
+  // @TODO: Remove this when done making sure it's not reached any way
+  else
+  {
+    throw new Exception('loaded Answer\'s form.blade.php, but task isn\'t either edit or add. Task = ' . $task);
+  }
 ?>
 
 {{--
@@ -60,7 +79,7 @@
       name="name"
       id="answer-title-input"
       value="{{{ $title }}}"
-      placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_PLACEHOLDER')); ?>"
+      placeholder="<?php echo $this->escape(isset($title) ? $title : null); ?>"
     />
   </div>
 @overwrite
@@ -77,7 +96,7 @@
     </h4>
 
     <textarea name="text" id="answer-text" class="form-control" rows="8">
-      <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_PLACEHOLDER')); ?>
+      <?php echo $this->escape(isset($text) ? $text : null); ?>
     </textarea>
   </div>
 @overwrite
@@ -86,10 +105,9 @@
 #3 - Answer Posted Date
 --}}
 @section('answer_posted_date')
-  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
   <span class="answer-posted-date">
     @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
-    <?php echo date("d/m/Y", strtotime($createdOn)); ?>
+    {{ $createdOn }}
   </span>
 @overwrite
 
@@ -98,10 +116,9 @@
 --}}
 @section('answer_modified_date')
   @if ($modifiedOn)
-    {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
     <span class="answer-modified-date">
       @lang('COM_CAJOBBOARD_ANSWERS_MODIFIED_ON_BUTTON_LABEL')
-      <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
+      {{ $modifiedOn }}
     </span>
   @endif
 @overwrite
@@ -113,7 +130,7 @@
   <form action="{{{ $action }}}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
     <div class="answer-edit-container">
 
-      <header class="block-header">
+      <header class="form-header">
         <h3>
           @if($task === 'edit')
             @lang('COM_CAJOBBOARD_ANSWERS_EDIT_HEADER')
@@ -131,16 +148,18 @@
         <p>@yield('answer_text')</p>
       </div>
 
-      <div class="form-group">
-        @yield('answer_posted_date')
-      </div>
+      @if ('edit' == $task)
+        <div class="form-group">
+          @yield('answer_posted_date')
+        </div>
 
-      <div class="form-group">
-        @yield('answer_modified_date')
-      </div>
+        <div class="form-group">
+          @yield('answer_modified_date')
+        </div>
+      @endif
 
       <button class="btn btn-primary pull-right answer-submit" type="submit">
-        @lang('COM_CAJOBBOARD_SUBMIT_BUTTON_LABEL')
+        @lang('JAPPLY')
       </button>
 
     </div>

@@ -16,13 +16,11 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \Joomla\Registry\Registry;
-use \Joomla\CMS\Filter\OutputFilter;
-use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
 use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
-use \FOF30\Model\DataModel\Exception\NoTableColumns;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissionsException;
 
+use \Joomla\CMS\Log\Log;
 
 /**
  * Model class description
@@ -30,122 +28,37 @@ use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissionsException;
 class BaseModel extends DataModel
 {
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\AssetHelper;
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\RulesHelper;
 
   /**
-	 * @param   Container $container The configuration variables to this model
-	 * @param   array     $config    Configuration values for this model
-	 *
-	 * @throws NoTableColumns
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-    // Parent constructor
-    parent::__construct($container, $config);
-  }
-
-  /**
+   * The Check behaviour is designed to run on the onAfterCheck event. Any
+   * other behaviours interested in the Check events should run on onBeforeCheck.
+   * The onAfterCheck event is not implemented in FOF30 DataModel as of May 2019.
+   *
+   * To override a behaviour for a particular model, create a directory
+   * named 'Behaviour' in a child directory of a directory named after the model.
+   * Move the model file into the directory without renaming it (e.g.
+   * 'Model/Answers/Answers.php). Create a behaviour file named after the behaviour
+   * it is overriding.
+   *
 	 * @return  static  Self, for chaining
 	 *
 	 * @throws \RuntimeException  When the data bound to this record is invalid
 	 */
 	public function check()
 	{
-    // @TODO: Make sure a default category for com_cajobboard ({title, path, alias}=uncategorized)
-    // exists in #__categories, and that the default category is set for this item if nothing else is set
-    // Most categories are the same as their model name, except for Persons
-    // (Connectors, Employers, Job Seekers, and Recruiters)
-
-    // Make sure slug is populated from the title, if it is left empty
-    if(!$this->slug)
-    {
-      $this->makeSlug();
+		if (!$this->autoChecks)
+		{
+			return $this;
     }
 
-		parent::check();
+    // Run custom events
+    $this->triggerEvent('onBeforeCheck');
+
+    // Run the check routine event
+    $this->triggerEvent('onAfterCheck');
 
     return $this;
   }
-
-
-  /*
-   * Handle deleting the ACL record after an Answer record is deleted
-   */
-  protected function onBeforeDelete()
-  {
-    if ( $this->isAssetsTracked() )
-    {
-      $this->removeAssetRecord();
-    }
-  }
-
-
-  /*
-   * Handle updating ACL record after editing an Answer record
-   */
-  protected function onAfterUpdate()
-  {
-    if ( $this->isAssetsTracked() )
-    {
-      $this->setAssetRules();
-    }
-  }
-
-
-  /*
-   * Handle creating ACL record after creating a new Answer record
-   */
-  protected function onAfterCreate()
-  {
-    if ( $this->isAssetsTracked() )
-    {
-      $this->getAsset();
-
-      $this->setAssetParentId();
-      $this->setAssetName();
-      $this->setAssetRules();
-
-      $assetId = $this->saveAssetRecord();
-
-      $this->setFieldValue('asset_id', $assetId);
-
-      $this->saveItemAssetId($assetId);
-    }
-  }
-
-
-  /*
-   * Handle the 'metadata' JSON field
-   */
-  protected function onBeforeSave($data)
-  {
-    // Set 'metadata' field to new JRegistry object when save is for a new item (add task)
-    if (!is_object($this->metadata) && (!$this->metadata instanceof Registry))
-    {
-      $this->metadata = new Registry();
-    }
-
-    // save() method doesn't save state by default, but redirect to edit() after an
-    // apply() will call save() for checkIn and lose the transformed data (model
-    // repopulates from state by default).
-
-    $author = $this->input->get('metadata_author');
-
-    if ($author)
-    {
-      $this->metadata->set('author', $author);
-      $this->setState('author', $author);
-    }
-
-    $robots = $this->input->get('metadata_robots');
-
-    if ($robots)
-    {
-      $this->metadata->set('robots', $robots);
-      $this->setState('robots', $robots);
-    }
-  }
-
 
   /**
 	 * Transform 'metadata' field to a JRegistry object on bind
@@ -156,6 +69,7 @@ class BaseModel extends DataModel
 	 */
   protected function getMetadataAttribute($value)
   {
+Log::add('In Base Model, getMetadataAttribute() called', Log::DEBUG, 'cajobboard');
     // Make sure it's not a JRegistry already
     if (is_object($value) && ($value instanceof Registry))
     {
@@ -181,22 +95,9 @@ class BaseModel extends DataModel
     {
       return $value;
     }
-
+Log::add('In Base Model, setMetadataAttribute() called. Return value: ' . $value->toString('JSON'), Log::DEBUG, 'cajobboard');
     // Return the data transformed to JSON
     return $value->toString('JSON');
-  }
-
-
-  /**
-	 * Create a slug from the answer title
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-  protected function makeSlug()
-  {
-    $this->slug = OutputFilter::stringURLSafe($this->name);
   }
 
 
@@ -221,7 +122,7 @@ class BaseModel extends DataModel
 			throw new RecordNotLoaded("Can't feature without a loaded DataModel");
     }
 
-    if (!$this->checkRecordEditACL())
+    if ( !$this->isEditAuthorised() )
     {
       throw new NoPermissionsException($e);
     }
@@ -235,7 +136,7 @@ class BaseModel extends DataModel
 
       if ($this->hasField('featured'))
       {
-        $featured        = $this->getFieldAlias('featured');
+        $featured = $this->getFieldAlias('featured');
         $this->$featured = $isFeatured;
       }
 

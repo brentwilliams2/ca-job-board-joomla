@@ -17,8 +17,8 @@ include realpath(__DIR__ . '/../CliApplication.php');
 
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\RelationMapper;
-use \Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
-use \Calligraphic\Cajobboard\Admin\Helper\JsonHelper;
+use \Calligraphic\Cajobboard\Admin\Helper\Category;
+use \Calligraphic\Cajobboard\Admin\Helper\Json;
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\UsersTemplate;
 
 // JTable::addIncludePath(JPATH_ADMINISTRATOR.'/libraries/joomla/table');
@@ -133,7 +133,7 @@ class PopulateSampleData extends CliApplication
     // Throw an error if the config.json file isn't valid JSON
     if(!$config)
     {
-      throw new \Exception("There is a JSON error in the config.json file:\n" . JsonHelper::getJsonErrorDesc() . "\n");
+      throw new \Exception("There is a JSON error in the config.json file:\n" . Json::getJsonErrorDesc() . "\n");
     }
 
     $this->seed       = $config['seed'] ? $config['seed'] : 1;
@@ -163,7 +163,7 @@ class PopulateSampleData extends CliApplication
     // Throw an error if the user.json file isn't valid JSON
     if(!$this->users)
     {
-      throw new \Exception("There is a JSON error in the user.json file:\n" . JsonHelper::getJsonErrorDesc() . "\n");
+      throw new \Exception("There is a JSON error in the user.json file:\n" . Json::getJsonErrorDesc() . "\n");
     }
   }
 
@@ -200,7 +200,7 @@ class PopulateSampleData extends CliApplication
     $config->userIds = call_user_func_array('array_merge', $userIds);
 
     // Get category records for the Job Board
-    $config->categories = CategoryHelper::getCategories();
+    $config->categories = Category::getCategories();
 
     // Get tag records for the Job Board
     $config->tags = $this->getTags();
@@ -276,7 +276,7 @@ class PopulateSampleData extends CliApplication
 
       if (false === $userData)
       {
-        throw new \Exception("The data to save back to user.json isn't valid JSON:\n" . JsonHelper::getJsonErrorDesc() . "\n");
+        throw new \Exception("The data to save back to user.json isn't valid JSON:\n" . Json::getJsonErrorDesc() . "\n");
       }
 
       try

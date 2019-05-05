@@ -45,10 +45,32 @@ class BaseController extends DataController
   }
 
 
-  // Overridden, models which use asset tracking don't work with read tasks
+  /**
+	 * Override default DataModel ordering by primary key for browse views
+	 *
+	 * @return  void
+	 */
+  protected function onBeforeSave()
+  {
+    $this->setOrdering();
+  }
+
+
+  // Overridden, access checking in FOF30 DataController triggerEvent() method seems broken
   protected function checkACL($area)
   {
-    // stop access checking on FOF30 DataController triggerEvent() method, and don't check 'read' task
-    return ( '@Execute' == $area || 'read' == $this->getTask() ) ? true : parent::checkACL($area);
+    // Access control checks on Controller's execute() method don't make sense
+    if ('@Execute' == $area)
+    {
+      return true;
+    }
+
+    // Models which use item-level asset tracking don't work with read tasks
+    if ( 'read' == $this->getTask() )
+    {
+      return true;
+    }
+
+    return parent::checkACL($area);
   }
 }

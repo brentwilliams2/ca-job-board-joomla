@@ -10,7 +10,57 @@
 
 /* eslint-disable no-undef */
 
-// $( document ).ready(function() { });
+/**
+ * Register modules in this file with global onload handler
+ */
+jQuery(document).ready(function() {
+  starRating.init();
+});
+
+/**
+ * Generic submit form
+ *
+ * @param  {String}  task      The given task
+ * @param  {node}    form      The form element
+ * @param  {bool}    validate  The form element
+ *
+ * @returns  {void}
+ */
+window.form.submit = function(task, form, validate) {
+
+  if (!form) {
+    form = document.getElementById('adminForm');
+  }
+
+  if (task) {
+    form.task.value = task;
+  }
+
+  // Toggle HTML5 validation
+  form.noValidate = !validate;
+
+  if (!validate) {
+    form.setAttribute('novalidate', '');
+
+  } else if ( form.hasAttribute('novalidate') ) {
+    form.removeAttribute('novalidate');
+  }
+
+  // Submit the form.
+  // Create the input type="submit"
+  var button = document.createElement('input');
+
+  button.style.display = 'none';
+
+  button.type = 'submit';
+
+  // Append it and click it
+  form.appendChild(button).click();
+
+  // If "submit" was prevented, make sure we don't get a build up of buttons
+  form.removeChild(button);
+};
+
 
 /**
 * Methods to handle setting proper Bootstrap UI validation state, appends

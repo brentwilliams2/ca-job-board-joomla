@@ -12,6 +12,9 @@
 
 namespace Calligraphic\Cajobboard\Admin\Helper;
 
+use \Joomla\CMS\Access\Access;
+use \Joomla\CMS\Factory;
+
 // no direct access
 defined('_JEXEC') or die;
 
@@ -20,7 +23,7 @@ defined('_JEXEC') or die;
 /**
  * A helper class for preparing permissions data to display in admin tab at item (object/record) level
  */
-abstract class PermissionsHelper
+abstract class Permissions
 {
 	/**
 	 * Method to get the field input markup for Access Control Lists.
@@ -35,7 +38,7 @@ abstract class PermissionsHelper
     $component  = 'com_cajobboard';
 
 		// Get the actions for the asset. Each action is an object with the keys 'name', 'title', and 'description', set in config.xml
-    $actions = JAccess::getActions($component, $section);
+    $actions = Access::getActions($component, $section);
 
 		// Get the asset id.
 		// Note that for global configuration, com_config injects asset_id = 1 into the form.
@@ -43,7 +46,7 @@ abstract class PermissionsHelper
     $parentAssetId = null;
 
 
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 
 		// If the asset id is empty (component or new item).
 		if (empty($assetId))
@@ -78,7 +81,7 @@ abstract class PermissionsHelper
 
 		// Full width format.
 		// Get the rules for just this asset (non-recursive).
-    $assetRules = JAccess::getAssetRules($assetId, false, false);
+    $assetRules = Access::getAssetRules($assetId, false, false);
 
 		// Get the available user groups.
 		$groups = $this->getUserGroups();

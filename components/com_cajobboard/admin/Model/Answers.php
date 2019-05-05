@@ -67,11 +67,27 @@ class Answers extends BaseModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.answers';
 
-    // Add behaviours to the model
-    $config['behaviours'] = array('Filters', 'Language', 'Tags');
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
+
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      'Category',   // Set category in new records
+      'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      'Publish',    // Set the publish_on field for new records
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'        // Add Joomla! Tags support
+    );
 
     /* Parent constructor */
-
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
@@ -97,7 +113,7 @@ class Answers extends BaseModel
 	 */
 	public function check()
 	{
-    // Answer title ('name' column in DB) and description are required
+    // Answer title ('name' column in DB) and description should be filled in (but not 'NOT NULL' in db schema)
     $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EDIT_TITLE_ERR');
     $this->assertNotEmpty($this->text, 'COM_CAJOBBOARD_EDIT_TEXT_ERR');
 

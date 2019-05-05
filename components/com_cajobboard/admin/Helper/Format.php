@@ -12,15 +12,11 @@
 
 namespace Calligraphic\Cajobboard\Admin\Helper;
 
-use DateTimeZone;
-use JLoader;
-use JText;
-
-use Joomla\CMS\Factory;
-
-use FOF30\Container\Container;
-use FOF30\Date\Date;
-use FOF30\Model\DataModel;
+use \DateTimeZone;
+use \FOF30\Container\Container;
+use \FOF30\Date\Date;
+use \JLoader;
+use \Joomla\CMS\Factory;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -28,7 +24,7 @@ defined('_JEXEC') or die;
 /**
  * A helper class for formatting data for display
  */
-abstract class FormatHelper
+abstract class Format
 {
 	/**
 	 * Format a date for display.
@@ -39,7 +35,8 @@ abstract class FormatHelper
 	 * the same thing will happen but for the specified user ID instead of the currently logged in user.
 	 *
 	 * @param   string    $date     The date to format
-	 * @param   string    $format   The format string, default is whatever you specified in the component options
+	 * @param   string    $format   The format string, default is whatever you specified in the component
+   *                              options, see https://www.php.net/manual/en/function.date.php
 	 * @param   bool|int  $tzAware  Should the format be timezone aware? See notes above.
 	 *
 	 * @return string
@@ -55,7 +52,7 @@ abstract class FormatHelper
 
 		if ($tzAware !== false)
 		{
-      $userId    = is_bool($tzAware) ? null : (int) $tzAware;
+      $userId = is_bool($tzAware) ? null : (int) $tzAware;
 
 			try
 			{
@@ -66,8 +63,8 @@ abstract class FormatHelper
 				$tzDefault = 'GMT';
       }
 
-			$user      = Factory::getUser($userId);
-			$tz        = $user->getParam('timezone', $tzDefault);
+			$user = Factory::getUser($userId);
+			$tz = $user->getParam('timezone', $tzDefault);
     }
 
 		if (!empty($tz))
@@ -86,7 +83,6 @@ abstract class FormatHelper
 		if (empty($format))
 		{
 			$format = self::getContainer()->params->get('dateformat', 'm-d-Y');
-			// $format = str_replace('%', '', $format);
     }
 
 		return $dateObject->format($format, true);
@@ -156,7 +152,7 @@ abstract class FormatHelper
 	 *
 	 * @return  Container
 	 */
-	protected static function getContainer()
+	private static function getContainer()
 	{
     static $container = null;
 

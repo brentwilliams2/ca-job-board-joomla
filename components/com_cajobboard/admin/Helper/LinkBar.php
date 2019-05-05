@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
  *
  * @since  0.0.1
  */
-abstract class LinkBarHelper
+abstract class LinkBar
 {
   /**
 	 * Renders the link bar on the left-hand side of the page

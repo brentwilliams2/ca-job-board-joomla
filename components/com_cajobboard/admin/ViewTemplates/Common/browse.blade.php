@@ -47,7 +47,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  use \Calligraphic\Cajobboard\Admin\Helper\LinkBarHelper;
+  use \Calligraphic\Cajobboard\Admin\Helper\LinkBar;
 
   /** @var  FOF30\View\DataView\Html  $this */
 ?>
@@ -135,7 +135,7 @@
 
     {{-- Sidebar with links --}}
     <div id="j-sidebar-container" class="j-sidebar-container j-sidebar-visible">
-      <?php echo LinkBarHelper::renderLinkbar($this->getContainer()); ?>
+      <?php echo LinkBar::renderLinkbar($this->getContainer()); ?>
     </div>
 
     {{-- Main browse-view table for admin pages with column headers, body, and footer --}}
@@ -155,6 +155,8 @@
           @yield('browse-table-body-withrecords')
         @endunless
       </tbody>
+
+
     </table>
 
     {{-- Default hidden form fields --}}

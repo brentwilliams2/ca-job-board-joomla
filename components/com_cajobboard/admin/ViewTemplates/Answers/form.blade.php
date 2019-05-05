@@ -15,7 +15,7 @@
   defined('_JEXEC') or die;
 
   /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
-  $item = $this->item;
+  $item = $this->getItem();
 ?>
 
 @extends('admin:com_cajobboard/Common/edit')

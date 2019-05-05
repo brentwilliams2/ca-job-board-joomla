@@ -13,11 +13,14 @@
   // no direct access
   defined('_JEXEC') or die;
 
+  use \Calligraphic\Cajobboard\Site\Helper\Format;
+  use \Calligraphic\Cajobboard\Site\Helper\JobPosting;
+
   // current user ID
   $userId = $this->container->platform->getUser()->id;
 
-  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
-  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
+  // @TODO: Refactor JobPosting helper to static methods / abstract class, maybe name it better
+  $JobPostingViewHelper = new JobPosting();
 
   // model data fields
   $jobID                = $item->job_posting_id;
@@ -237,7 +240,7 @@
 @section('date_job_posted')
   <span>
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_POSTED_TIME_AGO')
-    <?php echo $JobPostingViewHelper->convertToTimeAgoString($item->created_on, $item->modified_on); ?>
+    <?php echo Format::convertToTimeAgoString($item->created_on, $item->modified_on); ?>
   </span>
 @overwrite
 

@@ -24,7 +24,7 @@ use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Pagination\Pagination;
 
-use Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
+use Calligraphic\Cajobboard\Admin\Helper\Category;
 
 abstract class HelperBrowseWidgets
 {
@@ -75,7 +75,7 @@ abstract class HelperBrowseWidgets
     $html .= 'title="" ';
     $html .= 'data-original-title="' . Text::_('JCATEGORY') . Text::_('JACTION_EDIT') . '"';
     $html .= '>';
-    $html .= CategoryHelper::getCategoryTitleById($cat_id);
+    $html .= Category::getCategoryTitleById($cat_id);
     $html .= '</a>';
     $html .= '</div>';
 

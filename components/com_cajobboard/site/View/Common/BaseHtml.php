@@ -60,11 +60,13 @@ class BaseHtml extends Html
 	 */
 	public function loadLanguageFileForView($view)
 	{
+    // @TODO: is FOF30 Dispatcher already loading the component language file? Should we split admin/site language files?
+
     // Using view-specific language files for maintainability
     $lang = Factory::getLanguage();
 
-    // Load Answers language file
-    $lang->load($view, JPATH_COMPONENT, $lang->getTag(), true);
+    // Load Answers language file, using combined admin/site language file
+    $lang->load($view, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
   }
 
 

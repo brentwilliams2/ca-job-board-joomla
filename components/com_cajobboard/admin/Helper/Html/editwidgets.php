@@ -23,7 +23,7 @@ use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Helper\TagsHelper;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \FOF30\Utils\SelectOptions;
-use Calligraphic\Cajobboard\Admin\Helper\CategoryHelper;
+use Calligraphic\Cajobboard\Admin\Helper\Category;
 
 abstract class HelperEditWidgets
 {
@@ -74,15 +74,15 @@ abstract class HelperEditWidgets
     $html .= '<div class="controls">';
     $html .= '<select id="jform_catid" name="cat_id" class="required chzn-custom-value" required="required" aria-required="true" onchange="categoryHasChanged(this);" style="display: none;">';
 
-    $categories = CategoryHelper::getCategories();
+    $categories = Category::getCategories();
 
-    $selected = CategoryHelper::selectedHelper($categories, $cat_id, $view);
+    $selected = Category::selectedHelper($categories, $cat_id, $view);
 
     foreach($categories as $category)
     {
       $select = $selected == $category->id ? 'selected' : NULL;
       $html .= '<option value="' . $category->id . '" ' . $select . '>';
-      $html .= CategoryHelper::getIndentedCategoryTitle($category);
+      $html .= Category::getIndentedCategoryTitle($category);
       $html .= '</option>';
     }
 

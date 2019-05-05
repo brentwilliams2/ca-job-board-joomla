@@ -38,7 +38,8 @@ Log::add('Job Occupational Categories model called', Log::DEBUG, 'cajobboard');
 // call jexit() (wrapper to PHP's exit function) if they encounter recursion,
 // otherwise just return and continue processing on the next line.
 
-
+// this is for camel case
+$title = implode(" ", preg_split( '/(?=[A-Z])/', $modelName ));
 
 // Akeeba Subs FOF Controller Method examples
 

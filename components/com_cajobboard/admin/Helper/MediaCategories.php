@@ -12,9 +12,9 @@
 
 namespace Calligraphic\Cajobboard\Admin\Helper;
 
-use JHelperContent;
 use JHtmlSidebar;
-use JText;
+use \Joomla\CMS\Helper\ContentHelper;
+use \Joomla\CMS\Language\Text;
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since   1.6
  */
-class MediaCategoriesHelper extends JHelperContent
+class MediaCategories extends ContentHelper
 {
   // @TODO: Is this being used?
 
@@ -41,20 +41,20 @@ class MediaCategoriesHelper extends JHelperContent
 	public static function addSubmenu($submenu)
 	{
     JHtmlSidebar::addEntry(
-			JText::_('COM_CAJOBBOARD_SUBMENU_OPTION'),
+			Text::_('COM_CAJOBBOARD_SUBMENU_OPTION'),
 			'index.php?option=com_cajobboard',
 			$submenu == 'media'
     );
 
 		JHtmlSidebar::addEntry(
-			JText::_('COM_CAJOBBOARD_SUBMENU_CATEGORIES'),
+			Text::_('COM_CAJOBBOARD_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&view=categories&extension=com_cajobboard',
 			$submenu == 'categories'
 		);
 
 		if ($submenu == 'categories')
 		{
-			$document->setTitle(JText::_('COM_CAJOBBOARD_ADMINISTRATION_CATEGORIES'));
+			$document->setTitle(Text::_('COM_CAJOBBOARD_ADMINISTRATION_CATEGORIES'));
 		}
 	}
 }

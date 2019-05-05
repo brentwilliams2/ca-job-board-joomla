@@ -18,10 +18,12 @@ $autoloader = FOF30\Autoloader\Autoloader::getInstance();
 // Add Admin Helper namespace
 $adminHelperNamespace = 'Calligraphic\\Cajobboard\\Admin\\Helper\\';
 
+
 if (!$autoloader->hasMap($adminHelperNamespace))
 {
   $autoloader->addMap($adminHelperNamespace, JPATH_COMPONENT_ADMINISTRATOR . '/Helper');
 }
+
 
 // Add Admin Repository namespace
 $adminRepositoryNamespace = 'Calligraphic\\Cajobboard\\Admin\\Repository\\';
@@ -31,6 +33,16 @@ if (!$autoloader->hasMap($adminRepositoryNamespace))
   $autoloader->addMap($adminRepositoryNamespace, JPATH_COMPONENT_ADMINISTRATOR . '/Repository');
 }
 
+
+// Add Site Helper namespace
+$siteHelperNamespace = 'Calligraphic\\Cajobboard\\Site\\Helper\\';
+
+if (!$autoloader->hasMap($siteHelperNamespace))
+{
+  $autoloader->addMap($siteHelperNamespace, JPATH_COMPONENT_SITE . '/Helper');
+}
+
+
 // Add Site Repository namespace
 $siteRepositoryNamespace = 'Calligraphic\\Cajobboard\\Site\\Repository\\';
 
@@ -38,6 +50,16 @@ if (!$autoloader->hasMap($siteRepositoryNamespace))
 {
   $autoloader->addMap($siteRepositoryNamespace, JPATH_COMPONENT_SITE . '/Repository');
 }
+
+
+// Add Model Behaviour namespace
+$siteRepositoryNamespace = 'Calligraphic\\Cajobboard\\Admin\\Model\\Behaviour\\';
+
+if (!$autoloader->hasMap($siteRepositoryNamespace))
+{
+  $autoloader->addMap($siteRepositoryNamespace, JPATH_COMPONENT_ADMINISTRATOR . '/Model/Behaviour');
+}
+
 
 // Register modified autoload function
 $autoloader->register(false);

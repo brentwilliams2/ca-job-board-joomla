@@ -13,6 +13,9 @@
   // no direct access
   defined('_JEXEC') or die;
 
+  use \Calligraphic\Cajobboard\Site\Helper\Format;
+  use \Calligraphic\Cajobboard\Site\Helper\JobPosting;
+
   $item = $this->getItem();
 
   // @TODO: Need Database field for employer's requisition / job number and EEO statement
@@ -48,8 +51,8 @@
 
   $employmentType = JText::_($item->employmentType->name);
 
-  // Reference to Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper in container
-  $JobPostingViewHelper = $this->container['job_posting_view_helper'];
+  // @TODO: Refactor JobPosting helper to static methods / abstract class, maybe name it better
+  $JobPostingViewHelper = new JobPosting();
 
   $formattedPay = $JobPostingViewHelper->formatPayToValueOrRange(
     $item->base_salary__value,
@@ -237,7 +240,7 @@
 @section('date_job_posted')
   <span>
     @lang('COM_CAJOBBOARD_JOB_POSTINGS_POSTED_TIME_AGO')
-    <?php echo $JobPostingViewHelper->convertToTimeAgoString($item->created_on, $item->modified_on); ?>
+    <?php echo Format::convertToTimeAgoString($item->created_on, $item->modified_on); ?>
   </span>
 @overwrite
 

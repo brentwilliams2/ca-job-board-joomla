@@ -42,7 +42,7 @@ class Html extends BaseHtml
     $this->loadLanguageFileForView('answers');
 
     // Load javascript file for Answer views
-    //$this->addJavascriptFile('media://com_cajobboard/js/Site/answers.js');
+    $this->addJavascriptFile('media://com_cajobboard/js/Site/answers.js');
   }
 
 

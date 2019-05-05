@@ -14,7 +14,7 @@ namespace Calligraphic\Cajobboard\Admin\Helper;
 // no direct access
 defined('_JEXEC') or die;
 
-use JFactory;
+use \Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use TheSeer\Tokenizer\Exception;
 
@@ -23,7 +23,7 @@ use TheSeer\Tokenizer\Exception;
  *
  * @since  0.0.1
  */
-abstract class CategoryHelper
+abstract class Category
 {
   /**
    * Cached array of the category item objects.
@@ -150,8 +150,8 @@ abstract class CategoryHelper
     {
       $config = (array) $config;
 
-      $db     = JFactory::getDbo();
-      $user   = JFactory::getUser();
+      $db     = Factory::getDbo();
+      $user   = Factory::getUser();
 
       $groups = implode(',', $user->getAuthorisedViewLevels());
 
