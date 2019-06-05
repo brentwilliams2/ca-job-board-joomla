@@ -72,8 +72,23 @@ class Categories extends BaseModel
 
     parent::__construct($container, $config);
 
-		// Load the Filters behaviour
-    $this->addBehaviour('Filters');
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      //'Access',     // Filter access to items based on viewing access levels
+      //'Assets',     // Add Joomla! ACL assets support
+      //'Category',   // Set category in new records
+      //'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
+      //'Publish',    // Set the publish_on field for new records
+      //'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'        // Add Joomla! Tags support
+    );
 
 		// Do not run automatic value validation of data before saving it.
     $this->autoChecks = false;

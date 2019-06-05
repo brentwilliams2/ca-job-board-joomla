@@ -57,12 +57,32 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 	 *
 	 * @return  void
 	 */
-  /*
+/*
 	public function renderToolbar($view = null, $task = null)
 	{
 
   }
 */
+
+
+	/**
+	 * Renders the submenu (toolbar links) for all defined views of this component
+	 *
+	 * @return  void
+	 */
+/*
+	public function renderSubmenu()
+  {
+    // @TODO: do PII access control for submenu links:
+    // ...code
+    if (!$this->container->platform->getUser()->authorise('com_cajobboard.pii', 'com_cajobboard'))
+		{
+      unset ($views[x]);
+    }
+    // ...code
+  }
+*/
+
 
 	/**
 	 * Renders the toolbar for the Control Panel page

@@ -37,7 +37,7 @@ class Answer extends BaseController
 	{
     $this->modelName = 'Answers';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save'];
+    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save', 'remove'];
 
     parent::__construct($container, $config);
   }

@@ -1,8 +1,4 @@
 /**
- * Data model for Question and Answer Pages
- *
- * QAPage type is a subtype of WebPage. Question and Answer entities point to a QAPage.
- *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
@@ -31,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_qapage_categories` (
   DEFAULT COLLATE = utf8_unicode_ci;
 
  /**
- * QAPage Question and Answer Web Page SQL
+ * QAPage Question and Answer Web Page data model SQL
  *
  * Uses schema https://schema.org/QAPage
  */
@@ -39,14 +35,14 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_qapages` (
   qapage_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
 
   /* FOF "magic" fields */
-  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
-  access INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level.',
-  enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
-  created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
+  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
+  access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
+  enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
+  created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
   created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
-  modified_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
+  modified_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
-  locked_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
+  locked_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
@@ -66,12 +62,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_qapages` (
   note VARCHAR(255) COMMENT 'A note to save with this question-and-answer page in the back-end interface.',
 
   /* SCHEMA: Thing */
-  name VARCHAR(255) COMMENT 'A name for this question and answer page.',
-  description TEXT COMMENT 'A long description of this question and answer page.',
+  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
+  description TEXT COMMENT 'Short description of this question and answer page, used for the text shown on social media via shares and search engine results.',
   main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to question this page is about',
 
   /* SCHEMA: CreativeWork */
   about BIGINT UNSIGNED COMMENT 'The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id)',
+  `text` TEXT COMMENT 'Long description of the question and answer page.',
 
   /* SCHEMA: QAPage */
   specialty BIGINT UNSIGNED COMMENT 'A category to which this question and answer page\'s content applies. FK to #__cajobboard_qapage_categories(qapage_category_id)',

@@ -9,7 +9,7 @@
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
   *
   */
-
+die('job postings browse!');
   // no direct access
   defined('_JEXEC') or die;
 
@@ -24,6 +24,7 @@
 
   // get component configuration
   $params = $this->container->params;
+  // $this->view->getPageParams()->get('page_title', '');
 
   // get sitename from global configuration
   $siteName = $config->get('sitename', 'Job Board');

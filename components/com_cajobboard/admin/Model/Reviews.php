@@ -21,7 +21,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 /**
  * Fields:
  *
- * @property int      $review_id             Surrogate primary key
+ * @property int      $review_id                  Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
@@ -47,18 +47,18 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int      $cat_id                     Category ID for this content item.
  * @property int      $hits                       Number of hits the content item has received on the site.
  * @property int      $featured                   Whether this content item is featured or not.
+ * SCHEMA: Thing
+ * @property  string  $name                       A name for this review, aliased to title.
  * SCHEMA: Review
  * @property  Organizations		  $ItemReviewed     The employer being reviewed/rated, FK to #__cajobboard_organizations
- * @property  int		  $review_body   The actual body of the review.
- *
+ * @property  string  $review_body                The actual body of the review.
  * SCHEMA: Review(reviewRating) -> Rating(ratingValue)
  * @property  int		  $rating_value               The rating for the content. Default worstRating 1 and bestRating 5 assumed.
- *
- * SCHEMA: CreateWork
- * @property  JUser		$Author                     The author of this content or rating, FK to #__users
  */
 class Reviews extends BaseModel
 {
+  use \FOF30\Model\Mixin\Assertions;
+
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -68,54 +68,59 @@ class Reviews extends BaseModel
 	public function __construct(Container $container, array $config = array())
 	{
     // override default table names and primary key id
-    $this->tableName = "#__cajobboard_reviews";
-    $this->idFieldName = "review_id";
+		$config['tableName'] = '#__cajobboard_reviews';
+    $config['idFieldName'] = 'review_id';
 
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.reviews';
 
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
+
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      'Category',   // Set category in new records
+      'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
+      'Publish',    // Set the publish_on field for new records
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      'Tags'        // Add Joomla! Tags support
+    );
+
     parent::__construct($container, $config);
 
-    // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
-
-    /*
-     * Set up relations
-     */
+    /* Set up relations after parent constructor */
 
     // many-to-one FK to  #__cajobboard_organizations
     $this->belongsTo('ItemReviewed', 'Organizations@com_cajobboard', 'item_reviewed', 'organization_id');
 
-    // many-to-one FK to  #__users
-    $this->belongsTo('Author', 'Persons@com_cajobboard', 'author', 'id');
+    // one-to-one FK to  #__cajobboard_persons
+    $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
   }
 
-	/**
+
+  /**
+	 * Perform checks on data for validity
 	 *
+	 * @return  static  Self, for chaining
 	 *
-	 * @param   array|\stdClass  $data  Source data
-	 *
-	 * @return  bool
+	 * @throws \RuntimeException  When the data bound to this record is invalid
 	 */
-	function onBeforeSave(&$data)
+	public function check()
 	{
+    // @TODO: Finish validation checks
+    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_REVIEWS_ERR_TITLE');
 
-  }
+		parent::check();
 
-	/**
-	 * Build the SELECT query for returning records.
-	 *
-	 * @param   \JDatabaseQuery  $query           The query being built
-	 * @param   bool             $overrideLimits  Should I be overriding the limit state (limitstart & limit)?
-	 *
-	 * @return  void
-	 */
-	public function onAfterBuildQuery(\JDatabaseQuery $query, $overrideLimits = false)
-	{
-    $db = $this->getDbo();
-
-    // search functionality was in here, as well as in FrameworkUsers
+    return $this;
   }
 }

@@ -12,6 +12,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Filter\OutputFilter;
+
   // no direct access
   defined('_JEXEC') or die;
 
@@ -53,7 +56,7 @@ foreach ($list as $i => &$item)
 
   $linktype = $item->title;
 
-  echo JHtml::_('link', JFilterOutput::ampReplace(htmlspecialchars($item->flink, ENT_COMPAT, 'UTF-8', false)), $linktype, $attributes);
+  echo HTMLHelper::_('link', OutputFilter::ampReplace(htmlspecialchars($item->flink, ENT_COMPAT, 'UTF-8', false)), $linktype, $attributes);
 
   echo '</li>';
 }

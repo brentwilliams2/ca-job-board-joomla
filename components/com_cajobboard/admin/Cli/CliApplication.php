@@ -81,6 +81,9 @@ FOF30\Autoloader\Autoloader::getInstance()->register();
 require_once JPATH_ADMINISTRATOR . '/components/com_cajobboard/vendor/autoload.php';
 
 use FOF30\Container\Container;
+use \Joomla\Registry\Registry;
+use \Joomla\CMS\Input\Cli;
+use \Calligraphic\Cajobboard\Admin\Cli\Seeder\Exception\CliApplicationException;
 
 /**
  * Calligraphic Job Board CLI Application
@@ -90,7 +93,7 @@ class CliApplication extends JApplicationCli
  	/**
 	 * The application container object
 	 *
-	 * @var    \Joomla\Registry\Registry
+	 * @var    Container
 	 */
   protected $container;
 
@@ -98,45 +101,20 @@ class CliApplication extends JApplicationCli
   /**
    * Class constructor
    *
-   * @param JInputCli   $input
-   * @param JRegistry   $config
-   * @param JDispatcher $dispatcher
+   * @param Cli   $input
+   * @param Registry   $config
+   * @param \JDispatcher $dispatcher
    */
-  public function __construct(JInputCli $input = null, JRegistry $config = null, JDispatcher $dispatcher = null)
+  public function __construct()
   {
-    // Access POSIX-style CLI options
-    //$this->getOption();
+    // Instantiate a new input object. It will populate itself with command line arguments (argv)
+    $this->input = new Cli();
 
-    // If a input object is given use it or instantiate a new input object.
-    if ($input instanceof JInput)
-    {
-      $this->input = $input;
-    }
-    else
-    {
-      $this->input = new JInputCLI();
-    }
+    // Instantiate a new configuration object.
+    $this->config = new Registry;
 
-    // If a config object is given use it or instantiate a new configuration object.
-    if ($config instanceof JRegistry)
-    {
-      $this->config = $config;
-    }
-    //
-    else
-    {
-      $this->config = new JRegistry;
-    }
-
-    // If an event dispatcher object is given use it or load one.
-    if ($dispatcher instanceof JDispatcher)
-    {
-      $this->dispatcher = $dispatcher;
-    }
-    else
-    {
-      $this->loadDispatcher();
-    }
+    // Load an event dispatcher object.
+    $this->loadDispatcher();
 
     // Load the configuration object.
     $this->loadConfiguration($this->fetchConfigurationData());
@@ -236,15 +214,38 @@ class CliApplication extends JApplicationCli
 }
 // END class CliApplication
 
+
 /**
- * Timeout handler
- *
- * This function is registered as a shutdown script. If a catchable timeout occurs it will detect it and print a helpful
- * error message instead of just dying cold. The error level is set to 253 in this case.
+ * Exception handler to pretty-print all script error messages, and
+ * only give full stack trace on non-user errors
  *
  * @return  void
  */
-function CliTimeoutHandler()
+function cliExceptionHandler (\Throwable $exception)
+{
+  echo $exception->getMessage();
+
+  if ( !($exception instanceof CliApplicationException) )
+  {
+    echo $exception->getFile() . ' Line: ' . $exception->getLine();
+    echo $exception->getTrace();
+  }
+
+  exit();
+}
+
+set_exception_handler('cliExceptionHandler');
+
+
+/**
+ * Timeout handler
+ *
+ * This function is registered as a shutdown script. If a catchable timeout occurs it will detect it and
+ * print a helpful error message instead of just dying cold. The error level is set to 253 in this case.
+ *
+ * @return  void
+ */
+function CliTimeoutHandler ()
 {
   $connection_status = connection_status();
   if ($connection_status == 0)

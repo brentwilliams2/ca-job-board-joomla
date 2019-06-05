@@ -57,3 +57,44 @@ class QAPage extends DataController
 		return true;
   }
 }
+
+/*
+try
+{
+    // Capture the output instead of pushing it to the browser
+    @ob_start();
+
+    // Render the other component's view
+    FOF30\Container\Container::getInstance('com_cajobboard', array(
+        'tempInstance' => true,
+        'input' => array(
+          'savestate'  => 0,
+          'option'     => 'com_cajobboard',
+          'view'       => 'Answers',
+          'layout'     => 'itemized',
+          'limit'      => 0,
+          'limitstart' => 0,
+          'user_id'    => JFactory::getUser()->id,
+          'task'       => 'browse'
+        )
+    ))->dispatcher->dispatch();
+
+    // Get the output...
+    $content = ob_get_contents();
+    // ...and close the output buffer
+    ob_end_clean();
+  }
+  catch (\Exception $e)
+  {
+      // Whoops! The component blew up. Close the output buffer...
+      ob_end_clean();
+
+      // ...and indicate that we have no content.
+      $content = '';
+
+      // do some more error handling here
+  }
+
+  // Display the content
+  echo $content;
+*/

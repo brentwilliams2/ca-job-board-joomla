@@ -19,13 +19,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
 
   /* FOF "magic" fields */
   asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
-  access INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level.',
-  enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
-  created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
+  access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
+  enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
+  created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
   created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
-  modified_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
+  modified_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
-  locked_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
+  locked_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
   public_access BOOLEAN COMMENT 'A flag to signal that the Place is open to public visitors. If this property is omitted there is no assumed default boolean value',
 
   /* SCHEMA: Place (geo) -> GeoCoordinates NOTE: https://schema.org/GeoCoordinates has separate latitude, longitude properties instead of using GIS point */
-  geo POINT NOT NULL COMMENT 'latitude and longitude of place using MySQL GIS spatial data type. Example: INSERT INTO place(geo) VALUES (Point(1,2));',
+  geo BIGINT UNSIGNED COMMENT 'latitude and longitude of place using MySQL GIS spatial data type.', /* FK to #__cajobboard_geo_coordinates(geo_coordinate_id) */
 
   /* Place (address) -> PostalAddress */
   address__street_address VARCHAR(255) COMMENT 'The street address, e.g. 1600 Amphitheatre Pkwy',
@@ -63,10 +63,10 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
   address__postal_code VARCHAR(12) COMMENT 'The postal code, e.g. 94043',
   address__address_country VARCHAR(2) COMMENT 'The two-letter ISO 3166-1 alpha-2 country code',
   telephone VARCHAR(30) COMMENT 'The E.164 PSTN telephone number',
-  openingHoursSpecification TEXT COMMENT 'The days and times this location is open.',
+  opening_hours_specification TEXT COMMENT 'The days and times this location is open.',
   logo BIGINT UNSIGNED COMMENT 'A logo image that represents this place.', /* FK to #__cajobboard_images(image_id) */
-  photo BIGINT UNSIGNED COMMENT 'A photograph of this place.', /* FK M:M relationship in to #__cajobboard_images(image_id) */
-  SPATIAL INDEX spatial_index (geo),
+
+  /* SQL DDL */
   PRIMARY KEY (place_id)
 )
   ENGINE=innoDB

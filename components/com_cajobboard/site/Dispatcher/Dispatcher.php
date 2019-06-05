@@ -12,9 +12,12 @@
 
 namespace Calligraphic\Cajobboard\Site\Dispatcher;
 
+if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 //  Framework classes
 use FOF30\Container\Container;
-use JHtml;
+use \Joomla\CMS\HTML\HTMLHelper;
+
 
 // Helpe classes
 use Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper;
@@ -30,8 +33,8 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	public function onBeforeDispatch()
 	{
     // Load JQuery and Bootstrap javascript before anything else (template includes load after component)
-    JHtml::_('jquery.framework');
-    JHtml::_('bootstrap.framework');
+    HTMLHelper::_('jquery.framework');
+    HTMLHelper::_('bootstrap.framework');
 
     // Load common CSS and JavaScript
     if(JDEBUG)

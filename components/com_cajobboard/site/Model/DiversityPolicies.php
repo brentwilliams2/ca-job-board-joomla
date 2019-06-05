@@ -34,7 +34,7 @@ class DiversityPolicies extends \Calligraphic\Cajobboard\Admin\Model\DiversityPo
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @throws NoTableColumns
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
    */
 	public function __construct(Container $container, array $config = array())
 	{

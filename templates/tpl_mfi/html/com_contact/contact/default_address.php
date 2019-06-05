@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template
+ *
+ * com_contact contact/default_address.php template partial override with Schema.org markup
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -9,6 +13,8 @@
  *
  */
 
+  use \Joomla\CMS\String\PunycodeHelper;
+
   // no direct access
   defined('_JEXEC') or die;
 
@@ -17,6 +23,7 @@
  * jicon-text, jicon-none, jicon-icon
  */
 ?>
+
 <dl class="contact-address dl-horizontal pull-left" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 
 	<?php if (($this->params->get('address_check') > 0) && ($this->contact->address || $this->contact->suburb  || $this->contact->state || $this->contact->country || $this->contact->postcode)) : ?>
@@ -131,7 +138,7 @@
   <dd>
     <span class="contact-webpage">
       <a href="<?php echo $this->contact->webpage; ?>" target="_blank" itemprop="url">
-      <?php echo JStringPunycode::urlToUTF8($this->contact->webpage); ?></a>
+      <?php echo PunycodeHelper::urlToUTF8($this->contact->webpage); ?></a>
     </span>
   </dd>
 <?php endif; ?>

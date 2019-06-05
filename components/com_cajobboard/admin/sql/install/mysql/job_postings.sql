@@ -4,71 +4,7 @@
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
- * DEPENDS ON: #__cajobboard_ucm, #__cajobboard_places, #__cajobboard_organizations
  */
-
-/**
- * Occupational category groups table
- *
- * Used to create general groups of job categories, e.g. "Office Staff",
- * "Leasing and Sales"
- */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_job_occupational_category_groups` (
-  job_occupational_category_group_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
-  /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
-  `group` CHAR(96) NOT NULL COMMENT 'Name for this group of occupational categories, e.g. office staff',
-  /* SCHEMA: Thing */
-  description TEXT NOT NULL COMMENT 'Occupational category group description',
-  url VARCHAR(2083) NOT NULL COMMENT 'link to schema for occupational category, e.g. wikipedia page on Management',
-  /* SQL DDL */
-  PRIMARY KEY (job_occupational_category_group_id)
-)
-  ENGINE=innoDB
-  DEFAULT CHARACTER SET = utf8
-  DEFAULT COLLATE = utf8_unicode_ci;
-
-/**
- * BLS O*NET-SOC taxonomy table for occupational categories
- *
- * see http://www.onetcenter.org/taxonomy.html
- */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_job_occupational_categories` (
-  job_occupational_category_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
-  /* UCM (unified content model) properties for internal record metadata */
-  ordering SMALLINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'order this job category should show in the group',
-  /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
-  title CHAR(96) NOT NULL COMMENT 'occupational category title',
- 	`code` CHAR(10) NOT NULL DEFAULT '0' COMMENT 'BLS code specifying this job category',
-  `group` BIGINT UNSIGNED NOT NULL COMMENT 'Group this occupational category should be shown under e.g. office staff', /* FK to #__cajobboard_job_occupational_category_group(job_occupational_category_group_id) */
-  /* SQL DDL */
-  PRIMARY KEY (job_occupational_category_id),
-  UNIQUE KEY (title),
-  INDEX job_category_group_index (`group`)
-)
-  ENGINE=innoDB
-  DEFAULT CHARACTER SET = utf8
-  DEFAULT COLLATE = utf8_unicode_ci;
-
-/**
- * Employment type table
- *
- * Used to enumerate types of employment, e.g. "full-time", "part-time",
- * "contract", "temporary", "seasonal", "internship"
- */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_job_employment_types` (
-  job_employment_type_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
-  /* SCHEMA: Thing */
-  `name` CHAR(96) NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)',
-  description TEXT NOT NULL COMMENT 'Detailed description about type of employment',
-  url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for type of employment, e.g. wikipedia page on Full Time',
-  /* SQL DDL */
-  PRIMARY KEY (job_employment_type_id),
-  UNIQUE KEY (`name`)
-)
-  ENGINE=innoDB
-  DEFAULT CHARACTER SET = utf8
-  DEFAULT COLLATE = utf8_unicode_ci;
 
 /**
  * Job Postings table
@@ -82,13 +18,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
 
   /* FOF "magic" fields */
   asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
-  access INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level.',
-  enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
-  created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
+  access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
+  enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
+  created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
   created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
-  modified_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
+  modified_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
-  locked_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
+  locked_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
@@ -156,84 +92,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-/**
- * Initial employment types
- */
-INSERT INTO `#__cajobboard_job_employment_types` (name, description, url) VALUES
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_FULL_TIME', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_FULL_TIME_DESCRIPTION', 'https://en.wikipedia.org/wiki/Full-time'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_PART_TIME', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_PART_TIME_DESCRIPTION', 'https://en.wikipedia.org/wiki/Part-time_contract'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_FLEX-TIME', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_FLEX-TIME_DESCRIPTION', 'https://en.wikipedia.org/wiki/Flextime'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_CONTRACT', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_CONTRACT_DESCRIPTION', 'https://en.wikipedia.org/wiki/Fixed-term_employment_contract'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_TEMPORARY', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_TEMPORARY_DESCRIPTION', 'https://en.wikipedia.org/wiki/Temporary_work'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_CASUAL', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_CASUAL_DESCRIPTION', 'https://en.wikipedia.org/wiki/Casual_employment_(contract)'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_INTERNSHIP', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_INTERNSHIP_DESCRIPTION', 'https://en.wikipedia.org/wiki/Internship'),
-  ('COM_CAJOBBOARD_EMPLOYMENT_TYPE_OTHER', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_OTHER_DESCRIPTION', 'https://en.wiktionary.org/wiki/other');
-
-/**
- * Initial occupational groups
- */
-INSERT INTO `#__cajobboard_job_occupational_category_groups` (job_occupational_category_group_id, `group`, description, url) VALUES
-  (1, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_CONSTRUCTION', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_CONSTRUCTION_DESCRIPTION', 'https://en.wikipedia.org/wiki/Construction'),
-  (2, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FACILITIES', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FACILITIES_DESCRIPTION', 'https://en.wikipedia.org/wiki/Facility_management'),
-  (3, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FINANCE', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FINANCE_DESCRIPTION', 'https://en.wikipedia.org/wiki/Accounting'),
-  (4, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_HR', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_HR_DESCRIPTION', 'https://en.wikipedia.org/wiki/Human_resource_management'),
-  (5, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_IT', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_IT_DESCRIPTION', 'https://en.wikipedia.org/wiki/Information_technology'),
-  (6, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_LEASING', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_LEASING_DESCRIPTION', 'https://en.wikipedia.org/wiki/Letting_agent'),
-  (7, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MARKETING', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MARKETING_DESCRIPTION', 'https://en.wikipedia.org/wiki/Marketing'),
-  (8, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OFFICE', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OFFICE_DESCRIPTION', 'https://en.wikipedia.org/wiki/Office_administration'),
-  (9, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MGMT', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MGMT_DESCRIPTION', 'https://en.wikipedia.org/wiki/Management'),
-  (10, 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OTHER', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OTHER_DESCRIPTION', 'https://en.wiktionary.org/wiki/other');
-
-/**
- * Initial occupational categories
- */
-INSERT INTO `#__cajobboard_job_occupational_categories` (`code`, ordering, `group`, title) VALUES
-  ('11-1021.00', 1, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_GENERAL_AND_OPERATIONS_MANAGERS'),
-  ('11-9141.00', 2, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_PROPERTY_AND_COMMUNITY_MANAGERS'),
-  ('11-9199.01', 3, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_REGULATORY_AFFAIRS_MANAGERS'),
-  ('11-9199.00', 4, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_OTHER_MANAGERS'),
-  ('11-2022.00', 1, 6, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_LEASING_AND_SALES_MANAGERS_AND_EXECUTIVES'),
-  ('41-3099.00', 2, 6, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_LEASING_AND_SALES_AGENTS'),
-  ('11-2021.00', 1, 7, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_MARKETING_MANAGERS_AND_EXECUTIVES'),
-  ('13-1161.00', 2, 7, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_MARKETING_SPECIALISTS'),
-  ('11-3031.00', 1, 3, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_FINANCIAL_MANAGERS_AND_EXECUTIVES'),
-  ('13-2011.01', 2, 3, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_ACCOUNTANTS'),
-  ('43-3031.00', 3, 3, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_BOOKKEEPERS_AND_ACCOUNTING_CLERKS'),
-  ('11-3021.00', 1, 5, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_INFORMATION_TECHNOLOGY_MANAGERS_AND_EXECUTIVES'),
-  ('15-1131.00', 2, 5, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_COMPUTER_PROGRAMMERS'),
-  ('15-1199.03', 3, 5, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_WEB_ADMINISTRATORS'),
-  ('11-3121.00', 1, 4, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_HUMAN_RESOURCES_MANAGERS_AND_EXECUTIVES'),
-  ('11-3131.00', 2, 4, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_TRAINING_AND_DEVELOPMENT_MANAGERS'),
-  ('13-1071.00', 3, 4, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_HUMAN_RESOURCES_SPECIALISTS'),
-  ('11-3011.00', 1, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_OFFICE_MANAGERS_AND_EXECUTIVES'),
-  ('43-6014.00', 2, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_SECRETARIES_AND_ADMINISTRATIVE_ASSISTANTS'),
-  ('43-4171.00', 3, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_RECEPTIONISTS'),
-  ('43-4051.00', 4, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_CUSTOMER_SERVICE_REPRESENTATIVES'),
-  ('43-4071.00', 5, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_FILE_CLERKS'),
-  ('13-1041.00', 6, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_COMPLIANCE_OFFICERS'),
-  ('13-1041.03', 7, 8, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_EQUAL_OPPORTUNITY_REPRESENTATIVES_AND_OFFICERS'),
-  ('37-1011.00', 1, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_HOUSEKEEPING_AND_JANITORIAL_SUPERVISORS'),
-  ('37-2011.00', 2, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_JANITORS_AND_CLEANERS'),
-  ('37-1012.00', 3, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_LANDSCAPING_LAWN_SERVICE_AND_GROUNDSKEEPING_SUPERVISORS'),
-  ('37-3011.00', 4, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_LANDSCAPING_AND_GROUNDSKEEPING_WORKERS'),
-  ('49-1011.00', 5, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_MAINTENANCE_SUPERVISORS'),
-  ('49-9071.00', 6, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_MAINTENANCE_WORKERS'),
-  ('11-9199.07', 7, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_SECURITY_MANAGERS'),
-  ('33-9032.00', 8, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_SECURITY_GUARDS'),
-  ('37-2021.00', 9, 2, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_PEST_CONTROL_WORKERS'),
-  ('11-9021.00', 1, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_PROJECT_AND_CONSTRUCTION_MANAGERS'),
-  ('47-1011.00', 2, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_CONSTRUCTION_SUPERVISORS'),
-  ('47-4099.00', 3, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_CONSTRUCTION_WORKERS_GENERAL'),
-  ('47-2021.00', 4, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_BRICKMASONS_AND_BLOCKMASONS'),
-  ('47-2031.00', 5, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_CARPENTERS'),
-  ('47-2041.00', 6, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_CARPET_INSTALLERS'),
-  ('47-2061.00', 7, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_CONSTRUCTION_LABORERS'),
-  ('47-2081.00', 8, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_DRYWALL_AND_CEILING_TILE_INSTALLERS'),
-  ('47-2111.00', 9, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_ELECTRICIANS'),
-  ('47-2141.00', 10, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_PAINTERS_CONSTRUCTION_AND_MAINTENANCE'),
-  ('47-2152.02', 11, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_PLUMBERS'),
-  ('47-2181.00', 12, 1, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_ROOFERS'),
-  ('00-0000.00', 1, 10, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_OTHER');
 
 /*
  * Create content types for relevant tables, mapping fields to the UCM standard fields for history feature

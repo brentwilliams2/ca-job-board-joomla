@@ -95,11 +95,15 @@
       <p class="rule-desc">@lang('JLIB_RULES_SETTINGS_DESC')</p>
 
       {{--  Begin tabs --}}
+
       <div class="tabbable tabs-left" data-ajaxuri="{{ $ajaxUri }}" id="permissions-sliders">
         {{--  Building tab nav --}}
+
         <ul class="nav nav-tabs">
           {{--  User groups --}}
+
           @foreach ($groups as $group)
+
             {{--  Initial Active tab for user groups --}}
             <?php $active = (int) $group->value === 1 ? ' class="active"' : ''; ?>
 
@@ -108,11 +112,15 @@
                 <?php LayoutHelper::render('joomla.html.treeprefix', array('level' => $group->level + 1)) . $group->text; ?>
               </a>
             </li>
+
           @endforeach
+
         </ul>
+
       </div>
 
       <div class="tab-content">
+
         {{-- Start a row for each user group. --}}
         @foreach($groups as $group)
         {
@@ -121,17 +129,22 @@
 
           <div class="tab-pane{{ $active }}" id="permission-{{ $group->value }}">
             <table class="table table-striped">
+
               <thead>
                 <tr>
+
                   <th class="actions" id="actions-th{{ $group->value }}">
                     <span class="acl-action">@lang('JLIB_RULES_ACTION')</span>
                   </th>
+
                   <th class="settings" id="settings-th{{ $group->value }}">
                     <span class="acl-action">@lang('JLIB_RULES_SELECT_SETTING')</span>
                   </th>
+
                   <th id="aclactionth{{ $group->value }}">
                     <span class="acl-action">@lang('JLIB_RULES_CALCULATED_SETTING')</span>
                   </th>
+
                 </tr>
               </thead>
 

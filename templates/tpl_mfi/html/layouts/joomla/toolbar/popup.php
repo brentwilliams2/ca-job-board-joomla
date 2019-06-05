@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/toolbar/popup.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -17,6 +21,7 @@
   $text   = $displayData['text'];
   $name   = $displayData['name'];
 ?>
+
 <button
   onclick="<?php echo $doTask; ?>"
   class="btn btn-default btn-sm modal"

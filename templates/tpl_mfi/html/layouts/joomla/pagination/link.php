@@ -1,6 +1,10 @@
 <?php
 /**
- * Override of the core Joomla! pagination count-per-page select widget
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/pagination/link.php template override
+ *
+ * Override of the core Joomla! footer pagination template, individual links
  *
  * @package     Calligraphic Job Board
  *
@@ -10,34 +14,40 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
-die('page!');
+
   // no direct access
   defined('_JEXEC') or die;
 
+  use \Joomla\CMS\Factory;
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Router\Route;
+
+  /** @var \Joomla\CMS\Pagination\PaginationObject $item */
   $item = $displayData['data'];
 
-  $display = $item->text;
+  $display = $item->text; // The link text
 
   switch ((string) $item->text)
   {
     // Check for "Start" item
-    case JText::_('JLIB_HTML_START') :
+    case Text::_('JLIB_HTML_START') :
       $icon = "fa fa-backward";
       break;
 
     // Check for "Prev" item
-    case $item->text == JText::_('JPREV') :
-      $item->text = JText::_('JPREVIOUS');
+    case $item->text == Text::_('JPREV') :
+      $item->text = Text::_('JPREVIOUS');
       $icon = "fa fa-step-backward";
       break;
 
     // Check for "Next" item
-    case JText::_('JNEXT') :
+    case Text::_('JNEXT') :
       $icon = "fa fa-step-forward";
       break;
 
     // Check for "End" item
-    case JText::_('JLIB_HTML_END') :
+    case Text::_('JLIB_HTML_END') :
       $icon = "fa fa-forward";
       break;
 
@@ -51,44 +61,45 @@ die('page!');
     $display = '<i class="' . $icon . '"></i>';
   }
 
+  $class = null;
+
   if ($displayData['active'])
   {
-    if ($item->base > 0)
-    {
-      $limit = 'limitstart.value=' . $item->base;
-    }
-    else
-    {
-      $limit = 'limitstart.value=0';
-    }
+    $title = null;
 
-    $cssClasses = array();
-
-    $title = '';
-
+    // Start, Prev, Next, End items
     if (!is_numeric($item->text))
     {
-      JHtml::_('bootstrap.tooltip');
-      $cssClasses[] = 'hasTooltip';
+      HTMLHelper::_('bootstrap.tooltip');
+      $class = 'hasTooltip';
       $title = ' title="' . $item->text . '" ';
     }
-
-    $onClick = 'document.adminForm.' . $item->prefix . 'limitstart.value=' . ($item->base > 0 ? $item->base : '0') . '; Joomla.submitform();return false;';
   }
   else
   {
     $class = (property_exists($item, 'active') && $item->active) ? 'active' : 'disabled';
   }
+
+  $routerVars = Factory::getApplication()->getRouter()->getVars();
+
+  $uri = Route::_(
+    'index.php?option=' . $routerVars['option'] .
+    '&view=' . $routerVars['view']
+  ) . '&limitstart=' . ($item->base > 0 ? $item->base : '0'); // append limitstart after SEF-friendly URL built
 ?>
 
 <?php if ($displayData['active']) : ?>
+
 	<li>
-		<a class="<?php echo implode(' ', $cssClasses); ?>" <?php echo $title; ?> href="#" onclick="<?php echo $onClick; ?>">
+		<a class="<?php echo $class; ?>" <?php echo $title; ?> href="<?php echo $uri; ?>">
 			<?php echo $display; ?>
 		</a>
-	</li>
+  </li>
+
 <?php else : ?>
+
 	<li class="<?php echo $class; ?>">
 		<span><?php echo $display; ?></span>
-	</li>
+  </li>
+
 <?php endif;

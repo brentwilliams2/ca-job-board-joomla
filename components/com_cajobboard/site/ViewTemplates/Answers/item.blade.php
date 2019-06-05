@@ -20,7 +20,7 @@
   $item = $this->getItem();
 
   // model data fields
-  $answerID       = $item->getFieldValue('answer_id');
+  $answerId       = $item->getFieldValue('answer_id');
   $createdBy      = $item->getFieldValue('created_by');      // userid of the creator of this answer.
   $createdOn      = $item->getFieldValue('created_on');
   // $description    = $item->getFieldValue('description');     // Text of the answer.
@@ -49,6 +49,18 @@
   $lastSeen = User::lastSeen($item->Author->lastvisitDate);
   $name = $item->Author->getFieldValue('name');
   $postedOn = Format::getCreatedOnText($createdOn);
+
+  $componentName = $this->getContainer()->componentName;
+  $view = $this->getName();
+  $removeAction = 'index.php?option=' . $componentName . '&view=' . $view . '&task=remove&id=' . $answerId;
+
+  /*
+    Limit access to personally identifiable information:
+
+    @if ($this->getContainer()->platform->getUser()->authorise('com_cajobboard.pii', 'com_cajobboard'))
+      protected content
+    @endif
+   */
 ?>
 
 {{--
@@ -146,11 +158,19 @@
 --}}
 @section('edit_answer')
   @if ($canUserEdit)
-    <a class="edit-answer-link" href="@route('index.php?option=com_cajobboard&view=answer&task=edit&id='. (int) $answerID)">
+
+    <a class="delete-answer-link" onClick="removeSubmit( {{ $answerId }} )">
+      <button type="button" class="btn btn-danger btn-xs btn-answer delete-answer-button pull-right">
+        @lang('COM_CAJOBBOARD_DELETE_ANSWERS_BUTTON_LABEL')
+      </button>
+    </a>
+
+    <a class="edit-answer-link" href="@route('index.php?option=com_cajobboard&view=answer&task=edit&id='. (int) $answerId)">
       <button type="button" class="btn btn-warning btn-xs btn-answer edit-answer-button pull-right">
         @lang('COM_CAJOBBOARD_EDIT_ANSWERS_BUTTON_LABEL')
       </button>
     </a>
+
   @endif
 @overwrite
 
@@ -184,4 +204,10 @@
     </div>
 
 </div>{{-- End responsive container --}}
+
+{{-- Form with CSRF field for remove action --}}
+<form action="@route($removeAction)" method="post" name="removeForm" id="removeForm-{{ $answerId }}">
+  <input type="hidden" name="@token()" value="1"/>
+</form>
+
 <div class="clearfix"></div>

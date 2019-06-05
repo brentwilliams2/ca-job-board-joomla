@@ -17,44 +17,6 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
-use JLog;
-
-/** @var   \JDatabaseDriver  The database driver for this model */
-//protected $dbo = NULL;
-
-
-/** @var   array  A list of table fields, keyed per table */
-//protected static $tableFieldCache = array();
-
-/** @var   array  Associative array of "magic" table field name aliases, defined as aliasFieldName => actualFieldName */
-//protected $aliasFields = array();
-
-
-
-/** @var   array  A collection of custom, additional where clauses to apply during buildQuery */
-//protected $whereClauses = array();
-
-/** @var   array  A list of all eager loaded relations and their attached callbacks */
-//protected $eagerRelations = array();
-
-/** @var bool Should rows be tracked as ACL assets? */
-//protected $_trackAssets = false;
-
-/** @var bool Does the resource support joomla tags? */
-//protected $_has_tags = false;
-
-/** @var  \JAccessRules  The rules associated with this record. */
-//protected $_rules;
-
-/**
- * The asset key for items in this table. It's usually something in the
- * com_example.viewname format. They asset name will be this key appended
- * with the item's ID, e.g. com_example.viewname.123
- *
- * @var    string
- */
-//protected $_assetKey = '';
-
 
 
 /**
@@ -106,6 +68,7 @@ class JobPostingRepository extends DataModel
    * From bind() method:
    *
 	 * Special note if you are using a custom buildQuery with JOINs or field aliases:
+   *
 	 * You will need to use addKnownField to let FOF know that the fields from your JOINs and the aliased fields should
 	 * be bound to the record data. If you are using aliased fields you may also want to override the
 	 * databaseDataToRecordData method. Generally, it is a BAD idea using JOINs instead of relations.

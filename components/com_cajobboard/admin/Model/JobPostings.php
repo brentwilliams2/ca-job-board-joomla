@@ -17,13 +17,13 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
-use JRegistry;
 
 /**
  * Fields:
  *
  * @property int      $job_posting_id             Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
+ *
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
  * @property int      $access                     The Joomla! view access level.
@@ -34,6 +34,7 @@ use JRegistry;
  * @property int      $modified_by                User ID who modified the record, auto-filled by save(), touch().
  * @property string   $locked_on                  Timestamp of record locking, auto-filled by lock(), unlock().
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
+ *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
@@ -48,6 +49,7 @@ use JRegistry;
  * @property int      $cat_id                     Category ID for this item.
  * @property int      $hits                       Number of hits the item has received on the site.
  * @property int      $featured                   Whether this item is featured or not.
+ *
  * SCHEMA: JobPosting
  * @property string   $title                      The title of the job posting.
  * @property string   $disambiguating_description Short description of the job, used in cajobboard on job posting list pages, etc.
@@ -62,21 +64,27 @@ use JRegistry;
  * @property string   $special_commitments        Any special commitments associated with this job posting. Valid entries include VeteranCommit, MilitarySpouseCommit, etc.
  * @property string   $work_hours                 The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).
  * @property Places   $jobLocation                A (typically single) geographic location associated with the job position.
- * @property Organizations  $hiringOrganization   Organization offering the job position. FK to #__cajobboard_organizations
+ * @property Organizations  $hiringOrganization   Organization offering the job position. FK to #__cajobboard_organizations.
+ *
  * SCHEMA: JobPosting (relevantOccupation) -> Occupation (name)
  * @property string   $relevant_occupation_name   The job title.
+ *
  * SCHEMA: JobPosting (baseSalary) -> MonetaryAmount
  * @property int      $base_salary__max_value     The maximum salary of the job or of an employee in an EmployeeRole.
  * @property int      $base_salary__value         The base salary of the job or of an employee in an EmployeeRole.
  * @property int      $base_salary__min_value     The minimum salary of the job or of an employee in an EmployeeRole.
  * @property string   $base_salary__currency      Use ISO 4217 currency format e.g. USD.
+ *
  * SCHEMA: JobPosting (baseSalary) -> MonetaryAmount (additionalType) -> Duration
  * @property string   $base_salary__duration      Period of time salary applies to, e.g. per hour, annual salary, etc. Use ISO 8601 duration format, e.g. P2W for bi-weekly.
+ *
  * SCHEMA: Thing
  * @property string   $identifier                  Internal identifier used by the employer for this job posting.
  * @property string   $sameAs                      URL of the job posting on the employer\s website.
+ *
  * SCHEMA: https://calligraphic.design/schema/EmploymentType
  * @property JobEmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
+ *
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
  * @property OccupationalCategories  $occupationalCategory  The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
  *
@@ -86,8 +94,7 @@ use JRegistry;
  */
 class JobPostings extends BaseModel
 {
-  // Needed for content history component
-  public $typeAlias = 'com_cajobboard.jobpostings';
+  use \FOF30\Model\Mixin\Assertions;
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -97,6 +104,7 @@ class JobPostings extends BaseModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    /* Set up config before parent constructor */
 
     // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
     // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'JobPostings', array('typeAlias' => 'com_cajobboard.jobpostings'));
@@ -105,53 +113,70 @@ class JobPostings extends BaseModel
 		$config['tableName'] = '#__cajobboard_job_postings';
     $config['idFieldName'] = 'job_posting_id';
 
-        // Define a contentType to enable the Tags behaviour
+    // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.jobpostings';
 
-    // Add behaviours to the model
-    $config['behaviours'] = array('Filters', 'Language', 'Tags');
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      'Category',   // Set category in new records
+      'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
+      'Publish',    // Set the publish_on field for new records
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'        // Add Joomla! Tags support
+    );
 
     parent::__construct($container, $config);
 
-    /*
-     * Set up relations
-     */
+    /* Set up relations after parent constructor */
 
     // many-to-one FK to  #__cajobboard_places
-    $this->belongsTo('jobLocation', 'Places@com_cajobboard', 'job_location', 'place_id');
+    $this->belongsTo('JobLocation', 'Places@com_cajobboard', 'job_location', 'place_id');
 
     // many-to-one FK to  #__cajobboard_organizations
-    $this->belongsTo('hiringOrganization', 'Organizations@com_cajobboard', 'hiring_organization', 'organization_id');
+    $this->belongsTo('HiringOrganization', 'Organizations@com_cajobboard', 'hiring_organization', 'organization_id');
 
     // many-to-one FK to  #__cajobboard_job_employment_types
-    $this->belongsTo('employmentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');
+    $this->belongsTo('EmploymentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');
 
     // many-to-one FK to #__cajobboard_job_occupational_categories
-    $this->belongsTo('occupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
+    $this->belongsTo('OccupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
+
+    // one-to-one FK to #__cajobboard_employer_aggregate_ratings
+    $this->hasOne('AggregateReviews', 'EmployerAggregateRatings@com_cajobboard', 'job_posting_id', 'employer_aggregate_rating_id');
   }
 
-  /**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-   *
-	 * @since 1.0
-	 */
-	public function bind($array, $ignore = '')
-	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			// Convert the params field to a string.
-      $parameter = new JRegistry;
-
-      $parameter->loadArray($array['params']);
-
-			$array['params'] = (string)$parameter;
-    }
-
-		return parent::bind($array, $ignore);
+  public function notifyConnectorsOnNewJobPosting()
+  {
+    /*
+    @TODO: At some point want to send connectors an email saying, "Do you happen to know anyone
+           who would be interested in this job?", so we will need to give them a way to opt out
+           of that type of email.
+    */
   }
+
+ /*
+  @TODO: add ability for employers to add custom template, from spec:
+  Plan on having a template system where employers can create standard templates for their job listings.
+  */
+
+  /*
+  @TODO: from specs -  What if we start building content pages for "Property Management Jobs in XYZ city"?
+  Maybe have the system do that automatically when a new job is posted in a new city?  Things to include:
+    a. Jobs in that city
+    b. Employers who have historically posted jobs in that city
+    c. Networking opportunities, maybe?  Maybe list Insiders in that area?
+    d. Press releases about acquisitions/etc in that area.
+  */
+
 
   /**
 	 * Perform checks on data for validity

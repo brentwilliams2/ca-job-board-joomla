@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/content/info_block/create_date.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -9,13 +13,19 @@
  *
  */
 
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
 
 <dd class="create">
+
     <span class="fa fa-calendar"></span>
-    <time datetime="<?php echo JHtml::_('date', $displayData['item']->created, 'c'); ?>" itemprop="dateCreated">
-      <?php echo JText::sprintf('COM_CONTENT_CREATED_DATE_ON', JHtml::_('date', $displayData['item']->created, JText::_('DATE_FORMAT_LC3'))); ?>
+
+    <time datetime="<?php echo HTMLHelper::_('date', $displayData['item']->created, 'c'); ?>" itemprop="dateCreated">
+      <?php echo Text::sprintf('COM_CONTENT_CREATED_DATE_ON', HTMLHelper::_('date', $displayData['item']->created, Text::_('DATE_FORMAT_LC3'))); ?>
     </time>
+
 </dd>

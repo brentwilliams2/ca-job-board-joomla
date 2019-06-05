@@ -20,7 +20,7 @@
   $item = $this->getItem();
 
   // model data fields
-  //$answerID       = $item->answer_id;
+  $answerId       = $item->answer_id;
   //$created_by     = $item->created_by;      // userid of the creator of this answer.
   $createdOn      = Format::getCreatedOnText($item->created_on);
   //$description    = $item->description;     // Text of the answer.
@@ -31,7 +31,7 @@
   //$modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
   $modifiedOn     = Format::getCreatedOnText($item->modified_on);
   $title          = $item->name;            // A title to use for the answer.
-  //$parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questionss(question_id)
+  //$parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questions(question_id)
   //$Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
   //$slug           = $item->slug;            // Alias for SEF URL
   $text           = $item->text;            // The actual text of the answer itself.
@@ -42,23 +42,29 @@
 
   // URL to post the form to
   $task = $this->getTask();
+  $componentName = $this->getContainer()->componentName;
+  $view = $this->getName();
 
-  $action  = 'index.php?option=' . $this->getContainer()->componentName;
-  $action .= '&view=' . $this->getName();
+  $action  = 'index.php?option=' . $componentName . '&view=' . $view;
 
-  if ('edit' == $task) 
+  if ('edit' == $task)
   {
-    $action .= '&task=save&id=' . $this->getItem()->getId();
+    $action = '&task=save&id=' . $answerId;
   }
   elseif ('add' == $task)
   {
     $action .= '&task=save';
   }
-  // @TODO: Remove this when done making sure it's not reached any way
-  else
-  {
-    throw new Exception('loaded Answer\'s form.blade.php, but task isn\'t either edit or add. Task = ' . $task);
-  }
+
+  $removeAction = 'index.php?option=' . $componentName . '&view=' . $view . '&task=remove&id=' . $answerId;
+
+  /*
+    Limit access to personally identifiable information:
+
+    @if ($this->getContainer()->platform->getUser()->authorise('com_cajobboard.pii', 'com_cajobboard'))
+      protected content
+    @endif
+   */
 ?>
 
 {{--
@@ -95,9 +101,7 @@
       </label>
     </h4>
 
-    <textarea name="text" id="answer-text" class="form-control" rows="8">
-      <?php echo $this->escape(isset($text) ? $text : null); ?>
-    </textarea>
+    <textarea name="text" id="answer-text" class="form-control" rows="8"><?php echo $text ?></textarea>{{-- no whitespace in textarea --}}
   </div>
 @overwrite
 
@@ -127,7 +131,7 @@
   Responsive component
 --}}
 @section('answer-edit-container')
-  <form action="{{{ $action }}}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
+  <form action="@route($action)" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
     <div class="answer-edit-container">
 
       <header class="form-header">
@@ -149,6 +153,7 @@
       </div>
 
       @if ('edit' == $task)
+
         <div class="form-group">
           @yield('answer_posted_date')
         </div>
@@ -156,9 +161,16 @@
         <div class="form-group">
           @yield('answer_modified_date')
         </div>
+
+      <a class="delete-answer-link" onClick="removeSubmit( {{ $answerId }} )">
+          <button type="button" class="btn btn-danger btn-primary btn-answer delete-answer-button pull-right">
+            @lang('COM_CAJOBBOARD_DELETE_ANSWERS_BUTTON_LABEL')
+          </button>
+        </a>
+
       @endif
 
-      <button class="btn btn-primary pull-right answer-submit" type="submit">
+      <button class="btn btn-primary answer-submit pull-right" type="submit">
         @lang('JAPPLY')
       </button>
 
@@ -169,4 +181,10 @@
       <input type="hidden" name="@token()" value="1"/>
     </div>
   </form>
+
+   {{-- Form with CSRF field for remove action --}}
+  <form action="@route($removeAction)" method="post" name="removeForm" id="removeForm-{{ $answerId }}">
+    <input type="hidden" name="@token()" value="1"/>
+  </form>
+
 @show

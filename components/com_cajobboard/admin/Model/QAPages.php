@@ -22,28 +22,26 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * Fields:
  *
  * UCM
- * @property int                $qapage_id          Surrogate primary key
+ * @property int                $qapage_id          Surrogate primary key.
  * @property string             $slug               Alias for SEF URL.
- * @property bool               $featured           Whether this answer is featured or not.
- * @property int                $hits               Number of hits this answer has received.
- * @property int                $created_by         Userid of the creator of this answer.
- * @property string             $created_on         Date this answer was created.
- * @property int                $modified_by        Userid of person that last modified this answer.
- * @property string             $modified_on        Date this answer was last modified.
+ * @property bool               $featured           Whether this question and answer page is featured or not.
+ * @property int                $hits               Number of hits this question and answer page has received.
+ * @property int                $created_by         Userid of the creator of this question and answer page.
+ * @property string             $created_on         Date this question and answer page was created.
+ * @property int                $modified_by        Userid of person that last modified this question and answer page.
+ * @property string             $modified_on        Date this question and answer page was last modified.
  *
  * SCHEMA: Thing
  * @property string             $name               A name for this question and answer page.
  * @property string             $description        A long description of this question and answer page.
- * @property int                $mainEntityOfPage   FK to question this page is about
+ * @property Questions          $MainEntityOfPage   The Question this page is about.
  *
  * SCHEMA: CreativeWork
- * @property Organizations      $About              The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id)
+ * @property Organizations      $About              The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id).
+ * @property string             $text                Long description of the question and answer page.
  *
  * SCHEMA: QAPage
- * @property QAPageCategories   $Specialty          A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id)
- *
- * RELATIONS
- * @property Questions          $Question           The Question this page is about
+ * @property QAPageCategories   $Specialty          A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id).
  */
 class QAPages extends BaseModel
 {
@@ -62,8 +60,26 @@ class QAPages extends BaseModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.qapages';
 
-    // Add behaviours to the model
-    $config['behaviours'] = array('Filters', 'Language', 'Tags');
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
+
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      'Category',   // Set category in new records
+      'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
+      'Publish',    // Set the publish_on field for new records
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'        // Add Joomla! Tags support
+    );
 
     parent::__construct($container, $config);
 
@@ -71,11 +87,14 @@ class QAPages extends BaseModel
      * Set up relations
      */
 
-    // Many-to-one FK to  #__cajobboard_organizations
-    $this->belongsTo('About', 'Organizations@com_cajobboard', 'about', 'organization_id');
+    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_questions_qapages
+    $this->belongsToMany('HasPart', 'Questions@com_cajobboard', 'has_part', 'is_part_of', '#__cajobboard_questions_qapages');
 
     // one-to-one FK to  #__cajobboard_questions
-    $this->hasOne('Question', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
+    $this->hasOne('MainEntityOfPage', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
+
+    // Many-to-one FK to  #__cajobboard_organizations
+    $this->belongsTo('About', 'Organizations@com_cajobboard', 'about', 'organization_id');
   }
 
 

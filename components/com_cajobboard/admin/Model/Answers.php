@@ -24,6 +24,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * UCM
  * @property int            $id               Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
+ *
+ * FOF "magic" fields
  * @property bool           $featured         Whether this answer is featured or not.
  * @property int            $hits             Number of hits this answer has received.
  * @property int            $created_by       Userid of the creator of this answer.
@@ -31,18 +33,32 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $modifiedBy       Userid of person that last modified this answer.
  * @property string         $modifiedOn       Date this answer was last modified.
  *
+ * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
+ * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
+ * @property string   $publish_down               Date and time to change the state to unpublished.
+ * @property int      $version                    Version of this item.
+ * @property int      $ordering                   Order this record should appear in for sorting.
+ * @property object   $metadata                   JSON encoded metadata field for this item.
+ * @property string   $metakey                    Meta keywords for this item.
+ * @property string   $metadesc                   Meta description for this item.
+ * @property string   $xreference                 A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.
+ * @property string   $params                     JSON encoded parameters for this item.
+ * @property string   $language                   The language code for the article or * for all languages.
+ * @property int      $cat_id                     Category ID for this item.
+ * @property int      $hits                       Number of hits the item has received on the site.
+ * @property int      $featured                   Whether this item is featured or not.
+ *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the answer.
  * @property string         $description      A description of the answer.
  *
  * SCHEMA: CreativeWork
- * @property QAPage         $isPartOf         This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id).
+ * @property Question       $IsPartOf         This property points to a Question entity associated with this answer. FK to #__cajobboard_questions(question_id).
  * @property Organization   $Publisher        The company that wrote this answer. FK to #__organizations(organization_id).
  * @property string         $text             The actual text of the answer itself.
  * @property Person         $Author           The author of this comment.  FK to #__persons.
  *
  * SCHEMA: Answer
- * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questions(question_id).
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
@@ -59,6 +75,9 @@ class Answers extends BaseModel
 	public function __construct(Container $container, array $config = array())
 	{
     /* Set up config before parent constructor */
+
+    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
+    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'Answers', array('typeAlias' => 'com_cajobboard.answers'));
 
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_answers';
@@ -82,6 +101,7 @@ class Answers extends BaseModel
       'Metadata',   // Set the 'metadata' JSON field on record save
       'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
       'Publish',    // Set the publish_on field for new records
       'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
       //'Tags'        // Add Joomla! Tags support
@@ -92,14 +112,11 @@ class Answers extends BaseModel
 
     /* Set up relations after parent constructor */
 
-    // one-to-one FK to #__cajobboard_qapage
-    $this->hasOne('isPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'qapage_id');
+    // one-to-one FK to #__cajobboard_questions
+    $this->hasOne('IsPartOf', 'Questions@com_cajobboard', 'is_part_of', 'question_id');
 
     // many-to-one FK to  #__organizations
     $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
-
-    // one-to-one FK to  #__cajobboard_questions
-    $this->hasOne('parentItem', 'Questions@com_cajobboard', 'parent_item', 'question_id');
 
     // one-to-one FK to  #__cajobboard_persons
      $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
@@ -113,9 +130,8 @@ class Answers extends BaseModel
 	 */
 	public function check()
 	{
-    // Answer title ('name' column in DB) and description should be filled in (but not 'NOT NULL' in db schema)
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EDIT_TITLE_ERR');
-    $this->assertNotEmpty($this->text, 'COM_CAJOBBOARD_EDIT_TEXT_ERR');
+    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_ANSWERS_TITLE_ERR');
+    $this->assertNotEmpty($this->text, 'COM_CAJOBBOARD_ANSWERS_TEXT_ERR');
 
 		parent::check();
 

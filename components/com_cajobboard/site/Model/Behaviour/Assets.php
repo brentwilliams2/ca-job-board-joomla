@@ -314,7 +314,7 @@ class Assets extends Observer
   protected function setModelRules(DataModel $model, $data)
   {
    	// Bind the rules.
-		if (isset($data['rules']) && is_array($data['rules']))
+		if (is_array($data) && isset($data['rules']) && is_array($data['rules']))
 		{
 			// We have to manually remove any empty value, since they will be converted to int,
 			// and "Inherited" values will become "Denied". Joomla is doing this manually, too.
@@ -333,9 +333,11 @@ class Assets extends Observer
 					}
 				}
       }
-
-			$model->setRules($rules);
-		}
+    }
+    else
+    {
+      $model->setRules( array() );
+    }
   }
 
 

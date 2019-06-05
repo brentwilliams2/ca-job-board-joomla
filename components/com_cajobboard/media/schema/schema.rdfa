@@ -53,3 +53,17 @@
 <!--
   @TODO: Need to show external extension additionalType for Organizations as Branch, additional Place this organization uses
 -->
+
+<!--
+  This is a Schema.org external extension for various alerts: Job Seeker Alerts, Employer Alerts, Connector Alerts, Recruiter Alerts
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Alert">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for issue reports from users
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Issue">
+  <!-- @TODO: implement -->
+</div>

@@ -81,9 +81,15 @@
     <sql>
       <file driver="mysql" charset="utf8">sql/install/mysql/answers.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/employer_aggregate_ratings.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/geo_coordinates.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/image_objects.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/job_employment_types.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/job_occupational_categories.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/job_occupational_category_groups.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/job_postings.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/organizations.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/organization_roles.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/organization_types.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/persons.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/places.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/qapages.sql</file>

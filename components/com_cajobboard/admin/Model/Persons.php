@@ -17,7 +17,6 @@ defined( '_JEXEC' ) or die;
 
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Log\Log;
 
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;

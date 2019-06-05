@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * mod_breadcrumbs default.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -29,35 +33,39 @@
 	$penult_item_key = key($list);
 ?>
 
-<?php
-  // Generate the trail
-  foreach ($list as $key => $item) {
+<ul class="semantic-breadcrumb-container" vocab="https://schema.org/" typeof="BreadcrumbList">
 
-    // Make a link if not the last item in the breadcrumbs
-    $show_last = $params->get('showLast', 1);
+  <?php
+    // Generate the trail
+    foreach ($list as $key => $item) :
 
-    if ($key != $last_item_key)
-    {
-      // Render all but last item - along with separator
-      if (!empty($item->link))
+      // Make a link if not the last item in the breadcrumbs
+      $show_last = $params->get('showLast', 1);
+
+      if ($key != $last_item_key)
       {
-        echo '<a href="' . $item->link . '" class="pathway">' . $item->name . '</a>';
+        // Render all but last item - along with separator
+        if (!empty($item->link))
+        {
+          echo '<li property="itemListElement" typeof="ListItem"><a class="pathway" property="item" typeof="WebPage" href="' . $item->link . '"><span property="name">' . $item->name . '</span></a></li>';
+        }
+        else
+        {
+          echo '<li property="itemListElement" typeof="ListItem"><span class="non-link-pathway" property="item" typeof="WebPage"><span property="name">' . $item->name . '</span></span></li>';
+        }
+
+        if (($key != $penult_item_key) || $show_last)
+        {
+          echo ' '.$separator.' ';
+        }
+
       }
-      else
+      elseif ($show_last)
       {
-        echo '<span>' . $item->name . '</span>';
+        // Render last item if reqd.
+        echo '<li property="itemListElement" typeof="ListItem"><span class="last-crumb" property="item" typeof="WebPage"><span property="name">' . $item->name . '</span></span></li>';
       }
 
-      if (($key != $penult_item_key) || $show_last)
-      {
-        echo ' '.$separator.' ';
-      }
+    endforeach; ?>
 
-    }
-    elseif ($show_last)
-    {
-      // Render last item if reqd.
-      echo '<span>' . $item->name . '</span>';
-    }
-  }
-?>
+</ul>

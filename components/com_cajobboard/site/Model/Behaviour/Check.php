@@ -44,7 +44,7 @@ class Check extends Observer
 	 */
 	protected function checkForEmpty(DataModel $model)
 	{
-		foreach ($model->knownFields as $fieldName => $field)
+		foreach ($model->getKnownFields() as $fieldName => $field)
 		{
 			// Never check the key if it's empty; an empty key is normal for new records
 			if ($fieldName == $model->idFieldName)
@@ -54,7 +54,11 @@ class Check extends Observer
 
 			$value = $model->getFieldValue($fieldName);
 
-			if (isset($field->Null) && ($field->Null == 'NO') && empty($value) && !is_numeric($value) && !in_array($fieldName, $model->fieldsSkipChecks))
+			if (
+        isset($field->Null) && ($field->Null == 'NO') &&
+        empty($value) && !is_numeric($value) &&
+        is_array($model->fieldsSkipChecks) && !in_array($fieldName, $model->fieldsSkipChecks)
+      )
 			{
 				if (!is_null($field->Default))
 				{
@@ -63,9 +67,9 @@ class Check extends Observer
 					continue;
 				}
 
-				$text = $model->container->componentName . '_' . $model->container->inflector->singularize( $model->getName() ) . '_ERR_' . $fieldName . '_EMPTY';
+				$text = $model->getContainer()->componentName . '_' . $model->getContainer()->inflector->singularize( $model->getName() ) . '_ERR_' . $fieldName . '_EMPTY';
 
-				throw new \RuntimeException(\JText::_(strtoupper($text)), 500);
+				throw new \RuntimeException( Text::_(strtoupper($text)), 500 );
 			}
 		}
   }

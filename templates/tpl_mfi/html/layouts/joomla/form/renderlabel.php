@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/form/renderlabel.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -8,6 +12,8 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
+
+  use \Joomla\CMS\HTML\HTMLHelper;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -36,9 +42,9 @@
   // If a description is specified, use it to build a tooltip.
   if (!empty($desc))
   {
-    JHtml::_('bootstrap.tooltip');
+    HTMLHelper::_('bootstrap.tooltip');
     $classes[] = 'hasTooltip';
-    $title = ' title="' . JHtml::tooltipText(trim($text, ':'), $desc, 0) . '"';
+    $title = ' title="' . HTMLHelper::tooltipText(trim($text, ':'), $desc, 0) . '"';
   }
 
   // If required, there's a class for that.
@@ -48,10 +54,12 @@
   }
 ?>
 
-<label id="<?php echo $id; ?>" for="<?php echo $for; ?>" class="<?php echo implode(' ', $classes); ?>"<?php echo $title; ?><?php echo $position; ?>>
+<label id="<?php echo $id; ?>" for="<?php echo $for; ?>" class="<?php echo implode(' ', $classes); ?>"<?php echo $title; ?><?php echo $position; ?> >
+
 	<?php echo $text; ?>
 
   <?php if ($req) : ?>
     <span class="star">&#160;*</span>
   <?php endif; ?>
+
 </label>

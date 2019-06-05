@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * com_content form/edit.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -83,9 +87,11 @@
 
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#editor" data-toggle="tab"><?php echo Text::_('COM_CONTENT_ARTICLE_CONTENT') ?></a></li>
+
 				<?php if ($params->get('show_urls_images_frontend') ) : ?>
-				<li><a href="#images" data-toggle="tab"><?php echo Text::_('COM_CONTENT_IMAGES_AND_URLS') ?></a></li>
+				  <li><a href="#images" data-toggle="tab"><?php echo Text::_('COM_CONTENT_IMAGES_AND_URLS') ?></a></li>
 				<?php endif; ?>
+
 				<li><a href="#publishing" data-toggle="tab"><?php echo Text::_('COM_CONTENT_PUBLISHING') ?></a></li>
 				<li><a href="#language" data-toggle="tab"><?php echo Text::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
 				<li><a href="#metadata" data-toggle="tab"><?php echo Text::_('COM_CONTENT_METADATA') ?></a></li>
@@ -103,44 +109,45 @@
 				</div>
 
 				<?php if ($params->get('show_urls_images_frontend')): ?>
-				<div class="tab-pane" id="images">
-					<?php echo $this->form->renderField('image_intro', 'images'); ?>
-					<?php echo $this->form->renderField('image_intro_alt', 'images'); ?>
-					<?php echo $this->form->renderField('image_intro_caption', 'images'); ?>
-					<?php echo $this->form->renderField('float_intro', 'images'); ?>
-					<?php echo $this->form->renderField('image_fulltext', 'images'); ?>
-					<?php echo $this->form->renderField('image_fulltext_alt', 'images'); ?>
-					<?php echo $this->form->renderField('image_fulltext_caption', 'images'); ?>
-					<?php echo $this->form->renderField('float_fulltext', 'images'); ?>
-					<?php echo $this->form->renderField('urla', 'urls'); ?>
-					<?php echo $this->form->renderField('urlatext', 'urls'); ?>
 
-					<div class="form-group">
-						<div class="form-control">
-							<?php echo $this->form->getInput('targeta', 'urls'); ?>
-						</div>
-					</div>
+          <div class="tab-pane" id="images">
+            <?php echo $this->form->renderField('image_intro', 'images'); ?>
+            <?php echo $this->form->renderField('image_intro_alt', 'images'); ?>
+            <?php echo $this->form->renderField('image_intro_caption', 'images'); ?>
+            <?php echo $this->form->renderField('float_intro', 'images'); ?>
+            <?php echo $this->form->renderField('image_fulltext', 'images'); ?>
+            <?php echo $this->form->renderField('image_fulltext_alt', 'images'); ?>
+            <?php echo $this->form->renderField('image_fulltext_caption', 'images'); ?>
+            <?php echo $this->form->renderField('float_fulltext', 'images'); ?>
+            <?php echo $this->form->renderField('urla', 'urls'); ?>
+            <?php echo $this->form->renderField('urlatext', 'urls'); ?>
 
-					<?php echo $this->form->renderField('urlb', 'urls'); ?>
+            <div class="form-group">
+              <div class="form-control">
+                <?php echo $this->form->getInput('targeta', 'urls'); ?>
+              </div>
+            </div>
 
-					<?php echo $this->form->renderField('urlbtext', 'urls'); ?>
+            <?php echo $this->form->renderField('urlb', 'urls'); ?>
 
-					<div class="form-group">
-						<div class="form-control">
-							<?php echo $this->form->getInput('targetb', 'urls'); ?>
-						</div>
-					</div>
+            <?php echo $this->form->renderField('urlbtext', 'urls'); ?>
 
-					<?php echo $this->form->renderField('urlc', 'urls'); ?>
+            <div class="form-group">
+              <div class="form-control">
+                <?php echo $this->form->getInput('targetb', 'urls'); ?>
+              </div>
+            </div>
 
-					<?php echo $this->form->renderField('urlctext', 'urls'); ?>
+            <?php echo $this->form->renderField('urlc', 'urls'); ?>
 
-					<div class="form-group">
-						<div class="form-control">
-							<?php echo $this->form->getInput('targetc', 'urls'); ?>
-						</div>
-					</div>
-				</div>
+            <?php echo $this->form->renderField('urlctext', 'urls'); ?>
+
+            <div class="form-group">
+              <div class="form-control">
+                <?php echo $this->form->getInput('targetc', 'urls'); ?>
+              </div>
+            </div>
+          </div>
 
 				<?php endif; ?>
 
@@ -191,7 +198,9 @@
 					<?php endif; ?>
 				</div>
 			</div>
+
 			<?php echo HTMLHelper::_('form.token'); ?>
+
 		</fieldset>
 	</form>
 </div>

@@ -18,8 +18,6 @@ defined('_JEXEC') or die;
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
 
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
-
 class Html extends BaseHtml
 {
 	/**
@@ -53,13 +51,7 @@ class Html extends BaseHtml
 	 */
 	protected function onBeforeBrowse()
 	{
+    // Relations to eager-load
     $this->setupBrowse(array('Author', 'Publisher'));
-  }
-
-
-	protected function onAfterEdit()
-	{
-    $model = $this->getModel();
-    $model->getAssetJTable();
   }
 }

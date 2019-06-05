@@ -21,6 +21,7 @@ use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissionsException;
 
 use \Joomla\CMS\Log\Log;
+Log::add('In BaseModel', Log::DEBUG, 'cajobboard');
 
 /**
  * Model class description
@@ -28,6 +29,15 @@ use \Joomla\CMS\Log\Log;
 class BaseModel extends DataModel
 {
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\AssetHelper;
+
+  /*
+   * Getter for known model fields, intended for use in site model behaviours like Check
+   */
+  public function getKnownFields()
+	{
+    return $this->knownFields;
+  }
+
 
   /**
    * The Check behaviour is designed to run on the onAfterCheck event. Any
@@ -60,6 +70,51 @@ class BaseModel extends DataModel
     return $this;
   }
 
+
+// @TODO: From JobPostings model, how are params normally handled on a per-record basis with FOF30?
+  /**
+	 * Overloaded bind function
+	 *
+	 * @param       array           named array
+	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
+   *
+	 * @since 1.0
+	 *//*
+	public function bind($array, $ignore = '')
+	{
+
+		if (isset($array['params']) && is_array($array['params']))
+		{
+			// Convert the params field to a string.
+      $parameter = new Registry;
+
+      $parameter->loadArray($array['params']);
+
+			$array['params'] = (string)$parameter;
+    }
+
+		return parent::bind($array, $ignore);
+  }*/
+
+
+  /**
+   * Transformations for model properties:
+   *
+   *   getMyAttribute($value)
+   *
+   * Called from find() or getItemsArray() via bind() via databaseDataToRecordData(), which
+   * loops through all $recordData items, after bind()'s body is finished but before onAfterBind
+   * event is fired. Also called from save() when that method is provided with optional data,
+   * e.g. the DataController applySave() method calls getMyAttribute() with input->getData() as
+   * the $value. save() subsequently calls the setMyAttribute() method before saving to the database.
+   *
+   *   setMyAttribute($value)
+   *
+   * Called from save() method to transform model properties to their database format before they
+   * are saved with insertObject() / updateObject() JDatabase calls.
+   */
+
+
   /**
 	 * Transform 'metadata' field to a JRegistry object on bind
 	 *
@@ -69,7 +124,6 @@ class BaseModel extends DataModel
 	 */
   protected function getMetadataAttribute($value)
   {
-Log::add('In Base Model, getMetadataAttribute() called', Log::DEBUG, 'cajobboard');
     // Make sure it's not a JRegistry already
     if (is_object($value) && ($value instanceof Registry))
     {
@@ -95,7 +149,7 @@ Log::add('In Base Model, getMetadataAttribute() called', Log::DEBUG, 'cajobboard
     {
       return $value;
     }
-Log::add('In Base Model, setMetadataAttribute() called. Return value: ' . $value->toString('JSON'), Log::DEBUG, 'cajobboard');
+
     // Return the data transformed to JSON
     return $value->toString('JSON');
   }
@@ -153,6 +207,19 @@ Log::add('In Base Model, setMetadataAttribute() called. Return value: ' . $value
   }
 
 
+  /**
+	 * Alias for belongsTo() relation. FOF has a hasOne() relation, where the relation field is
+   * in the foreign table. You can do the inverse (relation field in this model's table) by
+   * using belongsTo().
+	 *
+	 * @return   $this  For chaining
+	 */
+  public function inverseSideOfHasOne(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
+  {
+    $this->belongsTo($name, $foreignModelClass, $localKey, $foreignKey);
+  }
+
+
 	/**
 	 * Archive the record, i.e. set enabled to -1.
    * @TODO: Submit PR. DataModel is incorrectly setting this value to 2 so method over-ridden here.
@@ -182,5 +249,5 @@ Log::add('In Base Model, setMetadataAttribute() called. Return value: ' . $value
     $this->triggerEvent('onAfterArchive');
 
 		return $this;
-	}
+  }
 }

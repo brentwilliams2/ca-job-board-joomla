@@ -30,9 +30,11 @@
     * @return   string  Formatted time
     */
     public static function convertToTimeAgoString($dateCreated, $dateModified = null) {
-
+// time()             1557261473
+// $dateCreated       0000-00-00 00:00:00
+//
       // difference between current time and the database (MySQL format) item's created or modified time (whichever is later)
-      $diff = time() - strtotime($dateModified = null? $time : $dateModified);
+      $diff = time() - strtotime( $dateModified ? $dateModified : $dateCreated );
 
       if( $diff < 60 ) // it happened now
         return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_NOW');

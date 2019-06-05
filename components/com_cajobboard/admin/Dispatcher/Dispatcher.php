@@ -12,6 +12,10 @@
 
 namespace Calligraphic\Cajobboard\Admin\Dispatcher;
 
+if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
+use \Joomla\CMS\Toolbar\Toolbar;
+
 // no direct access
 defined('_JEXEC') or die;
 
@@ -28,7 +32,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	public function onBeforeDispatch()
 	{
     // Add component's toolbar button path to Joomla!'s Toolbar singleton
-    $toolbar = \JToolBar::getInstance();
+    $toolbar = ToolBar::getInstance();
     $toolbar->addButtonPath(realpath(__DIR__ . DS . '..' . DS . 'Toolbar' . DS . 'Buttons'));
 
     // Load common CSS and JavaScript

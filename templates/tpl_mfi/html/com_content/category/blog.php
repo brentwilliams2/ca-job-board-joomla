@@ -1,8 +1,8 @@
 <?php
 /**
- * Multi Family Insiders Bootstrap V3 Template
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
  *
- * com_content category blog layout override
+ * com_content category/blog.php template override
  *
  * @package     Calligraphic Job Board
  *
@@ -52,6 +52,7 @@
   <?php if ($this->params->get('show_cat_tags', 1) && !empty($this->category->tags->itemTags)) : ?>
 
 		<?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
+
     <?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
 
 	<?php endif; ?>

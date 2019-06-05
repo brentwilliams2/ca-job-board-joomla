@@ -10,59 +10,42 @@
 
 /* eslint-disable no-undef */
 
-/**
+/*
  * Register modules in this file with global onload handler
  */
 jQuery(document).ready(function() {
-  starRating.init();
+  // starRating.init();
 });
 
-/**
- * Generic submit form
- *
- * @param  {String}  task      The given task
- * @param  {node}    form      The form element
- * @param  {bool}    validate  The form element
- *
- * @returns  {void}
+
+/*
+ * Trigger a hidden form on clicking buttons for 'remove' tasks to send CSRF token
  */
-window.form.submit = function(task, form, validate) {
-
-  if (!form) {
-    form = document.getElementById('adminForm');
-  }
-
-  if (task) {
-    form.task.value = task;
-  }
-
-  // Toggle HTML5 validation
-  form.noValidate = !validate;
-
-  if (!validate) {
-    form.setAttribute('novalidate', '');
-
-  } else if ( form.hasAttribute('novalidate') ) {
-    form.removeAttribute('novalidate');
-  }
-
-  // Submit the form.
-  // Create the input type="submit"
-  var button = document.createElement('input');
-
-  button.style.display = 'none';
-
-  button.type = 'submit';
-
-  // Append it and click it
-  form.appendChild(button).click();
-
-  // If "submit" was prevented, make sure we don't get a build up of buttons
-  form.removeChild(button);
+removeSubmit = function(id) {
+  const form = jQuery('#removeForm-' + id);
+  form.submit();
 };
 
 
-/**
+/*
+ * Change pagination limit for page (number of items to show from select box)
+ */
+paginationLimitSubmit = function() {
+  let url = window.location.href;
+
+  const limitVal = jQuery('#pagination-limit').children('option:selected').val();
+
+  if (url.indexOf('?') > -1){
+    url += '&limit=' + limitVal;
+  } else {
+    url += '?limit=' + limitVal;
+  }
+
+  window.location.href = url;
+};
+
+
+/*
 * Methods to handle setting proper Bootstrap UI validation state, appends
 * or removes jQuery DOM element with error message below input box
 */
@@ -96,7 +79,7 @@ const validationUI = {
     return element;
   },
 
-  /**
+  /*
   * Change input box to failure state UI, and add queued error messages below
   *
   * @param  string|object  element  The reference to the input box to work on, or an HTML string
@@ -129,7 +112,7 @@ const validationUI = {
   }
 };
 
-/**
+/*
 * Methods to handle form input validation
 */
 /* eslint-disable no-unused-vars */
@@ -148,7 +131,7 @@ const validationHelper = {
     return validEmailRegExp.test(email) ? false : 'invalidEmail';
   },
 
-  /**
+  /*
   * Validate password based on system settings passed in hidden type input fields for
   * length, and including minimum number of symbols, uppercase characters, and numbers
   *

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/form/renderfield.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -8,6 +12,8 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
+
+  use \Joomla\CMS\HTML\HTMLHelper;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -22,15 +28,17 @@
 
   if (!empty($displayData['options']['showonEnabled']))
   {
-    JHtml::_('jquery.framework');
-    JHtml::_('script', 'jui/cms.js', false, true);
+    HTMLHelper::_('jquery.framework');
+    HTMLHelper::_('script', 'jui/cms.js', false, true);
   }
 ?>
 
-<div class="control-group <?php echo $displayData['options']['class']; ?>" <?php echo $displayData['options']['rel']; ?>>
+<div class="control-group <?php echo $displayData['options']['class']; ?>" <?php echo $displayData['options']['rel']; ?> >
+
 	<?php if (empty($displayData['options']['hiddenLabel'])) : ?>
 		<div class="control-label"><?php echo $displayData['label']; ?></div>
 	<?php endif; ?>
 
 	<div class="controls"><?php echo $displayData['input']; ?></div>
+
 </div>

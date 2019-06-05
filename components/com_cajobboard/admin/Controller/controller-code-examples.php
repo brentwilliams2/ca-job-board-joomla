@@ -9,6 +9,7 @@ die();
 
 use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\Factory;
 use \Joomla\CMS\Table\Table;
 use \Joomla\CMS\Table\Asset;
 use \Joomla\Registry\Registry;
@@ -17,17 +18,54 @@ use \Joomla\CMS\Helper\TagsHelper;
 use \Joomla\CMS\Editor\Editor;
 use \Joomla\CMS\Pagination\Pagination;
 use \Joomla\CMS\Helper\ModuleHelper;
-use \Joomla\CMS\Factory;
+
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Router\Route;
+use \Joomla\CMS\Uri\Uri;
 use \Joomla\CMS\HTML\HTMLHelper; // JHtml
 use \Joomla\CMS\Document\Document;
 use \Joomla\CMS\Document\ErrorDocument;
 use \Joomla\CMS\Document\HtmlDocument;
 use \Joomla\CMS\Plugin\CMSPlugin; // JPlugin
+use \Joomla\CMS\Language\Associations; // JLanguageAssociations
+use \Joomla\CMS\Layout\LayoutHelper;
+use \Joomla\CMS\Layout\FileLayout; // JLayoutFile
 
 use \Joomla\CMS\Log\Log;
 Log::add('Job Occupational Categories model called', Log::DEBUG, 'cajobboard');
+
+
+// Example microdata markup for Schema.org:
+?>
+
+<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? Factory::getConfig()->get('language') : $this->item->language; ?>" />
+
+<h2 itemprop="headline">
+  <?php echo $this->escape($this->item->title); ?>
+</h2>
+
+<?php // also dateCreated and dateModified as itemprops ?>
+<time datetime="<?php echo JHtml::_('date', $displayData['item']->publish_up, 'c'); ?>" itemprop="datePublished">
+  <?php echo Text::sprintf('COM_CONTENT_PUBLISHED_DATE_ON', JHtml::_('date', $displayData['item']->publish_up, Text::_('DATE_FORMAT_LC3'))); ?>
+</time>
+
+<?php // category ?>
+<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($displayData['item']->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
+
+<meta itemprop="interactionCount" content="UserPageVisits:<?php echo $displayData['item']->hits; ?>" />
+
+<section itemscope itemtype="http://schema.org/Person">
+  Hello, my name is
+  <span itemprop="name">John Doe</span>.
+  You can visit my homepage at
+  <a href="http://www.JohnnyD.com" itemprop="url">www.JohnnyD.com</a>.
+  <section itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    I live in
+    <span itemprop="addressRegion">Georgia</span>.
+  </section>
+</section>
+
+<?php
 
 // Old Joomla! API had methods like raiseWarning(), raiseNotice(), and raiseError()
 // Now just throw an exception on error, and/or use:

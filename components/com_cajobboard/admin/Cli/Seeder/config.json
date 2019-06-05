@@ -1,11 +1,40 @@
 {
-  "seed": 1,
-  "scaling": 1,
-  "models": [
-    "Answers"
-  ],
   "count": {
-    "Answers": 100,
-    "Organizations": 100
-  }
+    "Answers": 200,
+    "DiversityPolicies": 10,
+    "EmployerAggregateRatings": 2,
+    "GeoCoordinates": 20,
+    "ImageObjects": 20,
+    "JobEmploymentTypes": 8,
+    "JobOccupationalCategories": 46,
+    "JobPostings": 10,
+    "Organizations": 2,
+    "OrganizationRoles": 3,
+    "OrganizationTypes": 9,
+    "Places": 20,
+    "QAPages": 2,
+    "Questions": 30,
+    "Reports": 2,
+    "Resumes": 2,
+    "Reviews": 2
+  },
+  "joinTables": {
+    "QAPages.fieldName": "#__",
+    "Questions.fieldName": "#__"
+  },
+  "models": [
+    "Answers",
+    "GeoCoordinates",
+    "ImageObjects",
+    "JobPostings",
+    "Organizations",
+    "Places",
+    "QAPages",
+    "Questions",
+    "Reports",
+    "Resumes",
+    "Reviews"
+  ],
+  "scaling": 1,
+  "seed": 1
 }

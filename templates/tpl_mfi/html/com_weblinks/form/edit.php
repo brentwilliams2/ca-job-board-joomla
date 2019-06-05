@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * com_weblinks form/edit.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -9,13 +13,17 @@
  *
  */
 
+  use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\Router\Route;
+
   // no direct access
   defined('_JEXEC') or die;
 
-  JHtml::_('behavior.keepalive');
-  JHtml::_('behavior.formvalidation');
-  JHtml::_('formbehavior.chosen', 'select');
-  JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
+  HTMLHelper::_('behavior.keepalive');
+  HTMLHelper::_('behavior.formvalidation');
+  HTMLHelper::_('formbehavior.chosen', 'select');
+  HTMLHelper::_('behavior.modal', 'a.modal_jform_contenthistory');
 
   // Create shortcut to parameters.
   $params = $this->state->get('params');
@@ -39,18 +47,19 @@
     </h1>
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=form&w_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo Route::_('index.php?option=com_weblinks&view=form&w_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+
 		<div class="btn-toolbar">
 
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
-					<span class="fa fa-check"></span> <?php echo JText::_('JSAVE') ?>
+					<span class="fa fa-check"></span> <?php echo Text::_('JSAVE') ?>
 				</button>
 			</div>
 
 			<div class="btn-group">
 				<button type="button" class="btn btn-default" onclick="Joomla.submitbutton('weblink.cancel')">
-					<span class="fa fa-close"></span> <?php echo JText::_('JCANCEL') ?>
+					<span class="fa fa-close"></span> <?php echo Text::_('JCANCEL') ?>
 				</button>
 			</div>
 
@@ -63,6 +72,7 @@
 		</div>
 
 		<hr class="hr-condensed" />
+
 		<?php echo $this->form->renderField('title'); ?>
 		<?php echo $this->form->renderField('alias'); ?>
 		<?php echo $this->form->renderField('catid'); ?>
@@ -78,10 +88,15 @@
 		<?php endif; ?>
 
 		<?php echo $this->form->renderField('language'); ?>
+
 		<?php echo $this->form->renderField('description'); ?>
 
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
+
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+
+		<?php echo HTMLHelper::_('form.token'); ?>
+
 	</form>
+
 </div>

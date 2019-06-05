@@ -11,7 +11,7 @@
 
 namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates;
 
-use Faker;
+use \Faker;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -36,7 +36,7 @@ class BaseTemplate
 	 */
 	public function generate($config, $seed = null)
 	{
-    $faker = Faker\Factory::create();
+    $faker = \Faker\Factory::create();
 
     // This provider overrides Faker's default Lorem Ipsum generator with more readable text
     $faker->addProvider(new \NewAgeIpsum\NewAgeProvider($faker));
@@ -60,6 +60,11 @@ class BaseTemplate
 
     foreach (array_keys(get_object_vars($this)) as $property)
     {
+      if ( !method_exists($this, $property) )
+      {
+        throw new \Exception('Exception calling property function in CLI seeder BaseTemplate generate() method, $property: ' . $property);
+      }
+
       $this->$property($config, $faker);
     }
 

@@ -11,16 +11,16 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
-use \Joomla\CMS\Factory;
-use \Joomla\Registry\Registry;
-use \Joomla\CMS\Pagination\Pagination;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\HTML\HTMLHelper;
-use \FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use FOF30\Model\DataModel\Collection;
-use \FOF30\View\DataView\Html;
 use Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
+use Calligraphic\Cajobboard\Site\Helper\Semantic;
+use FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Site\Helper\Pagination;
+use \FOF30\Container\Container;
+use \FOF30\View\DataView\Html;
+use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -29,14 +29,6 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/Helper/Html');
 
 class BaseHtml extends Html
 {
-	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  Registry
-	 */
-  protected $componentParams;
-
-
 	/**
 	 * Overridden. Load view-specific language file.
 	 *
@@ -48,15 +40,31 @@ class BaseHtml extends Html
     parent::__construct($container, $config);
 
     // Get component parameters
+    // @TODO: Not already being done somewhere else?
     $this->componentParams = ComponentHelper::getParams('com_cajobboard');
 
-    // Load CSS for admin view
+    // Load CSS for site view
     $this->addCssFile('media://com_cajobboard/css/frontend.css');
+
+    // Set the page parameters on the class, the base class does this for browse views only
+
+    /** @var \Joomla\CMS\Application\SiteApplication $app */
+    $app = Factory::getApplication();
+
+    // @TODO: check if it's already done first? where is it being done?
+    $this->pageParams = $app->getParams();
+
+    $semanticHelper = new Semantic($this);
+
+    $semanticHelper->setPageTitle();
+    $semanticHelper->addOpenGraphMetaTags();
   }
 
 
   /**
 	 * Load the language file for this view
+   *
+   * @param   string  $view   The name of the view, lowercased, to load a language file for
 	 */
 	public function loadLanguageFileForView($view)
 	{
@@ -72,10 +80,33 @@ class BaseHtml extends Html
 
   /**
 	 * Executes before rendering the page for the add task.
+   *
+   * The model is pushed into the View by the Controller. As you can see in DataController::add() it is possible
+   * to push both default values (defaultsForAdd) as well as data from the state (e.g. when saving a new record
+   * failed for some reason and the user needs to edit it). That's why we populate defaultFields from $model. We
+   * still do a full reset on a clone of the Model to get a clean object and merge default values (instead of null
+   * values) with the data pushed by the controller.
 	 */
 	protected function onBeforeAdd()
 	{
-    parent::onBeforeAdd();
+		/** @var DataModel $model */
+    $model = $this->getModel();
+
+    $defaultFields = $model->getData();
+
+    $this->item = $model->getClone()->reset(true, true);
+
+		foreach ($defaultFields as $k => $v)
+		{
+			try
+			{
+				$this->item->setFieldValue($k, $v);
+			}
+			catch (\Exception $e)
+			{
+				// Suppress errors in field assignments at this stage
+			}
+		}
   }
 
 
@@ -84,7 +115,33 @@ class BaseHtml extends Html
 	 */
 	protected function onBeforeEdit()
 	{
-    parent::onBeforeEdit();
+		/** @var DataModel $model */
+    $model = $this->getModel();
+
+		// It seems that I can't edit records, maybe I can edit only this one due asset tracking?
+		if (!$this->permissions->edit || !$this->permissions->editown)
+		{
+			if ($model)
+			{
+				// Record is tracked, check whether user can edit this record
+				if ($model->isAssetsTracked())
+				{
+          $platform = $this->container->platform;
+
+					if (!$this->permissions->edit)
+					{
+						$this->permissions->edit = $platform->authorise('core.edit', $model->getAssetName());
+          }
+
+					if (!$this->permissions->editown)
+					{
+						$this->permissions->editown = $platform->authorise('core.edit.own', $model->getAssetName());
+					}
+				}
+			}
+    }
+
+		$this->item = $model->findOrFail();
   }
 
 
@@ -93,12 +150,20 @@ class BaseHtml extends Html
 	 */
 	protected function onBeforeRead()
 	{
-		parent::onBeforeRead();
+		/** @var DataModel $model */
+    $model = $this->getModel();
+
+		$this->item = $model->findOrFail();
   }
 
 
 	/**
-	 * Setup for the browse task, called from onBeforeBrowse() View method
+	 * Setup for the browse task, called from onBeforeBrowse() View method.
+   * This allows using an onBeforeBrowse() method in inherited views that
+   * just sets up the correct relations for the model, functionality not
+   * default to FOF30 base Raw view's onBeforeBrowse() method.
+   *
+   * @param   Array   $withModels   Array of relations for the model to eager load.
 	 */
 	protected function setupBrowse($withModels)
 	{
@@ -108,23 +173,25 @@ class BaseHtml extends Html
 		// Persist the state in the session
     $model->savestate(1);
 
+    // Set the current pagination parameters from the state on the model and view
+    $this->setPaginationParams($model);
+
 		// Assign items to the view
     $this->items = $model->with($withModels)->get();
-
-    $this->itemCount = $model->count();
 
     $this->setPagination($model);
   }
 
 
 	/**
-	 * Set the pagination object for this view
+	 * Set the pagination object for this view. This logic is refactored
+   * out of the base Raw view's onBeforeBrowse() method.
    *
    * @param  DataModel  $model    The model object for this view
 	 *
 	 * @return void
 	 */
-	public function setPagination(DataModel $model)
+	public function setPaginationParams(DataModel $model)
 	{
     // Display limits
     $defaultLimit = 20;
@@ -144,7 +211,8 @@ class BaseHtml extends Html
     $model->limitstart = $this->lists->limitStart;
     $model->limit = $this->lists->limit;
 
-		// Ordering information
+    // Ordering information
+    // @TODO: This is always ordering by record number, we want to display by "featured" at top and by date or other criteria like in admin section for Answers
 		$this->lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
     $this->lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
 
@@ -152,8 +220,22 @@ class BaseHtml extends Html
 		{
 			$this->lists->order_Dir = strtolower($this->lists->order_Dir);
     }
+  }
 
-		// Pagination
+  /*
+   * Create a Pagination object by querying the DB for a count of total items,
+   * based on the previous query filters used to actually fetch the data.
+   *
+   * @param  DataModel  $model    The model object for this view
+	 *
+	 * @return void
+   */
+  public function setPagination(DataModel $model)
+	{
+    // Run a "count all" query on the DB
+    $this->itemCount = $model->count();
+
+    // Create the view's pagination object with results from the model
     $this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
   }
 }

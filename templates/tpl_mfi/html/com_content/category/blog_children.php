@@ -1,8 +1,8 @@
 <?php
 /**
- * Multi Family Insiders Bootstrap V3 Template
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
  *
- * com_content category blog_children layout override
+ * com_content category/blog_children.php template partial override
  *
  * @package     Calligraphic Job Board
  *
@@ -36,7 +36,7 @@
       endif;
 		?>
 
-      <div<?php echo $class; ?>>
+      <div <?php echo $class; ?>>
 
         <?php $class = ''; ?>
 

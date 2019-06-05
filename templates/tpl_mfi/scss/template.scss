@@ -48,6 +48,9 @@
 @import 'partials/shopping_cart';
 @import 'partials/social_icons';
 
+// Pagination styles - see also in html/layouts/: link.php, links.php, and list.php
+@import 'partials/pagination';
+
 // Load Google font locally
 @font-face {
   font-family: 'Source Sans Pro';

@@ -34,6 +34,8 @@
  * $item->menu_image_css
  */
 
+  use \Joomla\CMS\Helper\ModuleHelper;
+
   // no direct access
   defined('_JEXEC') or die;
 
@@ -109,11 +111,11 @@
           case 'component':
           case 'heading':
           case 'url':
-            require JModuleHelper::getLayoutPath('mod_menu', 'default_' . $item->type);
+            require ModuleHelper::getLayoutPath('mod_menu', 'default_' . $item->type);
             break;
 
           default:
-            require JModuleHelper::getLayoutPath('mod_menu', 'default_url');
+            require ModuleHelper::getLayoutPath('mod_menu', 'default_url');
             break;
         endswitch;
 

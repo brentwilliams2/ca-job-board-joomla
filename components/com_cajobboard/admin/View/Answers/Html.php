@@ -46,11 +46,4 @@ class Html extends BaseHtml
 	{
     $this->setupBrowse(array('Author', 'Publisher'));
   }
-
-
-	protected function onAfterEdit()
-	{
-    $model = $this->getModel();
-    $model->getAssetJTable();
-  }
 }

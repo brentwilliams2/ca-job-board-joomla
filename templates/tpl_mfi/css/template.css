@@ -239,14 +239,20 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 /*
- * Breadcrumbs with angle brack separator
+ * Breadcrumbs with angle bracket separator
  */
 .breadcrumbs-container {
   background-color: #fff;
+  color: #777777;
   list-style: none;
   margin: 0 0 20px;
-  padding: 8px 15px;
-  color: #777777; }
+  padding: 8px 15px; }
+
+.semantic-breadcrumb-container {
+  margin: 0; }
+  .semantic-breadcrumb-container li {
+    display: inline;
+    text-decoration: none; }
 
 /*
  * Multi Family Insiders Bootstrap V3 Template
@@ -782,6 +788,35 @@
   .social-icons-container a {
     float: right !important;
     padding: 10px; }
+
+/*
+ * Multi Family Insiders Bootstrap V3 Template
+ *
+ * Pagination styles - see also in html/layouts/: link.php, links.php, and list.php
+ *
+ * @package     Calligraphic Job Board
+ *
+ * @version     0.1 May 1, 2018
+ * @author      Calligraphic, LLC http://www.calligraphic.design
+ * @copyright   Copyright (C) 2018 Calligraphic, LLC
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/*
+ * Control for how many items should show per page
+ *
+ * <select> wrapper for the options output from Pagination class
+ */
+.pagination-limit {
+  margin-left: 10px; }
+
+/*
+ * Pagination links e.g. First, Previous, 1, 2, n, Next, Last
+ *
+ * <div> wrapper for the output from Pagination class
+ */
+.pagination-links {
+  display: flex;
+  justify-content: center; }
 
 @font-face {
   font-family: 'Source Sans Pro';

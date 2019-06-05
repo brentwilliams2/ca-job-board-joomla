@@ -20,7 +20,7 @@ use FOF30\Container\Container;
 /**
  * Fields:
  *
- * @property int      $review_id             Surrogate primary key
+ * @property int      $review_id                  Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
@@ -46,13 +46,13 @@ use FOF30\Container\Container;
  * @property int      $cat_id                     Category ID for this content item.
  * @property int      $hits                       Number of hits the content item has received on the site.
  * @property int      $featured                   Whether this content item is featured or not.
+ * SCHEMA: Thing
+ * @property  string  $name                       A name for this review, aliased to title.
  * SCHEMA: Review
  * @property  Organizations		  $ItemReviewed     The employer being reviewed/rated, FK to #__cajobboard_organizations
- * @property  int		  $review_body   The actual body of the review.
- *
+ * @property  string  $review_body                The actual body of the review.
  * SCHEMA: Review(reviewRating) -> Rating(ratingValue)
  * @property  int		  $rating_value               The rating for the content. Default worstRating 1 and bestRating 5 assumed.
- *
  * SCHEMA: CreateWork
  * @property  JUser		$Author                     The author of this content or rating, FK to #__users
  */

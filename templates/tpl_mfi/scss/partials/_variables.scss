@@ -10,6 +10,10 @@ $nav-secondary-margin-right:  5px;
 
 //== Colors
 //
+
+// ## Convenience vars, since SASS lint rules require vars for colors
+$black:                  #000 !default;
+
 //## Gray and brand colors for use across Bootstrap.
 
 $gray-base:              #000 !default;

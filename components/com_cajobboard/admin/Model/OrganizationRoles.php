@@ -23,18 +23,19 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 /*
  * Fields:
  *
- * @property int      $organization_type_id       Surrogate primary key
-
- * SCHEMA: Organizaton (OrganizationType) -> ItemList
- * @property string   $itemListElement            The type of organization, e.g. Employer, Recruiter, etc.
- * @property int      $itemListOrderType          The order this item should appear in the list.
+ * @property int      $organization_role_id       Surrogate primary key
+ *
+ * SCHEMA: Organizaton (additionalType) -> Role(roleName)
+ * @property string   $role_name      The role of the organization, e.g. Employer, Recruiter, etc.
  *
  * SCHEMA: Thing
- * @property string   $description                A description of the type of organization.
- * @property string   $url                        Link to schema for organization type, e.g. wikipedia page on Employer.
+ * @property string   $description    A description of the role of the organization
+ * @property string   $url            Link to schema for organization type, e.g. wikipedia page on Employer, Recruiter, etc.
  */
 class OrganizationRoles extends BaseModel
 {
+  use \FOF30\Model\Mixin\Assertions;
+
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -44,17 +45,32 @@ class OrganizationRoles extends BaseModel
 	public function __construct(Container $container, array $config = array())
 	{
     // override default table names and primary key id
-    $this->tableName = "#__cajobboard_organization_roles";
-    $this->idFieldName = "organization_role_id";
+		$config['tableName'] = '#__cajobboard_organization_roles';
+    $config['idFieldName'] = 'organization_role_id';
 
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.organizational_roles';
 
     parent::__construct($container, $config);
+  }
 
-    // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
+
+  /**
+	 * Perform checks on data for validity
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+	public function check()
+	{
+    // @TODO: Finish validation checks
+    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_ORGANIZATION_ROLES_ERR_ROLE_NAME');
+    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_ORGANIZATION_ROLES_ERR_DESCRIPTION');
+    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_ORGANIZATION_ROLES_ERR_URL');
+
+		parent::check();
+
+    return $this;
   }
 }

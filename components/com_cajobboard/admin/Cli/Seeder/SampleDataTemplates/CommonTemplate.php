@@ -20,6 +20,13 @@ defined('_JEXEC') or die;
 class CommonTemplate extends BaseTemplate
 {
 	/**
+	 * Category ID for this item.
+	 *
+	 * @var    int
+   */
+  public $cat_id;
+
+	/**
 	 * Alias for SEF URL.
 	 *
 	 * @var    string
@@ -111,6 +118,20 @@ class CommonTemplate extends BaseTemplate
    */
   public $description;
 
+  /**
+	 * Date the item was created
+	 *
+	 * @var    \DateTime
+   */
+  public $created_on;
+
+  /**
+	 * Userid of the creator of this item.
+	 *
+	 * @var    \JUser
+   */
+  public $created_by;
+
 
   /**
 	 * Userid of person that last modified this item.
@@ -123,10 +144,30 @@ class CommonTemplate extends BaseTemplate
   /**
 	 * Setters for Common fields
    */
+
+  public function cat_id ($config, $faker)
+  {
+    // need to get model name being worked on, normalized to human-readable form e.g. "Job Postings"
+    $className = explode( '\\', get_class($this) );
+    $modelName = preg_replace('/Template$/', '', array_pop($className) );
+    $normalModelName = preg_replace('/(?<!^)[A-Z]/', ' $0', $modelName);
+
+    foreach ($config->categories as $category)
+    {
+      if ($category->title == $normalModelName)
+      {
+        $this->cat_id = $category->id;
+
+        return;
+      }
+    }
+
+    $this->cat_id = null;
+  }
+
   public function slug ($config, $faker)
   {
-    // @TODO: not putting a hyphen between first and second word
-    $this->slug = implode('-', $faker->words($faker->numberBetween(1, 5)));
+    $this->slug = $faker->slug();
   }
 
   // Set to a view level for this item: 1 is "Public", 2 is "Registered", etc.
@@ -157,7 +198,6 @@ class CommonTemplate extends BaseTemplate
   // Common relation fields
   public function metadata ($config, $faker)
   {
-    // @TODO: not saving correctly, same problem in model field with attribute handlers
     $this->metadata = '{"robots":"index, follow","author":"' . $faker->name . '"}';
   }
 
@@ -193,6 +233,7 @@ class CommonTemplate extends BaseTemplate
       case 1:
         $this->featured = true;
         break;
+
       default:
         $this->featured = false;
     }
@@ -211,6 +252,18 @@ class CommonTemplate extends BaseTemplate
   public function description ($config, $faker)
   {
     $this->description = $faker->paragraph;
+  }
+
+  public function created_by ($config, $faker)
+  {
+    $this->created_by = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
+  }
+
+  public function created_on ($config, $faker)
+  {
+    $dateTime = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
+
+    $this->created_on = $dateTime->format('Y-m-d H:i:s');
   }
 
   public function modified_by ($config, $faker)

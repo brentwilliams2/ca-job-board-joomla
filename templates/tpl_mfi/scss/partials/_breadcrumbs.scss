@@ -15,12 +15,32 @@
 // sass-lint:disable no-empty-rulesets
 
 /*
- * Breadcrumbs with angle brack separator
+ * Breadcrumbs with angle bracket separator
  */
 .breadcrumbs-container {
   background-color: $body-bg;
+  color: $text-color;
   list-style: none;
   margin: 0 0 $line-height-computed;
   padding: 8px 15px;
-  color: $text-color;
 }
+
+// A <ul> semantic container of breadcrumbs with typeof="BreadcrumbList"
+.semantic-breadcrumb-container {
+  margin: 0;
+
+  // Each breadcrumb is wrapped in a <li> inside the semantic container
+  li {
+    display: inline;
+    text-decoration: none;
+  }
+}
+
+// Anchors <a> around a <span> holding the breadcrumb page name, for non-terminal pages in the trail
+.pathway {}
+
+// Span <span> around a <span> holding a non-linked and non-final breadcrumb page name
+.non-link-pathway {}
+
+// <span> around a <span> holding the last breadcrumb page name in the trail
+.last-crumb {}

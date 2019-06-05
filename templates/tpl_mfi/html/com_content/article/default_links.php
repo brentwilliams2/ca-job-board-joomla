@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * com_content article/default_links.php template partial override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -24,6 +28,8 @@
   $params = $this->item->params;
 
   if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))) :
+
+
 ?>
 
 <div class="content-links">
@@ -33,7 +39,8 @@
 			array($urls->urla, $urls->urlatext, $urls->targeta, 'a'),
 			array($urls->urlb, $urls->urlbtext, $urls->targetb, 'b'),
 			array($urls->urlc, $urls->urlctext, $urls->targetc, 'c')
-			);
+      );
+
 			foreach ($urlarray as $url) :
 				$link = $url[0];
 				$label = $url[1];
@@ -50,6 +57,7 @@
 				// If no target is present, use the default
 				$target = $target ?: $params->get('target' . $id);
 		?>
+
 			<li class="content-links-<?php echo $id; ?>">
 				<?php
 					// Compute the correct link
@@ -67,7 +75,8 @@
 							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600';
 							echo "<a href=\"" . htmlspecialchars($link, ENT_COMPAT, 'UTF-8') . "\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\" rel=\"noopener noreferrer\">" .
 								htmlspecialchars($label, ENT_COMPAT, 'UTF-8') . '</a>';
-							break;
+              break;
+
 						case 3:
 							// Open in a modal window
 							HTMLHelper::_('behavior.modal', 'a.modal');

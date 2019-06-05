@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reports` (
 
   /* FOF "magic" fields */
   asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
-  access INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'The Joomla! view access level.',
-  enabled TINYINT NOT NULL DEFAULT '0' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
-  created_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record creation, auto-filled by save().',
+  access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
+  enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
+  created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
   created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
-  modified_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
+  modified_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
-  locked_on DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
+  locked_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reports` (
   description TEXT COMMENT 'A short description of this report.',
 
   /* SCHEMA: CreativeWork */
-  about__model VARCHAR(50) NOT NULL COMMENT 'The model name this report refers to.',
-  about__id BIGINT UNSIGNED NOT NULL COMMENT 'The entity id in the foreign model this report refers to.',
-  keywords TEXT COMMENT 'The reasons this content is being reported, usually set from a predefined system list of reasons.',
+  about__model VARCHAR(50) NOT NULL COMMENT 'The foreign model name the item of this report refers to, e.g. Answers.',
+  about__id BIGINT UNSIGNED NOT NULL COMMENT 'The primary key of the foreign model the item of this report refers to.',
+  keywords TEXT COMMENT 'The reasons this content is being reported. Use table #__cajobboard_report_reasons to populate in views.',
   `text` TEXT COMMENT 'The actual text of this report.',
 
   /* DDL */
@@ -58,6 +58,34 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reports` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/**
+ * Report Reasons table for classifying abusive content reports
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_report_reasons` (
+  report_reason_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  reason VARCHAR(255) COMMENT 'The category of abusive content report, e.g. spam, inappropriate language, etc.',
+  url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for type of complaint, e.g. wikipedia page on Profanity',
+
+  /* DDL */
+  PRIMARY KEY (report_reason_id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/**
+ * Initial abusive content report reasons
+ */
+INSERT INTO `#__cajobboard_report_reasons` (reason, url) VALUES
+  ('COM_CAJOBBOARD_REPORTS_REASON_INAPPROPRIATE_LANGUAGE', 'https://en.wikipedia.org/wiki/Profanity'),
+  ('COM_CAJOBBOARD_REPORTS_REASON_SPAM', 'https://en.wikipedia.org/wiki/Messaging_spam'),
+  ('COM_CAJOBBOARD_REPORTS_REASON_DOX', 'https://en.wikipedia.org/wiki/Doxing'),
+  ('COM_CAJOBBOARD_REPORTS_REASON_ILLEGAL', 'https://en.wikipedia.org/wiki/Notice_and_take_down'),
+  ('COM_CAJOBBOARD_REPORTS_REASON_IRRELEVANT', 'https://en.wikipedia.org/wiki/Relevance'),
+  ('COM_CAJOBBOARD_REPORTS_REASON_CRITICISM', 'https://en.wikipedia.org/wiki/Criticism');
 
 
 /*

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/toolbar/title.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -14,6 +18,7 @@
 
   $icon = empty($displayData['icon']) ? 'generic' : preg_replace('#\.[^ .]*$#', '', $displayData['icon']);
 ?>
+
 <h1 class="page-title">
 	<span class="icon-<?php echo $icon; ?> fa fa-<?php echo $icon; ?>"></span>
 	<?php echo $displayData['title']; ?>

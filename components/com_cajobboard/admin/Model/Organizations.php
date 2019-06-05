@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Organization Model
+ * Admin Organizations Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -90,6 +90,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  */
 class Organizations extends BaseModel
 {
+  use \FOF30\Model\Mixin\Assertions;
+
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -99,57 +101,98 @@ class Organizations extends BaseModel
 	public function __construct(Container $container, array $config = array())
 	{
     // override default table names and primary key id
-    $this->tableName = "#__cajobboard_organizations";
-    $this->idFieldName = "organization_id";
+		$config['tableName'] = '#__cajobboard_organizations';
+    $config['idFieldName'] = 'organization_id';
 
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.organizations';
 
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      'Category',   // Set category in new records
+      'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
+      'Publish',    // Set the publish_on field for new records
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'        // Add Joomla! Tags support
+    );
+
     parent::__construct($container, $config);
 
-    // Add behaviours to the model
-    $this->addBehaviour('Language');
-    $this->addBehaviour('Tags');
-    $this->addBehaviour('Filters');
+    /* Set up relations after parent constructor */
 
-    /*
-     * Set up relations
-     */
+
+    // table field for belongsTo relation is in this model's table
 
     // many-to-one FK to  #__cajobboard_places
     $this->belongsTo('Location', 'Places@com_cajobboard', 'location', 'place_id');
 
-    // many-to-many FK to  #__cajobboard_places via join table
-    $this->belongsToMany('Branches', 'Places@com_cajobboard', 'organization_id', 'place_id', '#__cajobboard_organizations_places');
-
     // many-to-one FK to  #__cajobboard_image_objects
     $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
 
-    // many-to-many FK to  #__cajobboard_image_objects via join table
-    $this->belongsToMany('Images', 'ImageObjects@com_cajobboard', 'image', 'image_object_id', '#__cajobboard_organizations_images');
-
     // one-to-one FK to  #__content through DiversityPolicies model
     $this->belongsTo('DiversityPolicy', 'DiversityPolicies@com_cajobboard', 'diversity_policy', 'diversity_policy_id');
-
-    // one-to-one FK to  #__cajobboard_employer_aggregate_ratings
-    $this->hasOne('AggregateRating', 'EmployerAggregateRatings@com_cajobboard', 'aggregate_rating', 'employer_aggregate_rating_id');
-
-    // one-to-many FK to #__cajobboard_reviews
-    $this->hasMany('Reviews', 'Reviews@com_cajobboard', 'organization_id', 'review_id');
-
-    // many-to-many FK to #__cajobboard_persons
-    $this->belongsToMany('Employees', 'Persons@com_cajobboard', 'organization_id', 'id', '#__cajobboard_organizations_employees', 'organization_id', 'employee_id');
-
-    // many-to-many FK to #__cajobboard_organizations
-    $this->belongsToMany('MemberOf', 'Organizations@com_cajobboard', 'organization_id', 'organization_id', '#__cajobboard_organizations_organizations', 'organization_id', 'member_of_organization_id');
-
-    // one-to-one FK to  #__cajobboard_organizations
-    $this->hasOne('ParentOrganization', 'Organizations@com_cajobboard', 'parent_organization', 'organization_id');
 
     // many-to-one FK to  #__cajobboard_organization_types
     $this->belongsTo('RoleName', 'OrganizationRoles@com_cajobboard', 'role_name', 'organization_role_id');
 
     // many-to-one FK to  #__cajobboard_organization_types
     $this->belongsTo('OrganizationType', 'OrganizationTypes@com_cajobboard', 'organization_type', 'organization_type_id');
+
+
+    // table field for inverseSideOfHasOne relation is in this model's table
+
+    // one-to-one FK to  #__cajobboard_employer_aggregate_ratings
+    $this->inverseSideOfHasOne('AggregateRating', 'EmployerAggregateRatings@com_cajobboard', 'aggregate_rating', 'employer_aggregate_rating_id');
+
+    // one-to-one FK to  #__cajobboard_organizations
+    $this->inverseSideOfHasOne('ParentOrganization', 'Organizations@com_cajobboard', 'parent_organization', 'organization_id');
+
+
+    // relation field for hasMany is in the foreign table
+
+    // one-to-many FK to #__cajobboard_reviews
+    $this->hasMany('Reviews', 'Reviews@com_cajobboard', 'organization_id', 'review_id');
+
+
+    // relation field for belongsToMany is in a join table
+
+    // many-to-many FK to  #__cajobboard_places via join table
+    $this->belongsToMany('Branches', 'Places@com_cajobboard', 'organization_id', 'place_id', '#__cajobboard_organizations_places');
+
+    // many-to-many FK to  #__cajobboard_image_objects via join table
+    $this->belongsToMany('Images', 'ImageObjects@com_cajobboard', 'image', 'image_object_id', '#__cajobboard_organizations_images');
+
+    // many-to-many FK to #__cajobboard_persons
+    $this->belongsToMany('Employees', 'Persons@com_cajobboard', 'organization_id', 'id', '#__cajobboard_organizations_employees', 'organization_id', 'employee_id');
+
+    // many-to-many FK to #__cajobboard_organizations
+    $this->belongsToMany('MemberOf', 'Organizations@com_cajobboard', 'organization_id', 'organization_id', '#__cajobboard_organizations_organizations', 'organization_id', 'member_of_organization_id');
+  }
+
+
+  /**
+	 * Perform checks on data for validity
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+	public function check()
+	{
+    // @TODO: Finish validation checks
+    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_JOB_POSTING_ERR_TITLE');
+
+		parent::check();
+
+    return $this;
   }
 }

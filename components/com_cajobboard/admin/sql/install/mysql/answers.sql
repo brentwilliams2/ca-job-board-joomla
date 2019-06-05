@@ -1,8 +1,4 @@
 /**
- * Data model for Question and Answer Pages
- *
- * QAPage type is a subtype of WebPage. Question and Answer entities point to a QAPage.
- *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
@@ -11,7 +7,7 @@
  */
 
 /**
- * Answer SQL
+ * Answer data model SQL
  *
  * Uses schema https://schema.org/Answer
  */
@@ -20,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
-  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
+  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
   enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
   created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
@@ -47,16 +43,16 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
   note VARCHAR(255) COMMENT 'A note to save with this answer in the back-end interface.',
 
   /* SCHEMA: Thing */
-  name VARCHAR(255) COMMENT 'A title to use for the answer.',
-  description TEXT COMMENT 'A description of this answer.',
+  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
+  description TEXT COMMENT 'Short description of the answer, used for the text shown on social media via shares and search engine results.',
 
   /* SCHEMA: CreativeWork */
-  is_part_of BIGINT UNSIGNED COMMENT 'This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)',
+  is_part_of BIGINT UNSIGNED COMMENT 'This property points to a Question entity associated with this answer. FK to #__cajobboard_questions(question_id)',
   publisher BIGINT UNSIGNED COMMENT 'The company that wrote this answer. FK to #__organizations(organization)id).',
   `text` TEXT COMMENT 'The text of the answer.',
 
   /* SCHEMA: Answer */
-  parent_item BIGINT UNSIGNED COMMENT 'The question this answer is intended for. FK to #__cajobboard_questionss(question_id)',
+  parent_item BIGINT UNSIGNED COMMENT 'The question this answer is intended for. FK to #__cajobboard_questions(question_id)',
   upvote_count INT DEFAULT '0' COMMENT 'Upvote count for this item.',
   downvote_count INT DEFAULT '0' COMMENT 'Downvote count for this item.',
 

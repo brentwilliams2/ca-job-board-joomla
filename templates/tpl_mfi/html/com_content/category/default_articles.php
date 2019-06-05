@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * com_content category/default_articles.php template partial override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -13,6 +17,7 @@
   use \Joomla\CMS\HTML\HTMLHelper;
   use \Joomla\CMS\Language\Text;
   use \Joomla\CMS\Router\Route;
+  use \Joomla\CMS\Uri\Uri;
 
   // no direct access
   defined('_JEXEC') or die;
@@ -49,7 +54,7 @@
 
 <?php else : ?>
 
-  <form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+  <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 
     <?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
       <fieldset class="filters btn-toolbar clearfix">
@@ -159,7 +164,7 @@
 
               <?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
 
-                <a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid)); ?>">
+                <a href="<?php echo Route::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid)); ?>">
                   <?php echo $this->escape($article->title); ?>
                 </a>
 
@@ -171,10 +176,10 @@
                   $menu		   = Factory::getApplication()->getMenu();
                   $active		 = $menu->getActive();
                   $itemId		 = $active->id;
-                  $link      = JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId);
-                  $returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid));
+                  $link      = Route::_('index.php?option=com_users&view=login&Itemid='.$itemId);
+                  $returnURL = Route::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid));
 
-                  $fullURL   = new JUri($link);
+                  $fullURL   = new Uri($link);
                   $fullURL->setVar('return', base64_encode($returnURL));
                 ?>
 

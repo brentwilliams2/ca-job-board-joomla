@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/content/info_block/author.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -9,18 +13,29 @@
  *
  */
 
+ use \Joomla\CMS\HTML\HTMLHelper;
+ use \Joomla\CMS\Language\Text;
+
   // no direct access
   defined('_JEXEC') or die;
 ?>
 
 <dd class="createdby" itemprop="author" itemscope itemtype="http://schema.org/Person">
+
 	<i class="fa fa-user"></i>
+
 	<?php $author = ($displayData['item']->created_by_alias ? $displayData['item']->created_by_alias : $displayData['item']->author); ?>
+
 	<?php $author = '<span itemprop="name">' . $author . '</span>'; ?>
 
 	<?php if (!empty($displayData['item']->contact_link ) && $displayData['params']->get('link_author') == true) : ?>
-		<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', JHtml::_('link', $displayData['item']->contact_link, $author, array('itemprop' => 'url'))); ?>
+
+		<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', HTMLHelper::_('link', $displayData['item']->contact_link, $author, array('itemprop' => 'url'))); ?>
+
 	<?php else :?>
-		<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
+
+		<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
+
 	<?php endif; ?>
+
 </dd>

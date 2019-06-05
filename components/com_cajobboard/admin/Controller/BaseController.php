@@ -23,7 +23,6 @@ defined('_JEXEC') or die;
 class BaseController extends DataController
 {
   use Mixin\Feature;
-  use Mixin\Ordering;
   use Mixin\Redirect;
 
   // Overrides execute() to provide predefined tasks
@@ -46,16 +45,5 @@ class BaseController extends DataController
       'feature', 'unfeature',
       'publish', 'unpublish'
     ]);
-  }
-
-
-  /**
-	 * Override default DataModel ordering by primary key for browse views
-	 *
-	 * @return  void
-	 */
-  protected function onBeforeBrowse()
-  {
-    $this->setOrdering();
   }
 }

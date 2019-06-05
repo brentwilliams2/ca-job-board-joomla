@@ -64,7 +64,7 @@ class BaseHtml extends Html
 	public function loadLanguageFileForView($view)
 	{
     // @TODO: is FOF30 Dispatcher already loading the component language file?
-    
+
     // Using view-specific language files for maintainability
     $lang = Factory::getLanguage();
 
@@ -111,12 +111,16 @@ class BaseHtml extends Html
 		// Persist the state in the session
     $model->savestate(1);
 
+    // Set the current pagination parameters from the state on the model and view
+    $this->setPaginationParams($model);
+
 		// Assign items to the view
     $this->items = $model->with($withModels)->get();
 
     $this->itemCount = $model->count();
 
-    $this->setPagination($model);
+    // Create the view's pagination object with results from the model
+    $this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
   }
 
 
@@ -127,7 +131,7 @@ class BaseHtml extends Html
 	 *
 	 * @return void
 	 */
-	public function setPagination(DataModel $model)
+	public function setPaginationParams(DataModel $model)
 	{
     // Display limits
     $defaultLimit = 20;

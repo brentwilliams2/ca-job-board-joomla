@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * layouts joomla/toolbar/standard.php template override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -18,6 +22,7 @@ $text     = $displayData['text'];
 $btnClass = $displayData['btnClass'];
 
 ?>
+
 <button onclick="<?php echo $doTask; ?>" class="btn-default <?php echo $btnClass; ?>">
 	<span class="<?php echo trim($class); ?>"></span>
 	<?php echo $text; ?>

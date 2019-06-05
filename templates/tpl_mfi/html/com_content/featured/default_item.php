@@ -1,5 +1,9 @@
 <?php
 /**
+ * Multi Family Insiders Bootstrap v3 Template with Schema.org markup
+ *
+ * com_content featured/default_item.php template partial override
+ *
  * @package     Calligraphic Job Board
  *
  * @version     0.1 May 1, 2018
@@ -59,53 +63,78 @@
 	<?php echo LayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item, 'print' => false)); ?>
 <?php endif; ?>
 
-<?php // Todo Not that elegant would be nice to group the params ?>
 <?php $useDefList = ($params->get('show_modify_date') || $params->get('show_publish_date') || $params->get('show_create_date')
 	|| $params->get('show_hits') || $params->get('show_category') || $params->get('show_parent_category') || $params->get('show_author') ); ?>
 
 <?php if ($useDefList && ($info == 0 ||  $info == 2)) : ?>
+
 	<dl class="article-info  text-muted">
+
 		<dt class="article-info-term hide">
-		<?php echo Text::_('COM_CONTENT_ARTICLE_INFO'); ?>
+		  <?php echo Text::_('COM_CONTENT_ARTICLE_INFO'); ?>
 		</dt>
 
 		<?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
+
 			<dd class="createdby" itemprop="author" itemscope itemtype="http://schema.org/Person">
+
 				<i class="fa fa-user"></i>
+
 				<?php $author = ($this->item->created_by_alias) ? $this->item->created_by_alias : $this->item->author; ?>
 				<?php $author = '<span itemprop="name">' . $author . '</span>'; ?>
+
 				<?php if (!empty($this->item->contact_link) && $params->get('link_author') == true) : ?>
 					<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', HTMLHelper::_('link', $this->item->contact_link, $author, array('itemprop' => 'url'))); ?>
 				<?php else: ?>
 					<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
 				<?php endif; ?>
+
 			</dd>
+
 		<?php endif; ?>
 
 		<?php if ($params->get('show_parent_category') && !empty($this->item->parent_slug)) : ?>
+
 			<dd class="parent-category-name">
+
 				<i class="fa fa-folder-open"></i>
+
 				<?php $title = $this->escape($this->item->parent_title); ?>
+
 				<?php if ($params->get('link_parent_category') && !empty($this->item->parent_slug)) : ?>
+
 					<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)) . '" itemprop="genre">' . $title . '</a>'; ?>
 					<?php echo Text::sprintf('COM_CONTENT_PARENT', $url); ?>
+
 				<?php else : ?>
+
 					<?php echo Text::sprintf('COM_CONTENT_PARENT', '<span itemprop="genre">' . $title . '</span>'); ?>
+
 				<?php endif; ?>
+
 			</dd>
+
 		<?php endif; ?>
 
 		<?php if ($params->get('show_category')) : ?>
+
 			<dd class="category-name">
 				<i class="fa fa-folder-open"></i>
+
 				<?php $title = $this->escape($this->item->category_title); ?>
+
 				<?php if ($params->get('link_category') && $this->item->catslug) : ?>
+
 					<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
 					<?php echo Text::sprintf('COM_CONTENT_CATEGORY', $url); ?>
+
 				<?php else : ?>
+
 					<?php echo Text::sprintf('COM_CONTENT_CATEGORY', '<span itemprop="genre">' . $title . '</span>'); ?>
+
 				<?php endif; ?>
 			</dd>
+
 		<?php endif; ?>
 
 		<?php if ($params->get('show_publish_date')) : ?>
@@ -118,6 +147,7 @@
 		<?php endif; ?>
 
 		<?php if ($info == 0) : ?>
+
 			<?php if ($params->get('show_modify_date')) : ?>
 				<dd class="modified">
 					<i class="fa fa-calendar"></i>
@@ -145,16 +175,20 @@
 			<?php endif; ?>
 
 		<?php endif; ?>
+
 	</dl>
+
 <?php endif; ?>
 
 <?php if (isset($images->image_intro) && !empty($images->image_intro)) : ?>
+
 	<?php $imgfloat = (empty($images->float_intro)) ? $params->get('float_intro') : $images->float_intro; ?>
 	<div class="pull-<?php echo htmlspecialchars($imgfloat); ?> item-image img-responsive"> <img
 	<?php if ($images->image_intro_caption):
 		$captionClass = "";
 		echo $captionClass="caption".' title="' .htmlspecialchars($images->image_intro_caption) .'"';
 	endif; ?>
+
 	src="<?php echo htmlspecialchars($images->image_intro); ?>" alt="<?php echo htmlspecialchars($images->image_intro_alt); ?>" class="img-responsive <?php echo $captionClass;?>"/> </div>
 <?php endif; ?>
 
@@ -165,58 +199,87 @@
 <?php echo $this->item->event->beforeDisplayContent; ?> <?php echo $this->item->introtext; ?>
 
 <?php if ($useDefList && ($info == 1 ||  $info == 2)) : ?>
+
 	<dl class="article-info text-muted">
 		<dt class="article-info-term hide">
 			<?php echo Text::_('COM_CONTENT_ARTICLE_INFO'); ?>
 		</dt>
+
 		<?php if ($info == 1) : ?>
 			<?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
+
 				<dd class="createdby" itemprop="author" itemscope itemtype="http://schema.org/Person">
 					<i class="fa fa-user"></i>
 					<?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
 					<?php $author = '<span itemprop="name">' . $author . '</span>'; ?>
+
 					<?php if (!empty($this->item->contact_link) && $params->get('link_author') == true) : ?>
+
 						<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', HTMLHelper::_('link', $this->item->contact_link, $author, array('itemprop' => 'url'))); ?>
+
 					<?php else : ?>
+
 						<?php echo Text::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
+
 					<?php endif; ?>
+
 				</dd>
+
 			<?php endif; ?>
 
 			<?php if ($params->get('show_parent_category') && !empty($this->item->parent_slug)) : ?>
+
 				<dd class="parent-category-name">
+
 					<i class="fa fa-folder-open"></i>
 					<?php $title = $this->escape($this->item->parent_title); ?>
+
 					<?php if ($params->get('link_parent_category') && $this->item->parent_slug) : ?>
+
 						<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)) . '" itemprop="genre">' . $title . '</a>'; ?>
 						<?php echo Text::sprintf('COM_CONTENT_PARENT', $url); ?>
+
 					<?php else : ?>
+
 						<?php echo Text::sprintf('COM_CONTENT_PARENT', '<span itemprop="genre">' . $title . '</span>'); ?>
+
 					<?php endif; ?>
+
 				</dd>
+
 			<?php endif; ?>
 
 			<?php if ($params->get('show_category')) : ?>
+
 				<dd class="category-name">
 					<i class="fa fa-folder-open"></i>
 					<?php $title = $this->escape($this->item->category_title); ?>
+
 					<?php if ($params->get('link_category') && $this->item->catslug) : ?>
+
 						<?php $url = '<a href="' . Route::_(ContentHelperRoute::getCategoryRoute($this->item->catslug)) . '" itemprop="genre">' . $title . '</a>'; ?>
 						<?php echo Text::sprintf('COM_CONTENT_CATEGORY', $url); ?>
+
 					<?php else : ?>
+
 						<?php echo Text::sprintf('COM_CONTENT_CATEGORY', '<span itemprop="genre">' . $title . '</span>'); ?>
+
 					<?php endif; ?>
 				</dd>
+
 			<?php endif; ?>
 
 			<?php if ($params->get('show_publish_date')) : ?>
+
 				<dd class="published">
 					<i class="fa fa-calendar"></i>
 					<time datetime="<?php echo HTMLHelper::_('date', $this->item->publish_up, 'c'); ?>" itemprop="datePublished">
 						<?php echo Text::sprintf('COM_CONTENT_PUBLISHED_DATE_ON', HTMLHelper::_('date', $this->item->publish_up, Text::_('DATE_FORMAT_LC3'))); ?>
 					</time>
 				</dd>
+
 			<?php endif; ?>
+
 		<?php endif; ?>
 
 		<?php if ($params->get('show_create_date')) : ?>
@@ -253,6 +316,7 @@
 <?php endif; ?>
 
 <?php if ($params->get('show_readmore') && $this->item->readmore) :
+
 	if ($params->get('access-view')) :
 		$link = Route::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid));
 	else :
