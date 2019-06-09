@@ -109,6 +109,8 @@ class EmployerDepartments extends BaseModel
             c. This needs be able to be renamed easily.  For our implementation,
                instead of "Department/Departments", it will be "Property/Properties".
 
+    @TODO: e.g. this might be duplication of Branches, not sure if there's any difference?
+
     Where did the necessity of this table come from?
   */
 

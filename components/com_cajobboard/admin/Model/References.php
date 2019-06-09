@@ -22,7 +22,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * Fields:
  *
  * UCM
- * @property int            $id               Surrogate primary key.
+ * @property int            $reference_id     Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
@@ -51,9 +51,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the reference.
  * @property string         $description      A description of the reference.
- *
- * dates of employment, job title, comments, responsibilities, employer name
- * needs a flag field for whether a request was sent and not received yet, then updated when received
  */
 class References extends BaseModel
 {

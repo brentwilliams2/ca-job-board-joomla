@@ -1,0 +1,15 @@
+{
+    "name": "calligrahic/li_cajobboard",
+    "description": "Libraries to support Calligraphic components",
+    "type": "library",
+    "require": {
+        "spatie/async": "^1.0"
+    },
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Kevin Brown",
+            "email": "info@calligraphic.systems"
+        }
+    ]
+}

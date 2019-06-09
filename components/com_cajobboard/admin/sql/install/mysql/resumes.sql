@@ -8,6 +8,8 @@
 
  /**
  * Resumes table
+ *
+ * Uses schema https://calligraphic.design/schema/Resume
  */
 CREATE TABLE IF NOT EXISTS '#__cajobboard_resumes' (
   /* UCM (unified content model) properties for internal record metadata */
@@ -44,13 +46,15 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_resumes' (
   /* SCHEMA: */
 
 
-  PRIMARY KEY ('id')
+  PRIMARY KEY ('resume_id')
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-
+/*
+  @TODO: Some field as a DigitalDocument to allow linking to a PDF file?
+*/
 
 /* These are from Person schema, but are more like resume items */
 award TEXT COMMENT 'An award won by or for this item. Supersedes awards.',

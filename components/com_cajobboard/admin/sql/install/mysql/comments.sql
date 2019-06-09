@@ -7,12 +7,12 @@
  */
 
 /**
- * Answer data model SQL
+ * Comments data model SQL
  *
- * Uses schema https://schema.org/Answer
+ * Uses schema https://schema.org/Comment
  */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
-  answer_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
+  comment_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
@@ -40,21 +40,32 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this answer in the back-end interface.',
+  note VARCHAR(255) COMMENT 'A note to save with this comment in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the answer, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Short description of the comment, used for the text shown on social media via shares and search engine results.',
+
+  /* SCHEMA: CreativeWork */
+  is_part_of BIGINT UNSIGNED COMMENT 'This property points to a Question entity associated with this comment. FK to #__cajobboard_questions(question_id)',
+  publisher BIGINT UNSIGNED COMMENT 'The company that wrote this comment. FK to #__organizations(organization)id).',
+  `text` TEXT COMMENT 'The text of the comment.',
+
+  /* SCHEMA: Comment */
+  parent_item BIGINT UNSIGNED COMMENT 'The question this comment is intended for. FK to #__cajobboard_questions(question_id)',
+  upvote_count INT DEFAULT '0' COMMENT 'Upvote count for this item.',
+  downvote_count INT DEFAULT '0' COMMENT 'Downvote count for this item.',
 
   /* SQL DDL */
-  PRIMARY KEY (answer_id)
+  PRIMARY KEY (comment_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
+
 /*
- * Create content types for Answers, mapping fields to the UCM standard fields for history feature
+ * Create content types for Comments, mapping fields to the UCM standard fields for history feature
  *
  * type_id:     auto-increment id number.
  *
@@ -108,23 +119,23 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
  */
 
 /*
- * Answers content type for history component
+ * Comments content type for history component
  */
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Answers',
+  'Comments',
   /* type_alias */
-  'com_cajobboard.answers',
+  'com_cajobboard.comments',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_answers",
-      "key":"answer_id",
-      "type":"Answer",
-      "prefix":"AnswersTable",
+      "dbtable":"#__cajobboard_comments",
+      "key":"comment_id",
+      "type":"Comment",
+      "prefix":"CommentsTable",
       "config":"array()"
     },
     "common":{
@@ -139,7 +150,7 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"answer_id",
+        "core_content_item_id":"comment_id",
         "core_title":"name",
         "core_state":"enabled",
         "core_alias":"slug",

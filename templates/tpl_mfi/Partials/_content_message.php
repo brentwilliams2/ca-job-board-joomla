@@ -2,7 +2,7 @@
 /**
  * Output from jdoc:include for message type
  *
- * Provides the jdoc:include 'component' type output
+ * Provides the jdoc:include 'message' output for user flash message (e.g. persistent in session state)
  *
  * @package     Calligraphic Job Board
  *

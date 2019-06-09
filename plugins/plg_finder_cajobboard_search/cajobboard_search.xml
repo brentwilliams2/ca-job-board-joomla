@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.1" type="plugin" group="finder" method="upgrade">
-	<name>plg_finder_cajobboard_search</name>
+	<name>PLG_FINDER_CAJOBBOARD_SEARCH</name>
 	<author></author>
 	<creationDate></creationDate>
 	<copyright></copyright>
@@ -8,12 +8,16 @@
 	<authorEmail></authorEmail>
 	<authorUrl></authorUrl>
 	<version></version>
-	<description>PLG_FINDER_CONTENT_XML_DESCRIPTION</description>
-	<files>
-		<filename plugin="content">content.php</filename>
-	</files>
+	<description>PLG_FINDER_CAJOBBOARD_SEARCH_DESC</description>
+
+  <files>
+    <filename plugin="cajobboard_search">cajobboard_search.php</filename>
+    <filename>index.html</filename>
+    <filename>cajobboard_search.xml</filename>
+    <folder>language</folder>
+  </files>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_finder_content.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_finder_content.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_finder_cajobboard_search.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_finder_cajobboard_search.sys.ini</language>
 	</languages>
 </extension>

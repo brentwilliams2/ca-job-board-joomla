@@ -22,7 +22,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * Fields:
  *
  * UCM
- * @property int            $id               Surrogate primary key.
+ * @property int            $candidate_id     Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
@@ -36,7 +36,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
  * @property string         $publish_down     Date and time to change the state to unpublished.
- * @property int            $version          Version of this item.
  * @property int            $ordering         Order this record should appear in for sorting.
  * @property object         $metadata         JSON encoded metadata field for this item.
  * @property string         $metakey          Meta keywords for this item.
@@ -82,7 +81,6 @@ class Candidates extends BaseModel
       'Assets',     // Add Joomla! ACL assets support
       'Category',   // Set category in new records
       'Check',      // Validation checks for model, over-rideable per model
-      //'ContentHistory', // Add Joomla! content history support
       'Enabled',    // Filter access to items based on enabled status
       'Language',   // Filter front-end access to items based on language
       'Metadata',   // Set the 'metadata' JSON field on record save

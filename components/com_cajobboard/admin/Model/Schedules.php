@@ -24,7 +24,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * Fields:
  *
  * UCM
- * @property int            $id               Surrogate primary key.
+ * @property int            $schedule_id      Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
@@ -84,7 +84,6 @@ class Schedules extends BaseModel
       'Assets',     // Add Joomla! ACL assets support
       'Category',   // Set category in new records
       'Check',      // Validation checks for model, over-rideable per model
-      //'ContentHistory', // Add Joomla! content history support
       'Enabled',    // Filter access to items based on enabled status
       'Language',   // Filter front-end access to items based on language
       'Metadata',   // Set the 'metadata' JSON field on record save

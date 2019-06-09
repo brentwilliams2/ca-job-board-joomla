@@ -48,9 +48,27 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
  *
+ * SCHEMA: VideoObject
+ * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)
+ * @property ImageObject    $thumbnail 	 	    Thumbnail image for a video object. FK to #__cajobboard_image_objects.
+ * @property string         $transcript       The transcript of this video object.
+ * @property string         $videoFrameSize 	The frame size of the video.
+ * @property string         $videoQuality 	  The quality of the video.
+ *
+ * SCHEMA: MediaObject
+ * @property  string	      $content_url      Filename of the video object
+ * @property  int			      $content_size     File size in bytes
+ * @property  int			      $height           Height of the video object in px
+ * @property  int			      $width            Width of the video object in px
+ * @property  string	      $encoding_format  RFC 2045 mime type for this video object to disambiguate different encodings of the same video object, e.g. video/mp4, video/x-ms-wmv
+ *
+ * SCHEMA: CreativeWork
+ * @property  Object	      $ContentLocation   Place depicted or described in the video object, FK to #__cajobboard_places
+ *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the video object.
- * @property string         $description      A description of the video object.
+ * @property  string	      $name              A name for this video object
+ * @property  string	      $description       A long description of this video object
+ * @property  Object        $Author            The author of this content or rating, FK to #__users
  */
 class VideoObjects extends BaseModel
 {

@@ -7,12 +7,12 @@
  */
 
 /**
- * Answer data model SQL
+ * Recommendations data model SQL
  *
- * Uses schema https://schema.org/Answer
+ * Uses schema https://calligraphic.design/schema/Recommendation
  */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
-  answer_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
+  recommendation_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
@@ -40,21 +40,34 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this answer in the back-end interface.',
+  note VARCHAR(255) COMMENT 'A note to save with this recommendation in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the answer, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Short description of the recommendation, used for the text shown on social media via shares and search engine results.',
 
   /* SQL DDL */
-  PRIMARY KEY (answer_id)
+  PRIMARY KEY (recommendation_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
 /*
- * Create content types for Answers, mapping fields to the UCM standard fields for history feature
+  @TODO: Some field as a DigitalDocument to allow linking to a PDF file?
+*/
+
+/*
+  In a letter of recommendation, the writer knows the candidate well enough to evaluate their abilities.
+  A letter of recommendation is generally requested by the candidate for a particular career goal, academic
+  application, or job opportunity. The writer details the candidate’s accomplishments and skills that make
+  him a strong contender.  The letter is written based on the writer’s personal experience with this candidate.
+  Also, this type of letter is addressed to a specific recipient.  A letter of recommendation is stronger than
+  a reference because the writer is actually recommending you for a job.
+ */
+
+/*
+ * Create content types for Recommendations, mapping fields to the UCM standard fields for history feature
  *
  * type_id:     auto-increment id number.
  *
@@ -108,23 +121,23 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
  */
 
 /*
- * Answers content type for history component
+ * Recommendations content type for history component
  */
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Answers',
+  'Recommendations',
   /* type_alias */
-  'com_cajobboard.answers',
+  'com_cajobboard.recommendations',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_answers",
-      "key":"answer_id",
-      "type":"Answer",
-      "prefix":"AnswersTable",
+      "dbtable":"#__cajobboard_recommendations",
+      "key":"recommendation_id",
+      "type":"Recommendation",
+      "prefix":"RecommendationsTable",
       "config":"array()"
     },
     "common":{
@@ -139,7 +152,7 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"answer_id",
+        "core_content_item_id":"recommendation_id",
         "core_title":"name",
         "core_state":"enabled",
         "core_alias":"slug",

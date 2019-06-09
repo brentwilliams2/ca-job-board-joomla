@@ -193,6 +193,9 @@
           <?php /* content-social-share-container */ ?>
           <?php echo $positionRenderer->withDivWrapper('content-social-share'); ?>
 
+          <?php /* content-social-share-container */ ?>
+          <?php echo $positionRenderer->withDivWrapper('content-rss-feed'); ?>
+
           <?php /* content-references-container */ ?>
           <?php echo $positionRenderer->withDivWrapper('content-references'); ?>
 

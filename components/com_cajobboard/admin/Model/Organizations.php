@@ -189,7 +189,7 @@ class Organizations extends BaseModel
 	public function check()
 	{
     // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_JOB_POSTING_ERR_TITLE');
+    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_ORGANIZATIONS_ERR_TITLE');
 
 		parent::check();
 

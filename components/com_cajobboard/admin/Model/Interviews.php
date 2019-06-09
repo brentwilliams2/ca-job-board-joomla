@@ -22,7 +22,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * Fields:
  *
  * UCM
- * @property int            $id               Surrogate primary key.
+ * @property int            $interview_id     Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
@@ -67,7 +67,7 @@ class Interviews extends BaseModel
     /* Set up config before parent constructor */
 
     // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_Interviews';
+		$config['tableName'] = '#__cajobboard_interviews';
     $config['idFieldName'] = 'interview_id';
 
     // Define a contentType to enable the Tags behaviour

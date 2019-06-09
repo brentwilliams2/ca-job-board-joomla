@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="system" method="upgrade">
-  <name>PLG_SYSTEM_CAJOBBOARD_LIBRARY_LOADER</name>
-  <creationDate>May 2018</creationDate>
+<extension version="3.8" type="plugin" group="community" method="upgrade">
+  <name>PLG_COMMUNITY_CAJOBBOARD_USER_POINTS_ADAPTER</name>
+  <creationDate>May 2019</creationDate>
   <author>Kevin Brown</author>
   <authorEmail>admin@calligraphic.design</authorEmail>
   <authorUrl>www.calligraphic.design</authorUrl>
   <copyright>Copyright (C) 2019 Calligraphic. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
   <version>0.0.1</version>
-  <description>PLG_SYSTEM_CAJOBBOARD_LIBRARY_LOADER_DESC</description>
+  <description>PLG_COMMUNITY_CAJOBBOARD_USER_POINTS_ADAPTER_DESC</description>
 
   <files>
-    <filename plugin="cajobboard_library_loader">cajobboard_library_loader.php</filename>
+    <filename plugin="cajobboard_user_points_adapter">cajobboard_user_points_adapter.php</filename>
     <filename>index.html</filename>
-    <filename>cajobboard_library_loader.xml</filename>
+    <filename>cajobboard_user_points_adapter.xml</filename>
     <folder>language</folder>
   </files>
   <languages>
-    <language tag="en-GB">language/en-GB/en-GB.plg_system_cajobboard_library_loader.ini</language>
-    <language tag="en-GB">language/en-GB/en-GB.plg_system_cajobboard_library_loader.sys.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_community_cajobboard_user_points_adapter.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_community_cajobboard_user_points_adapter.sys.ini</language>
   </languages>
 </extension>

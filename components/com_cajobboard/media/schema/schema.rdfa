@@ -40,19 +40,32 @@
   Used to enumerate types of employment, e.g. "full-time", "part-time", "contract", "temporary", "seasonal", "internship"
 -->
 <div typeof="rdfs:Class" resource="https://calligraphic.design/schema/EmploymentType">
-  <span class="h" property="rdfs:label">employmentType</span>
+  <span class="h" property="rdfs:label">EmploymentType</span>
   <span property="rdfs:comment">The type of employment.</span>
   <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/Thing">Thing</a></span>
   <span>Source:  <a property="dc:source" href="http://schema.org/employmentType">employmentType</a></span>
 </div>
 
 <!--
-  @TODO: Need to show additionalType for Organizations as Role(roleName), The role of the organization e.g. Employer, Recruiter, etc.
+   This is a Schema.org external extension for an additionalType, the role of the organization e.g. Employer, Recruiter, etc.
 -->
+<div typeof="rdfs:Property" resource="https://calligraphic.design/schema/RoleName">
+  <!-- @TODO: implement -->
+</div>
 
 <!--
-  @TODO: Need to show external extension additionalType for Organizations as Branch, additional Place this organization uses
+  This is a Schema.org external extension for an additionalType, an additional Place this organization uses
 -->
+<div typeof="rdfs:Property" resource="https://calligraphic.design/schema/Branch">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for organization departments
+-->
+<div typeof="rdfs:Property" resource="https://calligraphic.design/schema/EmployerDepartments">
+  <!-- @TODO: implement -->
+</div>
 
 <!--
   This is a Schema.org external extension for various alerts: Job Seeker Alerts, Employer Alerts, Connector Alerts, Recruiter Alerts
@@ -65,5 +78,68 @@
   This is a Schema.org external extension for issue reports from users
 -->
 <div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Issue">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for job seeker recommendations (friends/associates)
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Recommendation">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for job seeker interviews
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Interview">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for analytic aggregates
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/AnalyticAggregate">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for tasks
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Task">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for schedules
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Schedule">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for work flows
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/WorkFlow">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for resumes
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Resume">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for job applications
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Application">
+  <!-- @TODO: implement -->
+</div>
+
+<!--
+  This is a Schema.org external extension for job application letters
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/ApplicationLetter">
   <!-- @TODO: implement -->
 </div>

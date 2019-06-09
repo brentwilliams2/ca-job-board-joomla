@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.8" type="plugin" group="cajobboard" method="upgrade">
+  <name>PLG_CAJOBBOARD_DATA_FEEDS</name>
+  <creationDate>May 2019</creationDate>
+  <author>Kevin Brown</author>
+  <authorEmail>admin@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <copyright>Copyright (C) 2019 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <version>0.0.1</version>
+  <description>PLG_CAJOBBOARD_DATA_FEEDS_DESC</description>
+
+  <files>
+    <filename plugin="data_feeds">data_feeds.php</filename>
+    <filename>index.html</filename>
+    <filename>data_feeds.xml</filename>
+    <folder>language</folder>
+  </files>
+  <languages>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_data_feeds.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_data_feeds.sys.ini</language>
+  </languages>
+</extension>

@@ -13,7 +13,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
-use \Akeeba\Subscriptions\Admin\Model\Subscriptions;
+// Load FOF if not already loaded
+if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+{
+	throw new RuntimeException('This extension requires FOF 3.0.');
+}
+
 use FOF30\Container\Container;
 
 // @TODO: Implement for job board
@@ -142,6 +147,8 @@ class plgAkeebasubsSubscriptionemails extends JPlugin
 
 	/**
 	 * Notifies the component of the supported email keys by this plugin.
+   *
+   * Called from the Email Helper class.
 	 *
 	 * @return  array
 	 *

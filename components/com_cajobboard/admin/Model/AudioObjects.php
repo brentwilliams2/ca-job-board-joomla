@@ -48,9 +48,19 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
  *
+ * SCHEMA: AudioObject
+ * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)
+ * @property string         $transcript       The transcript of this audio object.
+ *
+ * SCHEMA: MediaObject
+ * @property  string	      $content_url      Filename of the audio object
+ * @property  int			      $content_size     File size in bytes
+ * @property  string	      $encoding_format  RFC 2045 mime type for this audio object to disambiguate different encodings of the same image, e.g. audio/mpeg,	audio/mp4
+ *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the audio object.
- * @property string         $description      A description of the audio object.
+ * @property  string	      $name             A name for this audio object
+ * @property  string	      $description      A long description of this audio object
+ * @property  Object        $Author           The author of this content or rating, FK to #__users
  */
 class AudioObjects extends BaseModel
 {

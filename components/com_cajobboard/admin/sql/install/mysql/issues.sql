@@ -9,7 +9,7 @@
 /**
  * Issue Reports data model SQL
  *
- * Uses schema https://schema.org/Issue
+ * Uses schema https://calligraphic.design/schema/Issue
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_issues` (
   issue_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */

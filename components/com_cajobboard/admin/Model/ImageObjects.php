@@ -48,23 +48,23 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $featured         Whether this item is featured or not.
  *
  * SCHEMA: ImageObject
- * @property  string	      $caption            Caption for the property image
- * @property  string	      $exif_data          JSON-encoded exif data for this image
+ * @property  string	      $caption          Caption for the property image
+ * @property  string	      $exif_data        JSON-encoded exif data for this image
  *
  * SCHEMA: MediaObject
- * @property  string	      $content_url        Filename of the property image
- * @property  int			      $content_size       File size in bytes
- * @property  int			      $height             Height of the property image in px
- * @property  int			      $width              Width of the property image in px
- * @property  string	      $encoding_format    RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif
+ * @property  string	      $content_url      Filename of the property image
+ * @property  int			      $content_size     File size in bytes
+ * @property  int			      $height           Height of the property image in px
+ * @property  int			      $width            Width of the property image in px
+ * @property  string	      $encoding_format  RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif
  *
  * SCHEMA: CreativeWork
- * @property  Object	      $ContentLocation   Place depicted or described in the image, FK to #__cajobboard_places
+ * @property  Object	      $ContentLocation  Place depicted or described in the image, FK to #__cajobboard_places
  *
  * SCHEMA: Thing
- * @property  string	      $name              A name for this image
- * @property  string	      $description       A long description of this image
- * @property  Object        $Author            The author of this content or rating, FK to #__users
+ * @property  string	      $name             A name for this image
+ * @property  string	      $description      A long description of this image
+ * @property  Object        $Author           The author of this content or rating, FK to #__users
  */
 class ImageObjects extends BaseModel
 {
@@ -115,6 +115,37 @@ class ImageObjects extends BaseModel
 
 // @TODO: Could this be done using JTable\Categories, and the FOF Categories model removed from this project?
 // @TODO: Something like: $category = \JTable::getInstance('Category');
+
+// @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
+/*
+  httpd.conf:
+
+  #
+  # X-Sendfile
+  #
+  LoadModule xsendfile_module modules/mod_xsendfile.so
+  XSendFile On
+  # enable sending files from parent dirs of the script directory
+  XSendFileAllowAbove On
+
+  header('X-Sendfile: ' . $absoluteFilePath);
+
+  // The Content-Disposition header allows you to tell the browser if
+  // it should download the file or display it. Use "inline" instead of
+  // "attachment" if you want it to display in the browser. You can
+  // also set the filename the browser should use.
+  header('Content-Disposition: attachment; filename="somefile.jpg"');
+
+  // The Content-Type header tells the browser what type of file it is.
+  header('Content-Type: image/jpeg');
+
+  // Nginx uses x-accel.redirect
+
+  can check what Apache modules loaded with apache_get_modules(), returns indexed array of module names,
+  also set up a configuration option for whether the ugly name or a SEO-friendly name should be used.
+
+
+*/
 
     // Relation to category table for $Category
     $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
