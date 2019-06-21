@@ -28,7 +28,7 @@
 
   $app = Factory::getApplication();
 
-/* Uncomment if unnecessary files loading
+/* @TODO: Uncomment if unnecessary files loading
   // Make sure all Joomla core script and css is not loaded
   $unwantedAssets = array (
     '/media/system/js/mootools-more.js',

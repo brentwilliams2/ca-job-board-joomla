@@ -36,5 +36,3 @@ class Answer extends BaseController
     parent::__construct($container, $config);
   }
 }
-
-

@@ -8,6 +8,12 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
+ * In a letter of recommendation, the writer knows the candidate well enough to evaluate their abilities.
+ * A letter of recommendation is generally requested by the candidate for a particular career goal, academic
+ * application, or job opportunity. The writer details the candidate’s accomplishments and skills that make
+ * him a strong contender.  The letter is written based on the writer’s personal experience with this candidate.
+ * Also, this type of letter is addressed to a specific recipient.  A letter of recommendation is stronger than
+ * a reference because the writer is actually recommending you for a job.
  */
 
 namespace Calligraphic\Cajobboard\Admin\Model;
@@ -49,12 +55,15 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $featured           Whether this item is featured or not.
  *
  * SCHEMA: Thing
- * @property string         $name               A title to use for the recommendation.
- * @property string         $description        A description of the recommendation.
+ * @property string         $name               A title to use for this recommendation.
+ * @property string         $description        The text of this recommendation.
  */
 class Recommendations extends BaseModel
 {
-  use \FOF30\Model\Mixin\Assertions;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
+
+  // To handle user uploading PDF or Image files:
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\MediaUploads;
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -98,6 +107,43 @@ class Recommendations extends BaseModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // one-to-one with FK stored in this model, FK to #__cajobboard_digital_documents
+    $this->inverseSideOfHasOne('DigitalDocument', 'DigitalDocuments@com_cajobboard', 'has_part__digital_document', 'digital_document_id');
+
+    // one-to-one with FK stored in this model, FK to #__cajobboard_image_objects
+    $this->inverseSideOfHasOne('ImageObject', 'ImageObjects@com_cajobboard', 'has_part__image_object', 'image_object_id');
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
+  }
+
+
+  /**
+	 * Uses OCR Helper to convert PDF and image files to PHP strings
+	 */
+  public function convertMediaObjectToText($object)
+  {
+    /*
+      @TODO: implement. Should be called when savePdfUpload() or saveImageUpload() are
+             called on the MediaUploads mixin to this class.
+
+        References and recommendations can be three things:
+          1. Text uploaded from an editor, by the person giving the referral/reference logging in and writing it;
+          2. a PDF file uploaded, with the referral/reference;
+          3. a scanned image of the referral/reference being uploaded.
+    */
+  }
+
+
+  /**
+	 * Method to get collection of requests for recommendations that have been sent but not answered
+	 */
+  public function getStaleRequestedRecommendations($datetime)
+  {
+    /*
+      @TODO: implement
+    */
   }
 
 

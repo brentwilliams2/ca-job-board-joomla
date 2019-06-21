@@ -16,6 +16,7 @@
     <filename>cajobboard_mail.xml</filename>
     <folder>language</folder>
   </files>
+
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_mail.ini</language>
     <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_mail.sys.ini</language>

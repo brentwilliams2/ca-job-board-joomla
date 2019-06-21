@@ -1,74 +1,13 @@
 <?php
-/**
- * Admin Email Messages Model
- *
- * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
- * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
- */
+/*
+@TODO: this model is where e-mail messages to send are queued to, using the "published" flag to indicate
+       state of whether the e-mail is sent or not. The CLI script should use transactions to pull mail
+       jobs from this model, doing both a query for unpublished emails to send and update them to sent
+       in the same transaction to avoid concurrency issues. This model also serves a log of emails sent.
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+       Table fields should use Schema.org names and represent the e-mail headers (To, Bcc, etc.)
+       One field is "body" or something and has a JSON object with all of the keys that correspond to the
+       shortcodes used in the e-mail template associated with that object, e.g. 1:1 correspondence between
+       JSON types (maybe multiple POPO classes in one file so they can be typed) and e-mail templates stored in DB.
 
-// no direct access
-defined('_JEXEC') or die;
-
-use \FOF30\Container\Container;
-use FOF30\Model\DataModel;
-/**
- * Model Akeeba\Subscriptions\Admin\Model\EmailTemplates
- *
- * Fields:
- *
- * @property  int     $emailtemplate_id
- * @property  string  $key
- * @property  string  $subject
- * @property  string  $body
- * @property  string  $language
- *
- * Filters:
- *
- * @method  $this  emailtemplate_id()             emailtemplate_id(int $v)
- * @method  $this  key()                          key(string $v)
- * @method  $this  subject()                      subject(string $v)
- * @method  $this  body()                         body(string $v)
- * @method  $this  language()                     language(string $v)
- * @method  $this  enabled()                      enabled(bool $v)
- * @method  $this  ordering()                     ordering(int $v)
- * @method  $this  created_on()                   created_on(string $v)
- * @method  $this  created_by()                   created_by(int $v)
- * @method  $this  modified_on()                  modified_on(string $v)
- * @method  $this  modified_by()                  modified_by(int $v)
- * @method  $this  locked_on()                    locked_on(string $v)
- * @method  $this  locked_by()                    locked_by(int $v)
- *
- **/
-class EmailMessages extends DataModel
-{
-	/**
-	 * Overrides the constructor to add the Filters behaviour
-	 *
-	 * @param Container $container
-	 * @param array     $config
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-		parent::__construct($container, $config);
-		$this->addBehaviour('Filters');
-	}
-	/**
-	 * Unpublish the newly copied item
-	 *
-	 * @param EmailMessages $copy
-	 */
-	protected function onAfterCopy(EmailTemplates $copy)
-	{
-		// Unpublish the newly copied item
-		if ($copy->enabled)
-		{
-			$this->publish(0);
-		}
-	}
-}
+*/

@@ -100,6 +100,13 @@ class Resumes extends BaseModel
     /* Set up relations after parent constructor */
   }
 
+/*
+  Resume alerts - idea of a "resume bank" that can be searched by employers, and notifies them if
+  a resume is added that matches an open job listing via their ATS panels.
+
+  Importing resumes from Indeed
+*/
+
 
   /**
 	 * @throws    \RuntimeException when the assertion fails

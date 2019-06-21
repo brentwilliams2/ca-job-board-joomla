@@ -1,10 +1,14 @@
 {
   "count": {
-    "Answers": 200,
+    "Answers": 2,
+    "Comments": 2,
+    "DigitalDocuments": 2,
     "DiversityPolicies": 10,
     "EmployerAggregateRatings": 2,
     "GeoCoordinates": 20,
     "ImageObjects": 20,
+    "IssueReports": 2,
+    "JobAlerts": 2,
     "JobEmploymentTypes": 8,
     "JobOccupationalCategories": 46,
     "JobPostings": 10,
@@ -14,8 +18,11 @@
     "Places": 20,
     "QAPages": 2,
     "Questions": 30,
+    "References": 2,
+    "Recommendations": 2,
     "Reports": 2,
     "Resumes": 2,
+    "ResumeAlerts": 2,
     "Reviews": 2
   },
   "joinTables": {
@@ -24,14 +31,20 @@
   },
   "models": [
     "Answers",
+    "Comments",
     "GeoCoordinates",
     "ImageObjects",
+    "IssueReports",
+    "JobAlerts",
     "JobPostings",
     "Organizations",
     "Places",
     "QAPages",
     "Questions",
+    "References",
+    "Recommendations",
     "Reports",
+    "ResumeAlerts",
     "Resumes",
     "Reviews"
   ],

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
-  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
+  asset_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
   enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
   created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
@@ -44,7 +44,12 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the reference, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'The text of the reference.',
+
+  /* SCHEMA: CreativeWork */
+  has_part__digital_document INT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */
+  has_part__image_object INT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
+  about INT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
 
   /* SQL DDL */
   PRIMARY KEY (reference_id)
@@ -53,35 +58,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-/*
-  @TODO: Some field as a DigitalDocument to allow linking to a PDF file?
-*/
-
-/*
-  A reference letter is more general in nature than a recommendation letter.  Typically, it is not
-  addressed to an individual. It is an overall assessment of the candidate’s characteristics, knowledge,
-  and skills. Context of how the writer knows the individual is included, such as, “I was Clara’s supervisor
-  at Acme Loans.”  In some cases a company representative will issue a letter of reference that simply states
-  the former employee’s dates of employment and job title.  This letter merely references that the writer
-  knows you and confirms basic facts about you.
-
-Properties from ClaimReview:
-
-  claimReviewed 	Text 	  A short summary of the specific claims reviewed in a ClaimReview.
-
-Properties from Review:
-
-  itemReviewed 	  Thing 	The item that is being reviewed/rated.
-
-@TODO: could denormalize itemReviewed into a job, like itemReviews__job_title etc., but schema.org doesn't have a type for resume or a job
-       dates of employment, job title, comments, responsibilities, employer name
-
-  reviewAspect 	  Text 	  This Review or Rating is relevant to this part or facet of the itemReviewed.
-  reviewBody 	    Text 	  The actual body of the review.
-  reviewRating 	  Rating 	The rating given in this review.
-
-needs a state flag field for whether a request was sent and not received yet, then updated when received - an enabled flag, like "3" for "pending"?
-*/
 
 /*
  * Create content types for References, mapping fields to the UCM standard fields for history feature

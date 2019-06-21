@@ -12,9 +12,15 @@
   <description>LIB_CAJOBBOARD_DESC</description>
 
   <files>
-    <folder>cajobboard</folder>
+    <filename>cajobboard.xml</filename>
+    <filename>index.html</filename>
+    <filename>composer.json</filename>
+    <filename>composer.lock</filename>
+    <folder>component</folder>
     <folder>language</folder>
+    <folder>vendor</folder>
   </files>
+
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.lib_calligraphic.ini</language>
     <language tag="en-GB">language/en-GB/en-GB.lib_calligraphic.sys.ini</language>

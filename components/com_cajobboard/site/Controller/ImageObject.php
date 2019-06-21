@@ -33,13 +33,7 @@ class ImageObject extends DataController
 	{
     parent::__construct($container, $config);
 
-    $this->predefinedTaskList = [
-      'default',
-      'browse',
-      'read',
-      'edit',
-      'add'
-    ];
+    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save'];
   }
 
 	/**
@@ -52,9 +46,20 @@ class ImageObject extends DataController
 	{
     // @TODO: Make sure the slug is unique
     $data->slug = JFilterOutput::stringURLSafe($data->name);
-    $data->author = $this->container->platform->getUser()->id;
 
+    $data->author = $this->container->platform->getUser()->id;
 
 		return true;
   }
+
+  /*
+    Category parameters related to images, initialized in script.cajobboard.php to inherit when
+    Job Board categories are created on component installation:
+
+        enforce_aspect_ratio, thumbnail_aspect_ratio, image_aspect_ratio
+
+    Component parameters related to images:
+
+        thumbnail-width, small-width, medium-width, large-width
+  */
 }

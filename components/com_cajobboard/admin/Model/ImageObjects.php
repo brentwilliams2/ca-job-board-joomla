@@ -15,8 +15,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
+use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectSizesEnum;
+use \FOF30\Container\Container;
 
 /*
  * Fields:
@@ -53,10 +54,12 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * SCHEMA: MediaObject
  * @property  string	      $content_url      Filename of the property image
+ *
+ * @TODO: will the front-end even know
  * @property  int			      $content_size     File size in bytes
  * @property  int			      $height           Height of the property image in px
  * @property  int			      $width            Width of the property image in px
- * @property  string	      $encoding_format  RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif
+ * @property  string	      $encoding_format  RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif, image/svg+xml
  *
  * SCHEMA: CreativeWork
  * @property  Object	      $ContentLocation  Place depicted or described in the image, FK to #__cajobboard_places
@@ -69,6 +72,13 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 class ImageObjects extends BaseModel
 {
   use \FOF30\Model\Mixin\Assertions;
+
+  /**
+	 * Whether xaccel.redirect (Nginx) or xsendfile (Apache) is available
+	 *
+	 * @var  string|null
+	 */
+	protected static $isXRedirectAvailable = null;
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -113,42 +123,203 @@ class ImageObjects extends BaseModel
     // one-to-one FK to  #__cajobboard_persons
     $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
-// @TODO: Could this be done using JTable\Categories, and the FOF Categories model removed from this project?
-// @TODO: Something like: $category = \JTable::getInstance('Category');
-
-// @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
-/*
-  httpd.conf:
-
-  #
-  # X-Sendfile
-  #
-  LoadModule xsendfile_module modules/mod_xsendfile.so
-  XSendFile On
-  # enable sending files from parent dirs of the script directory
-  XSendFileAllowAbove On
-
-  header('X-Sendfile: ' . $absoluteFilePath);
-
-  // The Content-Disposition header allows you to tell the browser if
-  // it should download the file or display it. Use "inline" instead of
-  // "attachment" if you want it to display in the browser. You can
-  // also set the filename the browser should use.
-  header('Content-Disposition: attachment; filename="somefile.jpg"');
-
-  // The Content-Type header tells the browser what type of file it is.
-  header('Content-Type: image/jpeg');
-
-  // Nginx uses x-accel.redirect
-
-  can check what Apache modules loaded with apache_get_modules(), returns indexed array of module names,
-  also set up a configuration option for whether the ugly name or a SEO-friendly name should be used.
-
-
-*/
-
     // Relation to category table for $Category
     $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
+
+    if (!$this->isXRedirectAvailable)
+    {
+      $this->isXRedirectAvailable();
+    }
+  }
+
+  // @TODO: Need to warn the administrator if the sizes for thumb / small / medium / large images are changed
+  //        that all images will need to be resized, and then trigger all images to reprocess. Might need a job control shell script.
+
+  // NOTE: filename is saved with the same hash of the original file + ".jpg" name in all folders, so rewriting
+  //       can be done by just clearing out the resize folders (thumb, small, etc.) and regenerating.
+
+  /*
+    @TODO: Issues from notes
+
+    1. Using @1, @1.5, @2, @3 modifiers (e.g. supporting Retina)
+    2. Should images be automatically converted to png from jpg and gif?
+    3. How are thumbnails handled - forcing a crop? Should the UI have the user select a crop for thumbnails?
+        -- small / medium / large images are resized to the size's configured width, and aspect ratio maintained (so height variable)
+        -- thumb is constrained to a fixed width and height, so requires cropping
+    4. Nice to have option to permit crops instead of simple resizing, so an image could e.g. focus in on people as it is scaled down (like for thumb)
+  */
+
+  /*
+    @TODO: MOVE this note to view
+
+    accept="image/*" — Accept any file with an image/* MIME type. Many mobile devices also let the user take a picture with
+    the camera when this is used. Note that mime type and file extension are different: mime type is determined by the browser
+    and varies in implementation.
+
+      <form method="post" enctype="multipart/form-data">
+        <input type="file" id="profile_pic" name="profile_pic" accept="image/*, .jpg, .jpeg, .png">
+      </form>
+  */
+
+  /**
+	 * Process image files with ImageMagick
+	 */
+	public function processImages()
+	{
+    // @TODO: implement
+
+    // Need to handle image processing asynchronously, see admin/Cli/MediaProcessor
+    // e.g. resizing for thumbs, small/medium/large, cropping, etc.
+  }
+
+
+  /**
+	 * Get hash of image to use as system filename for the image
+	 */
+	public function getImageHash()
+	{
+    // @TODO: implement. Existing is using MD5 hash.
+  }
+
+
+  /**
+	 * Get HTML tag for image to use as system filename for the image
+	 */
+	public function getImageTag()
+	{
+    // @TODO: implement, MOVE to controller
+
+    $model->metadata->
+  }
+
+
+  /**
+	 * Get HTML tag for image to use as system filename for the image
+   *
+   * @param  ImageObjectSizes   The size of the image
+	 */
+	public function setImageProperties(ImageObjectSizes $size)
+	{
+    // @TODO: implement, MOVE to controller
+
+    $height = $model->metadata->get($size . '.height', ImageObjectSizes::Original . '.height');
+    $width = $model->metadata->get($size . '.width', ImageObjectSizes::Original . '.width');
+  }
+
+
+  /**
+	 *
+	 */
+	public function getImageUrl()
+	{
+    // @TODO: implement
+
+    // NOTE: category name is the same as the model name (organizations, persons, places) so can be normalized using the model name
+    // {sitename}/media/{component name}/images/{category name}/[ original | thumb | small | medium | large ]/{hashed_file_name}.jpg or {slug}.jpg
+  }
+
+
+   /**
+	 *
+	 */
+	public function isXRedirectAvailable()
+	{
+    // @TODO: implement
+
+    // can check what Apache modules loaded with apache_get_modules(), returns indexed array of module names,
+    // also set up a configuration option for whether the ugly name or a SEO-friendly name should be used.
+
+    $this->isRedirectAvailable = 'false'; // or string 'true'
+  }
+
+
+  /**
+	 *
+	 */
+	public function setSefAliasOnWebServer()
+	{
+    if (! 'true' == $this->isRedirectAvailable)
+    {
+      return;
+    }
+
+    /*
+      @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
+
+      httpd.conf:
+
+      #
+      # X-Sendfile
+      #
+      LoadModule xsendfile_module modules/mod_xsendfile.so
+      XSendFile On
+      # enable sending files from parent dirs of the script directory
+      XSendFileAllowAbove On
+
+      header('X-Sendfile: ' . $absoluteFilePath);
+
+      // The Content-Disposition header allows you to tell the browser if
+      // it should download the file or display it. Use "inline" instead of
+      // "attachment" if you want it to display in the browser. You can
+      // also set the filename the browser should use.
+      header('Content-Disposition: attachment; filename="somefile.jpg"');
+
+      // The Content-Type header tells the browser what type of file it is.
+      header('Content-Type: image/jpeg');
+
+      // Nginx uses x-accel.redirect
+
+
+    */
+  }
+
+
+  /**
+	 * Transform 'exif_data' field to a JRegistry object on bind
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+  protected function getExifDataAttribute($value)
+  {
+    // Make sure it's not a JRegistry already
+    if (is_object($value) && ($value instanceof Registry))
+    {
+        return $value;
+    }
+
+    // Return the data transformed to a JRegistry object
+    return new Registry($value);
+  }
+
+
+  /**
+   * Transform 'exif_data' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  static  Self, for chaining
+	 *
+	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 */
+  protected function setExifDataAttribute($value)
+  {
+    // Make sure it a JRegistry object, otherwise return the value
+    if ( !($value instanceof Registry) )
+    {
+      return $value;
+    }
+
+    // Return the data transformed to JSON
+    return $value->toString('JSON');
+  }
+
+
+  /**
+	 * Extract EXIF data from image and set 'exif_data' field to a JSON string before save
+	 */
+  protected function extractExifDataFromImage()
+  {
+
   }
 
 

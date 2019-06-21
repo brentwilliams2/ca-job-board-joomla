@@ -8,6 +8,12 @@
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
+ * A reference letter is more general in nature than a recommendation letter.  Typically, it is not
+ * addressed to an individual. It is an overall assessment of the candidate’s characteristics, knowledge,
+ * and skills. Context of how the writer knows the individual is included, such as, “I was Clara’s supervisor
+ * at Acme Loans.”  In some cases a company representative will issue a letter of reference that simply states
+ * the former employee’s dates of employment and job title.  This letter merely references that the writer
+ * knows you and confirms basic facts about you.
  */
 
 namespace Calligraphic\Cajobboard\Admin\Model;
@@ -50,11 +56,14 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the reference.
- * @property string         $description      A description of the reference.
+ * @property string         $description      The text of this reference.
  */
 class References extends BaseModel
 {
-  use \FOF30\Model\Mixin\Assertions;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
+
+  // To handle user uploading PDF or Image files:
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\MediaUploads;
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -98,6 +107,47 @@ class References extends BaseModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // table field for inverseSideOfHasOne relation is in this model's table
+
+    // one-to-one with FK stored in this model, FK to #__cajobboard_digital_documents
+    $this->inverseSideOfHasOne('DigitalDocument', 'DigitalDocuments@com_cajobboard', 'has_part__digital_document', 'digital_document_id');
+
+    // one-to-one with FK stored in this model, FK to #__cajobboard_image_objects
+    $this->inverseSideOfHasOne('ImageObject', 'ImageObjects@com_cajobboard', 'has_part__image_object', 'image_object_id');
+
+    // table field for belongsTo relation is in this model's table
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
+  }
+
+
+  /**
+	 * Uses OCR Helper to convert PDF and image files to PHP strings
+	 */
+  public function convertMediaObjectToText($object)
+  {
+    /*
+      @TODO: implement. Should be called when savePdfUpload() or saveImageUpload() are
+             called on the MediaUploads mixin to this class.
+
+        References and recommendations can be three things:
+          1. Text uploaded from an editor, by the person giving the referral/reference logging in and writing it;
+          2. a PDF file uploaded, with the referral/reference;
+          3. a scanned image of the referral/reference being uploaded.
+    */
+  }
+
+
+  /**
+	 * Method to get collection of requests for references that have been sent but not answered
+	 */
+  public function getStaleRequestedReferences($datetime)
+  {
+    /*
+      @TODO: implement
+    */
   }
 
 

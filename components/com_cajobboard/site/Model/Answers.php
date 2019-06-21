@@ -53,9 +53,8 @@ use \FOF30\Container\Container;
  *
  * SCHEMA: CreativeWork
  * @property QAPage         $isPartOf         This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id).
- * @property Organization   $Publisher        The company that wrote this answer. FK to #__organizations(organization_id).
  * @property string         $text             The actual text of the answer itself.
- * @property Person         $Author           The author of this comment.  FK to #__persons.
+ * @property Person         $Author           The author of this comment.  FK to #__cajobboard_persons.
  *
  * SCHEMA: Answer
  * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questions(question_id).

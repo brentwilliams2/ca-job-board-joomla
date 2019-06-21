@@ -230,22 +230,6 @@
       step="1"
     />
 
-    <!-- Padding to add to width of image for comparing against bootstrap media query setpoints -->
-    <field
-      name="image-padding-for-setpoints-section-label"
-      type="spacer"
-      class="text-info"
-      label="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_PADDING_SECTION_LABEL"
-    />
-
-    <field
-      name="image-padding-for-setpoints"
-      type="number"
-      default="20"
-      label="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_PADDING_LABEL"
-      description="COM_CAJOBBOARD_MEDIA_PARAMS_IMAGE_PADDING_DESC"
-    />
-
     <!-- Bootstrap media query settings -->
     <field
       name="bootstrap-media-query"

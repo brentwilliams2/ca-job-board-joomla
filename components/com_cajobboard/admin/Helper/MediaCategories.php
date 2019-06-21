@@ -19,6 +19,9 @@ use \Joomla\CMS\Language\Text;
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+// @TODO: Is this file being used?
+die('In MediaCategories Helper, testing whether this is ever used...');
+
 /**
  * Admin Media Categories component helper.
  *
@@ -30,9 +33,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MediaCategories extends ContentHelper
 {
-  // @TODO: Is this being used?
-
-	/**
+  /**
 	 * Configure the Linkbar.
 	 *
 	 * @return Bool

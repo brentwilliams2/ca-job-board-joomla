@@ -50,7 +50,11 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the comment.
- * @property string         $description      A description of the comment.
+ * @property string         $description      The text of the comment.
+ *
+ * SCHEMA: Comment
+ * @property int            $upvote_count     Upvote count for this item.
+ * @property int            $downvote_count   Downvote count for this item.
  */
 class Comments extends BaseModel
 {
@@ -98,6 +102,75 @@ class Comments extends BaseModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // table field for belongsTo relation is in this model's table
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+    // table field for inverseSideOfHasOne relation is in this model's table
+
+    // one-to-one FK to  #__cajobboard_comments
+    $this->inverseSideOfHasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
+
+    // Comments model doesn't have relation back to the entity that owns it,
+    // because that uses the EAV join table and requires special handling
+  }
+
+  // @TODO: View needs to handle state fields for join table: foreign_model_id and foreign_model_name
+
+
+  /**
+	 * Make sure we save the foreign model name in the EAV join table
+	 *
+	 * @return    $this   For chaining.
+	 */
+	public function onAfterCreate()
+	{
+    $this->saveEavJoinRecord();
+  }
+
+
+  /**
+	 * Save the foreign model name in the EAV join table
+	 *
+	 * @return    $this   For chaining.
+	 */
+	public function saveEavJoinRecord()
+	{
+    $id = $this->input->get('foreign_model_id');
+    $name = $this->input->get('foreign_model_name');
+
+    if ($id && $name)
+    {
+      $db = $this->container->db;
+
+      // Insert values.
+      $values = array(
+        $this->getId(),
+        $id,
+        $db->quote($name)
+      );
+
+      $query = $db->getQuery(true);
+
+      $query
+        ->insert($db->quoteName('#__cajobboard_comments_foreign_models'))
+        ->columns( $db->quoteName( array('comment_id', 'foreign_model_id', 'foreign_model_name')))
+        ->values(implode(',', $values));
+
+      // Set the query using our newly populated query object and execute it.
+      $db->setQuery($query);
+
+      try
+      {
+        $db->execute();
+      }
+      catch (\Exception $e)
+      {
+        throw new \Exception('Failed saving the EAV join table entry in the Comments model, error: ' . $e);
+      }
+    }
   }
 
 

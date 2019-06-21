@@ -16,18 +16,16 @@ namespace Calligraphic\Cajobboard\Admin\Helper;
 defined('_JEXEC') or die;
 
 use \Calligraphic\Cajobboard\Admin\Model\EmailMessages;
-
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
-
-use JFactory;
-use JFile;
-use JHtml;
-use JLoader;
-use JPluginHelper;
-use JText;
-use JUser;
-use Joomla\Registry\Registry as JRegistry;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Filesystem\File;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Mail\Mail;
+use \Joomla\CMS\Plugin\PluginHelper;
+use \Joomla\CMS\User\User;
+use \Joomla\Registry\Registry;
 
 /**
  * A helper class for sending out emails
@@ -49,7 +47,7 @@ abstract class Email
 	 */
 	protected static function getContainer()
 	{
-		if (is_null(self::$container))
+		if ( is_null(self::$container) )
 		{
 			self::$container = Container::getInstance('com_cajobboard');
     }
@@ -67,20 +65,23 @@ abstract class Email
 	 */
 	public static function getEmailKeys($style = 0)
 	{
-		static $rawOptions = null;
-		static $htmlOptions = null;
+    static $rawOptions = null;
+
+    static $htmlOptions = null;
+
     static $shortlist = null;
 
 		if (is_null($rawOptions))
 		{
       $rawOptions = array();
 
-      JPluginHelper::importPlugin('calligraphic');
-      JPluginHelper::importPlugin('system');
+      PluginHelper::importPlugin('calligraphic');
 
-      $app       = JFactory::getApplication();
+      $app = Factory::getApplication();
 
-      // 'keys' => array( 'paid' => JText::_('PLG_AKEEBASUBS_SUBSCRIPTIONEMAILS_EMAIL_PAID') )
+      // 'section' => 'plugin-name',
+			// 'title'   => 'Subscriber',
+      // 'keys' => array( 'paid' => Text::_('PLG_AKEEBASUBS_SUBSCRIPTIONEMAILS_EMAIL_PAID') )
       $jResponse = $app->triggerEvent('onAKGetEmailKeys', array());
 
 			if (is_array($jResponse) && !empty($jResponse))
@@ -97,11 +98,13 @@ abstract class Email
 						continue;
           }
 
+          // $rawOptions['plugin-name'] = array( 'paid' => Text::_('PLG_AKEEBASUBS_SUBSCRIPTIONEMAILS_EMAIL_PAID') );
 					$rawOptions[ $pResponse['section'] ] = $pResponse;
 				}
 			}
     }
 
+    // raw sections list
 		if ($style == 0)
 		{
 			return $rawOptions;
@@ -113,19 +116,20 @@ abstract class Email
 
 			foreach ($rawOptions as $section)
 			{
-        $htmlOptions[] = JHTML::_('select.option', '<OPTGROUP>', $section['title']);
+        $htmlOptions[] = HTMLHelper::_('select.option', '<OPTGROUP>', $section['title']);
 
 				foreach ($section['keys'] as $key => $description)
 				{
-          $htmlOptions[] = JHTML::_('select.option', $section['section'] . '_' . $key, $description);
+          $htmlOptions[] = HTMLHelper::_('select.option', $section['section'] . '_' . $key, $description);
 
 					$shortlist[ $section['section'] . '_' . $key ] = $section['title'] . ' - ' . $description;
         }
 
-				$htmlOptions[] = JHTML::_('select.option', '</OPTGROUP>');
+				$htmlOptions[] = HTMLHelper::_('select.option', '</OPTGROUP>');
 			}
     }
 
+    // grouped list options
 		if ($style == 1)
 		{
 			return $htmlOptions;
@@ -140,17 +144,17 @@ abstract class Email
 	 * custom languages for each plugin, if necessary.
 	 *
 	 * @param   string  $extension  The extension to load translations for
-	 * @param   JUser   $user       The user whose preferred language we'll also be loading
+	 * @param   User   $user       The user whose preferred language we'll also be loading
 	 */
 	private static function loadLanguageOverrides($extension, $user = null)
 	{
-		if (!($user instanceof JUser))
+		if (!($user instanceof User))
 		{
 			$user = self::getContainer()->platform->getUser();
     }
 
 		// Load the language files and their overrides
-    $jlang = JFactory::getLanguage();
+    $jlang = Factory::getLanguage();
 
 		// -- English (default fallback)
 		$jlang->load($extension, JPATH_ADMINISTRATOR, 'en-GB', true);
@@ -165,7 +169,7 @@ abstract class Email
     $jlang->load($extension . '.override', JPATH_ADMINISTRATOR, null, true);
 
 		// -- User's preferred language
-    $uparams  = is_object($user->params) ? $user->params : new JRegistry($user->params);
+    $uparams  = is_object($user->params) ? $user->params : new Registry($user->params);
 
     $userlang = $uparams->get('language', '');
 
@@ -184,7 +188,7 @@ abstract class Email
 	 *
 	 * @param   string   $key    The language key, in the form PLG_LOCATION_PLUGINNAME_TYPE
 	 * @param   integer  $level  The subscription level we're interested in
-	 * @param   JUser    $user   The user whose preferred language will be loaded
+	 * @param   User    $user   The user whose preferred language will be loaded
 	 *
 	 * @return  array  isHTML: If it's HTML override from the db; text: The unprocessed translation string
 	 */
@@ -210,7 +214,7 @@ abstract class Email
     $isHTML       = false;
 
 		// Look for desired languages
-    $jLang     = JFactory::getLanguage();
+    $jLang     = Factory::getLanguage();
 
     $userLang  = $user->getParam('language', '');
 
@@ -302,17 +306,17 @@ abstract class Email
       }
 
 			$subjectKey = $extension . '_HEAD_' . $keyParts[3];
-      $subject    = JText::_($subjectKey);
+      $subject    = Text::_($subjectKey);
 
 			if ($subject == $subjectKey)
 			{
 				$subjectKey = $extension . '_SUBJECT_' . $keyParts[3];
-				$subject    = JText::_($subjectKey);
+				$subject    = Text::_($subjectKey);
       }
 
       $templateTextKey = $extension . '_BODY_' . $keyParts[3];
 
-      $templateText    = JText::_($templateTextKey);
+      $templateText    = Text::_($templateTextKey);
 
 			$loadLanguage = '';
     }
@@ -351,7 +355,7 @@ HTML;
 	 */
 	private static function &getMailer($isHTML = true)
 	{
-    $mailer = clone JFactory::getMailer();
+    $mailer = clone Factory::getMailer();
 
     $mailer->IsHTML($isHTML);
 
@@ -383,8 +387,9 @@ HTML;
 			return false;
     }
 
-		$templateText = Message::processSubscriptionTags($templateText, $sub, $extras);
-    $subject      = Message::processSubscriptionTags($subject, $sub, $extras);
+    // This is where the embedded tags are being parsed, e.g. [USEREMAIL] in the subject and body templates stored in the database
+		$templateText = ShortCode::processSubscriptionTags($templateText, $sub, $extras);
+    $subject      = ShortCode::processSubscriptionTags($subject, $sub, $extras);
 
 		// Get the mailer
 		$mailer = self::getMailer($isHTML);
@@ -423,16 +428,9 @@ HTML;
 				}
 				else
 				{
-          $ext = strtolower(JFile::getExt($url));
+          $ext = strtolower(File::getExt($url));
 
-					// Commented out as we're not passed a template URL now that the the templates are in the database.
-					/*if (!JFile::exists($url))
-					{
-						// Relative path, make absolute
-						$url = dirname($template) . '/' . ltrim($url, '/');
-          }*/
-
-					if (!JFile::exists($url) || !in_array($ext, array('jpg', 'png', 'gif')))
+					if (!File::exists($url) || !in_array($ext, array('jpg', 'png', 'gif')))
 					{
 						// Not an image or inexistent file
 						$temp .= $url;

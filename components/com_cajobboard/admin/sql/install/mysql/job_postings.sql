@@ -76,10 +76,10 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
   same_as VARCHAR(2083) COMMENT 'URL of the job posting on the employer\'s website',
 
   /* SCHEMA: https://calligraphic.design/schema/EmploymentType */
-  employment_type BIGINT UNSIGNED NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).', /* FK to #__cajobboard_job_employment_types(job_employment_type_id) */
+  employment_type BIGINT UNSIGNED NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).', /* FK to #__cajobboard_employment_types(job_employment_type_id) */
 
   /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
-  occupational_category BIGINT UNSIGNED NOT NULL COMMENT 'The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.', /* FK to #__cajobboard_job_occupational_categories(job_occupational_category_id) */
+  occupational_category BIGINT UNSIGNED NOT NULL COMMENT 'The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.', /* FK to #__cajobboard_occupational_categories(job_occupational_category_id) */
 
   /* SQL DDL */
   PRIMARY KEY (job_posting_id),

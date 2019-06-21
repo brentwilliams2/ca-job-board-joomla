@@ -44,7 +44,12 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the recommendation, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'The text of the recommendation.',
+
+  /* SCHEMA: CreativeWork */
+  has_part__digital_document INT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */
+  has_part__image_object INT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
+  about INT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
 
   /* SQL DDL */
   PRIMARY KEY (recommendation_id)
@@ -53,18 +58,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-/*
-  @TODO: Some field as a DigitalDocument to allow linking to a PDF file?
-*/
-
-/*
-  In a letter of recommendation, the writer knows the candidate well enough to evaluate their abilities.
-  A letter of recommendation is generally requested by the candidate for a particular career goal, academic
-  application, or job opportunity. The writer details the candidate’s accomplishments and skills that make
-  him a strong contender.  The letter is written based on the writer’s personal experience with this candidate.
-  Also, this type of letter is addressed to a specific recipient.  A letter of recommendation is stronger than
-  a reference because the writer is actually recommending you for a job.
- */
 
 /*
  * Create content types for Recommendations, mapping fields to the UCM standard fields for history feature

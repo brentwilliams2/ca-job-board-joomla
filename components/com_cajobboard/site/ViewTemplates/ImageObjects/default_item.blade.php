@@ -15,39 +15,6 @@
 
   $params = JComponentHelper::getParams('com_cajobboard');
 
- /**
-  * Model data fields available on $item object
-  *
-  * $displaySize             Size to display image at (full-size, large, medium, small, thumbnail)
-  *
-  * $item->image_object_id
-  * $item->author            The author of this content or rating, FK to #__users
-  * $item->caption           Caption for the property image
-  * $item->Category          Category this image belongs, FK to #__categories
-  * $item->content_size      File size in bytes
-  * $item->content_url       Filename of the property image
-  * $item->contentLocation   Place depicted or described in the image, FK to #__cajobboard_places
-  * $item->created_by        Userid of the creator of this answer.
-  * $item->created_on        Date this answer was created.
-  * $item->description       A long description of this image
-  * $item->encoding_format   RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif
-  * $item->exif_data         JSON-encoded exif data for this image
-  * $item->featured          Whether this answer is featured or not.
-  * $item->height            Height of the property image in px
-  * $item->hits              Number of hits this answer has received.
-  * $item->modified_by       Userid of person that last modified this answer.
-  * $item->modified_on       Date this answer was last modified.
-  * $item->name              A name for this image
-  * $item->slug              Alias for SEF URL to item view of this image
-  * $item->width             Width of the property image in px
-  */
-
- /*
-  *  1. What about pagination? https://extensions.joomla.org/extensions/?cat_id=1809&start=2268
-  *  2. Path - media://com_cajobboard/images/{{{ $item->Category->path }}}/{{{ $displaySize }}}/{{{ $item->content_url }}}
-  *  3. Still have problem with dereferencing objects on null foreign keys in the template
-  */
-
   // Padding to add to width of image, for comparing against bootstrap media query setpoints
   $imagePadding = $params->get('image-padding-for-setpoints');
 

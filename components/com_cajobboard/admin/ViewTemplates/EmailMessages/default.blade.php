@@ -25,6 +25,8 @@
   $model = $this->getModel();
 
   $emailKeys = \Akeeba\Subscriptions\Admin\Helper\Email::getEmailKeys(1);
+
+  // Probably need to remove "new" button from toolbar, works weird in Akeeba Subs
 ?>
 
 @extends('admin:com_akeebasubs/Common/browse')

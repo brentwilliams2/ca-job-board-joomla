@@ -3,7 +3,10 @@
     "description": "Libraries to support Calligraphic components",
     "type": "library",
     "require": {
-        "spatie/async": "^1.0"
+        "spatie/async": "^1.0",
+        "amenadiel/jpgraph": "^4",
+        "thiagoalessio/tesseract_ocr": "^2.7",
+        "gravitymedia/ghostscript": "1.0.x-dev"
     },
     "license": "GPLv2",
     "authors": [

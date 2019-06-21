@@ -53,8 +53,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  */
 class Categories extends BaseModel
 {
-// @TODO: See note in ImageObjects model about whether this model is needed, or we could use JTable\Categories instead
-
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model

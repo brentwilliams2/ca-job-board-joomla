@@ -1,6 +1,12 @@
 <?php
 /**
- * Job Board Mail Handling
+ * Job Board Mail Handling Plugin
+ *
+ * This plugin should have methods for each separate event dispatched to it, corresponding
+ * to the various types of messages and associated short code templates stored in the
+ * #__email_message_templates table. It attempts to handle the send email request asynchronously
+ * using the MailProcessor CLI script, and if that is not possible (e.g. due to file permissions
+ * issues) it sends the email request synchronously. It shares the Email helper with the CLI script.
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -19,18 +25,13 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('This extension requires FOF 3.0.');
 }
 
-use FOF30\Container\Container;
-
-// @TODO: Implement for job board
-// @TODO: Need to allow HTML templates. Purposes:
-//  * new comment
-//  * auto emails from employers to job-seekers (FCRA, etc.)
-// Jomsocial has a built-in "Send Message" to a user button embed we can use for messaging
+use \FOF30\Container\Container;
+use \Joomla\Registry\Registry;
 
 /**
- * Sends notification emails to subscribers
+ * Sends notification emails to job board users
  */
-class plgAkeebasubsSubscriptionemails extends JPlugin
+class plgCajobboardMail extends JPlugin
 {
 	/**
 	 * Public constructor. Overridden to load the language strings.
@@ -39,9 +40,32 @@ class plgAkeebasubsSubscriptionemails extends JPlugin
 	{
 		if (!is_object($config['params']))
 		{
-			$config['params'] = new JRegistry($config['params']);
-		}
+			$config['params'] = new Registry($config['params']);
+    }
+
 		parent::__construct($subject, $config);
+  }
+
+
+	/**
+	 *
+	 *
+	 */
+	public function sendMail($mail)
+	{
+    // handle making sure there's permission to run the script
+    whoiam()
+
+    if ( substr( php_uname(), 0, 7 ) == "Windows" )
+    {
+      // Windows doesn't have Pcntl
+      pclose( popen("start /B ". $cmd, "r") );
+    }
+    else
+    {
+      // Run the script as a background process so that it's async, and redirect STDOUT and STDERR with double-redirect
+      exec($cmd . " &> /dev/null &");
+    }
   }
 
 
@@ -173,7 +197,23 @@ class plgAkeebasubsSubscriptionemails extends JPlugin
 				'generic'            => JText::_('PLG_AKEEBASUBS_SUBSCRIPTIONEMAILS_EMAIL_GENERIC'),
 				'offline'            => JText::_('PLG_AKEEBASUBS_SUBSCRIPTIONEMAILS_EMAIL_OFFLINE_INSTRUCTIONS'),
 			)
-		);
+    );
+
+  /*
+    Send a report
+    New comment
+    New question or answer on FAQs
+    New review (for employers)
+    Job posting alert matching (for job seekers)
+    Resume alert (for employers in the ATS system)
+    New message (user-to-user messaging)
+    FCRA (Fair Credit Reporting Act) notice (when credit check is done, set as a manual task in the ATS workflow initially)
+    New application received against a job posting
+    ATS scheduling reminders (with configurable advance notice period), e.g. "Just a reminder, you have a phone interview scheduled tomorrow with..."
+    ATS workflow notices - configurable for which actions trigger the notice, e.g. when a scorecard is marked complete for a candidate, a background check completed, a reference received for a candidate
+    GDPR notices - when a candidate has requested their information be purged from the system, so the employer can  understand what has happened (could involve a candidate that is in their workflow pipeline)
+  */
+
   }
 
 

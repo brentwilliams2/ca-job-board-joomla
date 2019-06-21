@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_interviews` (
   DEFAULT COLLATE = utf8_unicode_ci;
 
 /*
-  @TODO: This needs to use question and answer templates
+  @TODO: Interview model is simple: it has a QAPage of questions and answers, some way of setting the right QAPage + questions as a template,
+         and metadata about the interview
 
   1. Need pointer to the Job Posting this interview is for;
   2. Need date/time/by whom the interview was conducted, also how (skype, phone, in-person);

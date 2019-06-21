@@ -148,5 +148,25 @@ from Events
   join EventAttrValueChar on Id = EventId and AttrName = 'APP_NAME'
                                           and Value like "%Office%"
 where EventTypeId = "APP_LAUNCH"
+
+
+Quarterly reports:
+  applications per open requisition (and % that are referrals)
+  applicants to interviews (and % that are screened)
+  offers vs. hires (and % up or down from last quarter)
+  average time-to-hire (days)
+  Job posting # of views
+  invoicing / cost to fill the job
+
+
+ Reporting options:
+    The status of job seekers in the application process
+    What time of day applicants view your job posting
+    Which job board or career site brings in more applicants
+    The strengths of potential applicants
+    Custom categories applicants fall under
+    Applicants’ engagement in the hiring process
+    Questionnaire answers
+
   */
 }

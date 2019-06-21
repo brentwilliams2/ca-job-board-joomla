@@ -19,18 +19,11 @@ defined('_JEXEC') or die;
 class AnswersTemplate extends CommonTemplate
 {
 	/**
-	 * This property points to a QAPage entity associated with this answer.
+	 * This property points to a Question entity associated with this answer.
 	 *
 	 * @property    int
    */
   public $is_part_of;
-
-	/**
-	 * The company that wrote this answer.
-	 *
-	 * @property    int
-   */
-  public $publisher;
 
 	/**
 	 * The actual text of the answer itself.
@@ -38,13 +31,6 @@ class AnswersTemplate extends CommonTemplate
 	 * @property    string
    */
   public $text;
-
-	/**
-	 * The question this answer is intended for.
-	 *
-	 * @property    int
-   */
-  public $parent_item;
 
 	/**
 	 *Upvote count for this item.
@@ -65,17 +51,13 @@ class AnswersTemplate extends CommonTemplate
 	 * Setters for Answer fields
    */
 
+  // BelongsTo($config, $isRequired, $faker, $foreignModelName)
+  // getFKValue($relationType, $config, $isRequired = true, $faker = null, $foreignModelName = null)
+
   // $this->hasOne('IsPartOf', 'Questions@com_cajobboard', 'is_part_of', 'question_id');
   public function is_part_of ($config, $faker)
   {
-    // @TODO: This is 1:M, needs to handle mapping to question IDs
-    $this->is_part_of = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config);
-  }
-
-  // $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
-  public function publisher ($config, $faker)
-  {
-    $this->publisher = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Organizations');
+    $this->is_part_of = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'QAPages');
   }
 
   public function text ($config, $faker)

@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_applications` (
   DEFAULT COLLATE = utf8_unicode_ci;
 
 /*
-  @TODO: Some field as a DigitalDocument to allow linking to a PDF file?
+  @TODO: Application model is simple: it has a QAPage of questions and answers, some way of setting the right QAPage + questions as a template,
+         and metadata about the application - what job posting, application letter, etc.
 */
 
 /*

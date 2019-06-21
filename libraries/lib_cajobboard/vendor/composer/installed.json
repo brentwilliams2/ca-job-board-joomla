@@ -1,5 +1,120 @@
 [
     {
+        "name": "amenadiel/jpgraph",
+        "version": "4.0.0",
+        "version_normalized": "4.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/HuasoFoundries/jpgraph.git",
+            "reference": "7e1ad44d1bc82c58adad73d89e6465cf4ecd22e8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/HuasoFoundries/jpgraph/zipball/7e1ad44d1bc82c58adad73d89e6465cf4ecd22e8",
+            "reference": "7e1ad44d1bc82c58adad73d89e6465cf4ecd22e8",
+            "shasum": ""
+        },
+        "require": {
+            "ext-gd": "*",
+            "php": ">=7.0.0",
+            "symfony/dotenv": "~4.2"
+        },
+        "require-dev": {
+            "codeception/codeception": "~2.4.1",
+            "ext-xdebug": "*",
+            "friendsofphp/php-cs-fixer": "^2.4",
+            "kint-php/kint": "^2.2",
+            "monolog/monolog": "^1.23",
+            "php-console/php-console": "^3.1",
+            "phpunit/phpunit": "^6"
+        },
+        "time": "2019-01-15T17:39:01+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Amenadiel\\JpGraph\\": "src/",
+                "Amenadiel\\JpGraph\\Graph\\": "src/graph",
+                "Amenadiel\\JpGraph\\Image\\": "src/image",
+                "Amenadiel\\JpGraph\\Plot\\": "src/plot",
+                "Amenadiel\\JpGraph\\Text\\": "src/text",
+                "Amenadiel\\JpGraph\\Themes\\": "src/themes",
+                "Amenadiel\\JpGraph\\Util\\": "src/util"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "QPL-1.0"
+        ],
+        "description": "jpGraph, library to make graphs and charts",
+        "homepage": "http://jpgraph.net/",
+        "keywords": [
+            "chart",
+            "data",
+            "graph",
+            "jpgraph",
+            "pie"
+        ]
+    },
+    {
+        "name": "gravitymedia/ghostscript",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/GravityMedia/Ghostscript.git",
+            "reference": "15dd3a827668f102ac31935dc0a9f2b78bb0e28d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/GravityMedia/Ghostscript/zipball/15dd3a827668f102ac31935dc0a9f2b78bb0e28d",
+            "reference": "15dd3a827668f102ac31935dc0a9f2b78bb0e28d",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1",
+            "symfony/process": "^4.1"
+        },
+        "require-dev": {
+            "phing/phing": "^2.14",
+            "phpunit/phpunit": "^5.5",
+            "sami/sami": "^4.1",
+            "scrutinizer/ocular": "^1.3",
+            "symfony/finder": "^4.1"
+        },
+        "time": "2019-01-10T09:06:23+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "GravityMedia\\Ghostscript\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Daniel Schröder",
+                "email": "daniel.schroeder@gravitymedia.de",
+                "homepage": "https://github.com/pCoLaSD",
+                "role": "Developer"
+            }
+        ],
+        "description": "Ghostscript is an object oriented Ghostscript binary wrapper for PHP.",
+        "homepage": "https://github.com/GravityMedia/Ghostscript",
+        "keywords": [
+            "ghostscript",
+            "gravitymedia"
+        ]
+    },
+    {
         "name": "opis/closure",
         "version": "3.3.0",
         "version_normalized": "3.3.0.0",
@@ -122,6 +237,65 @@
         ]
     },
     {
+        "name": "symfony/dotenv",
+        "version": "v4.3.1",
+        "version_normalized": "4.3.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/dotenv.git",
+            "reference": "efd677abff68ea6fcfd9c60dbdacb96d0d97b382"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/dotenv/zipball/efd677abff68ea6fcfd9c60dbdacb96d0d97b382",
+            "reference": "efd677abff68ea6fcfd9c60dbdacb96d0d97b382",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3"
+        },
+        "require-dev": {
+            "symfony/process": "~3.4|~4.0"
+        },
+        "time": "2019-05-07T09:02:05+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Dotenv\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Registers environment variables from a .env file",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "dotenv",
+            "env",
+            "environment"
+        ]
+    },
+    {
         "name": "symfony/process",
         "version": "v4.3.1",
         "version_normalized": "4.3.1.0",
@@ -171,5 +345,52 @@
         ],
         "description": "Symfony Process Component",
         "homepage": "https://symfony.com"
+    },
+    {
+        "name": "thiagoalessio/tesseract_ocr",
+        "version": "2.7.3",
+        "version_normalized": "2.7.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thiagoalessio/tesseract-ocr-for-php.git",
+            "reference": "b369b5496b6e809d012aacf06cbf2db5f6b29f76"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thiagoalessio/tesseract-ocr-for-php/zipball/b369b5496b6e809d012aacf06cbf2db5f6b29f76",
+            "reference": "b369b5496b6e809d012aacf06cbf2db5f6b29f76",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.4 || ^7.0"
+        },
+        "require-dev": {
+            "codacy/coverage": "dev-master",
+            "phpunit/php-code-coverage": "^2.2.4"
+        },
+        "time": "2019-01-30T19:47:33+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "thiagoalessio\\TesseractOCR\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "thiagoalessio",
+                "email": "thiagoalessio@me.com"
+            }
+        ],
+        "description": "A wrapper to work with Tesseract OCR inside PHP.",
+        "keywords": [
+            "OCR",
+            "Tesseract",
+            "text recognition"
+        ]
     }
 ]

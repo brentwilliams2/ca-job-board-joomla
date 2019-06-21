@@ -18,6 +18,24 @@ defined('_JEXEC') or die;
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
+/*
+  Youtube's recommended resolution & aspect ratios
+
+  For the default 16:9 aspect ratio, encode at these resolutions:
+
+      2160p: 3840x2160
+      1440p: 2560x1440
+      1080p: 1920x1080
+      720p: 1280x720
+      480p: 854x480
+      360p: 640x360
+      240p: 426x240
+
+  If you’re uploading a non-16:9 file, it will be processed and displayed correctly
+  as well, with pillar boxes (black bars on the left and right) or letter boxes (black
+  bars at the top and bottom) provided by the player.
+*/
+
 /**
  * Fields:
  *

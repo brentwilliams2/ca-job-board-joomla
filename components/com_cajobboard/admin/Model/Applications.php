@@ -104,6 +104,8 @@ class Applications extends BaseModel
 
   // Allow a company to use our internal application system or route users to their own application system on a different site
 
+  // Need ability to mark questions as "must-have", so candidates can be rejected if they don't have it e.g. "has visa"
+
 
   /**
 	 * @throws    \RuntimeException when the assertion fails

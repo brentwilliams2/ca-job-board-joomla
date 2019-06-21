@@ -71,32 +71,6 @@ class BaseModel extends DataModel
   }
 
 
-// @TODO: From JobPostings model, how are params normally handled on a per-record basis with FOF30?
-  /**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-   *
-	 * @since 1.0
-	 *//*
-	public function bind($array, $ignore = '')
-	{
-
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			// Convert the params field to a string.
-      $parameter = new Registry;
-
-      $parameter->loadArray($array['params']);
-
-			$array['params'] = (string)$parameter;
-    }
-
-		return parent::bind($array, $ignore);
-  }*/
-
-
   /**
    * Transformations for model properties:
    *
@@ -131,6 +105,19 @@ class BaseModel extends DataModel
     }
 
     // Return the data transformed to a JRegistry object
+    // @TODO: Not sure if metadata tags are being set anywhere, this would seem like the
+    //        logical place. But how to cleanly handle inheritance? DO robots / Author
+    //        metadata tags inherit? by component? by category?
+    //  <meta name="robots" content="index, follow" />
+    // index      Allow search engines to add the page to their index, so that it can be discovered by people searching. Default if tag missing.
+    // noindex    Disallow search engines from adding this page to their index, and therefore disallow them from showing it in their results.
+    // follow     Tells the search engines that it may follow links on the page, to discover other pages. Default if tag missing.
+    // nofollow   Tells the search engines robots to not follow any links on the page.
+    //   <meta name="author" content="John Doe">
+
+    // $document = JFactory::getDocument();
+    // $document->setMetaData( 'tagname', 'tagcontent' );
+
     return new Registry($value);
   }
 
@@ -217,6 +204,23 @@ class BaseModel extends DataModel
   public function inverseSideOfHasOne(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
   {
     $this->belongsTo($name, $foreignModelClass, $localKey, $foreignKey);
+  }
+
+
+  /**
+	 * Get comments associated with the entity.
+	 *
+	 * @return   DataCollection   Collection of Comments models
+	 */
+  public function getComments()
+  {
+    // @TODO: Implement, see Comments models.
+
+    // @TODO: Need to add relation to this base model in constructor, something like:
+
+    // many-to-many FK to #__cajobboard_persons
+    // @TODO: check syntax
+    $this->belongsToMany('Comments', 'Comments@com_cajobboard', $this->getName() . '_id', 'comment_id', '#__cajobboard_comments_foreign_models', 'comment_id', 'foreign_model_id');
   }
 
 

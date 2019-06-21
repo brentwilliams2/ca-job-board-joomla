@@ -19,6 +19,10 @@ use \Joomla\CMS\Editor\Editor;
 use \Joomla\CMS\Pagination\Pagination;
 use \Joomla\CMS\Helper\ModuleHelper;
 
+use \Joomla\CMS\User\User;
+use \Joomla\CMS\Plugin\PluginHelper;
+use \Joomla\CMS\Filesystem\File;
+
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Router\Route;
 use \Joomla\CMS\Uri\Uri;

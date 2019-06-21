@@ -80,7 +80,7 @@ FOF30\Autoloader\Autoloader::getInstance()->register();
 // Add Composer autoloader for applications in vendor directory
 require_once JPATH_ADMINISTRATOR . '/components/com_cajobboard/vendor/autoload.php';
 
-use FOF30\Container\Container;
+use \FOF30\Container\Container;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Input\Cli;
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\Exception\CliApplicationException;

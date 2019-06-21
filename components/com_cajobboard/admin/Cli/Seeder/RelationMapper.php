@@ -11,7 +11,7 @@
 
 namespace Calligraphic\Cajobboard\Admin\Cli\Seeder;
 
-use Calligraphic\Cajobboard\Admin\Helper\BasicEnum;
+use Calligraphic\Cajobboard\Admin\Helper\Enum\BasicEnum;
 use \Exception;
 use \Faker;
 use \Joomla\CMS\Factory;
@@ -68,7 +68,7 @@ class RelationMapper
 
 
   /**
-	 *  Call an appropriate handler to get a foreign key value for a model relation field
+	 *  Call an appropriate handler to get a foreign key value for a model` relation field
    *
 	 *  @param   string  $relationType      The type of relation, a valid constant from RelationTypes abstract class
 	 *  @param   Array   $config            The config object passed to the calling method by generate().

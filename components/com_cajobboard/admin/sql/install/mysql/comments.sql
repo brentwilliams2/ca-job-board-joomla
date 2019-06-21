@@ -44,20 +44,30 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the comment, used for the text shown on social media via shares and search engine results.',
-
-  /* SCHEMA: CreativeWork */
-  is_part_of BIGINT UNSIGNED COMMENT 'This property points to a Question entity associated with this comment. FK to #__cajobboard_questions(question_id)',
-  publisher BIGINT UNSIGNED COMMENT 'The company that wrote this comment. FK to #__organizations(organization)id).',
-  `text` TEXT COMMENT 'The text of the comment.',
+  description TEXT COMMENT 'The text of the comment.',
 
   /* SCHEMA: Comment */
-  parent_item BIGINT UNSIGNED COMMENT 'The question this comment is intended for. FK to #__cajobboard_questions(question_id)',
+  parent_item BIGINT UNSIGNED COMMENT 'The comment is a child of. FK to #__cajobboard_comments(comment_id)',
   upvote_count INT DEFAULT '0' COMMENT 'Upvote count for this item.',
   downvote_count INT DEFAULT '0' COMMENT 'Downvote count for this item.',
 
   /* SQL DDL */
   PRIMARY KEY (comment_id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/**
+ * Comment - Foreign Model EAV join table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_comments_foreign_models` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  comment_id BIGINT UNSIGNED NOT NULL,
+  foreign_model_id BIGINT UNSIGNED NOT NULL,
+  foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign model this comment belongs to',
+  PRIMARY KEY (id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
@@ -121,6 +131,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
 /*
  * Comments content type for history component
  */
+
+/* @TODO: Check all model SQL content type entries to see if special field mappings have been properly set to model properties / table fields */
+
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
@@ -176,9 +189,6 @@ VALUES(
         "asset_id":"asset_id"
     },
     "special":{
-        "is_part_of":"is_part_of",
-        "publisher":"publisher",
-        "text":"text",
         "parent_item":"parent_item",
         "upvote_count":"upvote_count",
         "downvote_count":"downvote_count"

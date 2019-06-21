@@ -83,7 +83,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string   $sameAs                      URL of the job posting on the employer\s website.
  *
  * SCHEMA: https://calligraphic.design/schema/EmploymentType
- * @property JobEmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
+ * @property EmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
  *
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
  * @property OccupationalCategories  $occupationalCategory  The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
@@ -144,11 +144,11 @@ class JobPostings extends BaseModel
     // many-to-one FK to  #__cajobboard_organizations
     $this->belongsTo('HiringOrganization', 'Organizations@com_cajobboard', 'hiring_organization', 'organization_id');
 
-    // many-to-one FK to  #__cajobboard_job_employment_types
-    $this->belongsTo('EmploymentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');
+    // many-to-one FK to  #__cajobboard_employment_types
+    $this->belongsTo('EmploymentType', 'EmploymentTypes@com_cajobboard', 'employment_type', 'employment_type_id');
 
-    // many-to-one FK to #__cajobboard_job_occupational_categories
-    $this->belongsTo('OccupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
+    // many-to-one FK to #__cajobboard_occupational_categories
+    $this->belongsTo('OccupationalCategory', 'OccupationalCategories@com_cajobboard', 'occupational_category', 'occupational_category_id');
 
     // one-to-one FK to #__cajobboard_employer_aggregate_ratings
     $this->hasOne('AggregateReviews', 'EmployerAggregateRatings@com_cajobboard', 'job_posting_id', 'employer_aggregate_rating_id');
@@ -175,6 +175,12 @@ class JobPostings extends BaseModel
     b. Employers who have historically posted jobs in that city
     c. Networking opportunities, maybe?  Maybe list Insiders in that area?
     d. Press releases about acquisitions/etc in that area.
+  */
+
+  /*
+  @TODO: Need to check and bill the client when the job posting is set to "published", but allow "draft" job postings w/o billing
+
+  @TODO: Also the issue of job posting templates, so button to copy a job posting
   */
 
 

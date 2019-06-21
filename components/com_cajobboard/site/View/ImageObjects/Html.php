@@ -19,8 +19,6 @@ use JFactory;
 // no direct access
 defined('_JEXEC') or die;
 
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
-
 class Html extends \FOF30\View\DataView\Html
 {
 	/**

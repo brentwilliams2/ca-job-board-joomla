@@ -52,19 +52,61 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_image_objects` (
   author BIGINT UNSIGNED COMMENT 'The author of this content or rating.', /* FK to #__users */
 
   /* SCHEMA: ImageObject */
-  caption VARCHAR(255) COMMENT 'Caption for the property image.',
+  caption VARCHAR(255) COMMENT 'Caption for the image.',
   exif_data TEXT COMMENT 'JSON-encoded EXIF data for this image.',
 
   /* SCHEMA: MediaObject */
-  content_url VARCHAR(255) NOT NULL COMMENT 'Filename of the property image.',
-  content_size BIGINT(20) COMMENT 'File size in bytes.',
-  height INT COMMENT 'Height of the property image in px',
-  width INT COMMENT 'Width of the property image in px',
+  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the image file referred to by the record',
+  content_size BIGINT(20) COMMENT 'File size of the original image in bytes.',
+  height INT COMMENT 'Height of the original image in px',
+  width INT COMMENT 'Width of the original image in px',
 
   /* SCHEMA: CreativeWork */
   content_location BIGINT UNSIGNED COMMENT 'Place depicted or described in the image.', /* FK to #__cajobboard_places */
 
   PRIMARY KEY (image_object_id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/**
+ * ImageObjects - Organizations join table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_image_objects_organizations` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  image_object_id BIGINT UNSIGNED NOT NULL,
+  organization_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/**
+ * ImageObjects - Places join table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_image_objects_places` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  image_object_id BIGINT UNSIGNED NOT NULL,
+  place_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/**
+ * ImageObjects - Persons join table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_image_objects_persons` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  image_object_id BIGINT UNSIGNED NOT NULL,
+  person_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8

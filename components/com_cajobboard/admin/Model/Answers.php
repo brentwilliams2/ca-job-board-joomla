@@ -54,9 +54,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * SCHEMA: CreativeWork
  * @property Question       $IsPartOf         This property points to a Question entity associated with this answer. FK to #__cajobboard_questions(question_id).
- * @property Organization   $Publisher        The company that wrote this answer. FK to #__organizations(organization_id).
  * @property string         $text             The actual text of the answer itself.
- * @property Person         $Author           The author of this comment.  FK to #__persons.
+ * @property Person         $Author           The author of this comment.  FK to #__cajobboard_persons.
  *
  * SCHEMA: Answer
  * @property int            $upvote_count     Upvote count for this item.
@@ -64,7 +63,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  */
 class Answers extends BaseModel
 {
-  use \FOF30\Model\Mixin\Assertions;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -112,14 +111,15 @@ class Answers extends BaseModel
 
     /* Set up relations after parent constructor */
 
+    // table field for inverseSideOfHasOne relation is in this model's table
+
     // one-to-one FK to #__cajobboard_questions
-    $this->hasOne('IsPartOf', 'Questions@com_cajobboard', 'is_part_of', 'question_id');
+    $this->inverseSideOfHasOne('IsPartOf', 'Questions@com_cajobboard', 'is_part_of', 'question_id');
 
-    // many-to-one FK to  #__organizations
-    $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
+     // table field for belongsTo relation is in this model's table
 
-    // one-to-one FK to  #__cajobboard_persons
-     $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+    // many-to-one FK to  #__cajobboard_persons
+     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
   }
 
 

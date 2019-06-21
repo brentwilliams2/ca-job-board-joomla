@@ -35,10 +35,20 @@ class PlgSystemCajobboard_library_loader extends CMSPlugin
     $autoloader = FOF30\Autoloader\Autoloader::getInstance();
 
     // Add the library namespace
-    $autoloader->addMap('Calligraphic\\Cajobboard\\Library\\', JPATH_LIBRARIES . '/Cajobboard');
+    // addMap($namespace, $path)
+    $autoloader->addMap('Calligraphic\\Component\\Cajobboard\\Library\\', JPATH_LIBRARIES . '/calligraphic/component/cajobboard');
 
     // Register modified autoload function
     $autoloader->register(false);
+
+    if ( file_exists(JPATH_LIBRARIES . '/calligraphic/vendor/autoload.php') )
+    {
+      include_once JPATH_LIBRARIES . '/calligraphic/vendor/autoload.php';
+    }
+    else
+    {
+      throw new \Exception('Calligraphic Library cannot find the Composer autoload file');
+    }
 
 		return true;
   }

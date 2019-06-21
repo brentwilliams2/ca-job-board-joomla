@@ -48,11 +48,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
 
   /* SCHEMA: CreativeWork */
   is_part_of BIGINT UNSIGNED COMMENT 'This property points to a Question entity associated with this answer. FK to #__cajobboard_questions(question_id)',
-  publisher BIGINT UNSIGNED COMMENT 'The company that wrote this answer. FK to #__organizations(organization)id).',
   `text` TEXT COMMENT 'The text of the answer.',
 
   /* SCHEMA: Answer */
-  parent_item BIGINT UNSIGNED COMMENT 'The question this answer is intended for. FK to #__cajobboard_questions(question_id)',
   upvote_count INT DEFAULT '0' COMMENT 'Upvote count for this item.',
   downvote_count INT DEFAULT '0' COMMENT 'Downvote count for this item.',
 
