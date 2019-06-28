@@ -9,6 +9,8 @@
  *
  */
 
+// Based on Akeeba Social Logins plugin. Has associated Modules.
+
 // no direct access
 defined('_JEXEC') or die;
 

@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_answers` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this answer in the back-end interface.',
+  note VARCHAR(255) COMMENT 'A note to save with this item for use in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',

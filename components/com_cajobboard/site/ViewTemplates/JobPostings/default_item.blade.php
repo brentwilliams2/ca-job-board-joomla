@@ -14,7 +14,9 @@
   defined('_JEXEC') or die;
 
   use \Calligraphic\Cajobboard\Site\Helper\Format;
-  use \Calligraphic\Cajobboard\Site\Helper\JobPosting;
+  use \Calligraphic\Cajobboard\Site\Helper\JobPosting as JobPostingHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\\Helper\TagsHelper;
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
@@ -38,7 +40,7 @@
   $employmentType       = JText::_($item->employmentType->name); // Employment type (part-time, full-time, etc.) saved as translation string in DB
 
 
-  $tags = new JHelperTags;
+  $tags = new TagsHelper;
   $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
 
   // @TODO: set $saved to $this->saved field after the saved job join table is added to repository, and update in #7 "Saved Job" button
@@ -60,7 +62,7 @@
     }
   }
 
-  $formattedPay = $JobPostingViewHelper->formatPayToValueOrRange(
+  $formattedPay = JobPostingHelper::formatPayToValueOrRange(
     $item->base_salary__value,
     $item->base_salary__min_value,
     $item->base_salary__max_value,
@@ -259,7 +261,7 @@
 --}}
 @section('job_benefits')
   <span>
-    {{-- @TODO: User JobPostingViewHelper->getTeaser() to shorten long strings of benefits --}}
+    {{-- @TODO: User JobPostingHelper::getTeaser() to shorten long strings of benefits --}}
     {{ $item->job_benefits }}
   </span>
 @overwrite

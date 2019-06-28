@@ -1,6 +1,6 @@
 <?php
 /**
- * Back-end entry file for FOF component
+ * Site entry file for FOF component
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -15,42 +15,34 @@ namespace Calligraphic\Cajobboard\Site\Dispatcher;
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
 //  Framework classes
-use FOF30\Container\Container;
-use \Joomla\CMS\HTML\HTMLHelper;
-
-
-// Helpe classes
-use Calligraphic\Cajobboard\Site\Helper\JobPostingViewHelper;
+use \Calligraphic\Cajobboard\Admin\Dispatcher\Dispatcher as AdminDispatcher;
+use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
+use \Calligraphic\Cajobboard\Admin\Helper\Enum\VideoObjectAspectRatiosEnum;
+use \Calligraphic\Cajobboard\Site\Helper\JobPosting as JobPostingHelper;
+use \Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
+use \FOF30\Container\Container;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Dispatcher extends \FOF30\Dispatcher\Dispatcher
+class Dispatcher extends AdminDispatcher
 {
-	/** @var   string  The name of the default view, in case none is specified */
+  /**
+   * @property   string  The name of the default view, in case none is specified
+   */
   public $defaultView = 'JobPostings';
 
-	public function onBeforeDispatch()
-	{
-    // Load JQuery and Bootstrap javascript before anything else (template includes load after component)
-    HTMLHelper::_('jquery.framework');
-    HTMLHelper::_('bootstrap.framework');
 
-    // Load common CSS and JavaScript
-    if(JDEBUG)
-    {
-      $this->container->template->addCSS('media://com_cajobboard/css/frontend.css');
-      $this->container->template->addJS('media://com_cajobboard/js/Site/frontend.js', true, false);
-    }
-    else
-    {
-        $this->container->template->addCSS('media://com_cajobboard/css/frontend.min.css');
-        $this->container->template->addJS('media://com_cajobboard/js/Site/frontend.min.js', true, false);
-    }
+  /*
+   * Services to add to the component's container. The container object ($c)
+   * is available  inside the closure.
+   */
+  protected function addContainerServices()
+  {
+    parent::addContainerServices();
 
-    // @TODO: Is this really how we want to do this?
-    $this->container['job_posting_view_helper'] = function ($c) {
-      return new JobPostingViewHelper();
+    $this->container->RegistrationHelper = function ($c) {
+      return new RegistrationHelper($c);
     };
-	}
+  }
 }

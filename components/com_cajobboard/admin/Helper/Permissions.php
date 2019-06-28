@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper class for displaying the Permissions tab in admin view, object/record level
+ * Helper class for preparing permissions data to display in admin tab at item (object/record) level
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -18,11 +18,8 @@ use \Joomla\CMS\Factory;
 // no direct access
 defined('_JEXEC') or die;
 
-@TODO: finish this
+// @TODO: finish Permissiosn helper class
 
-/**
- * A helper class for preparing permissions data to display in admin tab at item (object/record) level
- */
 abstract class Permissions
 {
 	/**

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "46aa29fc80fd8e76669168699adeecd3",
+    "content-hash": "3c65e02dca8846129503fc6193046401",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -62,6 +62,66 @@
             "time": "2019-01-15T17:39:01+00:00"
         },
         {
+            "name": "ddeboer/imap",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddeboer/imap.git",
+                "reference": "ff985d72916267cba2f944e7c9ee654c69893219"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddeboer/imap/zipball/ff985d72916267cba2f944e7c9ee654c69893219",
+                "reference": "ff985d72916267cba2f944e7c9ee654c69893219",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "ext-imap": "*",
+                "ext-mbstring": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "phpstan/phpstan": "^0.11",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan-strict-rules": "^0.11.0",
+                "phpunit/phpunit": "^7.5",
+                "zendframework/zend-mail": "^2.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ddeboer\\Imap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David de Boer",
+                    "email": "david@ddeboer.nl"
+                },
+                {
+                    "name": "Community contributors",
+                    "homepage": "https://github.com/ddeboer/imap/graphs/contributors"
+                },
+                {
+                    "name": "Filippo Tessarotto",
+                    "email": "zoeslam@gmail.com"
+                }
+            ],
+            "description": "Object-oriented IMAP for PHP",
+            "keywords": [
+                "email",
+                "imap",
+                "mail"
+            ],
+            "time": "2019-04-15T09:18:52+00:00"
+        },
+        {
             "name": "gravitymedia/ghostscript",
             "version": "dev-master",
             "source": {
@@ -116,6 +176,52 @@
                 "gravitymedia"
             ],
             "time": "2019-01-10T09:06:23+00:00"
+        },
+        {
+            "name": "malas/php-bounce-handler",
+            "version": "0.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/malas/php-bounce-handler.git",
+                "reference": "8f67137d9f5795d367ae7b1e32fa2ff0ce005946"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/malas/php-bounce-handler/zipball/8f67137d9f5795d367ae7b1e32fa2ff0ce005946",
+                "reference": "8f67137d9f5795d367ae7b1e32fa2ff0ce005946",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^3.0",
+                "symfony/var-dumper": "^3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Malas\\BounceHandler\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Laurynas Mališauskas",
+                    "email": "laurynas.malisauskas@gmail.com"
+                }
+            ],
+            "description": "PHP class which can parse bounce reports via IMAP.",
+            "keywords": [
+                "bounce",
+                "email",
+                "handler",
+                "php"
+            ],
+            "time": "2018-02-22T13:44:53+00:00"
         },
         {
             "name": "opis/closure",

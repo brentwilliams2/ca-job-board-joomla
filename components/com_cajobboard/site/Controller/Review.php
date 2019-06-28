@@ -64,22 +64,6 @@ class Review extends DataController
       $this->setRedirect($url, $msg = null, 'message')->redirect();
     }
     */
-    
-		return true;
-  }
-
-	/**
-	 * Make sure we create a unique slug for the review before saving it.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
-	public function onBeforeApplySave($data)
-	{
-    // @TODO: Make sure the slug is unique
-    $data->slug = JFilterOutput::stringURLSafe($data->name);
-    $data->author = $this->container->platform->getUser()->id;
-
 
 		return true;
   }

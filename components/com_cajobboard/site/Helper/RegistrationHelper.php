@@ -13,23 +13,20 @@
 
 namespace Calligraphic\Cajobboard\Site\Helper;
 
-// Framework classes
 use FOF30\Container\Container;
 use FOF30\Params\Params;
-use JApplicationHelper;
-use JComponentHelper;
-use JDate;
-use JEventDispatcher;
-use JFactory;
-use JRoute;
-use JStringPunycode;
-use JText;
-use JUri;
-use JUser;
-use JUserHelper;
-use RuntimeException;
-use UnexpectedValueException;
-use JLog;
+use \JEventDispatcher;
+use \Joomla\CMS\Application\ApplicationHelper;
+use \Joomla\CMS\Date\\Date;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Router\Route;
+use \Joomla\CMS\String\PunycodeHelper;
+use \Joomla\CMS\Uri\Uri;
+use \Joomla\CMS\User\User;
+use \Joomla\CMS\User\UserHelper;
+use \RuntimeException;
+use \UnexpectedValueException;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -175,7 +172,7 @@ class RegistrationHelper
 		// Check if front-end registration is allowed
   	if ($this->allowUserRegistration == 0)
 		{
-			throw new RuntimeException(JText::_('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS'));
+			throw new RuntimeException(Text::_('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS'));
 		}
 
     // Make sure email is present and not already in use
@@ -201,17 +198,17 @@ class RegistrationHelper
       'language' => $language
 		);
 
-		// Initialise the table with JUser.
-		$user = new JUser;
+		// Initialise the table with User.
+		$user = new User;
 
 		// If no password was specified create a random one
 		if (!isset($data['password']) || empty($data['password']))
 		{
-			$data['password'] = JUserHelper::genRandomPassword(8);
+			$data['password'] = UserHelper::genRandomPassword(8);
 		}
 
 		// Convert the email to punycode if necessary
-		$data['email'] = JStringPunycode::emailToPunycode($email);
+		$data['email'] = PunycodeHelper::emailToPunycode($email);
 
 		/**
 		 * Get the dispatcher and load the users plugins.
@@ -244,7 +241,7 @@ class RegistrationHelper
 		// Check if the user needs to activate their account.
 		if (($this->userActivation == 1) || ($this->userActivation == 2))
 		{
-			$data['activation'] = JApplicationHelper::getHash(JUserHelper::genRandomPassword());
+			$data['activation'] = ApplicationHelper::getHash(UserHelper::genRandomPassword());
 			$data['block']      = 1;
 		}
 
@@ -254,23 +251,23 @@ class RegistrationHelper
 		// Bind the data.
 		if (!$user->bind($data))
 		{
-			throw new RuntimeException(JText::sprintf('COM_USERS_REGISTRATION_BIND_FAILED', $user->getError()));
+			throw new RuntimeException(Text::sprintf('COM_USERS_REGISTRATION_BIND_FAILED', $user->getError()));
 		}
 
 		// Store the data.
 		if (!$user->save())
 		{
-			throw new RuntimeException(JText::sprintf('COM_USERS_REGISTRATION_SAVE_FAILED', $user->getError()));
+			throw new RuntimeException(Text::sprintf('COM_USERS_REGISTRATION_SAVE_FAILED', $user->getError()));
 		}
 
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
 
 		// Compile the notification mail values.
 		$data             = $user->getProperties();
 		$data['fromname'] = $app->get('fromname');
 		$data['mailfrom'] = $app->get('mailfrom');
 		$data['sitename'] = $app->get('sitename');
-    $data['siteurl']  = JUri::base();
+    $data['siteurl']  = Uri::base();
 
     // Get the base URI
 		$liveSite = trim($app->get('live_site', ''));
@@ -281,7 +278,7 @@ class RegistrationHelper
 			$liveSite = $this->container->params->get('siteurl');
 		} // @TODO What if siteurl is empty here?
 
-		$uri  = JUri::getInstance($liveSite);
+		$uri  = Uri::getInstance($liveSite);
 		$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 
 		$db     = $this->container->db;
@@ -296,7 +293,7 @@ class RegistrationHelper
 			default:
 			case 2:
 				// Set the link to confirm the user email.
-				$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+				$data['activate'] = $base . Route::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
 
 				// Remove administrator/ from activate url in case this method is called from admin
 				if ($isAdmin)
@@ -305,13 +302,13 @@ class RegistrationHelper
 					$data['activate'] = substr_replace($data['activate'], '', $adminPos, 14);
 				}
 
-				$emailSubject = JText::sprintf(
+				$emailSubject = Text::sprintf(
 					'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 					$data['name'],
 					$data['sitename']
 				);
 
-				$emailBody = JText::sprintf(
+				$emailBody = Text::sprintf(
 					'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY_NOPW',
 					$data['name'],
 					$data['sitename'],
@@ -322,7 +319,7 @@ class RegistrationHelper
 
 				if ($this->sendPasswordInEmail)
 				{
-					$emailBody = JText::sprintf(
+					$emailBody = Text::sprintf(
 						'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY',
 						$data['name'],
 						$data['sitename'],
@@ -337,7 +334,7 @@ class RegistrationHelper
 			// Administrator activation of user account
 			case 1:
 				// Set the link to activate the user account.
-				$data['activate'] = $base . JRoute::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
+				$data['activate'] = $base . Route::_('index.php?option=com_users&task=registration.activate&token=' . $data['activation'], false);
 
 				// Remove administrator/ from activate url in case this method is called from admin
 				if ($isAdmin)
@@ -346,13 +343,13 @@ class RegistrationHelper
 					$data['activate'] = substr_replace($data['activate'], '', $adminPos, 14);
 				}
 
-				$emailSubject = JText::sprintf(
+				$emailSubject = Text::sprintf(
 					'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 					$data['name'],
 					$data['sitename']
 				);
 
-				$emailBody = JText::sprintf(
+				$emailBody = Text::sprintf(
 					'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY_NOPW',
 					$data['name'],
 					$data['sitename'],
@@ -363,7 +360,7 @@ class RegistrationHelper
 
 				if ($this->sendPasswordInEmail)
 				{
-					$emailBody = JText::sprintf(
+					$emailBody = Text::sprintf(
 						'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY',
 						$data['name'],
 						$data['sitename'],
@@ -378,13 +375,13 @@ class RegistrationHelper
 
 			// No activation required
 			case 0:
-				$emailSubject = JText::sprintf(
+				$emailSubject = Text::sprintf(
 					'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 					$data['name'],
 					$data['sitename']
 				);
 
-				$emailBody = JText::sprintf(
+				$emailBody = Text::sprintf(
 					'COM_USERS_EMAIL_REGISTERED_BODY_NOPW',
 					$data['name'],
 					$data['sitename'],
@@ -393,7 +390,7 @@ class RegistrationHelper
 
 				if ($this->sendPasswordInEmail)
 				{
-					$emailBody = JText::sprintf(
+					$emailBody = Text::sprintf(
 						'COM_USERS_EMAIL_REGISTERED_BODY',
 						$data['name'],
 						$data['sitename'],
@@ -407,18 +404,18 @@ class RegistrationHelper
 		}
 
 		// Send the registration email.
-		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
+		$return = Factory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
 
 		// Send Notification mail to administrators
 		if (($this->userActivation < 2) && ($this->sendEmailToAdmin == 1))
 		{
-			$emailSubject = JText::sprintf(
+			$emailSubject = Text::sprintf(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
 			);
 
-			$emailBodyAdmin = JText::sprintf(
+			$emailBodyAdmin = Text::sprintf(
 				'COM_USERS_EMAIL_REGISTERED_NOTIFICATION_TO_ADMIN_BODY',
 				$data['name'],
 				$data['username'],
@@ -441,18 +438,18 @@ class RegistrationHelper
 			}
 			catch (RuntimeException $e)
 			{
-				throw new RuntimeException(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+				throw new RuntimeException(Text::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
 			}
 
 			// Send mail to all Super Users
 			foreach ($rows as $row)
 			{
-				$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin);
+				$return = Factory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin);
 
 				// Check for an error.
 				if ($return !== true)
 				{
-					throw new RuntimeException(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+					throw new RuntimeException(Text::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 				}
 			}
 		}
@@ -461,7 +458,7 @@ class RegistrationHelper
 		if ($return !== true)
 		{
 			// Send a system message to administrators receiving system mails
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
       $query
         ->clear()
         ->select($db->qn('id'))
@@ -477,12 +474,12 @@ class RegistrationHelper
 			}
 			catch (RuntimeException $e)
 			{
-				throw new RuntimeException(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+				throw new RuntimeException(Text::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
 			}
 
 			if (count($userids) > 0)
 			{
-				$jdate = new JDate;
+				$Date = new Date;
 
 				// Build the query to add the messages
 				foreach ($userids as $userid)
@@ -490,9 +487,9 @@ class RegistrationHelper
 					$values = array(
 						$db->quote($userid),
 						$db->quote($userid),
-						$db->quote($jdate->toSql()),
-						$db->quote(JText::_('COM_USERS_MAIL_SEND_FAILURE_SUBJECT')),
-						$db->quote(JText::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username'])),
+						$db->quote($Date->toSql()),
+						$db->quote(Text::_('COM_USERS_MAIL_SEND_FAILURE_SUBJECT')),
+						$db->quote(Text::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username'])),
 					);
 					$query->clear()
 					      ->insert($db->quoteName('#__messages'))
@@ -513,12 +510,12 @@ class RegistrationHelper
 					}
 					catch (RuntimeException $e)
 					{
-						throw new RuntimeException(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+						throw new RuntimeException(Text::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
 					}
 				}
 			}
 
-			throw new RuntimeException(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
+			throw new RuntimeException(Text::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
 		}
 
 		if ($this->userActivation == 1)
@@ -560,7 +557,7 @@ class RegistrationHelper
     }
     catch (RuntimeException $e)
     {
-      throw new RuntimeException(JText::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
+      throw new RuntimeException(Text::sprintf('COM_USERS_DATABASE_ERROR', $e->getMessage()), 500);
     }
 
 		return $result;
@@ -592,25 +589,25 @@ class RegistrationHelper
     // Check if user name is already being used
     if ($db->loadResult())
     {
-      throw new UnexpectedValueException(JText::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $userName));
+      throw new UnexpectedValueException(Text::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $userName));
     }
 
     // Check if user name is long enough
     if (strlen($userName) < $this->minPasswordLength)
     {
-      throw new UnexpectedValueException(JText::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $this->minPasswordLength));
+      throw new UnexpectedValueException(Text::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $this->minPasswordLength));
     }
 
     // Check if user name has minimum number of integers
     if (preg_match_all('/[0-9]/', $userName) < $this->minNumberOfIntegers)
     {
-      throw new UnexpectedValueException(JText::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $this->minNumberOfIntegers));
+      throw new UnexpectedValueException(Text::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $this->minNumberOfIntegers));
     }
 
     // Check if user name has minimum number of uppercase alphabetic characters
     if (preg_match_all('/[A-Z]/', $userName) < $this->minNumberOfUppercase)
     {
-      throw new UnexpectedValueException(JText::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $this->minminNumberOfOfUppercase));
+      throw new UnexpectedValueException(Text::sprintf('COM_CAJOBBOARD_REGISTRATION_USER_NAME_EXISTS', $this->minminNumberOfOfUppercase));
     }
 
     return $userName;

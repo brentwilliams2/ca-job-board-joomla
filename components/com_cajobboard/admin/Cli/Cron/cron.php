@@ -1,6 +1,16 @@
 <?php
+/**
+ * CLI Script for Job Board CRON tasks
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
+ */
 
-// @TODO: We're calling this script as a task from "No Boss Crons" component
+// @TODO: Implement cron, We're calling this script as a task from "No Boss Crons" component
 
 // Initialize Joomla framework
 const _JEXEC = 1;

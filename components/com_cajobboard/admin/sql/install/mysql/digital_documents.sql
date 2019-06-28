@@ -51,20 +51,18 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_digital_documents` (
   description TEXT COMMENT 'A long description of this image.',
   author BIGINT UNSIGNED COMMENT 'The author of this content or rating.', /* FK to #__users */
 
-    /* SCHEMA: Thing(additionalType) -> MediaObject */
-  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the PDF file referred to by the record.',
+    /* SCHEMA: Thing(encoding) -> MediaObject */
+  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the document file referred to by the record.',
   content_size BIGINT(20) COMMENT 'File size in bytes.',
+
+  /* SCHEMA: CreativeWork */
+  encodingFormat
 
   PRIMARY KEY (digital_document_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-/*
-  @TODO: Slug gives the SEF-friendly filename, we need to rewrite a request like "http://example.com/media/image.jpg" to call
-  our script for access control?
-*/
 
 
 /*

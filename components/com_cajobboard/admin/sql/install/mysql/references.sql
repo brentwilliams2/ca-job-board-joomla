@@ -51,6 +51,11 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
   has_part__image_object INT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
   about INT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
 
+  /* SCHEMA: Message */
+  to_recipient INT UNSIGNED COMMENT 'The user this report should be sent to.', /* FK to #__users */
+  date_sent DATETIME DEFAULT NULL COMMENT 'The date the report was last sent.',
+  message_attachment VARCHAR(2083) COMMENT 'The URL of the Analytics view that should be used to generate the PDF file.',
+
   /* SQL DDL */
   PRIMARY KEY (reference_id)
 )

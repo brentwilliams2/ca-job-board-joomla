@@ -28,6 +28,7 @@ use \FOF30\Input\Input;
 use \Joomla\CMS\Filesystem\File;
 use \Joomla\CMS\Filesystem\Folder;
 use \Joomla\CMS\Language\Text;
+use \Calligraphic\Cajobboard\Admin\Helper\Exception\UploadException;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -151,11 +152,11 @@ class Uploader
 
 
   /**
-	 * Format a date for display.
-   *
    * The $config parameter can be used to pass some configuration values to the object:
    *
-   *  form_field_name   Set the name of the input field in the HTML form that has type 'file'
+   *  formFieldName     Set the name of the input field in the HTML form that has type 'file'
+   *  destDir           The
+   *  allowedFileTypes
    *
 	 * @param   DataModel  $model      The container attached to the model.
 	 * @param   array      $config     Configuration values for this uploader.
@@ -178,6 +179,16 @@ class Uploader
     if (isset($config['allowedFileTypes']))
 		{
 			$this->allowedFileTypes = $config['allowedFileTypes'];
+    }
+    else
+    {
+      $allowedFileTypes = array(
+        "jpg" => "image/jpg",
+        "jpeg" => "image/jpeg",
+        "gif" => "image/gif",
+        "png" => "image/png",
+        'svg' => 'image/svg+xml'
+      );
     }
 
     // Retrieve file details from uploaded file, sent from upload form

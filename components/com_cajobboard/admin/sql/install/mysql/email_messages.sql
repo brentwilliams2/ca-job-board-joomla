@@ -18,59 +18,42 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_messages` (
   /* FOF "magic" fields */
   asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
-  enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
+  enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Send status: -2 for trashed and marked for deletion, -1 for mail delivery failure, 0 for not yet mailed, and 1 for mailed.',
   created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
   created_by INT NOT NULL DEFAULT '0' COMMENT 'User ID who created the record, auto-filled by save().',
   modified_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record modification, auto-filled by save(), touch().',
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
-  locked_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record locking, auto-filled by lock(), unlock().',
-  locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
-  publish_down DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to unpublished.',
-  version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
-  ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
-  metadata JSON COMMENT 'JSON encoded metadata field for this item.',
-  metakey TEXT COMMENT 'Meta keywords for this item.',
-  metadesc TEXT COMMENT 'Meta descriptionfor this item.',
-  xreference TEXT COMMENT 'A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.',
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
-  language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the article or * for all languages.',
+  language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the email message or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
-  hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
-  featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this answer in the back-end interface.',
+  note VARCHAR(255) COMMENT 'Used by the outgoing mail processor to save any information about mail delivery status.',
 
   /* SCHEMA: Thing */
-  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the answer, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Note for internal use concerning this e-mail.',
+  name VARCHAR(255) COMMENT 'Subject field of the e-mail. Aliased by title property.',
+
+  /* SCHEMA: CreativeWork */
+  `text` TEXT COMMENT 'Body field of the e-mail.',
+
+  /* SCHEMA: Message */
+  date_sent DATETIME DEFAULT NULL COMMENT 'The date/time at which the message was sent via the MTA.',
+  message_attachment__document INT UNSIGNED COMMENT 'A DigitalDocument attachment for this e-mail message, e.g. a PDF file for an analytics report.', /* FK to #__cajobboard_digital_documents */
+  recipient__additional_name VARCHAR(255) COMMENT 'An additional name for  of the recipient, can be used for a middle name.',
+  recipient__email VARCHAR(2083) COMMENT 'Email address of the recipient.',
+  recipient__family_name VARCHAR(255) COMMENT 'Family name of the recipient. In the U.S., the last name of an Person.',
+  recipient__given_name VARCHAR(255) COMMENT 'Given name of the recipient. In the U.S., the first name of a Person.',
+  recipient__honorific_prefix VARCHAR(255) COMMENT 'An honorific prefix preceding the recipient\'s name such as Dr. / Mrs. / Mr.',
+  recipient__honorific_suffix VARCHAR(255) COMMENT 'An honorific suffix preceding the recipient\'s name such as M.D. / PhD / MSCSW.',
+  sender INT UNSIGNED COMMENT 'Optional, the organization that sent this message. Use created_by to query by the Person that sent this message.', /* FK to #__cajobboard_organizations */
+
+  /* SCHEMA: https://calligraphic.design/schema/EmailMessages */
+  email_message_template INT UNSIGNED COMMENT 'The template to apply when generating this message.', /* FK to #__cajobboard_email_message_templates */
 
   /* SQL DDL */
-  PRIMARY KEY (answer_id)
+  PRIMARY KEY (email_message_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-
-/*
-  // this doesn't really apply or the above: this table is templates, not sent emails
-
-  @TODO: Should we use an EmailMessage table to log sent messages, or just a log file?
-
-  @TODO: Should the EmailMesage table queue messages, and the CLI script just sends all
-         queued messages by cron and triggered by the sendMessage() method?
-
-  https://schema.org/EmailMessage extends https://schema.org/Message
-
-  recipient 	        BIGINT UNSIGNED  	A sub property of participant. The participant who is at the receiving end of the action.
-  ccRecipient 	      ContactPoint or Organization or Person 	A sub property of recipient. The recipient copied on a message.
-  bccRecipient 	      ContactPoint or Organization or Person 	A sub property of recipient. The recipient blind copied on a message.
-
-  dateRead 	          DateTime 	The date/time at which the message has been read by the recipient if a single recipient exists.
-  dateReceived 	      DateTime 	The date/time the message was received if a single recipient exists.
-  dateSent 	          DateTime 	The date/time at which the message was sent.
-
-  messageAttachment 	CreativeWork 	A CreativeWork attached to the message.
-*/

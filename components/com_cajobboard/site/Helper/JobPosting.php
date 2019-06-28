@@ -12,16 +12,12 @@
 
   namespace Calligraphic\Cajobboard\Site\Helper;
 
-  // Framework classes
-  use JText;
+  use \Joomla\CMS\Language\Text;
 
   // no direct access
   defined('_JEXEC') or die;
 
-	/**
-	* View helpers for job postings
-	*/
-  class JobPosting {
+  abstract class JobPosting {
     /**
     * Handle formatting pay if range given
     *
@@ -30,15 +26,18 @@
     *
     * @return   string  Formatted time
     */
-    public function formatPayToValueOrRange($value = null, $min_value = null, $max_value = null, $duration='P0H1') {
+    public static function formatPayToValueOrRange($value = null, $min_value = null, $max_value = null, $duration='P0H1')
+    {
       $payPeriod = 'COM_CAJOBBOARD_PAY_FORMATTER_' . $duration;
 
-      if ($value) {
-        return $value . ' ' . JText::_($payPeriod);
+      if ($value)
+      {
+        return $value . ' ' . Text::_($payPeriod);
       }
 
-      elseif ($min_value && $max_value) {
-        return JText::_('COM_CAJOBBOARD_PAY_FORMATTER_BETWEEN') . ' ' . $min_value . ' ' . JText::_('COM_CAJOBBOARD_PAY_FORMATTER_AND') . ' ' . $max_value . ' ' . JText::_($payPeriod);
+      elseif ($min_value && $max_value)
+      {
+        return Text::_('COM_CAJOBBOARD_PAY_FORMATTER_BETWEEN') . ' ' . $min_value . ' ' . Text::_('COM_CAJOBBOARD_PAY_FORMATTER_AND') . ' ' . $max_value . ' ' . Text::_($payPeriod);
       }
 
       return null;
@@ -52,7 +51,7 @@
     *
     * @return   string  Formatted time
     */
-    function getTeaser($string, $count)
+    public static function getTeaser($string, $count)
     {
       $words = explode(' ', $string);
 

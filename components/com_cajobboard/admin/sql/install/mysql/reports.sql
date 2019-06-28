@@ -7,7 +7,7 @@
  */
 
 /**
- * Report Reports data model SQL
+ * Reports data model SQL
  *
  * Uses schema https://calligraphic.design/schema/Report
  */
@@ -46,17 +46,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reports` (
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'Short description of the report, used for the text shown on social media via shares and search engine results.',
 
+  /* SCHEMA: Thing(additionalType) -> Schedule */
+  repeat_frequency CHAR(32) COMMENT 'How often this report should be generated. Use ISO 8601 duration format, e.g. PM1 for monthly, PW1 for weekly, PD1 for daily, PT0S for never-recurring.',
+  by_day INT UNSIGNED COMMENT 'Which day(s) of the week this report should be generated on. Auto-filled to current day for one-time reports. Uses DaysOfWeekEnum helper.',
+  repeat_count INT DEFAULT '1' COMMENT 'The number of times this report should be generated. Set to any non-positive integer value or null for recurring.',
+
+  /* SCHEMA: Message */
+  to_recipient INT UNSIGNED COMMENT 'The user this report should be sent to.', /* FK to #__users */
+  date_sent DATETIME DEFAULT NULL COMMENT 'The date the report was last sent.',
+  message_attachment VARCHAR(2083) COMMENT 'The URL of the Analytics view that should be used to generate the PDF file.',
+
   /* SQL DDL */
   PRIMARY KEY (report_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-/*
-  this is more like email templates (report templates) than a database of old reports
-
-  @TODO: Is this overlapping with what Analytics does - e.g. just a PDF view of Analytics?
-
-  JSON field with structure of report? e.g. what graphs to include, and what translation keys?
-*/

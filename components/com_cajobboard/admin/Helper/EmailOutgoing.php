@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Email Messages Helper
+ * Admin Email Messages Helper class for sending out emails
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -11,6 +11,8 @@
  */
 
 namespace Calligraphic\Cajobboard\Admin\Helper;
+
+// @TODO: implement outgoing email helper
 
 // no direct access
 defined('_JEXEC') or die;
@@ -27,17 +29,56 @@ use \Joomla\CMS\Plugin\PluginHelper;
 use \Joomla\CMS\User\User;
 use \Joomla\Registry\Registry;
 
-/**
- * A helper class for sending out emails
- */
-abstract class Email
+/*
+  E-mails should use tables and in-line CSS. Outlook has problems with <ol> tags.
+
+  Three ways to include images in an email:
+
+  1. In-line, use base-64 encoding: <img src="data:image/jpg;base64,{{base64-data-string here}}" />
+
+      * Blocked in Outlook, and (often if more than one image) in webmail clients, OK with Apple Mail
+
+  2. Hosted on remote server, and pulled in. May need to use a CDN depending on size of mailing list: <img src="http://example.com/image_file.jpg" />
+
+      * Blocked in both desktop and webmail clients.
+
+  3. Embedded as an attachment, and referenced using Content-ID: <img src="cid:image_file.jpg" />  Find examples for content type (3 boundaries needed: multipart/mixed, multipart/related, and multipart/alternative)
+
+      * Works in Outlook, Gmail, blocked in Apple Mail (shows as a "download attachment" link).
+      * Many spam filters will increase the spam rating for your message and possibly place it in the junk folder.
+
+  4.  Using CSS background images: <div id="myImage"></div> with a css rule #myImage { background-image:  url('data:image/png;base64,iVBOR...[some more encoding]...rkggg=='); width: [the-actual-image-width]; height: [the-actual-image-height]; }
+
+      * Not supported in Outlook
+  */
+
+
+  /*
+    Add headers to enable detecting who the recipient was for bounced emails:
+
+    // Need a way to discover emails that were rejected by the recipient MTA (and thus didn't create a bounce message)
+
+    // Set headers to send to a bounce email address:
+
+    $headers .= "Reply-To: bounce@example.com\r\n";
+    $headers .= "Return-Path: bounce@example.com\r\n";
+    $headers .= "X-Mailer: PHP\r\n";
+
+    // Custom headers to identify who it was sent to:
+    $headers .= "X-user-id: XXXXX\r\n";
+    $headers .= "X-campaign-id: YYYYYY\r\n";
+    $headers .= "X-recipient-id: SSSSSSSSS\r\n";
+
+  */
+
+class EmailOutgoing
 {
 	/**
 	 * The component's container
 	 *
 	 * @var   Container
 	 */
-  protected static $container;
+  protected $container;
 
 
 	/**
@@ -45,7 +86,7 @@ abstract class Email
 	 *
 	 * @return  Container
 	 */
-	protected static function getContainer()
+	protected function getContainer()
 	{
 		if ( is_null(self::$container) )
 		{
@@ -57,19 +98,39 @@ abstract class Email
 
 
 	/**
+	 * Creates a PHPMailer instance
+	 *
+	 * @param   boolean $isHTML
+	 *
+	 * @return  \JMail  A mailer instance
+	 */
+	private function &getMailer($isHTML = true)
+	{
+    $mailer = clone Factory::getMailer();
+
+    $mailer->IsHTML($isHTML);
+
+		// Required in order not to get broken characters
+    $mailer->CharSet = 'UTF-8';
+
+		return $mailer;
+  }
+
+
+	/**
 	 * Gets the email keys currently known to the component
 	 *
 	 * @param   int  $style  0 = raw sections list, 1 = grouped list options, 2 = key/description array
 	 *
 	 * @return  array|string
 	 */
-	public static function getEmailKeys($style = 0)
+	public function getEmailKeys($style = 0)
 	{
-    static $rawOptions = null;
+    $rawOptions = null;
 
-    static $htmlOptions = null;
+    $htmlOptions = null;
 
-    static $shortlist = null;
+    $shortlist = null;
 
 		if (is_null($rawOptions))
 		{
@@ -146,7 +207,7 @@ abstract class Email
 	 * @param   string  $extension  The extension to load translations for
 	 * @param   User   $user       The user whose preferred language we'll also be loading
 	 */
-	private static function loadLanguageOverrides($extension, $user = null)
+	private function loadLanguageOverrides($extension, $user = null)
 	{
 		if (!($user instanceof User))
 		{
@@ -192,9 +253,9 @@ abstract class Email
 	 *
 	 * @return  array  isHTML: If it's HTML override from the db; text: The unprocessed translation string
 	 */
-	private static function loadEmailTemplate($key, $level = null, $user = null)
+	private function loadEmailTemplate($key, $level = null, $user = null)
 	{
-    static $loadedLanguagesForExtensions = array();
+    $loadedLanguagesForExtensions = array();
 
 		if (is_null($user))
 		{
@@ -333,36 +394,16 @@ abstract class Email
 			{
 				$templateText = <<< HTML
 <html>
-<head>
-<title>{$subject}</title>
-</head>
-$templateText
+  <head>
+    <title>{$subject}</title>
+  </head>
+  $templateText
 </html>
 HTML;
 			}
     }
 
 		return array($isHTML, $subject, $templateText, $loadLanguage);
-  }
-
-
-	/**
-	 * Creates a PHPMailer instance
-	 *
-	 * @param   boolean $isHTML
-	 *
-	 * @return  \JMail  A mailer instance
-	 */
-	private static function &getMailer($isHTML = true)
-	{
-    $mailer = clone Factory::getMailer();
-
-    $mailer->IsHTML($isHTML);
-
-		// Required in order not to get broken characters
-    $mailer->CharSet = 'UTF-8';
-
-		return $mailer;
   }
 
 
@@ -377,7 +418,7 @@ HTML;
 	 *
 	 * @return  \JMail|boolean False if something bad happened, the PHPMailer instance in any other case
 	 */
-	public static function getPreloadedMailer(Subscriptions $sub, $key, array $extras = array())
+	public function getPreloadedMailer(Subscriptions $sub, $key, array $extras = array())
 	{
 		// Load the template
     list($isHTML, $subject, $templateText, $loadLanguage) = self::loadEmailTemplate($key, $sub->akeebasubs_level_id, self::getContainer()->platform->getUser($sub->user_id));

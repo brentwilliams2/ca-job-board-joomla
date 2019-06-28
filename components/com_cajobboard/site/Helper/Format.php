@@ -12,8 +12,8 @@
 
   namespace Calligraphic\Cajobboard\Site\Helper;
 
-  use \Calligraphic\Cajobboard\Admin\Helper\Format as AdminFormat;
   use FOF30\Date\Date;
+  use \Calligraphic\Cajobboard\Admin\Helper\Format as AdminFormat;
   use \Joomla\CMS\Language\Text;
 
   // no direct access
@@ -29,10 +29,8 @@
     *
     * @return   string  Formatted time
     */
-    public static function convertToTimeAgoString($dateCreated, $dateModified = null) {
-// time()             1557261473
-// $dateCreated       0000-00-00 00:00:00
-//
+    public static function convertToTimeAgoString($dateCreated, $dateModified = null)
+    {
       // difference between current time and the database (MySQL format) item's created or modified time (whichever is later)
       $diff = time() - strtotime( $dateModified ? $dateModified : $dateCreated );
 
@@ -67,6 +65,7 @@
         return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_LONG');
     }
 
+
     /**
     * Format the "Created on" date strings to "Tuesday, April 4 2019, 12:18 pm", etc.
     *
@@ -74,7 +73,8 @@
     *
     * @return   string  Formatted time
     */
-    public static function getCreatedOnText($date) {
+    public static function getCreatedOnText($date)
+    {
       // handle new records with database engine constant for time stamp
       if ('CURRENT_TIMESTAMP' == $date)
       {

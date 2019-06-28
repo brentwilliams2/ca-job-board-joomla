@@ -1,6 +1,6 @@
 <?php
 /**
- * CLI Script for sending email asynchronously.
+ * CLI Script for handling email asynchronously.
  *
  * Uses the Email helper and EmailMessages model for processing and sending
  * email, respectively. Can be called from cron to scan for and send periodic
@@ -15,18 +15,18 @@
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
- *  Usage, from command prompt in job board package root directory:
- *
- *   composer seed <model name>
  */
 
 include realpath(__DIR__ . '/../CliApplication.php');
+include realpath(__DIR__ . '/IncomingMail.php');
+include realpath(__DIR__ . '/OutgoingMail.php');
 
 use \FOF30\Container\Container;
 use \Joomla\CMS\Input\Cli;
 use \Joomla\Registry\Registry;
 
+
+// @TODO: implement MailProcessor
 
 /**
  * Calligraphic Job Board Sample Data Seeder CLI Application

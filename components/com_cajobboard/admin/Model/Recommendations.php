@@ -32,12 +32,15 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $slug               Alias for SEF URL.
  *
  * FOF "magic" fields
- * @property bool           $featured           Whether this recommendation is featured or not.
- * @property int            $hits               Number of hits this recommendation has received.
- * @property int            $created_by         Userid of the creator of this recommendation.
- * @property string         $createdOn          Date this recommendation was created.
- * @property int            $modifiedBy         Userid of person that last modified this recommendation.
- * @property string         $modifiedOn         Date this recommendation was last modified.
+ * @property int            $asset_id           FK to the #__assets table for access control purposes.
+ * @property int            $access             The Joomla! view access level.
+ * @property int            $enabled            Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
+ * @property string         $created_on         Timestamp of record creation, auto-filled by save().
+ * @property int            $created_by         User ID who created the record, auto-filled by save().
+ * @property string         $modified_on        Timestamp of record modification, auto-filled by save(), touch().
+ * @property int            $modified_by        User ID who modified the record, auto-filled by save(), touch().
+ * @property string         $locked_on          Timestamp of record locking, auto-filled by lock(), unlock().
+ * @property int            $locked_by          User ID who locked the record, auto-filled by lock(), unlock().
  *
  * SCHEMA: Joomla UCM fields, used by Joomla!s  UCM when using the FOF ContentHistory behaviour
  * @property string         $publish_up         Date and time to change the state to published, schema.org alias is datePosted.
@@ -53,6 +56,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $cat_id             Category ID for this item.
  * @property int            $hits               Number of hits the item has received on the site.
  * @property int            $featured           Whether this item is featured or not.
+ * @property string         $note               A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
  * @property string         $name               A title to use for this recommendation.
@@ -118,6 +122,7 @@ class Recommendations extends BaseModel
     $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
   }
 
+// @TODO: Recommendations and references can be one of several types of media object: video recording, audio, pdf, .docx
 
   /**
 	 * Uses OCR Helper to convert PDF and image files to PHP strings
@@ -126,7 +131,9 @@ class Recommendations extends BaseModel
   {
     /*
       @TODO: implement. Should be called when savePdfUpload() or saveImageUpload() are
-             called on the MediaUploads mixin to this class.
+             called on the MediaUploads mixin to this class. Needs a prominent notice for the user that
+             the original file was scanned and OCRd in case it has errors, and a link to a PDF of the original.
+             Offering OCR is important for mobile users.
 
         References and recommendations can be three things:
           1. Text uploaded from an editor, by the person giving the referral/reference logging in and writing it;
@@ -137,12 +144,23 @@ class Recommendations extends BaseModel
 
 
   /**
+	 * Method to request a recommendation
+	 */
+  public function requestRecommendation($who)
+  {
+    /*
+      @TODO: implement request for recommendation
+    */
+  }
+
+
+  /**
 	 * Method to get collection of requests for recommendations that have been sent but not answered
 	 */
   public function getStaleRequestedRecommendations($datetime)
   {
     /*
-      @TODO: implement
+      @TODO: implement hecking for old and unanswered recommendation requests
     */
   }
 

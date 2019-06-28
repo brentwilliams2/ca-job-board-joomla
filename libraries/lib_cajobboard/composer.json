@@ -6,7 +6,9 @@
         "spatie/async": "^1.0",
         "amenadiel/jpgraph": "^4",
         "thiagoalessio/tesseract_ocr": "^2.7",
-        "gravitymedia/ghostscript": "1.0.x-dev"
+        "gravitymedia/ghostscript": "1.0.x-dev",
+        "ddeboer/imap": "^1.8",
+        "malas/php-bounce-handler": "^0.1.8"
     },
     "license": "GPLv2",
     "authors": [

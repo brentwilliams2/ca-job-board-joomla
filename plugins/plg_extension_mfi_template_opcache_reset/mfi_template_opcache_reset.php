@@ -15,11 +15,15 @@
 
 defined('_JEXEC') or die();
 
+use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Log\Log;
-Log::add('Job Occupational Categories model called', Log::NOTICE);
+
+// no autoload for namespaces in Joomla! plugins
+include('./OpcacheConfig.php');
 
 class plgExtensionMfiTemplateOpcacheReset extends JPlugin
 {
+
   /**
    * Handle post extension install opcache reset
    *
@@ -31,6 +35,8 @@ class plgExtensionMfiTemplateOpcacheReset extends JPlugin
   public function onExtensionAfterInstall($installer, $eid )
   {
     opcache_reset();
+
+    $this->triggerCacheWarming();
 
     $this->checkPhpConfiguration();
   }
@@ -49,6 +55,8 @@ class plgExtensionMfiTemplateOpcacheReset extends JPlugin
   {
     opcache_reset();
 
+    $this->triggerCacheWarming();
+
     $this->checkPhpConfiguration();
   }
 
@@ -64,53 +72,40 @@ class plgExtensionMfiTemplateOpcacheReset extends JPlugin
   {
     opcache_reset();
 
+    $this->triggerCacheWarming();
+
     $this->checkPhpConfiguration();
   }
 
 
   /**
-   * Check if PHP configuration is optimized if executing in production environment
+   * Check that the PHP opcache configuration in php.ini is correctly configured
+   *
+   * This is a task that needs to run infrequently, but would be helpful to leave
+   * a log trace. Joomla! extension installation / updates / uninstalls is as good
+   * a place as any.
    *
    * @return  void
    */
-  public function checkPhpConfiguration()
+  protected function checkPhpConfiguration()
   {
-    if(!JDEBUG)
-    {
-      $opcacheStatus = opcache_get_status();
+    // @TODO: needs to use a Joomla! configuration.php variable to save the last time
+    //        the check ran, and not do it to prevent flooding the log file when
+    //        multiple extensions are installed at once.
 
-      $opcacheConfig = opcache_get_configuration();
+    $opcacheConfig = new OpcacheConfig();
 
-      $isOpcacheEnabled = $opcacheConfig["directives"]["opcache.enable"];
+    $opcacheConfig->checkPhpConfiguration();
+  }
 
-      validate_timestamps   // Set to false, unless using revalidate_freq
 
-      save_comments     // Set to false to reduce opcache size
-
-      use_cwd  // defaults to enabled, improves performance to disable. Only issue if multiple different classes with the same name are used.
-
-      memory_consumption    // in megabytes. Check against status?
-
-      max_wasted_percentage   // maximum unused allocated memory in % before cache is reset to free memory, defaults to 5%
-
-      interned_strings_buffer // in megabytes, defaults to 8mb. Maybe 16mb
-
-      // find . -type f -iname '*.php' | wc -l
-      max_accelerated_files   // prime number, 16229 or 32531
-
-      enable_file_override  // enable to check cache first on file_exists(), is_file() and is_readable()
-
-      blacklist_filename  // are there any files that need to be excluded from opcache? Maybe Joomla cache files?
-
-      file_update_protection  // files less than this setting seconds old are excluded from caching, set to 0 for performance
-
-      validate_permission // Validates the cached file permissions against the current user (needed?)
-
-      preload // name of a PHP script that may preload other files with include() or opcache_compile_file(), used to prime the cache
-
-      file_cache_consistency_checks  // enabled by default, checksum validation when script loaded from file cache
-
-      fast_shutdown  // If enabled, a fast shutdown sequence is used that doesn’t free each allocated block, but instead relies on the Zend Engine memory manager to deallocate the entire set of request variables in mass (PHP 7+)
-    }
+  /**
+   * Call the CLI script to warm the cache
+   *
+   * @return  void
+   */
+  protected function triggerCacheWarming()
+  {
+    // @TODO: implement cache warmer after upgrades / installs
   }
 }

@@ -15,8 +15,6 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
-use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectSizesEnum;
 use \FOF30\Container\Container;
 
 /*
@@ -25,13 +23,17 @@ use \FOF30\Container\Container;
  * UCM
  * @property int            $image_object_id    Surrogate primary key.
  * @property string         $slug               Alias for SEF URL.
- * @property bool           $featured           Whether this answer is featured or not.
- * @property int            $hits               Number of hits this answer has received.
- * @property int            $created_by         Userid of the creator of this answer.
- * @property string         $created_on         Date this answer was created.
- * @property int            $modified_by        Userid of person that last modified this answer.
- * @property string         $modified_on        Date this answer was last modified.
- * @property Object         $Category           Category object for this image, FK to #__categories
+ *
+ * FOF "magic" fields
+ * @property int            $asset_id           FK to the #__assets table for access control purposes.
+ * @property int            $access             The Joomla! view access level.
+ * @property int            $enabled            Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
+ * @property string         $created_on         Timestamp of record creation, auto-filled by save().
+ * @property int            $created_by         User ID who created the record, auto-filled by save().
+ * @property string         $modified_on        Timestamp of record modification, auto-filled by save(), touch().
+ * @property int            $modified_by        User ID who modified the record, auto-filled by save(), touch().
+ * @property string         $locked_on          Timestamp of record locking, auto-filled by lock(), unlock().
+ * @property int            $locked_by          User ID who locked the record, auto-filled by lock(), unlock().
  *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
@@ -47,6 +49,7 @@ use \FOF30\Container\Container;
  * @property int            $cat_id           Category ID for this item.
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
+ * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: ImageObject
  * @property  string	      $caption          Caption for the property image
@@ -55,7 +58,6 @@ use \FOF30\Container\Container;
  * SCHEMA: MediaObject
  * @property  string	      $content_url      Filename of the property image
  *
- * @TODO: will the front-end even know
  * @property  int			      $content_size     File size in bytes
  * @property  int			      $height           Height of the property image in px
  * @property  int			      $width            Width of the property image in px
@@ -242,35 +244,6 @@ class ImageObjects extends BaseModel
     {
       return;
     }
-
-    /*
-      @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
-
-      httpd.conf:
-
-      #
-      # X-Sendfile
-      #
-      LoadModule xsendfile_module modules/mod_xsendfile.so
-      XSendFile On
-      # enable sending files from parent dirs of the script directory
-      XSendFileAllowAbove On
-
-      header('X-Sendfile: ' . $absoluteFilePath);
-
-      // The Content-Disposition header allows you to tell the browser if
-      // it should download the file or display it. Use "inline" instead of
-      // "attachment" if you want it to display in the browser. You can
-      // also set the filename the browser should use.
-      header('Content-Disposition: attachment; filename="somefile.jpg"');
-
-      // The Content-Type header tells the browser what type of file it is.
-      header('Content-Type: image/jpeg');
-
-      // Nginx uses x-accel.redirect
-
-
-    */
   }
 
 

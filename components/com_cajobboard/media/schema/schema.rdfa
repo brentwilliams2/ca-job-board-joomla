@@ -165,3 +165,10 @@
 <div typeof="rdfs:Class" resource="https://calligraphic.design/schema/ApplicationLetter">
   <!-- @TODO: implement -->
 </div>
+
+<!--
+  This is a Schema.org external extension for email messages
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/EmailMessages">
+  <!-- @TODO: implement, only email_message_template field -->
+</div>

@@ -1,0 +1,27 @@
+{
+    "name": "malas/php-bounce-handler",
+    "description": "PHP class which can parse bounce reports via IMAP.",
+    "license": "MIT",
+    "keywords": ["php", "email", "bounce", "handler"],
+    "authors": [
+        {
+            "name": "Laurynas Mališauskas",
+            "email": "laurynas.malisauskas@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.0",
+        "symfony/var-dumper": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Malas\\BounceHandler\\": "src"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}

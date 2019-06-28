@@ -98,7 +98,7 @@ class CommonTemplate extends BaseTemplate
   public $featured;
 
 	/**
-	 * Alias for SEF URL.
+	 * A note to save with this item in the back-end interface.
 	 *
 	 * @var    string
    */

@@ -18,24 +18,6 @@ defined('_JEXEC') or die;
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
 
-/*
-  Youtube's recommended resolution & aspect ratios
-
-  For the default 16:9 aspect ratio, encode at these resolutions:
-
-      2160p: 3840x2160
-      1440p: 2560x1440
-      1080p: 1920x1080
-      720p: 1280x720
-      480p: 854x480
-      360p: 640x360
-      240p: 426x240
-
-  If you’re uploading a non-16:9 file, it will be processed and displayed correctly
-  as well, with pillar boxes (black bars on the left and right) or letter boxes (black
-  bars at the top and bottom) provided by the player.
-*/
-
 /**
  * Fields:
  *
@@ -44,12 +26,15 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
- * @property bool           $featured         Whether this video object is featured or not.
- * @property int            $hits             Number of hits this video object has received.
- * @property int            $created_by       Userid of the creator of this video object.
- * @property string         $createdOn        Date this video object was created.
- * @property int            $modifiedBy       Userid of person that last modified this video object.
- * @property string         $modifiedOn       Date this video object was last modified.
+ * @property int            $asset_id           FK to the #__assets table for access control purposes.
+ * @property int            $access             The Joomla! view access level.
+ * @property int            $enabled            Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
+ * @property string         $created_on         Timestamp of record creation, auto-filled by save().
+ * @property int            $created_by         User ID who created the record, auto-filled by save().
+ * @property string         $modified_on        Timestamp of record modification, auto-filled by save(), touch().
+ * @property int            $modified_by        User ID who modified the record, auto-filled by save(), touch().
+ * @property string         $locked_on          Timestamp of record locking, auto-filled by lock(), unlock().
+ * @property int            $locked_by          User ID who locked the record, auto-filled by lock(), unlock().
  *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
@@ -65,6 +50,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $cat_id           Category ID for this item.
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
+ * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: VideoObject
  * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)

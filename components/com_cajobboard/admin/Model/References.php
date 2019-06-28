@@ -53,6 +53,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $cat_id           Category ID for this item.
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
+ * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the reference.
@@ -122,6 +123,19 @@ class References extends BaseModel
     $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
   }
 
+/*
+ @TODO: Recommendations and references can be one of several types of media object: video recording, audio, pdf, .docx
+
+@TODO: How to correlate email responses to the request for reference that was sent -
+          1. by email address? how to know then which reference request it's for if multiple from same email add'y?
+          2. by a string added in the subject or body?
+          3. By something added to the recipient string, like "reference@mfi.com" but with a prefix (e.g.
+              123.reference@mfi.com to reference@mfi.com)? Will the prefix be lost on forward? rewrite into the subject?
+
+@TODO: How to ferry email responses to reference requests back into Joomla!
+
+@TODO: How to get media object attachments from an email?
+*/
 
   /**
 	 * Uses OCR Helper to convert PDF and image files to PHP strings
@@ -130,7 +144,9 @@ class References extends BaseModel
   {
     /*
       @TODO: implement. Should be called when savePdfUpload() or saveImageUpload() are
-             called on the MediaUploads mixin to this class.
+             called on the MediaUploads mixin to this class. Needs a prominent notice for the user that
+             the original file was scanned and OCRd in case it has errors, and a link to a PDF of the original.
+             Offering OCR is important for mobile users.
 
         References and recommendations can be three things:
           1. Text uploaded from an editor, by the person giving the referral/reference logging in and writing it;
@@ -141,12 +157,23 @@ class References extends BaseModel
 
 
   /**
+	 * Method to request a reference
+	 */
+  public function requestReference($who)
+  {
+    /*
+      @TODO: implement request for reference
+    */
+  }
+
+
+  /**
 	 * Method to get collection of requests for references that have been sent but not answered
 	 */
   public function getStaleRequestedReferences($datetime)
   {
     /*
-      @TODO: implement
+      @TODO: implement checking for old and unanswered reference requests
     */
   }
 

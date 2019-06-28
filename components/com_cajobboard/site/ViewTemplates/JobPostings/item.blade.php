@@ -14,7 +14,9 @@
   defined('_JEXEC') or die;
 
   use \Calligraphic\Cajobboard\Site\Helper\Format;
-  use \Calligraphic\Cajobboard\Site\Helper\JobPosting;
+  use \Calligraphic\Cajobboard\Site\Helper\JobPosting as JobPostingHelper;
+  use \Joomla\CMS\Language\Text;
+  use \Joomla\CMS\\Helper\TagsHelper;
 
   $item = $this->getItem();
 
@@ -29,7 +31,7 @@
   $logo_source    = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
   $logo_caption   = $item->jobLocation->Logo->caption;
   $employer_id    = $item->hiringOrganization->organization_id;
-  $tags = new JHelperTags;
+  $tags = new TagsHelper;
   $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
 
   // @TODO: set $saved to $this->saved field after the saved job join table is added to repository, and update in #7 "Saved Job" button
@@ -49,12 +51,9 @@
     }
   }
 
-  $employmentType = JText::_($item->employmentType->name);
+  $employmentType = Text::_($item->employmentType->name);
 
-  // @TODO: Refactor JobPosting helper to static methods / abstract class, maybe name it better
-  $JobPostingViewHelper = new JobPosting();
-
-  $formattedPay = $JobPostingViewHelper->formatPayToValueOrRange(
+  $formattedPay = JobPostingHelper::formatPayToValueOrRange(
     $item->base_salary__value,
     $item->base_salary__min_value,
     $item->base_salary__max_value,

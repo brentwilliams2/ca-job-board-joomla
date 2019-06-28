@@ -56,10 +56,11 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_image_objects` (
   exif_data TEXT COMMENT 'JSON-encoded EXIF data for this image.',
 
   /* SCHEMA: MediaObject */
-  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the image file referred to by the record',
+  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the image file referred to by the record. MD5 hash of original image file, same filename is used in all size folders e.g. thumb, large, etc.',
   content_size BIGINT(20) COMMENT 'File size of the original image in bytes.',
   height INT COMMENT 'Height of the original image in px',
   width INT COMMENT 'Width of the original image in px',
+  encodingFormat
 
   /* SCHEMA: CreativeWork */
   content_location BIGINT UNSIGNED COMMENT 'Place depicted or described in the image.', /* FK to #__cajobboard_places */

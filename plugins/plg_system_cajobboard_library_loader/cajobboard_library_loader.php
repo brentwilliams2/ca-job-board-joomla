@@ -16,8 +16,11 @@ defined('_JEXEC') or die;
 
 use \Joomla\CMS\Plugin\CMSPlugin;
 
+// @TODO: Should change the name of this plugin to a generic Calligraphic name space, instead
+//        of the job board, since it's making sure the MFI template language file is loaded in production
+
 /**
- * Custom library loader so library is available to any package
+ * Custom library loader so libraries are available to any package
  */
 class PlgSystemCajobboard_library_loader extends CMSPlugin
 {
@@ -25,8 +28,6 @@ class PlgSystemCajobboard_library_loader extends CMSPlugin
    * Listener for the `onAfterInitialise` system event
 	 *
 	 * @return  boolean
-	 *
-	 * @since   1.0
 	 */
   public function onAfterInitialise()
 	{
@@ -50,6 +51,20 @@ class PlgSystemCajobboard_library_loader extends CMSPlugin
       throw new \Exception('Calligraphic Library cannot find the Composer autoload file');
     }
 
+    $this->loadLanguageFiles();
+
 		return true;
+  }
+
+
+	/**
+   * Load a single language file for each of the MFI template and the Job Board
+	 */
+  public function loadLanguageFiles()
+	{
+    // @TODO: implement single language file loader. PHP opcache won't cache .ini files, so
+    //        all language files should be concatenated into a single file for each of the
+    //        MFI template, and the Job Board, and all related plugins and modules respectively,
+    //        and these two files loaded on system load to avoid lots of small file loads.
   }
 }

@@ -26,9 +26,17 @@ class ComposerStaticInit164f6af515f100c020b6979374b6d0c7
         array (
             'Opis\\Closure\\' => 13,
         ),
+        'M' => 
+        array (
+            'Malas\\BounceHandler\\' => 20,
+        ),
         'G' => 
         array (
             'GravityMedia\\Ghostscript\\' => 25,
+        ),
+        'D' => 
+        array (
+            'Ddeboer\\Imap\\' => 13,
         ),
         'A' => 
         array (
@@ -63,9 +71,17 @@ class ComposerStaticInit164f6af515f100c020b6979374b6d0c7
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
         ),
+        'Malas\\BounceHandler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/malas/php-bounce-handler/src',
+        ),
         'GravityMedia\\Ghostscript\\' => 
         array (
             0 => __DIR__ . '/..' . '/gravitymedia/ghostscript/src',
+        ),
+        'Ddeboer\\Imap\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ddeboer/imap/src',
         ),
         'Amenadiel\\JpGraph\\Util\\' => 
         array (

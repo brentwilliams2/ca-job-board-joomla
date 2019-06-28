@@ -50,6 +50,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $cat_id           Category ID for this item.
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
+ * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
  * @property  string	      $name             A name for this digital document

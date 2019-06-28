@@ -46,6 +46,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_video_objects` (
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'Short description of the video object, used for the text shown on social media via shares and search engine results.',
 
+  /* SCHEMA: VideoObject */
+  videoFrameSize VARCHAR(255) NOT NULL COMMENT 'Aspect ratio of the video file, using VideoObjectAspectRatiosEnum values',
+  videoQuality
+
+  /* SCHEMA: MediaObject */
+  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the image file referred to by the record. MD5 hash of original image file, same filename is used in all size folders e.g. thumb, large, etc.',
+  content_size BIGINT(20) COMMENT 'File size of the original image in bytes.',
+  height INT COMMENT 'Height of the original image in px',
+  width INT COMMENT 'Width of the original image in px',
+  bitrate
+  duration
+  encodingFormat
+
   /* SQL DDL */
   PRIMARY KEY (video_object_id)
 )

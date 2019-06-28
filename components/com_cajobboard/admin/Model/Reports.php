@@ -17,6 +17,7 @@ defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum;
 
 /**
  * Fields:
@@ -47,10 +48,20 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $cat_id           Category ID for this item.
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
+ * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the report.
  * @property string         $description      A description of the report.
+ *
+ * Thing(additionalType) -> Schedule
+ * @property string         $repeat_frequency  How often this report should be generated. Use ISO 8601 duration format, e.g. PM1 for monthly, PW1 for weekly, PD1 for daily, PT0S for never-recurring.
+ * @property int            $by_day            Which day(s) of the week this report should be generated on. Auto-filled to current day for one-time reports. Uses DaysOfWeekEnum helper.
+ * @property int            $repeat_count      The number of times this report should be generated. Set to any non-positive integer value or null for recurring.
+ *
+ * SCHEMA: Message
+ * @property string         $date_sent         The date the report was last sen.
+ * @property string         message_attachment The URL of the Analytics view that should be used to generate the PDF file.
  */
 class Reports extends BaseModel
 {
@@ -98,6 +109,9 @@ class Reports extends BaseModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('ToRecipient', 'Persons@com_cajobboard', 'to_recipient', 'id');
   }
 
 

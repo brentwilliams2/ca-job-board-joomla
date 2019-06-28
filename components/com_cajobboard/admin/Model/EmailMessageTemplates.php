@@ -27,34 +27,39 @@ defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
 use FOF30\Model\DataModel;
+
 /**
- * Model Akeeba\Subscriptions\Admin\Model\EmailTemplates
- *
  * Fields:
  *
- * @property  int     $emailtemplate_id
- * @property  string  $key
- * @property  string  $subject
- * @property  string  $body
- * @property  string  $language
+ * UCM
+ * @property int            $reference_id     Surrogate primary key.
+ * @property string         $slug             Alias for SEF URL.
  *
- * Filters:
+ * FOF "magic" fields
+ * @property bool           $featured         Whether this reference is featured or not.
+ * @property int            $hits             Number of hits this reference has received.
+ * @property int            $created_by       Userid of the creator of this reference.
+ * @property string         $createdOn        Date this reference was created.
+ * @property int            $modifiedBy       Userid of person that last modified this reference.
+ * @property string         $modifiedOn       Date this reference was last modified.
  *
- * @method  $this  emailtemplate_id()             emailtemplate_id(int $v)
- * @method  $this  key()                          key(string $v)
- * @method  $this  subject()                      subject(string $v)
- * @method  $this  body()                         body(string $v)
- * @method  $this  language()                     language(string $v)
- * @method  $this  enabled()                      enabled(bool $v)
- * @method  $this  ordering()                     ordering(int $v)
- * @method  $this  created_on()                   created_on(string $v)
- * @method  $this  created_by()                   created_by(int $v)
- * @method  $this  modified_on()                  modified_on(string $v)
- * @method  $this  modified_by()                  modified_by(int $v)
- * @method  $this  locked_on()                    locked_on(string $v)
- * @method  $this  locked_by()                    locked_by(int $v)
+ * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
+ * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
+ * @property string         $publish_down     Date and time to change the state to unpublished.
+ * @property int            $version          Version of this item.
+ * @property int            $ordering         Order this record should appear in for sorting.
+ * @property string         $params           JSON encoded parameters for this item.
+ * @property string         $language         The language code for the article or * for all languages.
+ * @property int            $note             A note to save with this answer in the back-end interface.
  *
- **/
+ * SCHEMA: Thing
+ * @property string         $name             Machine name for this e-mail template. Aliased by title property.
+ * @property string         $description      Description of this e-mail template.
+ *
+ * SCHEMA: none (internal use only)
+ * @property string         $subject          Text template with shortcodes for the subject field of the e-mail.',
+ * @property string         $body             HTML template with shortcodes for the body field of the e-mail.',
+ */
 class EmailMessages extends DataModel
 {
 	/**
@@ -69,29 +74,7 @@ class EmailMessages extends DataModel
 		$this->addBehaviour('Filters');
   }
 
-  /*
-    Plugin - check if CLI script is available, if not call the model sync, for other models to call the mail
-    CLI Script - for cron to call, or for the plugin to trigger when it's possible.
-
-    @TODO: Need to send both HTML and text emails in the same message, for Outlook
-            Probably don't need enabled, since all would be enabled.
-
-    Send a report
-    New comment
-    New question or answer on FAQs
-    New review (for employers)
-    Job posting alert matching (for job seekers)
-    Resume alert (for employers in the ATS system)
-    New message (user-to-user messaging)
-    FCRA (Fair Credit Reporting Act) notice (when credit check is done, set as a manual task in the ATS workflow initially)
-    New application received against a job posting
-    ATS scheduling reminders (with configurable advance notice period), e.g. "Just a reminder, you have a phone interview scheduled tomorrow with..."
-    ATS workflow notices - configurable for which actions trigger the notice, e.g. when a scorecard is marked complete for a candidate, a background check completed, a reference received for a candidate
-    GDPR notices - when a candidate has requested their information be purged from the system, so the employer can  understand what has happened (could involve a candidate that is in their workflow pipeline)
-    Reminders to fill out part of a job seeker profile.
-    Job posting alert (for Connectors)
-    */
-
+  //  @TODO: Need to send both HTML and text emails in the same message, for Outlook
 
 	/**
 	 * Unpublish the newly copied item

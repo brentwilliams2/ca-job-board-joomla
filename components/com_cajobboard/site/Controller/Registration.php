@@ -12,11 +12,11 @@
 
 namespace Calligraphic\Cajobboard\Site\Controller;
 
-// Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
-use JLog;
+use \FOF30\Container\Container;
+use \FOF30\Controller\DataController;
+use \FOF30\View\Exception\AccessForbidden;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
 
 use Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
 
@@ -42,19 +42,6 @@ class Registration extends Controller
     ];
   }
 
-	/**
-	 * Runs before executing a task in the controller, overriden to keep from ACL check
-   * with no area set. Seems like bug inController triggerEvent() method
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
-	public function onBeforeExecute($task)
-	{
-    // Do any ACL? This runs for *any* task, even public ones
-		return true;
-  }
 
 	/**
 	 * Register user with an email address.
@@ -65,7 +52,7 @@ class Registration extends Controller
 	 */
 	public function Register()
 	{
-    /* Check captcha validity
+    /* @TODO: Check captcha validity
 
       $input = JRequest::get('post');
 
@@ -81,13 +68,11 @@ class Registration extends Controller
 
     */
 
-    $RegistrationHelper = new RegistrationHelper($this->container);
-
     $model = $this->getModel();
 
     try
     {
-      $RegistrationHelper->registerUser(
+      $$this->container->RegistrationHelper->registerUser(
         $model->getState('email'),
         $model->getState('userName'),
         $model->getState('name'),
@@ -100,7 +85,7 @@ class Registration extends Controller
       $this->setRedirect('index.php?option=com_users&view=registration', $e, 'notice');
     }
 
-    $this->setRedirect(JFactory::getURI()->toString(), JText::_('COM_CAJOBBOARD_REGISTRATION_SUCCESS'), 'notice');
+    $this->setRedirect(Factory::getURI()->toString(), Text::_('COM_CAJOBBOARD_REGISTRATION_SUCCESS'), 'notice');
 
     $this->redirect();
   }
@@ -112,7 +97,7 @@ class Registration extends Controller
 	 */
 	public function RegisterWithSocialAccount()
 	{
-    JLog::add('Registration controller, RegisterWithSocialAccount() method called', JLog::DEBUG, 'cajobboard');
+    // @TODO: Implement register with social account in Registration helper
 
     return true;
   }

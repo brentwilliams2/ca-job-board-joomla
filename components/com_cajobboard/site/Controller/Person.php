@@ -12,13 +12,9 @@
 
 namespace Calligraphic\Cajobboard\Site\Controller;
 
-// Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
-use JLog;
-
-use Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
+use \FOF30\Container\Container;
+use \FOF30\Controller\DataController;
+use \FOF30\View\Exception\AccessForbidden;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -42,19 +38,6 @@ class Registration extends Controller
     ];
   }
 
-	/**
-	 * Runs before executing a task in the controller, overriden to keep from ACL check
-   * with no area set. Seems like bug inController triggerEvent() method
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
-	public function onBeforeExecute($task)
-	{
-    // Do any ACL? This runs for *any* task, even public ones
-		return true;
-  }
 
 	/**
 	 * Login user
@@ -63,7 +46,7 @@ class Registration extends Controller
 	 */
 	public function Login()
 	{
-    JLog::add('Person controller, Login() method called', JLog::DEBUG, 'cajobboard');
+    // @TODO: implement login in Person controller
 
     return true;
   }
@@ -75,7 +58,7 @@ class Registration extends Controller
 	 */
 	public function LoginWithSocialAccount()
 	{
-    JLog::add('Person controller, LoginWithSocialAccount() method called', JLog::DEBUG, 'cajobboard');
+    // @TODO: implement login with social account in Person controller
 
     return true;
   }

@@ -11,6 +11,8 @@
 
 namespace Calligraphic\Cajobboard\Admin\Helper\Exception;
 
+use \Joomla\CMS\Language\Text;
+
 // no direct access
 defined('_JEXEC') or die;
 
@@ -28,29 +30,35 @@ class UploadException extends \Exception
   {
     switch ($code) {
       case UPLOAD_ERR_INI_SIZE:
-        $message = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_INI_SIZE');
         break;
+
       case UPLOAD_ERR_FORM_SIZE:
-        $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_FORM_SIZE');
         break;
+
       case UPLOAD_ERR_PARTIAL:
-        $message = "The uploaded file was only partially uploaded";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_PARTIAL');
         break;
+
       case UPLOAD_ERR_NO_FILE:
-        $message = "No file was uploaded";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_NO_FILE');
         break;
+
       case UPLOAD_ERR_NO_TMP_DIR:
-        $message = "Missing a temporary folder";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_NO_TMP_DIR');
         break;
+
       case UPLOAD_ERR_CANT_WRITE:
-        $message = "Failed to write file to disk";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_CANT_WRITE');
         break;
+
       case UPLOAD_ERR_EXTENSION:
-        $message = "File upload stopped by extension";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_UPLOAD_ERR_EXTENSION');
         break;
 
       default:
-        $message = "Unknown upload error";
+        $message = Text::_('COM_CAJOBBOARD_UPLOAD_EXCEPTION_OTHER');
         break;
     }
 

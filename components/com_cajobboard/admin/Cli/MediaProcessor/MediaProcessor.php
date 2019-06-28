@@ -7,10 +7,6 @@
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
- *  Usage, from command prompt in job board package root directory:
- *
- *   composer seed <model name>
  */
 
 include realpath(__DIR__ . '/../CliApplication.php');

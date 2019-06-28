@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Image Objects Model
+ * Admin Virus Scanner Helper
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -10,7 +10,7 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Admin\Helper;
 
 // no direct access
 defined( '_JEXEC' ) or die;
