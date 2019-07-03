@@ -19,37 +19,8 @@ use \Joomla\CMS\Language\Text;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-/**
- * FOF model behavior class to set the publish_up field on new items.
- */
-class PII extends Observer
+
+class PII extends \Calligraphic\Cajobboard\Admin\Model\Behaviour\PII
 {
-	/**
-	 * Runs before executing a task in the controller
-	 *
-	 * @param   string  $task  The task to execute
-	 *
-	 * @return  bool
-	 */
-	public function onBeforeExecute(DataModel $model, $task)
-	{
-		/** @var Container $container */
-    $container = $model->getContainer();
 
-		// Only apply the check in the backend. In the frontend I have different kinds of access control.
-		if (!$container->platform->isBackend())
-		{
-			return true;
-    }
-
-		/** @var \JUser $user */
-    $user = $container->platform->getUser();
-
-		if (!$user->authorise('cajobboard.pii', 'com_cajobboard'))
-		{
-			throw new \RuntimeException( Text::_('NO_ACL_PII_ERROR'), 403 );
-    }
-
-		return true;
-	}
 }

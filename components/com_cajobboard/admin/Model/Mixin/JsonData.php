@@ -8,6 +8,8 @@
  */
 namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 
+use \Joomla\Registry\Registry;
+
 // no direct access
 defined( '_JEXEC' ) or die;
 
@@ -62,5 +64,44 @@ trait JsonData
     $value = json_encode($value);
 
 		return $value;
-	}
+  }
+
+
+  /**
+	 * Transform JSON to a JRegistry object
+   *
+   * @param   string    $json   A JSON-encoded string
+	 *
+	 * @return  Registry  Returns a Registry object holding the JSON-encoded data
+	 */
+  protected function transformJsonToRegistry($json)
+  {
+    // Make sure it's not a JRegistry already
+    if (is_object($json) && ($json instanceof Registry))
+    {
+        return $json;
+    }
+
+    return new Registry($json, 'JSON');
+  }
+
+
+  /**
+	 * Transform a JRegistry object to a JSON string
+   *
+   * @param  Registry|mixed   $registry   A Registry object to transform to a JSON string. Any other value is returned cast to string.
+	 *
+	 * @return  string  Returns a JSON string of the Registry object
+	 */
+  protected function transformRegistryToJson($registry)
+  {
+    // Make sure it a JRegistry object, otherwise return the value
+    if ( !($registry instanceof Registry) )
+    {
+      return (string) $registry;
+    }
+
+    // Return the data transformed to JSON
+    return $registry->toString('JSON');
+  }
 }

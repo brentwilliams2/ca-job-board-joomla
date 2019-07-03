@@ -22,7 +22,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -59,7 +59,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $name             A title to use for the reference.
  * @property string         $description      The text of this reference.
  */
-class References extends BaseModel
+class References extends BaseDataModel
 {
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
 
@@ -124,8 +124,6 @@ class References extends BaseModel
   }
 
 /*
- @TODO: Recommendations and references can be one of several types of media object: video recording, audio, pdf, .docx
-
 @TODO: How to correlate email responses to the request for reference that was sent -
           1. by email address? how to know then which reference request it's for if multiple from same email add'y?
           2. by a string added in the subject or body?

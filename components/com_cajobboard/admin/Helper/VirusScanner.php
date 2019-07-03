@@ -15,7 +15,8 @@ namespace Calligraphic\Cajobboard\Admin\Helper;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-
+class VirusScanner
+{
   /*
    * Rewrite the image through Image Magick to prevent embedded script in the image file
    */
@@ -249,7 +250,7 @@ defined( '_JEXEC' ) or die;
 
     // X-Content-Type-Options: nosniff
   }
-
+}
 
 // USAGE:
 

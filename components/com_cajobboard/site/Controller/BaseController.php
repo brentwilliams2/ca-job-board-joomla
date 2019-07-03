@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
 
 class BaseController extends DataController
 {
-  use Mixin\Permissions;
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Permissions;
 
 	/*
 	 * @param   Container $container

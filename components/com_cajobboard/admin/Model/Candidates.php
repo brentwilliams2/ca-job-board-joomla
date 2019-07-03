@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -55,7 +55,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $name             A title to use for the candidate.
  * @property string         $description      A description of the candidate.
  */
-class Candidates extends BaseModel
+class Candidates extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

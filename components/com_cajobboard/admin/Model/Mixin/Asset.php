@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 // no direct access
 defined('_JEXEC') or die;
 
-trait AssetHelper
+trait Asset
 {
   /**
 	 * Check ACL for this model item. Handles FOF record-level access control.

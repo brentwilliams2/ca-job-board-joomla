@@ -12,6 +12,9 @@
 
 namespace Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+
 // no direct access
 defined('_JEXEC') or die;
 
@@ -42,7 +45,7 @@ trait PredefinedTaskList
 		if (!in_array($task, $this->predefinedTaskList) && $task != 'default')
 		{
       // notify user that the task they've requested isn't valid
-      \JFactory::getApplication()->enqueueMessage(\JText::sprintf( 'COM_CAJOBBOARD_TASK_NOT_IN_LIST', $task ), 'error');
+      Factory::getApplication()->enqueueMessage( Text::sprintf( 'COM_CAJOBBOARD_TASK_NOT_IN_LIST', $task ), 'error' );
       $task = 'browse';
     }
 

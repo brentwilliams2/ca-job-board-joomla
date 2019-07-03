@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -50,13 +50,13 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $cat_id           Category ID for this item.
  * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
- * @property string         $note               A note to save with this item for use in the back-end interface.
+ * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the interview.
  * @property string         $description      A description of the interview.
  */
-class Interviews extends BaseModel
+class Interviews extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

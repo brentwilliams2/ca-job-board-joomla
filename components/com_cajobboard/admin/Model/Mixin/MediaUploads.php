@@ -1,5 +1,7 @@
 <?php
 /**
+ * Trait for saving uploaded media files
+ *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
@@ -11,9 +13,6 @@ namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-/**
- * Trait for dealing with data stored as JSON-encoded strings
- */
 trait MediaUploads
 {
   /**

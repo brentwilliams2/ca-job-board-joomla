@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -68,7 +68,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int            $downvote_count   Downvote count for this item.
  *
  */
-class Questions extends BaseModel
+class Questions extends BaseDataModel
 {
 	/**
 	 * @param   Container $container The configuration variables to this model

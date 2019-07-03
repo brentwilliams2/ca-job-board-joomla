@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -55,7 +55,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * SCHEMA: Review(reviewRating) -> Rating(ratingValue)
  * @property  int		  $rating_value               The rating for the content. Default worstRating 1 and bestRating 5 assumed.
  */
-class Reviews extends BaseModel
+class Reviews extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

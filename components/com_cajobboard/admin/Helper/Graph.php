@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Helper;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Amenadiel\JpGraph\Graph;
+use \Amenadiel\JpGraph\Graph as JpGraph;
 use \Amenadiel\JpGraph\Plot;
 use \FOF30\Container\Container;
 use \Joomla\CMS\Language\Text;
@@ -61,7 +61,7 @@ abstract class Graph
 	protected static function getPieGraph()
 	{
    // Create the Pie Graph.
-   $graph = new Graph\PieGraph(350, 250);
+   $graph = new JpGraph\PieGraph(350, 250);
 
    $graph->title->Set("A Simple Pie Plot");
 

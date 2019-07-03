@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /*
  * Fields:
@@ -69,7 +69,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property  int			      $Logo                           A logo image that represents this place. FK to #__cajobboard_images(image_id)
  * @property  int			      $Photo                          One or more photographs of this place. FK M:M relationship in to #__cajobboard_images(image_id)
  */
-class Places extends BaseModel
+class Places extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

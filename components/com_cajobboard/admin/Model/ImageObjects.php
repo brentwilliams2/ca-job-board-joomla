@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \FOF30\Container\Container;
 
 /*
@@ -71,7 +72,7 @@ use \FOF30\Container\Container;
  * @property  string	      $description      A long description of this image
  * @property  Object        $Author           The author of this content or rating, FK to #__users
  */
-class ImageObjects extends BaseModel
+class ImageObjects extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 
@@ -190,8 +191,6 @@ class ImageObjects extends BaseModel
 	public function getImageTag()
 	{
     // @TODO: implement, MOVE to controller
-
-    $model->metadata->
   }
 
 

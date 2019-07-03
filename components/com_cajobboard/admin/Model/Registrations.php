@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Registration Pages Model
+ * Admin New User Registration Pages Model
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

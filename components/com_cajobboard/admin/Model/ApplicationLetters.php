@@ -1,4 +1,4 @@
-<?php<?php
+<?php
 /**
  * Admin Application Letters Model
  *
@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:

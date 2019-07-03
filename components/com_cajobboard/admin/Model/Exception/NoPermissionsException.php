@@ -12,6 +12,8 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Exception;
 
+use \Joomla\CMS\Language\Text;
+
 // no direct access
 defined('_JEXEC') or die;
 
@@ -24,7 +26,7 @@ class NoPermissionsException extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('COM_CAJOBBOARD_EXCEPTION_NO_PERMS');
+			$message = Text::_('COM_CAJOBBOARD_EXCEPTION_NO_PERMS');
 		}
 		parent::__construct($message, $code, $previous);
 	}

@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -51,7 +51,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string   $code                       BLS code specifying this job category
  * @property OccupationalCategoryGroups  $OccupationalCategoryGroup  Group this occupational category should be shown under e.g. office staff
  */
-class OccupationalCategories extends BaseModel
+class OccupationalCategories extends BaseDataModel
 {
   use Mixin\Assertions;
 

@@ -25,18 +25,32 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages` (
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_down DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to unpublished.',
+  ordering INT NOT NULL DEFAULT '0' COMMENT 'Nesting level of this message in a threaded conversation. Root message is level 0',
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
   language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the message or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   note VARCHAR(255) COMMENT 'A note to save with this report in the back-end interface.',
 
+  /* Custom UCM */
+  attachment_counts TEXT COMMENT 'JSON encoded state field to indicate attachment counts for this message, keyed by media object name: {"audio_objects":0,"digital_documents":0,"image_objects":0,"video_objects":0}',
+
   /* SCHEMA: Thing */
   description TEXT COMMENT 'Body text of this message.',
   name VARCHAR(255) COMMENT 'Subject field of the e-mail. Aliased by title property.',
+  about__foreign_model_id BIGINT UNSIGNED NOT NULL COMMENT 'The foreign ATS model primary key that this message belongs to',
+  about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign ATS model this message belongs to, discriminator field for single-table inheritance',
 
   /* SCHEMA: Message */
   date_read DATETIME DEFAULT NULL COMMENT 'The date/time at which the message was opened by the recipient.',
-  recipient INT UNSIGNED  COMMENT 'The recipient of this message.', /* FK to #__cajobboard_organizations */
+  recipient INT UNSIGNED  COMMENT 'The recipient of this message.', /* FK to #__cajobboard_persons */
+
+  /* SCHEMA: CreativeWork */
+  is_part_of BIGINT UNSIGNED COMMENT 'Optional Comment that this message should anchor to.',  /* FK to #__cajobboard_comments */
+
+  /* SCHEMA: Thing(additionalType) -> Comment */
+  parent_item BIGINT UNSIGNED COMMENT 'The message that this message belongs to in a threaded conversation. ', /* FK to #__cajobboard_messages(message_id) */
 
   /* SQL DDL */
   PRIMARY KEY (message_id)
@@ -44,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
 
 /**
  * Messages - Audio Object join table
@@ -59,7 +72,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages_audio_objects` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-
 /**
  * Messages - Digital Document join table
  */
@@ -73,7 +85,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages_digital_documents` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-
 /**
  * Messages - Image Object join table
  */
@@ -86,7 +97,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages_image_objects` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
 
 /**
  * Messages - Video Object join table

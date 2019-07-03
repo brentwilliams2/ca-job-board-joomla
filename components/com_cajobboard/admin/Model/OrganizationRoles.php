@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /*
  * Fields:
@@ -32,7 +32,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string   $description    A description of the role of the organization
  * @property string   $url            Link to schema for organization type, e.g. wikipedia page on Employer, Recruiter, etc.
  */
-class OrganizationRoles extends BaseModel
+class OrganizationRoles extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

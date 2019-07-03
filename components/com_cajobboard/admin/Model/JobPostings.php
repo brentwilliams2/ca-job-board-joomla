@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -93,7 +93,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * @method  $this  myField() typehint
  */
-class JobPostings extends BaseModel
+class JobPostings extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 
@@ -184,6 +184,10 @@ class JobPostings extends BaseModel
   @TODO: Also the issue of job posting templates, so button to copy a job posting
   */
 
+  /*
+  @TODO: implement a "Do you know someone who might like this job?" feature like Quora (email to users) for job postings,
+         also "Share this job with User x" button to message / email a request
+  */
 
   /**
 	 * Perform checks on data for validity

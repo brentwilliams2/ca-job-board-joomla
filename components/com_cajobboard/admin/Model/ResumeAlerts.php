@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -63,7 +63,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * SCHEMA: https://schema.org/keywords
  * @property JSON           $keywords       Used to filter resumes shown for this alert. Should be a case-insensitive array of keywords, e.g. [ "great customers", "friendly", "fun" ]
  */
-class ResumeAlerts extends BaseModel
+class ResumeAlerts extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

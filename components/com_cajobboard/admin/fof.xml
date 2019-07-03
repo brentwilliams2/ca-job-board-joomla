@@ -3,14 +3,15 @@
   <!-- Common settings -->
 	<common>
     <container>
+      <option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
       <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard]]></option>
+      <option name="platformClass"><![CDATA[Calligraphic\Cajobboard\Admin\Platform\JobBoardPlatform]]></option>
     </container>
   </common>
 
   <!-- Administrator settings -->
   <backend>
     <container>
-      <option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
       <option name="rendererClass"><![CDATA[Calligraphic\Cajobboard\Admin\Render\AdminRender]]></option>
     </container>
 	</backend>
@@ -18,9 +19,7 @@
   <!-- Site settings -->
 	<frontend>
 		<container>
-			<option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
       <option name="rendererClass"><![CDATA[Calligraphic\Cajobboard\Site\Render\SiteRender]]></option>
-      <option name="scaffolding">0</option>
 		</container>
 	</frontend>
 </fof>

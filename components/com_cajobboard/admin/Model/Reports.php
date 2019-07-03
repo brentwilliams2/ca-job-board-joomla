@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum;
 
 /**
@@ -63,7 +63,7 @@ use \Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum;
  * @property string         $date_sent         The date the report was last sen.
  * @property string         message_attachment The URL of the Analytics view that should be used to generate the PDF file.
  */
-class Reports extends BaseModel
+class Reports extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

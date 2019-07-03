@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -60,7 +60,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property int      $about__id                  The primary key of the foreign model the item of this report refers to.
  * @property string   $category                   The reasons this content is being reported. Use table #__cajobboard_report_reasons to populate in views.
  */
-class IssueReports extends BaseModel
+class IssueReports extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

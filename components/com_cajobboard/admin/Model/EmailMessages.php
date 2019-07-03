@@ -20,7 +20,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -62,7 +62,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $recipient__honorific_prefix    An honorific prefix preceding the recipient's name such as Dr. / Mrs. / Mr.
  * @property string         $recipient__honorific_suffix    An honorific suffix preceding the recipient's name such as M.D. / PhD / MSCSW.
  */
-class EmailMessages extends BaseModel
+class EmailMessages extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

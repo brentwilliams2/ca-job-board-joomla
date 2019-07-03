@@ -13,6 +13,8 @@ namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Joomla\CMS\Language\Text;
+
 /**
  * Trait for check() method assertions
  */
@@ -30,7 +32,7 @@ trait Assertions
 	{
 		if (!$condition)
 		{
-			throw new \RuntimeException(\JText::_($message));
+			throw new \RuntimeException(Text::_($message));
 		}
   }
 

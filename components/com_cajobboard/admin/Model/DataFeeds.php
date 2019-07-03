@@ -1,4 +1,4 @@
-<?php<?php
+<?php
 /**
  * Admin Data Feeds Model
  *
@@ -20,7 +20,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -60,7 +60,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $name             A title to use for the data feed.
  * @property string         $description      A description of the data feed.
  */
-class DataFeeds extends BaseModel
+class DataFeeds extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

@@ -33,18 +33,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
   metadata JSON COMMENT 'JSON encoded metadata field for this item.',
   metakey TEXT COMMENT 'Meta keywords for this item.',
-  metadesc TEXT COMMENT 'Meta descriptionfor this item.',
+  metadesc TEXT COMMENT 'Meta description for this item.',
   xreference TEXT COMMENT 'A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.',
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
   language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the article or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
-  hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note VARCHAR(255) COMMENT 'A note to save with this comment in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'The text of the comment.',
+  about__foreign_model_id BIGINT UNSIGNED NOT NULL COMMENT 'The foreign model primary key that this comment belongs to',
+  about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign model this comment belongs to, discriminator field for single-table inheritance',
 
   /* SCHEMA: Comment */
   parent_item BIGINT UNSIGNED COMMENT 'The comment is a child of. FK to #__cajobboard_comments(comment_id)',
@@ -53,21 +54,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
 
   /* SQL DDL */
   PRIMARY KEY (comment_id)
-)
-  ENGINE=innoDB
-  DEFAULT CHARACTER SET = utf8
-  DEFAULT COLLATE = utf8_unicode_ci;
-
-
-/**
- * Comment - Foreign Model EAV join table
- */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_comments_foreign_models` (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
-  comment_id BIGINT UNSIGNED NOT NULL,
-  foreign_model_id BIGINT UNSIGNED NOT NULL,
-  foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign model this comment belongs to',
-  PRIMARY KEY (id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8

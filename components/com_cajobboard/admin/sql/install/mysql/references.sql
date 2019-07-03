@@ -7,16 +7,16 @@
  */
 
 /**
- * References data model SQL
+ * Recommendations data model SQL
  *
- * Uses schema https://schema.org/ClaimReview
+ * Uses schema https://calligraphic.design/schema/Recommendation
  */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
-  reference_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
+  recommendation_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
-  asset_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
+  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
   enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
   created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',
@@ -40,24 +40,20 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this reference in the back-end interface.',
+  note VARCHAR(255) COMMENT 'A note to save with this recommendation in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'The text of the reference.',
+  description TEXT COMMENT 'The text of the recommendation.',
 
   /* SCHEMA: CreativeWork */
   has_part__digital_document INT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */
   has_part__image_object INT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
   about INT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
-
-  /* SCHEMA: Message */
-  to_recipient INT UNSIGNED COMMENT 'The user this report should be sent to.', /* FK to #__users */
-  date_sent DATETIME DEFAULT NULL COMMENT 'The date the report was last sent.',
-  message_attachment VARCHAR(2083) COMMENT 'The URL of the Analytics view that should be used to generate the PDF file.',
+  job_posting INT UNSIGNED COMMENT 'The job posting this reference is for.', /* FK to #__cajobboard_persons */
 
   /* SQL DDL */
-  PRIMARY KEY (reference_id)
+  PRIMARY KEY (recommendation_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
@@ -65,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
 
 
 /*
- * Create content types for References, mapping fields to the UCM standard fields for history feature
+ * Create content types for Recommendations, mapping fields to the UCM standard fields for history feature
  *
  * type_id:     auto-increment id number.
  *
@@ -119,23 +115,23 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
  */
 
 /*
- * References content type for history component
+ * Recommendations content type for history component
  */
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
   null,
   /* type_title */
-  'References',
+  'Recommendations',
   /* type_alias */
-  'com_cajobboard.references',
+  'com_cajobboard.recommendations',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_references",
-      "key":"reference_id",
-      "type":"Reference",
-      "prefix":"ReferencesTable",
+      "dbtable":"#__cajobboard_recommendations",
+      "key":"recommendation_id",
+      "type":"Recommendation",
+      "prefix":"RecommendationsTable",
       "config":"array()"
     },
     "common":{
@@ -150,7 +146,7 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"reference_id",
+        "core_content_item_id":"recommendation_id",
         "core_title":"name",
         "core_state":"enabled",
         "core_alias":"slug",

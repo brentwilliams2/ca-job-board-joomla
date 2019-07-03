@@ -11,13 +11,14 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
-use Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
-use Calligraphic\Cajobboard\Site\Helper\Semantic;
-use FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
 use \Calligraphic\Cajobboard\Site\Helper\Pagination;
+use \Calligraphic\Cajobboard\Site\Helper\Semantic;
 use \FOF30\Container\Container;
+use \FOF30\Model\DataModel;
 use \FOF30\View\DataView\Html;
 use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\Document\Document;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\Registry\Registry;
@@ -58,8 +59,43 @@ class BaseHtml extends Html
 
     $semanticHelper->setPageTitle();
     $semanticHelper->addOpenGraphMetaTags();
+
+    $this->setMetadataHeaders();
   }
 
+
+  /**
+	 * Set the metadata headers in site views (author and robots)
+   *
+   * <meta name="robots" content="index|noindex, follow|nofollow" />
+   *
+   * index      Allow search engines to add the page to their index, so that it can be discovered by people searching. Default if tag missing.
+   * noindex    Disallow search engines from adding this page to their index, and therefore disallow them from showing it in their results.
+   * follow     Tells the search engines that it may follow links on the page, to discover other pages. Default if tag missing.
+   * nofollow   Tells the search engines robots to not follow any links on the page.
+   *
+   * @param   string  $view   The name of the view, lowercased, to load a language file for
+	 */
+	public function setMetadataHeaders()
+	{
+    /** @var DataModel $model */
+		$model = $this->getModel();
+
+    /** @var Document $document */
+    $document = $this->container->platform->getDocument();
+
+    $document->setMetaData( 'robots', $model->params->get('robots', 'index, follow') );
+
+    if ( $author = $model->params->get('author') )
+    {
+      $document->setMetaData($author);
+    }
+
+    if ( $keywords = $model->metakey )
+    {
+      $document->setMetaData('keywords', $keywords);
+    }
+  }
 
   /**
 	 * Load the language file for this view

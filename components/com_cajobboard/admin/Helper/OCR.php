@@ -64,7 +64,7 @@ abstract class OCR
 
       $img->setImageCompressionQuality(90);
 
-      $img->setPage($params['geometry']['width'], $params['geometry']['height'], 0, 0)
+      $img->setPage($params['geometry']['width'], $params['geometry']['height'], 0, 0);
 
       $img->setResolution($params['resolution']['x'], $params['resolution']['y']);
 

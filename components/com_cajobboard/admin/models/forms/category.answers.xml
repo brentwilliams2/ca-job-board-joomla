@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  If you have more than one type of category in your component (e.g. "com_mycomponent.mycategorytype")
-  you need to make the name of the XML file "category.mytype.xml".
--->
 <form>
   <fields name="params">
-    <fieldset name="images" label="COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_TAB_TITLE">
+    <fieldset name="Media" label="MediaTab">
+
       <field
         name="enforce_aspect_ratio"
         type="checkbox"
@@ -61,6 +58,7 @@
         <option value="aspect-ratio-3-5">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_3_5_LABEL</option>
         <option value="aspect-ratio-9-16">COM_CAJOBBOARD_MEDIA_CATEGORY_PARAMS_ASPECT_RATIO_9_16_LABEL</option>
       </field>
+
     </fieldset>
   </fields>
 </form>

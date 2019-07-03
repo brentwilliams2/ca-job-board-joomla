@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /*
  * Fields:
@@ -33,7 +33,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string   $description                A description of the type of organization.
  * @property string   $url                        Link to schema for organization type, e.g. wikipedia page on Employer.
  */
-class OrganizationTypes extends BaseModel
+class OrganizationTypes extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

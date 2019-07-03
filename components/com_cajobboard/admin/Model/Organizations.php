@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /*
  * Fields:
@@ -88,7 +88,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  *
  * @property string         $Branches             Properties managed by this organization, FK to #__cajobboard_places
  */
-class Organizations extends BaseModel
+class Organizations extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

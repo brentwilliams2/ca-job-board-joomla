@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -51,7 +51,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property  string  $language 	        Language for this category or '*' for all
  * @property  string  $version            Version history for this category
  */
-class Categories extends BaseModel
+class Categories extends BaseDataModel
 {
   /*
 	 * @param   Container $container The configuration variables to this model

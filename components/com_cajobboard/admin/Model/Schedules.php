@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -58,7 +58,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $name             A title to use for the schedule.
  * @property string         $description      A description of the schedule.
  */
-class Schedules extends BaseModel
+class Schedules extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

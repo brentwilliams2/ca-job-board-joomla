@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -28,7 +28,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string   $category   The category of abusive content report, e.g. spam, inappropriate language, etc.
  * @property string   $url        Link to schema for type of complaint, e.g. wikipedia page on Profanity
  */
-class IssueReports extends BaseModel
+class IssueReports extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Model class description
@@ -54,7 +54,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
  * @property string   $group                      Name this occupational category should be shown under e.g. office staff
   */
-class OccupationalCategoryGroups extends BaseModel
+class OccupationalCategoryGroups extends BaseDataModel
 {
   use Mixin\Assertions;
 

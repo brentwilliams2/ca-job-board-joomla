@@ -15,11 +15,11 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Text;
-
+use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
 
 /**
  * Fields:
@@ -479,5 +479,18 @@ class Persons extends DataModel
     }
 
     return true;
+  }
+
+
+ /**
+	 * Get the message counts for a user
+   *
+   * @param   int   $userId   The ID of the user to return message counts for
+	 *
+	 * @return  array  Returns assoc array with keys 'messagesTotal' and 'messagesUnread'
+	 */
+  public function getMessageCounts($userId)
+  {
+    return $this->container->MessageCounts->getMessageCounts($userId);
   }
 }

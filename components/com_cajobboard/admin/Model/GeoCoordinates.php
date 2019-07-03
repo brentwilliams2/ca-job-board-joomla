@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /*
  * Fields:
@@ -27,7 +27,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property  string	      $latitude             latitude of a place
  * @property  string	      $longitude            longitude of a place
  */
-class GeoCoordinates extends BaseModel
+class GeoCoordinates extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

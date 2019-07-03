@@ -41,3 +41,5 @@ class PlgSystemDelbootstrap extends JPlugin {
 }
 
 @TODO: Need to write a module to display social share icons broken off from the component, but picking up the component's current page URI
+
+@TODO: Get and install commercial Community Surveys component, see e-mail with Brent July 2 2019.

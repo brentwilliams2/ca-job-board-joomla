@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -51,7 +51,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string   $description                Detailed description about type of employment
  * @property string   $url                        Link to schema for type of employment, e.g. wikipedia page on Full Time
  */
-class EmploymentTypes extends BaseModel
+class EmploymentTypes extends BaseDataModel
 {
   use Mixin\Assertions;
 

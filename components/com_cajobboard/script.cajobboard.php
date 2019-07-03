@@ -219,6 +219,8 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     {
       $this->createCategories();
       $this->addUserGroups();
+      $this->seedMessageRootRecord();
+      $this->seedCommentRootRecord();
     }
 
     return true;
@@ -390,8 +392,6 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    */
   function createCategories()
   {
-    JLog::add('Categories created in installation script', JLog::DEBUG, 'com_cajobboard');
-
     $currentCategories = $this->loadCategories();
 
     foreach ($this->categories as $category)
@@ -516,5 +516,38 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     }
 
     \JTable::getInstance('Usergroup')->rebuild();
+  }
+
+
+  /**
+   * Initialize Comments model
+   *
+   * @return void
+   */
+  function seedCommentRootRecord()
+  {
+    $this->insertTreeRootRecord();
+  }
+
+
+  /**
+   * Initialize Comments model
+   *
+   * @return void
+   */
+  function seedMessageRootRecord()
+  {
+    $this->insertTreeRootRecord();
+  }
+
+
+  /**
+   * Insert mandatory root record for nested set hierarchical tables (FOF TreeModel)
+   *
+   * @return void
+   */
+  function insertTreeRootRecord()
+  {
+
   }
 }

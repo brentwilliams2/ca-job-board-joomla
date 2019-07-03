@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -66,7 +66,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property  string	      $description      A long description of this audio object
  * @property  Object        $Author           The author of this content or rating, FK to #__users
  */
-class AudioObjects extends BaseModel
+class AudioObjects extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

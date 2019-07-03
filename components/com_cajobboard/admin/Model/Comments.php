@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
 
 /**
  * Fields:
@@ -48,19 +48,20 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * @property string         $params           JSON encoded parameters for this item.
  * @property string         $language         The language code for the article or * for all languages.
  * @property int            $cat_id           Category ID for this item.
- * @property int            $hits             Number of hits the item has received on the site.
  * @property int            $featured         Whether this item is featured or not.
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the comment.
  * @property string         $description      The text of the comment.
+ * @property int            $about__foreign_model_id    The foreign model primary key that this comment belongs to
+ * @property string         $about__foreign_model_name  The name of the foreign model this comment belongs to, discriminator field for single-table inheritance
  *
  * SCHEMA: Comment
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
-class Comments extends BaseModel
+class Comments extends BaseTreeModel
 {
   use \FOF30\Model\Mixin\Assertions;
 
@@ -117,11 +118,30 @@ class Comments extends BaseModel
     // one-to-one FK to  #__cajobboard_comments
     $this->inverseSideOfHasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
 
-    // Comments model doesn't have relation back to the entity that owns it,
-    // because that uses the EAV join table and requires special handling
+    // STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
   }
 
+  // @TODO: Should this be a TreeModel, to handle nesting of comments efficiently?
+
   // @TODO: View needs to handle state fields for join table: foreign_model_id and foreign_model_name
+
+  // @TODO: Add method to "attach" a message thread to a root comment if the comment is attached to particular ATS views.
+  //        The idea is to provide a system where there is a special category of comment: instead of showing a normal
+  //        comment thread, it pulls a message thread in to allow it to be attached to an ATS entity for candidate
+  //        tracking (instead of the messages just being in user's inboxes and not reference to any ATS entity)
+
+
+
+  /**
+	 * Convenience wrapper for BaseModel getComments() method
+	 *
+	 * @return    DataCollection   Collection of Comments models
+	 */
+	public static function getComments($model)
+	{
+    return $model->getComments();
+  }
+
 
 
   /**
@@ -132,49 +152,6 @@ class Comments extends BaseModel
 	public function onAfterCreate()
 	{
     $this->saveEavJoinRecord();
-  }
-
-
-  /**
-	 * Save the foreign model name in the EAV join table
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function saveEavJoinRecord()
-	{
-    $id = $this->input->get('foreign_model_id');
-    $name = $this->input->get('foreign_model_name');
-
-    if ($id && $name)
-    {
-      $db = $this->container->db;
-
-      // Insert values.
-      $values = array(
-        $this->getId(),
-        $id,
-        $db->quote($name)
-      );
-
-      $query = $db->getQuery(true);
-
-      $query
-        ->insert($db->quoteName('#__cajobboard_comments_foreign_models'))
-        ->columns( $db->quoteName( array('comment_id', 'foreign_model_id', 'foreign_model_name')))
-        ->values(implode(',', $values));
-
-      // Set the query using our newly populated query object and execute it.
-      $db->setQuery($query);
-
-      try
-      {
-        $db->execute();
-      }
-      catch (\Exception $e)
-      {
-        throw new \Exception('Failed saving the EAV join table entry in the Comments model, error: ' . $e);
-      }
-    }
   }
 
 

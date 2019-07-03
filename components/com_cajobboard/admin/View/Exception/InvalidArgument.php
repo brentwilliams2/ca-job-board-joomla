@@ -23,7 +23,7 @@ class InvalidArgument extends \InvalidArgumentException
 {
 	public function __construct($path, $code = 500, Exception $previous = null)
 	{
-    $message = \JText::sprintf('COM_CAJOBBOARD_VIEW_INVALID_ARGUMENT', $path);
+    $message = \JText::sprintf('COM_CAJOBBOARD_VIEW_EXCEPTION_INVALID_ARGUMENT', $path);
 
 		parent::__construct($message, $code, $previous);
 	}

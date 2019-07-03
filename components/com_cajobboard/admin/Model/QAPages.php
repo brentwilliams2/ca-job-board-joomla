@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -64,7 +64,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseModel;
  * SCHEMA: QAPage
  * @property QAPageCategories   $Specialty          A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id).
  */
-class QAPages extends BaseModel
+class QAPages extends BaseDataModel
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -118,6 +118,10 @@ class QAPages extends BaseModel
     $this->belongsTo('About', 'Organizations@com_cajobboard', 'about', 'organization_id');
   }
 
+  /*
+  @TODO: implement a "Can you answer this question?" feature like Quora (email to users) for job posting QA Pages / questions,
+         also "Request an Answer from User x" button to message / email a request
+  */
 
 	/**
 	 * Override to add join field for #__cajobboard_qapage_categories as $Specialty
