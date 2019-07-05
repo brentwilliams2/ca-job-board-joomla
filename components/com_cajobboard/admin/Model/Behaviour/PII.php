@@ -19,8 +19,12 @@ use \Joomla\CMS\Language\Text;
 // no direct access
 defined( '_JEXEC' ) or die;
 
+
 /**
- * FOF model behavior class to set the publish_up field on new items.
+ * To override validation behaviour for a particular model, create a directory
+ * named 'Behaviour' in a directory named after the model and use the same file
+ * name as this behaviour ('PII.php'). The model file cannot go in this
+ * directory, it must stay in the root Model folder.
  */
 class PII extends Observer
 {

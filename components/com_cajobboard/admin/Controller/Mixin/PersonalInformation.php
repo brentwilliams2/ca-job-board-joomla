@@ -19,6 +19,9 @@ defined('_JEXEC') or die;
 
 trait PersonalInformation
 {
+  // @TODO: Need to decide exactly where PII access control will be handled. We have a behaviour for models,
+  //        and also can use it per-field in view emplates.
+
 	/**
 	 * Runs before executing a task in the controller
 	 *

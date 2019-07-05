@@ -15,6 +15,10 @@
   // no direct access
   defined('_JEXEC') or die;
 
+  // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
+  $this->container->AssetFiles->addComponentJS($this);
+  $this->container->AssetFiles->addComponentJS($this);
+
   $isPaginated = $this->pagination instanceof Pagination;
 ?>
 

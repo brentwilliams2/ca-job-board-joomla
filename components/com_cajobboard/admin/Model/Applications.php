@@ -84,17 +84,9 @@ class Applications extends BaseDataModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
       //'ContentHistory', // Add Joomla! content history support
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
 
@@ -104,24 +96,46 @@ class Applications extends BaseDataModel
     /* Set up relations after parent constructor */
   }
 
-  // Upon successful apply, redirect to show similar jobs list with "Quick apply" link next to each job.
+  // @see Calligraphic\Cajobboard\Admin\Model\Applications\Behaviour\Check
 
-  // Allow a company to use our internal application system or route users to their own application system on a different site
+
 
   // Need ability to mark questions as "must-have", so candidates can be rejected if they don't have it e.g. "has visa"
 
 
+  public function onAfterCreate()
+  {
+    $this->createCandidate();
+
+    // @TODO: redirect on succesful save to browse view with similar jobs list with "Quick apply" link next to each job.
+  }
+
+
   /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_APPLICATIONS_TITLE_ERR');
+   * Create a Candidate in the ATS workflow in response to a job seeker submitting an Application
+   *
+   * @return void
+   *
+   */
+  public function createCandidate()
+  {
+    // @TODO: implement creating candidate from Application on after create
+  }
 
-		parent::check();
 
-    return $this;
+  /**
+   * Toggle whether Application is locked or not
+   *
+   * @return void
+   *
+   */
+  public function setApplicationLocking($isLocked = false)
+  {
+    /*
+    @TODO:    locked_on   and   locked_by   handling
+    Need option to handle "locking" an application, so a job seeker can't change it after it's submitted: how to do this?
+    There needs to be a special button to message a job seeker from a received application to ask for changed / additional
+    information, and unlock the application until that happens. Needs to message back to the employer when the changes are made.
+    */
   }
 }

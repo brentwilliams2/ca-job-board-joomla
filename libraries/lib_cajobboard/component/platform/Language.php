@@ -17,5 +17,5 @@ defined('_JEXEC') or die;
 
 class Language
 {
-  // @TODO: See notes in JobBoardPlatform class in job board component
+  // @TODO: See notes in cajobboard_library_loader about implementation
 }

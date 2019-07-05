@@ -44,6 +44,13 @@ use \Joomla\CMS\Log\Log;
 use \Joomla\CMS\Table\Asset;
 use \Joomla\Registry\Registry;
 
+
+/**
+ * To override validation behaviour for a particular model, create a directory
+ * named 'Behaviour' in a directory named after the model and use the same file
+ * name as this behaviour ('Assets.php'). The model file cannot go in this
+ * directory, it must stay in the root Model folder.
+ */
 class Assets extends Observer
 {
   /**

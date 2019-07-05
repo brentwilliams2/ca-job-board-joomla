@@ -45,7 +45,7 @@ class BaseListModel extends DataModel
       'Language',   // Filter front-end access to items based on language
       'Ordering',   // Order items owned by featured status and then descending by date
       'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      'Slug'        // Backfill the slug field with the 'title' property or its fieldAlias if empty
     );
 
     // Merge any behaviours passed from the child model into our base class default behaviours

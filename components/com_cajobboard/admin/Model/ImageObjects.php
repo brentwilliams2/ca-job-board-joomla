@@ -104,17 +104,9 @@ class ImageObjects extends BaseDataModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
       //'ContentHistory', // Add Joomla! content history support
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
 
@@ -134,6 +126,32 @@ class ImageObjects extends BaseDataModel
       $this->isXRedirectAvailable();
     }
   }
+
+  /*
+    @NOTE: Use single table inheritance, with fields like:
+
+      about__discriminator
+      about__organization
+      about__place
+      about__message
+      about__comment
+      about__person
+      about__application
+      about__resume
+      about__job_posting
+      about__geo_coordinates
+      about__job_alert
+
+    When an image_object is accessed directly or through a relation, send the x-header to the web
+    server translating the SEF filename to the system filename. That way when the client requests
+    it, it's already available.
+
+    @QUESTION: how long are the x-headers held in cache on the web server? Can we cache all image objects
+    at once, and warm the cache on reboot?
+
+    Maybe javascript with both the system name and the SEF name, and fallback if the SEF lookup fails?
+
+   */
 
   // @TODO: Need to warn the administrator if the sizes for thumb / small / medium / large images are changed
   //        that all images will need to be resized, and then trigger all images to reprocess. Might need a job control shell script.

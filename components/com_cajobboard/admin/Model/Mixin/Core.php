@@ -11,7 +11,7 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 
-use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissionsException;
+use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissions;
 use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
 use \Joomla\CMS\Language\Text;
 
@@ -43,7 +43,7 @@ trait Core
 	 * @return  $this
 	 *
 	 * @throws  RecordNotLoaded         If the database record for this ID can't be loaded
-   * @throws  NoPermissionsException  If the user doesn't have permission to edit the record
+   * @throws  NoPermissions  If the user doesn't have permission to edit the record
    * @throws  \Exception               If there are database errors
 	 */
 	public function setFeaturedState($isFeatured)
@@ -56,7 +56,7 @@ trait Core
 
     if ( !$this->isEditAuthorised() )
     {
-      throw new NoPermissionsException($e);
+      throw new NoPermissions($e);
     }
 
 		// We allow toggling the 'feature' field, even if the record is checked out (locked)

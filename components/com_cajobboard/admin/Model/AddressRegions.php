@@ -47,20 +47,4 @@ class AddressRegions extends BaseListModel
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
   }
-
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function onAfterCheck()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_ADDRESS_REGION_ERR_TITLE');
-    $this->assertNotEmpty($this->item_list_element, 'COM_CAJOBBOARD_ADDRESS_REGION_ERR_ABBREVIATION');
-
-    return $this;
-	}
 }

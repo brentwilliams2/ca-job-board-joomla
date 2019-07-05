@@ -14,14 +14,20 @@ namespace Calligraphic\Cajobboard\Admin\Dispatcher;
 
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Toolbar\Toolbar;
+use \FOF30\Container\Container;
+
+// Classes injected into Container
+use \Calligraphic\Cajobboard\Admin\Dispatcher\ExceptionHandler;
+use \Calligraphic\Cajobboard\Admin\Helper\AssetFiles;
 use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
 use \Calligraphic\Cajobboard\Admin\Helper\EmailOutgoing;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\VideoObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
-use \FOF30\Container\Container;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Toolbar\Toolbar;
+use \Calligraphic\Library\Platform\Inflector;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -46,31 +52,34 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	protected $viewNameAliases = [];
 
 
-  /**
-   * The string to use when building asset filenames (value can be 'frontend' or 'backend')
-   *
-   * @property  string
-   */
-  public $areaName;
+	/**
+	 * @param Container   $container
+	 * @param array       $config
+	 */
+  public function __construct(Container $container, array $config = array())
+	{
+    parent::__construct($container, $config);
+
+    // Add services to the FOF container
+    $this->addContainerServices();
+
+    // Add irregular plural form words for component to inflector
+    // MUST be called affer container services are added
+    $this->initInflectorVocab();
+
+    $this->setViewAliases(array(
+      // @TODO: Setup any view aliases in use: PII, FCRA?
+    ));
+  }
 
 
   /**
-   * The asset folders to use in the media directory URL (value can be 'Site' or 'Admin')
-   *
-   * @property  string
-   */
-  public $areaFolder;
-
-
-  /**
-   * A string to prepend for loading minified asset files in production (value can be empty or '.min')
-   *
-   * @property  string
-   */
-  public $minified;
-
-
-	public function onBeforeDispatch()
+	 * Load translations, assets, set Toolbar paths, and add irregular plural
+   * model names to the inflector before executing the component
+	 *
+	 * @return  void
+	 */
+	public function setupBeforeDispatch()
 	{
     if ( $this->container->platform->isBackend() )
     {
@@ -80,16 +89,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
       $toolbar->addButtonPath(realpath(__DIR__ . DS . '..' . DS . 'Toolbar' . DS . 'Buttons'));
     }
 
-    // Load the translations for this component
     $this->loadTranslations();
 
-    // Add services to the FOF container
-    $this->addContainerServices();
-  }
-
-
-	public function onAfterDispatch()
-	{
+    // Load assets
     $this->setAssetPaths();
     $this->addJavascript();
     $this->addCss();
@@ -97,7 +99,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 
   /**
-	 * Set view aliases. Call from onBeforeDispatch method.
+	 * Set view aliases. Call from onBeforeDispatch methods.
    *
    * @param array $aliases   An array of view aliases to set
 	 *
@@ -110,37 +112,37 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 
   /**
-	 * Load the translation files
+	 * Load the core  and view component translation files
 	 *
 	 * @return  void
 	 */
 	protected function loadTranslations()
 	{
-    $component = $this->container->componentName;
+    // load the core translation file based on whether backend or frontend, e.g. en-GB.lib_calligraphic.php
+    $this->container->platform->loadComponentTranslations();
 
-    $view = strtolower($this->view);
+    // load the current view translation file based on whether backend or frontend
+    $this->container->platform->loadViewTranslations($this->view);
+  }
 
-		if ($this->isBackend())
-		{
-			$paths = array(JPATH_ROOT, JPATH_ADMINISTRATOR);
-		}
-		else
-		{
-			$paths = array(JPATH_ADMINISTRATOR, JPATH_ROOT);
+
+  /**
+	 * Adds words with irregular plural forms to the inflector
+	 *
+	 * @return  void
+	 */
+	public function initInflectorVocab()
+	{
+    $irregularWords = array(
+      'FCRA' => 'FCRA',
+      'PersonallyIdentifiableInformation' => 'PersonallyIdentifiableInformation'
+    );
+
+    foreach ($irregularWords as $singular => $plural)
+    {
+      $this->container->inflector->addWord($singular, $plural);
     }
-
-    /* @var  \Joomla\CMS\Language\Language  $language */
-    $language = Factory::getLanguage();
-
-    // @TODO: Add View language file
-
-    // load($extension = 'joomla', $basePath = JPATH_BASE, $lang = null, $reload = false, $default = true)
-    // returns true if file is loaded. null for $lang loads current language.
-		$language->load($component, $paths[0], 'en-GB', true);
-		$language->load($component, $paths[0], null, true);
-		$language->load($component, $paths[1], 'en-GB', true);
-		$language->load($component, $paths[1], null, true);
-	}
+  }
 
 
   /*
@@ -170,29 +172,19 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     $this->container->MessageCounts = function ($c) {
       return new MessageCounts();
     };
-  }
 
+    $this->container->AssetFiles = function ($c) {
+      return new AssetFiles();
+    };
 
-  /*
-   * Set properties used for loading asset files differentially, based on admin vs. site
-   * and dev vs. production. The job board uses a bespoke directory structure in the media folder.
-   *
-   * @return  void
-   */
-  protected function setAssetPaths()
-  {
-    if ( $this->container->platform->isBackend() )
-    {
-      $this->areaFolder = 'Admin';
-      $this->areaName = 'backend';
-    }
-    else
-    {
-      $this->areaFolder = 'Site';
-      $this->areaName = 'frontend';
-    }
+    $this->container->ExceptionHandler = function ($c) {
+      return new ExceptionHandler();
+    };
 
-    $this->minified =  DEBUG ? '' : '.min';
+    // overriding inflector already loaded, not an option in fof.xml
+    $this->container->inflector = function ($c) {
+      return new Inflector();
+    };
   }
 
 
@@ -203,8 +195,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
    */
   protected function addJavascript()
   {
-    $this->container->template->addJS('media://com_cajobboard/js/'. $this->areaFolder . '/' . $this->areaName . $this->minified . '.js', true, false);
-    // @TODO: Add view JS
+    $this->container->AssetFiles->addComponentJS();
   }
 
 
@@ -215,9 +206,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
    */
   protected function addCss()
   {
-    // media://com_cajobboard/css/backend.min.css
-    $this->container->template->addCSS('media://com_cajobboard/css/' . $this->areaName . $this->minified . '.css');
-    // @TODO: Add view CSS
+    $this->container->AssetFiles->addComponentCSS();
   }
 
 
@@ -248,9 +237,11 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 		try
 		{
+      $this->setupBeforeDispatch();
+
       $this->triggerEvent( $isCli ? 'onBeforeDispatchCLI' : 'onBeforeDispatch' );
 
-      // Task set here and not in controller so onBeforeDispatch methods can alter it
+      // Task set here and not in constructor so onBeforeDispatch methods have opportunity to set it in state
       $task = $this->input->getCmd('task', 'default');
 
       if ('default' == $task)
@@ -265,23 +256,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     }
 		catch (\Exception $e)
 		{
-			if ($this->container->platform->isCli())
-			{
-				$this->container->platform->setHeader('Status', '403 Forbidden', true);
-      }
-
       $this->transparentAuthenticationLogout();
 
-      /*
-        Redirect logic:
-
-        If CLI, rethrow $e
-        If on edit, redirect to the item view if user is authorized, otherwise to browse view if user is authorized, otherwise to default view
-        If on add, redirect to the browse view if user is authorized, otherwise to default view
-        If on browse, redirect to the default view
-
-        Move all exceptions to admin
-      */
+      $this->container->ExceptionHandler->handle($e);
     }
 
     $this->transparentAuthenticationLogout();

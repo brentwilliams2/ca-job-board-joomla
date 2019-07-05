@@ -1,6 +1,6 @@
 <?php
 /**
- * Model behaviour to sort featured items at top of list
+ * FOF model behavior class to set the publish_up field on new items.
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -18,8 +18,12 @@ use \Joomla\CMS\Application\ApplicationHelper;
 // no direct access
 defined( '_JEXEC' ) or die;
 
+
 /**
- * FOF model behavior class to set the publish_up field on new items.
+ * To override validation behaviour for a particular model, create a directory
+ * named 'Behaviour' in a directory named after the model and use the same file
+ * name as this behaviour ('Publish.php'). The model file cannot go in this
+ * directory, it must stay in the root Model folder.
  */
 class Publish extends Observer
 {

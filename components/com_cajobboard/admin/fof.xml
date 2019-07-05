@@ -5,7 +5,7 @@
     <container>
       <option name="factoryClass"><![CDATA[FOF30\Factory\BasicFactory]]></option>
       <option name="componentNamespace"><![CDATA[Calligraphic\Cajobboard]]></option>
-      <option name="platformClass"><![CDATA[Calligraphic\Cajobboard\Admin\Platform\JobBoardPlatform]]></option>
+      <option name="platformClass"><![CDATA[Calligraphic\Library\Platform\Platform]]></option>
     </container>
   </common>
 

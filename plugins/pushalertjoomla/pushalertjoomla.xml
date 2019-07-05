@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="plugin" group="system" method="upgrade">
+	 <name>PushAlert - Web Push Notifications</name>
+        <author>Abhinav Pathak</author>
+        <creationDate>November 2016</creationDate>
+        <copyright>PushAlert.co</copyright>
+        <license>GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
+        <authorEmail>contactus@pushalert.co</authorEmail>
+        <authorUrl>https://pushalert.co</authorUrl>
+        <version>1.0.3</version>
+        <description><![CDATA[
+<H1>PushAlert - Web Push Notifications for Chrome, Android, Firefox and Safari</h1>
+<hr style="width:100%;">
+<p>PushAlert is a marketing tool to increase reach and sales, which allows you to push real-time notifications to your website users on both mobile and desktop. Register for a free account on <a href="https://pushalert.co" title="PushAlert - Web Push Notifications" target="_blank">PushAlert.co</a> and enter your website ID which is available in your <a href="https://pushalert.co/dashboard/" title="PushAlert - Dashboard" target="_blank">PushAlert Dashboard.</a></p>
+<h2>PushAlert Joomla Plugin Features</h2>
+<ul>
+<li>No need for any coding</li>
+<li>Shows the subscriber opt-in box automatically.</li>
+</ul>
+<p>If you have any issues with the plugin, please reach out to us at support@pushalert.co.</p>
+]]></description>
+        <files>
+                <filename plugin="pushalertjoomla">pushalertjoomla.php</filename>
+        </files>
+
+	<config>
+		<fields name="params" >
+			<fieldset name="basic">
+				<field name="pushalert_web_id" type="text" default="" label="PushAlert Website ID" description="Please enter the PushAlert Website ID from your Dashboard Settings here."/>
+			</fieldset>
+		</fields>
+	</config>
+	<updateservers>
+		<server type="extension" name="PushAlert Extension Update Site">https://pushalert.co/joomla/manifest.xml</server>
+	</updateservers>
+</extension>

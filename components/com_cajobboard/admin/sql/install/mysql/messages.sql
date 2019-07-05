@@ -59,6 +59,11 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
+  /*
+    @TODO:  Need a field that can reference what ATS entity the message is about (like an Application),
+            and a UI button to automatically attach it to that entity (via a Comment)
+  */
+
 /**
  * Messages - Audio Object join table
  */

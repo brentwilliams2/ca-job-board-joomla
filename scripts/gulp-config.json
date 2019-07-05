@@ -70,7 +70,8 @@
   "pathMap": {
     "/components/com_cajobboard/admin/": "/administrator/components/com_cajobboard",
     "/components/com_cajobboard/site/": "/components/com_cajobboard",
-    "/components/com_cajobboard/media/scss/": "/media/com_cajobboard/css",
+    "/components/com_cajobboard/media/scss/": "/media/com_cajobboard/scss",
+    "/components/com_cajobboard/media/css/": "/media/com_cajobboard/css",
     "/components/com_cajobboard/media/images/": "/media/com_cajobboard/images",
     "/components/com_cajobboard/media/js/": "/media/com_cajobboard/js",
     "/components/com_cajobboard/media/schema/": "/media/com_cajobboard/schema",
@@ -108,7 +109,8 @@
     "/templates/tpl_mfi/Includes/": "/templates/multifamilyinsidersbootstrapv3template/Includes",
     "/templates/tpl_mfi/Partials/": "/templates/multifamilyinsidersbootstrapv3template/Partials",
     "/templates/tpl_mfi/language/": "/templates/multifamilyinsidersbootstrapv3template/language",
-    "/templates/tpl_mfi/scss/": "/templates/multifamilyinsidersbootstrapv3template/css",
+    "/templates/tpl_mfi/scss/": "/templates/multifamilyinsidersbootstrapv3template/scss",
+    "/templates/tpl_mfi/css/": "/templates/multifamilyinsidersbootstrapv3template/css",
     "/templates/tpl_mfi/js/": "/templates/multifamilyinsidersbootstrapv3template/js"
   }
 }

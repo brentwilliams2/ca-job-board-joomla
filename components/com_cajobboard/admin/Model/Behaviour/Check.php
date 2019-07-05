@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
-use \Calligraphic\Cajobboard\Admin\Model\Exception\EmptyFieldException;
+use \Calligraphic\Cajobboard\Admin\Model\Exception\EmptyField;
 
 // no direct access
 defined( '_JEXEC' ) or die;
@@ -24,8 +24,8 @@ defined( '_JEXEC' ) or die;
 /**
  * To override validation behaviour for a particular model, create a directory
  * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('Check.php'). Move the model file into the directory
- * without renaming it (e.g. 'Model/Answers/Answers.php)
+ * name as this behaviour ('Check.php'). The model file cannot go in this directory,
+ * it must stay in the root Model folder.
  */
 class Check extends Observer
 {
@@ -79,7 +79,7 @@ class Check extends Observer
 
         $modelItemName = $model->getContainer()->inflector->singularize( $model->getName();
 
-				throw new EmptyFieldException( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_NOT_NULL_MODEL_FIELD_EMPTY'), $modelItemName, $fieldName );
+				throw new EmptyField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_NOT_NULL_MODEL_FIELD_EMPTY'), $modelItemName, $fieldName );
 			}
 		}
   }

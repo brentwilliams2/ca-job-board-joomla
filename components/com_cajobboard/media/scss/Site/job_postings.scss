@@ -1,0 +1,147 @@
+/**
+ * Styles for Site Job Posting Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// @TODO: Remove for production and fix empty blocks
+// sass-lint:disable no-empty-rulesets
+
+//-----------------------------------------------------------------------------
+// Core variables and mixins
+//-----------------------------------------------------------------------------
+
+@import './variables';
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Common Classes
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - list view                      default.blade.php
+//-----------------------------------------------------------------------------
+
+//.job-posting-item {}
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - list view item            default_item.blade.php
+//-----------------------------------------------------------------------------
+
+// The container for the entire job posting item in list view
+.job-posting-list-item {
+  background-color: $jobposting-background;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+// Generic items
+.btn-job-posting {
+  border-radius: 5px;
+}
+
+// Class applied to employer logo's anchor tag
+//.employer-logo {}
+
+//.employer-logo img {}
+
+// Class applied to the job posting title anchor (link to item view of job posting)
+//.job-title {}
+
+.job-title {
+  span {
+    font-size: $font-size-large;
+    font-weight: bold;
+  }
+}
+
+// Class applied to the employer's name anchor
+//.employer-name {}
+
+//.employer-name span {}
+
+// Pill box shown at the end of the job posting title, e.g. "New", "Featured"
+.job-title-tag {
+  background-color: $brand-success;
+  border: 0;
+  border-radius: 5px;
+  color: $white;
+  font-size: $font-size-small;
+  line-height: 20px;
+  padding: 3px;
+  text-align: center;
+}
+
+// Classes for button classes
+.save-job-button,
+.job-saved-button,
+.guest-email-job-button,
+.registered-email-job-button,
+.guest-report-job-button,
+.report-job-button {
+  margin-left: 15px !important; // sass-lint:disable-line no-important
+}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Email a Job modal              default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Email Job" button pushed
+//#email-a-job-modal {}
+
+#submit-job-to-email-button { // sass-lint:disable-line no-ids
+  margin-left: 5px !important; // sass-lint:disable-line no-important
+}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Report Job modal               default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Report Job" button pushed
+//#report-job-modal {}
+
+#submit-job-report-button { // sass-lint:disable-line no-ids
+  margin-left: 5px !important; // sass-lint:disable-line no-important
+}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Save Job modal                 default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Save Job" button pushed
+//#save-job-modal {}
+
+//.save-job-left-column {}
+
+.save-job-right-column {
+  border-left: 1px;
+}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - Login or Register modal        default.blade.php
+//-----------------------------------------------------------------------------
+
+// Modal dialog shown when "Save Job" button is pushed for guest user
+//#login-or-register-modal {}
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - item view                         item.blade.php
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// JobPostings ViewTemplate - edit and add view                 form.blade.php
+//-----------------------------------------------------------------------------

@@ -1,38 +1,19 @@
 /**
- * Front-end styles
+ * Site component styles
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   July 4, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
 //-----------------------------------------------------------------------------
-// Core variables and mixins from template
-//-----------------------------------------------------------------------------
-@import './variables';
-
-$gray: #818078;
-$off-white: #fcfcfa;
-$black: #000;
-
-
-//-----------------------------------------------------------------------------
-// Component partial includes
+// Core variables and mixins
 //-----------------------------------------------------------------------------
 
-@import 'Site/answers';
-@import 'Site/comments';
-@import 'Site/image_objects';
-@import 'Site/job_postings';
-@import 'Site/organizations';
-@import 'Site/persons';
-@import 'Site/places';
-@import 'Site/questions';
-@import 'Site/registrations';
-@import 'Site/reviews';
-@import 'Site/social_icons';
+@import 'Site/variables';
+
 
 //-----------------------------------------------------------------------------
 // General utilities

@@ -151,30 +151,51 @@ function watchRepoPhp () {
  */
 function watchRepoScss () {
   return watch( getGlobArray('scss'), watcherOptions, function (Vinyl) {
-    const cssRepoRelDir = getCssRepoDir(Vinyl);
-    const cssJoomlaRelDir = getDestDir(Vinyl);
+    // remove leading slash from the directories, since dest() requires a path
+    const repoCssDir = getCssRepoDir(Vinyl).slice(1);
+    // transform Joomla! live site directory from scss to css and strip leading slash
+    const joomlaCssDir = joomlaDir.slice(1) + getDestDir(Vinyl).replace(/\/scss/, '/css');
 
     src(Vinyl.path, { sourcemaps: true })
       .pipe( plumber({ errorHandler: onError }) )
       .pipe(sassLint(sassLintOptions))
       // outputs the lint results to the console
-      .pipe(sassLint.format())
+      .pipe( sassLint.format() )
+      // compile SCSS
       .pipe( sass() )
+      // rename the path and file extension for the compiled file and save
       .pipe(rename(function (path) {
-        path.dirname = cssRepoRelDir;
+        path.dirname = repoCssDir;
         path.extname = ".css";
       }))
-      .pipe( dest(repoDir, { sourcemaps: '.' }))
+      .pipe( dest('/', { sourcemaps: '.' }) )
+      // save the file in the Joomla! live site CSS directory
       .pipe(rename(function (path) {
-        path.dirname = cssJoomlaRelDir;
+        path.dirname = joomlaCssDir;
       }))
-      .pipe( dest(joomlaDir))
+      .pipe( dest('/'))
       // Log it to console
       .on('end', function() {
-        log( colors.green('Compiled: ' + repoDir + cssRepoRelDir + Vinyl.stem + '.css'));
-        log( colors.green('Copied:   ' + joomlaDir + cssJoomlaRelDir + '/' + Vinyl.stem + '.css'));
+        log( colors.green('Compiled: /' + repoCssDir + Vinyl.stem + '.css'));
+        log( colors.green('Copied:   /' + joomlaCssDir + '/' + Vinyl.stem + '.css'));
       });
   });
+}
+
+/*
+ * Build and return the repo CSS directory for the file, without the directory
+ * root, from the Vinyl object's base property and the path map
+ *
+ * @return  string
+ */
+function getCssRepoDir(Vinyl) {
+  for (let srcPath of Object.keys(config.pathMap)) {
+    // this handles subdirectories, by matching on the base path
+    if (Vinyl.path.includes(srcPath)) {
+      return Vinyl.dirname.replace(/\/scss/, '/css');
+    }
+  }
+  throw "Can't find a matching path from config.pathMap for file: " + Vinyl.path;
 }
 
 /*
@@ -215,22 +236,6 @@ function watchRepoOther () {
       .on('end', function() { log( colors.green('Copied: ' + joomlaDir + otherJoomlaRelDir + '/' + Vinyl.basename)) });
   });
 }
-
-/*
- * Build and return the repo CSS directory for the file, without the directory
- * root, from the Vinyl object's base property and the path map
- *
- * @return  string
- */
-function getCssRepoDir(Vinyl) {
-  for (let srcPath of Object.keys(config.pathMap)) {
-    if (Vinyl.path.includes(srcPath)) {
-       return srcPath.replace(/\/scss/, '/css');
-    }
-  }
-  throw "Can't find a matching path from config.pathMap for file: " + Vinyl.path;
-}
-
 
 /*
  * Build and return the destination directory for the file, without the directory

@@ -78,16 +78,9 @@ class Messages extends BaseTreeModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
+      //'ContentHistory', // Add Joomla! content history support
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
 
@@ -132,17 +125,6 @@ class Messages extends BaseTreeModel
     }
   }
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_MESSAGES_TITLE_ERR');
-
-		parent::check();
-
-    return $this;
-  }
+  // @TODO: Need a field that can reference what ATS entity the message is about (like an Application),
+  //        and a UI button to automatically attach it to that entity (via a Comment)
 }

@@ -11,9 +11,6 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 
-use \Joomla\CMS\Factory;
-use \Calligraphic\Cajobboard\Admin\Model\Exception\EmptyFieldException;
-
 // no direct access
 defined('_JEXEC') or die;
 
@@ -24,11 +21,10 @@ trait Validation
    * other behaviours interested in the Check events should run on onAfterCheck.
    * The onAfterCheck event is not implemented in FOF30 DataModel as of May 2019.
    *
-   * To override a behaviour for a particular model, create a directory
-   * named 'Behaviour' in a child directory of a directory named after the model.
-   * Move the model file into the directory without renaming it (e.g.
-   * 'Model/Answers/Answers.php). Create a behaviour file named after the behaviour
-   * it is overriding.
+   * To override validation behaviour for a particular model, create a directory
+   * named 'Behaviour' in a directory named after the model and use the same file
+   * name as the behaviour ('Check.php'). The model file cannot go in this
+   * directory, it must stay in the root Model folder.
    *
 	 * @return  static  Self, for chaining
 	 *
@@ -41,28 +37,11 @@ trait Validation
 			return $this;
     }
 
-    try
-    {
-      // Runs the Check behaviour
-      $this->triggerEvent('onBeforeCheck');
+    // Runs the Check behaviour
+    $this->triggerEvent('onBeforeCheck');
 
-      // Run the check routine event
-      $this->triggerEvent('onAfterCheck');
-    }
-    catch (\Exception $e)
-    {
-      if ($e instanceof InvalidFieldException)
-      {
-        //
-        $url = $this->getName();
-        $url = 'index.php?option=com_cajobboard&view='. Message . '&id=' . $this->get . '&task=edit';
-
-        // Set a flash message with the problem and redirect to the last page
-        $this->container->platform->redirect($url, '500', $e->getMessage(), 'error');
-      }
-
-      throw $e;
-    }
+    // Run the check routine event
+    $this->triggerEvent('onAfterCheck');
 
     return $this;
   }
