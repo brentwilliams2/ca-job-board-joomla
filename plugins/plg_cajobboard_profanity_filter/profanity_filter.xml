@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.9" type="plugin" group="cajobboard" method="upgrade">
+  <name>PLG_CAJOBBOARD_PROFANITY_FILTER</name>
+  <creationDate>May 2019</creationDate>
+  <author>Kevin Brown</author>
+  <authorEmail>admin@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <copyright>Copyright (C) 2019 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <version>0.0.1</version>
+  <description>PLG_CAJOBBOARD_PROFANITY_FILTER_DESC</description>
+
+  <files>
+    <filename plugin="profanity_filter">profanity_filter.php</filename>
+    <folder>language</folder>
+  </files>
+
+  <languages>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_profanity_filter.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_profanity_filter.sys.ini</language>
+  </languages>
+
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+
+        <field name="bad_words"
+          type="textarea" cols="30" rows="4"
+          default="porn,sex"
+          label="Bad Words"
+          description="Words to filter out, separated by commas. Example: porn,sex"
+        />
+
+        <field name="html_out"
+          type="textarea" cols="30" rows="10"
+          filter="raw"
+          default="&lt;s&gt;BAD WORD&lt;/s&gt;"
+          label="HTML Replacement"
+          description="The HTML produced when a word is found. CAUTION: This is 'raw' output (i.e. what you put here is what is outputted onto the page, exactly!)"
+        />
+
+        <field name="allow_exceptions"
+          type="radio"
+          default="1"
+          label="Allow Exceptions"
+          description="If this is yes, the plugin will not replace words in articles that contain the keyword {no_badwordfilter}."
+        >
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+</extension>

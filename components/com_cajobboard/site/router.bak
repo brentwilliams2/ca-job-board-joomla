@@ -18,6 +18,10 @@ use Joomla\CMS\Component\Router\RouterBase;
 /*
 * Job Board Router
 */
+
+Should handle converting the x-header image URL names, including in Image model Behaviour
+
+
 class CajobboardRouter extends RouterBase {
   /*
    *  View aliases that should be routed

@@ -11,22 +11,13 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
-use \Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
-use \Calligraphic\Cajobboard\Site\Helper\Pagination;
-use \Calligraphic\Cajobboard\Site\Helper\Semantic;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
+use \FOF30\Model\DataModel\Collection;
+use \FOF30\Model\Model\DataModel;
 use \FOF30\View\DataView\Html;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\Document\Document;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
-
-HTMLHelper::addIncludePath(JPATH_COMPONENT . '/Helper/Html');
 
 class BaseHtml extends Html
 {
@@ -39,157 +30,24 @@ class BaseHtml extends Html
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
-
-    // Get component parameters
-    // @TODO: Not already being done somewhere else?
-    $this->componentParams = ComponentHelper::getParams('com_cajobboard');
-
-    // Load CSS for site view
-    $this->addCssFile('media://com_cajobboard/css/frontend.css');
-
-    // Set the page parameters on the class, the base class does this for browse views only
-
-    /** @var \Joomla\CMS\Application\SiteApplication $app */
-    $app = Factory::getApplication();
-
-    // @TODO: check if it's already done first? where is it being done?
-    $this->pageParams = $app->getParams();
-
-    $semanticHelper = new Semantic($this);
-
-    $semanticHelper->setPageTitle();
-    $semanticHelper->addOpenGraphMetaTags();
-
-    $this->setMetadataHeaders();
   }
 
 
   /**
-	 * Set the metadata headers in site views (author and robots)
+   * Override parent display method to add semantic headers. Parent method has
+   * onAfter{task} methods, but no generic event to catch for this.
    *
-   * <meta name="robots" content="index|noindex, follow|nofollow" />
+   * @param string  $tpl   The name of the template file to parse
    *
-   * index      Allow search engines to add the page to their index, so that it can be discovered by people searching. Default if tag missing.
-   * noindex    Disallow search engines from adding this page to their index, and therefore disallow them from showing it in their results.
-   * follow     Tells the search engines that it may follow links on the page, to discover other pages. Default if tag missing.
-   * nofollow   Tells the search engines robots to not follow any links on the page.
-   *
-   * @param   string  $view   The name of the view, lowercased, to load a language file for
-	 */
-	public function setMetadataHeaders()
+   * @return void
+   */
+  public function display($tpl = null)
 	{
-    /** @var DataModel $model */
-		$model = $this->getModel();
+    $status = parent::display($tpl);
 
-    /** @var Document $document */
-    $document = $this->container->platform->getDocument();
+    $this->container->Semantic->setSemanticHeaders($this);
 
-    $document->setMetaData( 'robots', $model->params->get('robots', 'index, follow') );
-
-    if ( $author = $model->params->get('author') )
-    {
-      $document->setMetaData($author);
-    }
-
-    if ( $keywords = $model->metakey )
-    {
-      $document->setMetaData('keywords', $keywords);
-    }
-  }
-
-  /**
-	 * Load the language file for this view
-   *
-   * @param   string  $view   The name of the view, lowercased, to load a language file for
-	 */
-	public function loadLanguageFileForView($view)
-	{
-    // @TODO: is FOF30 Dispatcher already loading the component language file? Should we split admin/site language files?
-
-    // Using view-specific language files for maintainability
-    $lang = Factory::getLanguage();
-
-    // Load Answers language file, using combined admin/site language file
-    $lang->load($view, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
-  }
-
-
-  /**
-	 * Executes before rendering the page for the add task.
-   *
-   * The model is pushed into the View by the Controller. As you can see in DataController::add() it is possible
-   * to push both default values (defaultsForAdd) as well as data from the state (e.g. when saving a new record
-   * failed for some reason and the user needs to edit it). That's why we populate defaultFields from $model. We
-   * still do a full reset on a clone of the Model to get a clean object and merge default values (instead of null
-   * values) with the data pushed by the controller.
-	 */
-	protected function onBeforeAdd()
-	{
-		/** @var DataModel $model */
-    $model = $this->getModel();
-
-    $defaultFields = $model->getData();
-
-    $this->item = $model->getClone()->reset(true, true);
-
-		foreach ($defaultFields as $k => $v)
-		{
-			try
-			{
-				$this->item->setFieldValue($k, $v);
-			}
-			catch (\Exception $e)
-			{
-				// Suppress errors in field assignments at this stage
-			}
-		}
-  }
-
-
-	/**
-	 * Executes before rendering the page for the Edit task.
-	 */
-	protected function onBeforeEdit()
-	{
-		/** @var DataModel $model */
-    $model = $this->getModel();
-
-		// It seems that I can't edit records, maybe I can edit only this one due asset tracking?
-		if (!$this->permissions->edit || !$this->permissions->editown)
-		{
-			if ($model)
-			{
-				// Record is tracked, check whether user can edit this record
-				if ($model->isAssetsTracked())
-				{
-          $platform = $this->container->platform;
-
-					if (!$this->permissions->edit)
-					{
-						$this->permissions->edit = $platform->authorise('core.edit', $model->getAssetName());
-          }
-
-					if (!$this->permissions->editown)
-					{
-						$this->permissions->editown = $platform->authorise('core.edit.own', $model->getAssetName());
-					}
-				}
-			}
-    }
-
-		$this->item = $model->findOrFail();
-  }
-
-
-	/**
-	 * Executes before rendering the page for the Read task.
-	 */
-	protected function onBeforeRead()
-	{
-		/** @var DataModel $model */
-    $model = $this->getModel();
-
-		$this->item = $model->findOrFail();
+    return $status;
   }
 
 
@@ -203,75 +61,41 @@ class BaseHtml extends Html
 	 */
 	protected function setupBrowse($withModels)
 	{
-		/** @var DataModel $model */
+		/** @var \FOF30\Model\DataModel $model */
     $model = $this->getModel();
 
 		// Persist the state in the session
     $model->savestate(1);
 
     // Set the current pagination parameters from the state on the model and view
-    $this->setPaginationParams($model);
+    $paginationOptions = $this->container->Pagination->getPaginationParams($model);
 
 		// Assign items to the view
     $this->items = $model->with($withModels)->get();
 
-    $this->setPagination($model);
+    // Return a pagination object using the state set previously and the results of the model query
+    $this->pagination = $this->container->Pagination->getPaginator($model, $paginationOptions);
   }
 
 
-	/**
-	 * Set the pagination object for this view. This logic is refactored
-   * out of the base Raw view's onBeforeBrowse() method.
+  /**
+   * Returns true if the item property is set to a DataModel
    *
-   * @param  DataModel  $model    The model object for this view
-	 *
-	 * @return void
-	 */
-	public function setPaginationParams(DataModel $model)
-	{
-    // Display limits
-    $defaultLimit = 20;
-
-  	// Create the lists object
-    $this->lists = new \stdClass();
-
-    if (!$this->container->platform->isCli())
-    {
-      $app = Factory::getApplication();
-      $defaultLimit = $app->get('list_limit', 20);
-    }
-
-    $this->lists->limitStart = $model->getState('limitstart', 0, 'int');
-    $this->lists->limit = $model->getState('limit', $defaultLimit, 'int');
-
-    $model->limitstart = $this->lists->limitStart;
-    $model->limit = $this->lists->limit;
-
-    // Ordering information
-    // @TODO: This is always ordering by record number, we want to display by "featured" at top and by date or other criteria like in admin section for Answers
-		$this->lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
-    $this->lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
-
-		if ($this->lists->order_Dir)
-		{
-			$this->lists->order_Dir = strtolower($this->lists->order_Dir);
-    }
-  }
-
-  /*
-   * Create a Pagination object by querying the DB for a count of total items,
-   * based on the previous query filters used to actually fetch the data.
-   *
-   * @param  DataModel  $model    The model object for this view
-	 *
-	 * @return void
+   * @return boolean
    */
-  public function setPagination(DataModel $model)
+  public function isItem()
 	{
-    // Run a "count all" query on the DB
-    $this->itemCount = $model->count();
+    return $this->item instanceof DataModel;
+  }
 
-    // Create the view's pagination object with results from the model
-    $this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
+
+  /**
+   * Returns true if the items property is a Collection of DataModels
+   *
+   * @return boolean
+   */
+  public function isCollection()
+	{
+    return $this->items instanceof Collections;
   }
 }

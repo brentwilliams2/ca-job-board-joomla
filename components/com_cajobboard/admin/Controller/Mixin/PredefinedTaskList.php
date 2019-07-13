@@ -12,7 +12,6 @@
 
 namespace Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
-use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 use \Calligraphic\Cajobboard\Admin\Controller\Exception\TaskNotAllowed;
 
@@ -46,7 +45,7 @@ trait PredefinedTaskList
     // Make sure the task is in the predefined list set on the controller
 		if (!in_array($task, $this->predefinedTaskList) && $task != 'default')
 		{
-      throw new TaskNotAllowed( Text::sprintf( 'COM_CAJOBBOARD_TASK_NOT_IN_LIST', $task ) );
+      throw new TaskNotAllowed( Text::sprintf( 'COM_CAJOBBOARD_EXCEPTION_TASK_NOT_IN_LIST', $task ) );
     }
 
 		return parent::execute($task);

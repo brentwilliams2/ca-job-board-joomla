@@ -3,7 +3,7 @@
  * Helper class for JSON
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   June 1, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design, Copyright (C) 2005 - 2019 Open Source Matters, Inc.
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -25,8 +25,6 @@ abstract class Json
    * Since PHP has poor handling for JSON errors on decode, this utility gives a more human-readable description of the error
    *
    * @return  string    A human-readable description of the JSON decode error
-   *
-   * @since   0.0.1
    */
   public static function getJsonErrorDesc()
   {

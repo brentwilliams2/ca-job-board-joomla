@@ -10,7 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
+
+use \Calligraphic\Library\Platform\RelationManager;
+use FOF30\Container\Container;
+use \FOF30\Event\Dispatcher;
+use \Joomla\CMS\Access\Rules;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -18,113 +23,183 @@ defined('_JEXEC') or die;
 trait Constructor
 {
   /**
-	 * @param   Container $container The configuration variables to this model
+	 * @param   Container $container Container instance for this model
 	 * @param   array     $config    Configuration values for this model
 	 *
 	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
 	 */
   public function constructor($container, $config)
   {
-    // First call the parent constructor.
-    parent::__construct($container, $config);
+    $this->container = $container;
+
+		// Set the model's name from $config
+		if (isset($config['name']))
+		{
+			$this->name = $config['name'];
+    }
+
+		// If $config['name'] is not set, auto-detect the model's name
+    $this->name = $this->getName();
+
+    $this->setStateHash($config);
+
+    $this->setModelState($config);
+
+		// Set the internal state marker
+		if (!empty($config['use_populate']))
+		{
+			$this->_state_set = true;
+    }
+
+		// Set the internal state marker
+		if (!empty($config['ignore_request']))
+		{
+			$this->_ignoreRequest = true;
+		}
 
     // Should I use a different database object?
     $this->dbo = $container->db;
 
-    // Do I have a table name?
-    if (isset($config['tableName']))
-    {
-      $this->tableName = $config['tableName'];
-    }
-    elseif (empty($this->tableName))
-    {
-      // The table name is by default: #__appName_viewNamePlural (Ruby on Rails convention)
-      $viewPlural = $container->inflector->pluralize($this->getName());
-      $this->tableName = '#__' . strtolower($this->container->bareComponentName) . '_' . strtolower($viewPlural);
-    }
+    // Table name and primary key field name are mandatory configuration options for job board models
+    $this->tableName = $config['tableName'];
 
-    // Do I have a table key name?
-    if (isset($config['idFieldName']))
-    {
-      $this->idFieldName = $config['idFieldName'];
-    }
-    elseif (empty($this->idFieldName))
-    {
-      // The default ID field is: appName_viewNameSingular_id (Ruby on Rails convention)
-      $viewSingular = $container->inflector->singularize($this->getName());
-      $this->idFieldName = strtolower($this->container->bareComponentName) . '_' . strtolower($viewSingular) . '_id';
-    }
+    $this->idFieldName = $config['idFieldName'];
 
-    // Do I have a list of known fields?
-    if (isset($config['knownFields']) && !empty($config['knownFields']))
-    {
-      if (!is_array($config['knownFields']))
-      {
-        $config['knownFields'] = explode(',', $config['knownFields']);
-      }
-      $this->knownFields = $config['knownFields'];
-    }
-    else
-    {
-      // By default the known fields are fetched from the table itself (slow!)
-      $this->knownFields = $this->getTableFields();
-    }
+    $this->setupAutoChecks($config);
 
-    if (empty($this->knownFields))
-    {
-      throw new NoTableColumns(sprintf('Model %s could not fetch column list for the table %s', $this->getName(), $this->tableName));
-    }
+    // must be called after primary key field name is set
+    $this->knownFields = $this->getTableFields();
 
-    // Should I turn on autoChecks?
-    if (isset($config['autoChecks']))
-    {
-      if (!is_bool($config['autoChecks']))
-      {
-        $config['autoChecks'] = strtolower($config['autoChecks']);
-        $config['autoChecks'] = in_array($config['autoChecks'], array('yes', 'true', 'on', 1));
-      }
-      $this->autoChecks = $config['autoChecks'];
-    }
-
-    // Should I exempt fields from autoChecks?
-    if (isset($config['fieldsSkipChecks']))
-    {
-      if (!is_array($config['fieldsSkipChecks']))
-      {
-        $config['fieldsSkipChecks'] = explode(',', $config['fieldsSkipChecks']);
-        $config['fieldsSkipChecks'] = array_map(function ($x) { return trim($x); }, $config['fieldsSkipChecks']);
-      }
-      $this->fieldsSkipChecks = $config['fieldsSkipChecks'];
-    }
-
-    // Do I have alias fields?
     if (isset($config['aliasFields']))
     {
       $this->aliasFields = $config['aliasFields'];
     }
 
-    // Do I have a behaviours dispatcher?
-    if (isset($config['behavioursDispatcher']) && ($config['behavioursDispatcher'] instanceof Dispatcher))
+    $this->setConfiguredBehaviours($config);
+
+    $this->setupViewLevelAccessControl();
+
+    $this->setupACL();
+
+    if (isset($config['contentType']))
     {
-      $this->behavioursDispatcher = $config['behavioursDispatcher'];
-    }
-    // Otherwise create the model behaviours dispatcher
-    else
-    {
-      $this->behavioursDispatcher = new Dispatcher($this->container);
+      $this->contentType = $config['contentType'];
     }
 
-    // Do I have an array of behaviour observers
-    if (isset($config['behaviourObservers']) && is_array($config['behaviourObservers']))
+    $this->setConfiguredGuardedFields($config);
+
+    $this->setConfiguredFillableFields($config);
+
+    $this->autoFillFields();
+
+    // logic to handle setting model relations in configuration removed, use magic methods
+    $this->relationManager = new RelationManager($this);
+
+    $this->initRecordData();
+
+    $this->triggerEvent('onAfterConstruct');
+  }
+
+
+  /**
+   * Configure the state hash
+   *
+   * @return void
+   */
+  private function setStateHash($config)
+  {
+		if (isset($config['hash']) && !empty($config['hash']))
+		{
+			$this->setHash($config['hash']);
+		}
+		elseif (isset($config['hash_view']) && !empty($config['hash_view']))
+		{
+      // sets stateHash property as well as functioning as a getter
+			$this->getHash($config['hash_view']);
+    }
+  }
+
+
+  /**
+   * Set the model state from configuration
+   *
+   * @return void
+   */
+  private function setModelState($config)
+  {
+ 		// Set the model state
+     if (array_key_exists('state', $config))
+     {
+       if (is_object($config['state']))
+       {
+         $this->state = $config['state'];
+       }
+       elseif (is_array($config['state']))
+       {
+         $this->state = (object) $config['state'];
+       }
+       // Protect from malformed state
+       else
+       {
+         $this->state = new \stdClass();
+       }
+     }
+     else
+     {
+       $this->state = new \stdClass();
+     }
+  }
+
+
+  /**
+   * Check if automatic data validation is enabled, and set fields to skip checking for from configuration
+   *
+   * @param   array     $config    Configuration values for this model
+   *
+   * @return void
+   */
+  private function setupAutoChecks($config)
+  {
+    // set auto check enabled status
+    if (isset($config['autoChecks']))
     {
-      foreach ($config['behaviourObservers'] as $observer)
+      if (!is_bool($config['autoChecks']))
       {
-        $this->behavioursDispatcher->attach($observer);
+        $config['autoChecks'] = strtolower($config['autoChecks']);
+
+        $config['autoChecks'] = in_array($config['autoChecks'], array('yes', 'true', 'on', 1));
       }
+
+      $this->autoChecks = $config['autoChecks'];
     }
 
-    // Do I have a list of behaviours?
-    if (isset($config['behaviours']) && is_array($config['behaviours']))
+    // set auto check skipped fields
+    if (isset($config['fieldsSkipChecks']))
+    {
+      if (!is_array($config['fieldsSkipChecks']))
+      {
+        $config['fieldsSkipChecks'] = explode(',', $config['fieldsSkipChecks']);
+
+        $config['fieldsSkipChecks'] = array_map(function ($x) { return trim($x); }, $config['fieldsSkipChecks']);
+      }
+      $this->fieldsSkipChecks = $config['fieldsSkipChecks'];
+    }
+  }
+
+
+  /**
+   * Initialize the behaviour dispatcher and add default behaviours from configuration
+   *
+   * @param   array     $config    Configuration values for this model
+   *
+   * @return void
+   */
+  private function setConfiguredBehaviours($config)
+  {
+    $this->behavioursDispatcher = new Dispatcher($this->container);
+
+    // Add any behaviors passed as a configuration option
+    if ( isset($config['behaviours']) && is_array($config['behaviours']) )
     {
       foreach ($config['behaviours'] as $behaviour)
       {
@@ -133,157 +208,187 @@ trait Constructor
     }
 
     // Add extra behaviours
-    foreach (array('Created', 'Modified') as $behaviour)
+    foreach (array('Created', 'Modified', 'Filters') as $behaviour)
     {
       $this->addBehaviour($behaviour);
     }
+  }
 
-    // Do I have a list of fillable fields?
-    if (isset($config['fillable_fields']) && !empty($config['fillable_fields']))
+
+  /**
+   * Set fields that are blacklisted for auto-fill from configuration. If used, disables
+   * whitelisting fields for auto-fill with 'fillable_fields' configuration option.
+   * Enables filling fields from the model state and by extent, the request.
+   *
+   * @param   array     $config    Configuration values for this model
+   *
+   * @return void
+   */
+  private function setConfiguredGuardedFields($config)
+  {
+    if (!isset($config['guarded_fields']) || ( isset($config['guarded_fields']) && empty($config['guarded_fields']) ))
     {
-      if (!is_array($config['fillable_fields']))
-      {
-        $config['fillable_fields'] = explode(',', $config['fillable_fields']);
-        $config['fillable_fields'] = array_map(function ($x) { return trim($x); }, $config['fillable_fields']);
-      }
-      $this->fillable = array();
-      $this->autoFill = true;
-      foreach ($config['fillable_fields'] as $field)
-      {
-        if (array_key_exists($field, $this->knownFields))
-        {
-          $this->fillable[] = $field;
-        }
-        elseif (isset($this->aliasFields[$field]))
-        {
-          $this->fillable[] = $this->aliasFields[$field];
-        }
-      }
+      return;
     }
 
-    // Do I have a list of guarded fields?
-    if (isset($config['guarded_fields']) && !empty($config['guarded_fields']))
+    if (!is_array($config['guarded_fields']))
     {
-      if (!is_array($config['guarded_fields']))
+      $config['guarded_fields'] = explode(',', $config['guarded_fields']);
+
+      $config['guarded_fields'] = array_map( function ($x) { return trim($x); }, $config['guarded_fields'] );
+    }
+
+    $this->autoFill = true;
+
+    foreach ($config['guarded_fields'] as $field)
+    {
+      if (array_key_exists($field, $this->knownFields))
       {
-        $config['guarded_fields'] = explode(',', $config['guarded_fields']);
-        $config['guarded_fields'] = array_map(function ($x) { return trim($x); }, $config['guarded_fields']);
+        $this->guarded[] = $field;
       }
-      $this->guarded = array();
-      $this->autoFill = true;
-      foreach ($config['guarded_fields'] as $field)
+      elseif (isset($this->aliasFields[$field]))
       {
-        if (array_key_exists($field, $this->knownFields))
-        {
-          $this->guarded[] = $field;
-        }
-        elseif (isset($this->aliasFields[$field]))
-        {
-          $this->guarded[] = $this->aliasFields[$field];
-        }
+        $this->guarded[] = $this->aliasFields[$field];
       }
     }
+  }
 
-    // If we are tracking assets, make sure an access field exists and initially set the default.
-    $asset_id_field	= $this->getFieldAlias('asset_id');
-    $access_field	= $this->getFieldAlias('access');
 
-    if (array_key_exists($asset_id_field, $this->knownFields))
+  /**
+   * Set fields that are whitelisted for auto-fill from configuration. If the
+   * 'guarded_fields' configuration option is used, this option is disabled.
+   * Enables filling fields from the model state and by extent, the request.
+   *
+   * @param   array     $config    Configuration values for this model
+   *
+   * @return void
+   */
+  private function setConfiguredFillableFields($config)
+  {
+    // Fields that should be auto-filled from the model state and by extent, the request
+    if ($this->guarded || !isset($config['fillable_fields']) || ( isset($config['fillable_fields']) && empty($config['fillable_fields']) ))
     {
-      \JLoader::import('joomla.access.rules');
-      $this->_trackAssets = true;
+      return;
     }
 
-    /**
-    if ($this->_trackAssets && array_key_exists($access_field, $this->knownFields) && !($this->getState($access_field, null)))
+    if (!is_array($config['fillable_fields']))
     {
-      $this->$access_field = (int) $this->container->platform->getConfig()->get('access');
-    }
-    **/
-
-    $assetKey = $this->container->componentName . '.' . strtolower($container->inflector->singularize($this->getName()));
-
-    $this->setAssetKey($assetKey);
-
-    // Set the UCM content type if applicable
-    if (isset($config['contentType']))
-    {
-      $this->contentType = $config['contentType'];
+      $config['fillable_fields'] = explode(',', $config['fillable_fields']);
+      $config['fillable_fields'] = array_map(function ($x) { return trim($x); }, $config['fillable_fields']);
     }
 
-    // Do I have to auto-fill the fields?
+    $this->autoFill = true;
+
+    foreach ($config['fillable_fields'] as $field)
+    {
+      if (array_key_exists($field, $this->knownFields))
+      {
+        $this->fillable[] = $field;
+      }
+      elseif (isset($this->aliasFields[$field]))
+      {
+        $this->fillable[] = $this->aliasFields[$field];
+      }
+    }
+  }
+
+
+  /**
+   * Automatically fill fields that are either whitelisted, or not blacklisted
+   *
+   * @return void
+   */
+  private function autoFillFields()
+  {
     if ($this->autoFill)
     {
-      // If I have guarded fields, I'll try to fill everything, using such fields as a "blacklist"
+      // Guarded fields are used as a blacklist if present
       if (!empty($this->guarded))
       {
         $fields = array_keys($this->knownFields);
       }
+      // If no guarded fields are present, use fillable fields configuration option as a whitelist
       else
       {
-        // Otherwise I'll fill only the fillable ones (act like having a "whitelist")
         $fields = $this->fillable;
       }
 
       foreach ($fields as $field)
       {
+        // Do not set guarded fields
         if (in_array($field, $this->guarded))
         {
-          // Do not set guarded fields
           continue;
         }
 
         $stateValue = $this->getState($field, null);
 
+        // Set non-guarded fields from the state
         if (!is_null($stateValue))
         {
           $this->setFieldValue($field, $stateValue);
         }
       }
     }
+  }
 
-    // Create a relation manager
-    $this->relationManager = new RelationManager($this);
+  /**
+   * Enable view level access control if supported by the database table
+   *
+   * @return void
+   */
+  private function setupViewLevelAccessControl()
+  {
+    // @TODO: check if view levels are handled correctly, this code was commented out
+    return;
 
-    // Do I have a list of relations?
-    if (isset($config['relations']) && is_array($config['relations']))
+    $access_field	= $this->getFieldAlias('access');
+
+    if ($this->_trackAssets && array_key_exists($access_field, $this->knownFields) && !($this->getState($access_field, null)))
     {
-      foreach ($config['relations'] as $relConfig)
-      {
-        if (!is_array($relConfig))
-        {
-          continue;
-        }
+      $this->$access_field = (int) $this->container->platform->getConfig()->get('access');
+    }
+  }
 
-        $defaultRelConfig = array(
-          'type'              => 'hasOne',
-          'foreignModelClass' => null,
-          'localKey'          => null,
-          'foreignKey'        => null,
-          'pivotTable'        => null,
-          'pivotLocalKey'     => null,
-          'pivotForeignKey'   => null,
-        );
 
-        $relConfig = array_merge($defaultRelConfig, $relConfig);
+  /**
+   * Enable per-item access control if supported by the database table and if so set the default asset key
+   *
+   * @return void
+   */
+  private function setupACL()
+  {
+    $asset_id_field	= $this->getFieldAlias('asset_id');
 
-        $this->relationManager->addRelation($relConfig['itemName'], $relConfig['type'], $relConfig['foreignModelClass'],
-          $relConfig['localKey'], $relConfig['foreignKey'], $relConfig['pivotTable'],
-          $relConfig['pivotLocalKey'], $relConfig['pivotForeignKey']);
-      }
+    if (array_key_exists($asset_id_field, $this->knownFields))
+    {
+      $this->_trackAssets = true;
     }
 
-    // Initialise the data model
-    foreach ($this->knownFields as $fieldName => $information)
+    // e.g. com_cajobboard.answer
+    $assetKey = $this->container->componentName . '.' . strtolower( $this->container->inflector->singularize( $this->getName() ));
+
+    $this->setAssetKey($assetKey);
+  }
+
+
+  /**
+   * Initialise the instance data model fields from the known fields. Known fields are either
+   * initialized from the database or set in the model. The key is the field name (e.g. 'enabled'),
+   * and the value is a \stdClass object with (at least) the properties 'Field' (duplicate of
+   * database table field name), 'Type' (e.g. 'char(7)'), and 'Default' (e.g. NULL or '0').
+   *
+   * @return  void
+   */
+  private function initRecordData()
+  {
+    foreach ($this->knownFields as $fieldName => $metadata)
     {
       // Initialize only the null or not yet set records
       if(!isset($this->recordData[$fieldName]))
       {
-        $this->recordData[$fieldName] = $information->Default;
+        $this->recordData[$fieldName] = $metadata->Default;
       }
     }
-
-    // Trigger the onAfterConstruct event. This allows you to set up model state etc.
-    $this->triggerEvent('onAfterConstruct');
   }
 }

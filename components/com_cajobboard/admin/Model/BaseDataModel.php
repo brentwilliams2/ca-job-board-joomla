@@ -15,23 +15,35 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
+use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 
 /**
  * Model class description
  */
 class BaseDataModel extends DataModel
 {
-  // Traits to include in the class
-  use Mixin\Archive;
-  use Mixin\Assertions;
-  use Mixin\Asset;
-  use Mixin\Attributes;
-  use Mixin\Comments;
-  use Mixin\Core;
-  use Mixin\JsonData;
-  use Mixin\Validation;
+  /* Traits to include in the class */
 
+  use Mixin\Archive;              // Over-ridden 'archive' method
+  use Mixin\Assertions;           // Convenient assertions, e.g. for use in validation / check methods
+  use Mixin\Asset;                // Joomla! role-based access control handling
+  use Mixin\Comments;             // 'saveComment' method
+  use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
+  use Mixin\Core;                 // Utility methods
+  use Mixin\Count;                // Overridden count() method to cache value
+  use Mixin\Featured;             // Toggle method for 'featured' field
+  use Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
+  use Mixin\Validation;           // Provides over-ridden 'check' method
+
+  // Transformations for model properties (attributes) to an appropriate data type (e.g.
+  // Registry objects). Validation checks and setting attribute values from state should
+  // be done in Behaviours (which can be enabled and overridden per model).
+
+  use Mixin\Attributes\Image;     // Attribute getter / setter
+  use Mixin\Attributes\Metadata;  // Attribute getter / setter
+  use Mixin\Attributes\Params;    // Attribute getter / setter
 
  	/**
 	 * @param   Container $container The configuration variables to this model
@@ -47,32 +59,34 @@ class BaseDataModel extends DataModel
       'Check',      // Validation checks for model, over-rideable per model
       'Enabled',    // Filter access to items based on enabled status
       'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
       'Ordering',   // Order items owned by featured status and then descending by date
       'Publish',    // Set the publish_on field for new records
-      'Slug'        // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+
+      /* Model property (attribute) Behaviours for validation and setting value from state */
+      'Image',              // Set the 'image' JSON field on record save
+      'DescriptionIntro',   // Check the length of the 'description__intro' field
+      'Metadata',           // Set the 'metadata' JSON field on record save
+      'Title',              // Check length and titlecase the 'metadata' JSON field on record save
     );
 
     // Merge any behaviours passed from the child model into our base class default behaviours
     $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
 
-    /* Parent constructor */
-    parent::__construct($container, $config);
+    /* Overridden constructor */
+    $this->constructor($container, $config);
   }
 
 
   /**
-	 * Alias for belongsTo() relation. FOF has a hasOne() relation, where the relation field is
-   * in the foreign table and allowing 1 : 0..1 relations with a NOT NULL FK field. This method
-   * is included to clearly indicate intent for 0..1 : 1 relations with nullable FK fields. The
-   * need for this is due to following Schema.org entity schemas, where many properties are
-   * logically single references, like "employmentType" referencing an enumerated list, even
-   * though all Schema.org properties allow collections (FOF belongsTo).
-	 *
-	 * @return   $this  For chaining
-	 */
-  public function inverseSideOfHasOne(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
+   * Setup the knownFields model property of database table metadata
+   *
+   * @param   string $tableName   Unused, maintain signature for overridden method.
+   *
+   * @return  array  An array of the field metadata.
+   */
+  public function getTableFields($tableName = null)
   {
-    $this->belongsTo($name, $foreignModelClass, $localKey, $foreignKey);
+    return $this->container->TableFields->getTableFieldsMetadata($this);
   }
 }

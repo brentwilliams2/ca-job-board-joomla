@@ -12,14 +12,17 @@
 
 namespace Calligraphic\Cajobboard\Admin\Dispatcher;
 
-use FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Dispatcher\Exception\PageNotFound;
+use \FOF30\Container\Container;
+use \FOF30\Controller\Exception\TaskNotFound;
+use \FOF30\Download\Exception\DownloadError;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Log\Log;
+use \Joomla\CMS\Router\Route;
 
 // Exception classes to handle
-use \Calligraphic\Cajobboard\Admin\Dispatcher\Exception\AccessForbidden;
-use \Calligraphic\Cajobboard\Admin\Model\Exception\EmptyField;
-use \Calligraphic\Cajobboard\Admin\Model\Exception\InvalidField;
-use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissions;
-use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
+
 
 class ExceptionHandler
 {
@@ -42,57 +45,77 @@ class ExceptionHandler
    */
   public function handle (\Exception $e)
   {
-    if ($this->container->platform->isCli() || JDEBUG)
+    // Give the full stack trace when in debug mode
+    if (JDEBUG)
     {
       throw $e;
     }
 
-          /*
-        Redirect logic:
+    // CLI scripts log the exception and die with an error code
+    if ( $this->container->platform->isCli() )
+    {
+      Log::add('Exception occurred in a CLI script and caught in dispatcher exception handler: ' . $e->getMessage(), Log::ERROR);
 
-        // set header
-        $this->container->platform->setHeader('Pragma', 'public');
+      exit(1);
+    }
 
-        If on edit, redirect to the item view if user is authorized, otherwise to browse view if user is authorized, otherwise to default view
-        If on add, redirect to the browse view if user is authorized, otherwise to default view
-        If on browse, redirect to the default view
+    // controller methods correspond to tasks (e.g. 'edit'). They should provide their own exception
+    // handling by catching view (and thus model) exceptions, setting a flash message, and redirecting.
 
-        $url = $this->getName();
-        $url = 'index.php?option=com_cajobboard&view='. Message . '&id=' . $this->get . '&task=edit';
+    // log all exceptions for administrator review
+    Log::add('Exception caught in dispatcher exception handler, file: ' . $e->getFile() . ' line: ' . $e->getLine() . ' message: ' . $e->getMessage() . ' stack trace: ' . $e->getTraceAsString(), Log::ERROR);
 
-        // Set a flash message with the problem and redirect to the last page
-        $this->container->platform->redirect($url, '500', $e->getMessage(), 'error');
+    // Mailer error, flash message only
+    if ($e instanceof \phpmailerException)
+    {
+      $message = Text::_('COM_CAJOBBOARD_EXCEPTION_MAILER_GENERIC');
+    }
 
-        // Set just a flash message
-        Factory::getApplication()->enqueueMessage( Text::sprintf( 'COM_CAJOBBOARD_TASK_NOT_IN_LIST', $task ), 'error' );
+    // Mailer error, flash message only
+    elseif ($e instanceof DownloadError)
+    {
+      $message = Text::_('COM_CAJOBBOARD_EXCEPTION_CURL_GENERIC');
+    }
 
-        TaskNotAllowed
+    else
+    {
+      $message = Text::_('COM_CAJOBBOARD_EXCEPTION_GENERIC');
+    }
 
-      */
+    // use Joomla! flash messaging and redirect methods in case no
+    // controller object available in job board dispatcher to set redirect
+    $app = $this->container->platform->getApplication();
 
-      // Authorization and database loading errors
-      if (
-        $e instanceof AccessForbidden ||
-        $e instanceof RecordNotLoaded
-      )
-      {
+    $app->enqueueMessage($message, 'error');
 
-      }
+    // Let Joomla! handle 'page not found' error on 404 code checked exceptions
+    // and if the controller's execute() method throws TaskNotFound
+    if ( $e->getCode() == '404' || $e instanceof TaskNotFound )
+    {
+      throw new PageNotFound();
+    }
 
-      // Validation errors, redirect to edit form
-      if (
-        $e instanceof InvalidField ||
-        $e instanceof EmptyField ||
-      )
-      {
+    // redirect to URL encoded in 'returnurl' query parameter if it is present
+    elseif ( $customURL = $this->input->getBase64('returnurl', '') )
+    {
+      $url = Route::_( base64_decode($customURL) );
+    }
 
-      }
+    // redirect to job board default page if no other option, including unhandled 403 Access Forbidden errors
+    else
+    {
+      $url = Route::_('index.php?option=com_cajobboard&view=default');
+    }
 
-      // Mailer error, flash message only
-      if ($e instanceof \phpmailerException)
-      {
-
-      }
+    $app->redirect($url);
   }
-
 }
+
+/*
+ * All controller task methods except 'edit' handle the 'returnurl' query parameter when it is passed in
+ * the request.  The 'edit' task method handles it when checkIn() fails. Example creating the parameter:
+ *
+ *   $returnurl = urlencode(base64_encode(\JUri::getInstance()->toString()));
+ *
+ *   $ufl .= '&returnurl=' . $returnurl;
+ */

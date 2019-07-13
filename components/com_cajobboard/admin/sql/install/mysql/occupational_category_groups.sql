@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_occupational_category_groups` (
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  publish_up DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   publish_down DATETIME COMMENT 'Date and time to change the state to unpublished.',
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
   metadata JSON COMMENT 'JSON encoded metadata field for this item.',

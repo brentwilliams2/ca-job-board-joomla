@@ -10,7 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Library\Platform;
+
+use FOF30\Model\DataModel\Relation\BelongsTo;
+use FOF30\Model\DataModel\Relation\BelongsToMany;
+use FOF30\Model\DataModel\Relation\HasMany;
+use FOF30\Model\DataModel\Relation\HasOne;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -26,34 +31,26 @@ class RelationManager extends \FOF30\Model\DataModel\RelationManager
 	{
 		if (empty(static::$relationTypes))
 		{
-      $relationTypeDirectory = __DIR__ . '/Relation';
+      $relationClasses = array(
+        'BelongsTo' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsTo',
+        'BelongsToMany' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsToMany',
+        'HasMany' => '\\FOF30\\Model\\DataModel\\Relation\\HasMany',
+        'HasOne' => '\\FOF30\\Model\\DataModel\\Relation\\HasOne',
 
-      $fs = new \DirectoryIterator($relationTypeDirectory);
+        // inverseSideOfHasOne is an alias for belongsTo() relation. FOF has a hasOne() relation, where the
+        // relation field is in the foreign table and allowing 1 : 0..1 relations with a NOT NULL FK field.
+        // This method is included to clearly indicate intent for 0..1 : 1 relations with nullable FK fields.
+        // The need for this is due to following Schema.org entity schemas, where many properties are
+        // logically single references, like "employmentType" referencing an enumerated list, even
+        // though all Schema.org properties allow collections (FOF belongsTo).
+        'inverseSideOfHasOne' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsTo',
+        // BelongsToSTI implements BelongsTo relationship with single table inheritance
+        'BelongsToSTI' => '\\Calligraphic\\Library\\Platform\\BelongsTo'
+      );
 
-      /** @var $file \DirectoryIterator */
-
-			foreach ($fs as $file)
+			foreach ($relationClasses as $relationClassName => $relationClass)
 			{
-				if ($file->isDir())
-				{
-					continue;
-				}
-				if ($file->getExtension() != 'php')
-				{
-					continue;
-				}
-        $baseName = ucfirst($file->getBasename('.php'));
-
-        $methodName = strtolower($baseName[0]) . substr($baseName, 1);
-
-        $className = '\\FOF30\\Model\\DataModel\\Relation\\' . $baseName;
-
-				if (!class_exists($className, true))
-				{
-					continue;
-        }
-
-				static::$relationTypes[$methodName] = $className;
+				static::$relationTypes[$relationClassName] = $relationClass;
 			}
     }
 

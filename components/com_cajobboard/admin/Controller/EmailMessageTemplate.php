@@ -20,14 +20,12 @@ namespace Calligraphic\Cajobboard\Admin\Controller;
 // no direct access
 defined('_JEXEC') or die;
 
-use \FOF30\Container\Container;
-use FOF30\Model\DataModel;
-
 use Akeeba\Subscriptions\Admin\Helper\Email;
 use Akeeba\Subscriptions\Admin\Model\EmailTemplates;
 use Akeeba\Subscriptions\Admin\Model\Subscriptions;
 use FOF30\Controller\DataController;
 use FOF30\Model\DataModel;
+use \FOF30\Container\Container;
 use \Joomla\CMS\Language\Text;
 
 class EmailTemplate extends DataController

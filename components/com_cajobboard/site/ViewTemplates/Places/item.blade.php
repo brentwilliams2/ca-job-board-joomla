@@ -37,7 +37,7 @@
   $modifiedBy                 = $item->modified_by;               // userid of person that modified this place.
   $modifiedOn                 = $item->modified_on;               // When this place record was modified
   $openingHoursSpecification  = $item->openingHoursSpecification; // The days and times this location is open.
-  $photos                     = $item->photo                      // A photograph of this place, FK M:M relationship in to #__cajobboard_images(image_id)
+  $photos                     = $item->photo;                     // A photograph of this place, FK M:M relationship in to #__cajobboard_images(image_id)
   $placeName                  = $item->name;                      // A name for this place.
   $public_access              = $item->public_access;             // A boolean flag to signal that the Place is open to public visitors. If this property is omitted there is no assumed default boolean value
   $telephone                  = $item->telephone;                 // The E.164 PSTN telephone number

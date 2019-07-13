@@ -66,7 +66,7 @@ class BaseHtml extends Html
     // @TODO: is FOF30 Dispatcher already loading the component language file?
 
     // Using view-specific language files for maintainability
-    $lang = Factory::getLanguage();
+    $lang = $this->container->platform->getLanguage();
 
     // Load Answers language file
     $lang->load($view, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
@@ -141,7 +141,7 @@ class BaseHtml extends Html
 
     if (!$this->container->platform->isCli())
     {
-      $app = Factory::getApplication();
+      $app = $this->container->platform->getApplication();
       $defaultLimit = $app->get('list_limit', 20);
     }
 

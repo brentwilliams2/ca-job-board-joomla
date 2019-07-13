@@ -24,8 +24,53 @@ defined('_JEXEC') or die;
 /**
  * A helper class for formatting data for display
  */
-abstract class Format
+class Format
 {
+  /**
+    * A reference to the application container
+    *
+    * @property Container
+    */
+    protected $container = null;
+
+
+  /**
+    * Where the currency symbol is positioned relative to the amount, valid values are 'before' and 'after
+    *
+    * @property string
+    */
+    protected $currencyPosition = null;
+
+
+  /**
+    * What currency symbol to use
+    *
+    * @property string
+    */
+    protected $currencySymbol = null;
+
+
+  /**
+	 * @param   Container   $container    The application container
+	 *
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 */
+	public function __construct ($container)
+	{
+    $this->container = $container;
+
+    $this->currencyPosition = $this->container->platform->getConfigOption('currencypos', 'before');
+
+    $this->currencySymbol = $this->container->platform->getConfigOption('currencysymbol', '$');
+
+
+		if (empty($format))
+		{
+			$format = $this->container->platform->getConfigOption('dateformat', 'm-d-Y');
+    }
+  }
+
+
 	/**
 	 * Format a date for display.
 	 *
@@ -41,7 +86,7 @@ abstract class Format
 	 *
 	 * @return string
 	 */
-	public static function date($date, $format = null, $tzAware = true)
+	public function date($date, $format = null, $tzAware = true)
 	{
     $utcTimeZone = new DateTimeZone('UTC');
 
@@ -52,18 +97,17 @@ abstract class Format
 
 		if ($tzAware !== false)
 		{
-      $userId = is_bool($tzAware) ? null : (int) $tzAware;
-
-			try
-			{
-				$tzDefault = Factory::getApplication()->get('offset');
-			}
-			catch (\Exception $e)
-			{
-				$tzDefault = 'GMT';
+      if ($tzAware === true)
+      {
+        $user = $this->container->platform->getUser();
+      }
+      else
+      {
+        $user = $this->container->platform->getUser($tzAware);
       }
 
-			$user = Factory::getUser($userId);
+  		$tzDefault = $this->container->platform->getConfigOption('offset', 'GMT');
+
 			$tz = $user->getParam('timezone', $tzDefault);
     }
 
@@ -71,7 +115,8 @@ abstract class Format
 		{
 			try
 			{
-				$userTimeZone = new DateTimeZone($tz);
+        $userTimeZone = new DateTimeZone($tz);
+
 				$dateObject->setTimezone($userTimeZone);
 			}
 			catch(\Exception $e)
@@ -80,12 +125,7 @@ abstract class Format
 			}
     }
 
-		if (empty($format))
-		{
-			$format = self::getContainer()->params->get('dateformat', 'm-d-Y');
-    }
-
-		return $dateObject->format($format, true);
+    return $dateObject->format($this->dateformat, true);
   }
 
 
@@ -96,7 +136,7 @@ abstract class Format
 	 *
 	 * @return  bool|Date  False on failure, JDate if successful
 	 */
-	public static function checkDateFormat($date)
+	public function checkDateFormat($date)
 	{
     JLoader::import('joomla.utilities.date');
 
@@ -118,17 +158,8 @@ abstract class Format
 	 *
 	 * @return  string  The HTML of the formatted price
 	 */
-	public static function formatPrice($value)
+	public function formatPrice($value)
 	{
-		static $currencyPosition = null;
-    static $currencySymbol = null;
-
-		if (is_null($currencyPosition))
-		{
-			$currencyPosition = self::getContainer()->params->get('currencypos', 'before');
-			$currencySymbol = self::getContainer()->params->get('currencysymbol', '€');
-    }
-
     $html = '';
 
 		if ($currencyPosition == 'before')
@@ -147,20 +178,68 @@ abstract class Format
   }
 
 
-	/**
-	 * Returns the current Calligraphic Job Boards container object
-	 *
-	 * @return  Container
-	 */
-	private static function getContainer()
-	{
-    static $container = null;
+  /**
+   * Format date strings to "1 day ago", etc.
+   *
+   * @param    $dateCreated  Date/time the object was created
+   * @param    $dateModified Date/time the object was last modified
+   *
+   * @return   string  Formatted time
+   */
+  public function convertToTimeAgoString($dateCreated, $dateModified = null)
+  {
+    // difference between current time and the database (MySQL format) item's created or modified time (whichever is later)
+    $diff = time() - strtotime( $dateModified ? $dateModified : $dateCreated );
 
-		if (is_null($container))
-		{
-			$container = Container::getInstance('com_cajobboard');
+    if( $diff < 60 ) // it happened now
+      return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_NOW');
+
+    elseif( $diff >= 60 && $diff < 120 ) // it happened 1 minute ago
+      return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_MINUTE');
+
+    elseif( $diff < 3600 ) // it happened n minutes ago
+      return Text::sprintf('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_MINUTES', round($diff / 60));
+
+    elseif( $diff >= 3600 && $diff < 7200 ) // it happened 1 hour ago
+      return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_HOUR');
+
+    elseif( $diff < 3600 * 24 ) // it happened n hours ago
+      return Text::sprintf('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_HOURS', round($diff / 3600));
+
+    elseif( $diff < 3600 * 24 * 2 ) // it happened yesterday
+      return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_YESTERDAY');
+
+    elseif( $diff < 3600 * 24 * 30 ) // it happened n days ago
+      return Text::sprintf('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_DAYS', round($diff / (3600 * 24)));
+
+    elseif( $diff >= 3600 * 24 * 30 * 2 && $diff >= 3600 * 24 * 30 * 3 ) // it happened 1 month ago
+      return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_MONTH');
+
+    elseif( $diff < 3600 * 24 * 30 * 12 ) // it happened n months ago
+      return Text::sprintf('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_MONTHS', round($diff / (3600 * 24 * 30)));
+
+    else // it happened a long time ago
+      return Text::_('COM_CAJOBBOARD_DATETIME_HELPER_TIMEBEFORE_LONG');
+  }
+
+
+  /**
+   * Format the "Created on" date strings to "Tuesday, April 4 2019, 12:18 pm", etc.
+   *
+   * @param    Date  $date   The date/time object to use for output
+   *
+   * @return   string  Formatted time
+   */
+  public function getCreatedOnText($date)
+  {
+    // handle new records with database engine constant for time stamp
+    if ('CURRENT_TIMESTAMP' == $date)
+    {
+      $now = new Date();
+
+      $date = (string) $now;
     }
 
-		return $container;
-	}
+    return $this->date($date, 'l, F n o, g:i a');
+  }
 }

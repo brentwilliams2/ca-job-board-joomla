@@ -14,15 +14,11 @@
   defined('_JEXEC') or die;
 
   use \Calligraphic\Cajobboard\Site\Helper\Format;
-  use \Calligraphic\Cajobboard\Site\Helper\JobPosting as JobPostingHelper;
   use \Joomla\CMS\Language\Text;
-  use \Joomla\CMS\\Helper\TagsHelper;
+  use \Joomla\CMS\Helper\TagsHelper;
 
   // current user ID
   $userId = $this->container->platform->getUser()->id;
-
-  // @TODO: Refactor JobPosting helper to static methods / abstract class, maybe name it better
-  $JobPostingViewHelper = new JobPosting();
 
   // model data fields
   $jobID                = $item->job_posting_id;
@@ -62,7 +58,7 @@
     }
   }
 
-  $formattedPay = JobPostingHelper::formatPayToValueOrRange(
+  $formattedPay = $this->container->JobPosting->formatPayToValueOrRange(
     $item->base_salary__value,
     $item->base_salary__min_value,
     $item->base_salary__max_value,

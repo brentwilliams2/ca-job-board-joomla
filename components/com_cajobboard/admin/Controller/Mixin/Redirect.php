@@ -22,6 +22,8 @@ trait Redirect
 {
   /**
 	 * Get a redirect URL for the current view
+   *
+   * Used currently in Controller Feature mixin
 	 *
 	 * @return  string    The URL for use as a redirect
 	 */
@@ -45,20 +47,20 @@ trait Redirect
   /**
 	 * Get a message for the flash message box on redirect for this task
    *
+   * Used currently in Controller Feature mixin
+   *
    * @param   string    $task   The name of the task to generate a message for
 	 *
 	 * @return  string    The message to use in the flash message box after redirect
 	 */
 	public function getRedirectFlashMsg($task)
 	{
-    $translationKey = Text::_(strtoupper(
+    $viewName = $this->container->inflector->singularize($this->view);
+
+    return Text::_(strtoupper(
       $this->container->componentName
       . '_REDIRECT_MSG_TASK_'
       . $task
-    ));
-
-    $viewName = $this->container->inflector->singularize($this->view);
-
-    return $viewName . ' ' . $translationKey;
+    ), $viewName);
   }
 }

@@ -75,7 +75,7 @@ $this->moduleCount = array(
   'social-icons' => null
 );
 
-/*
+/**
  * This helper method is to allow using the template to display error pages.
  *
  * The countModules() method isn't available on ErrorDocument objects. These

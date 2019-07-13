@@ -104,17 +104,5 @@ class Resumes extends BaseDataModel
 */
 
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_RESUMES_TITLE_ERR');
 
-		parent::check();
-
-    return $this;
-  }
 }

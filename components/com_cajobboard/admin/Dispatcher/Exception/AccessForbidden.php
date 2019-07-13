@@ -1,6 +1,6 @@
 <?php
 /**
- * No Permissions exception class
+ * Access Forbidden dispatcher exception class
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

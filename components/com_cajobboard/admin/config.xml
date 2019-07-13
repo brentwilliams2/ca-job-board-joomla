@@ -47,6 +47,52 @@
       default="5"
     />
 
+    <!-- Parameters for format category of options -->
+    <field
+      type="spacer"
+      name="format-options"
+      class="text-info"
+      label="COM_CAJOBBOARD_FORMAT_OPTIONS_GROUP_LABEL"
+    />
+
+    <field
+      name="dateformat"
+      type="text"
+      default="m-d-Y"
+      label="COM_CAJOBBOARD_DATEFORMAT_OPTIONS_LABEL"
+      description="COM_CAJOBBOARD_DATEFORMAT_OPTIONS_DESC"
+    />
+
+    <field
+      name="currencypos"
+      type="radio"
+      class="btn-group"
+      default="0"
+      label="COM_CAJOBBOARD_CURRENCY_POSITION_OPTIONS_LABEL"
+      description="COM_CAJOBBOARD_CURRENCY_POSITION_OPTIONS_DESC"
+    />
+      <option value="0">COM_CAJOBBOARD_FORMAT_CURRENCY_POSITION_OPTION_BEFORE</option>
+      <option value="1">COM_CAJOBBOARD_FORMAT_CURRENCY_POSITION_OPTION_AFTER</option>
+    </field>
+
+    <field
+      name="currencysymbol"
+      type="text"
+      default="$"
+      size="4"
+      label="COM_CAJOBBOARD_CURRENCY_SYMBOL_OPTIONS_LABEL"
+      description="COM_CAJOBBOARD_CURRENCY_SYMBOL_OPTIONS_DESC"
+    />
+
+    <field
+      name="offset"
+      type="text"
+      default="GMT"
+      size="40"
+      label="COM_CAJOBBOARD_TIMEZONE_OFFSET_OPTIONS_LABEL"
+      description="COM_CAJOBBOARD_TIMEZONE_OFFSET_OPTIONS_DESC"
+    />
+
     <!-- Parameters for job postings category of options -->
     <field
       type="spacer"
@@ -174,15 +220,95 @@
     </field>
 	</fieldset>
 
+  <!-- Configuration options tab #3: "Social Share Metadata" -->
+  <fieldset
+		name="social-share"
+		label="COM_CAJOBBOARD_SOCIAL_SHARE_PARAMETERS_TAB_LABEL"
+		description="COM_CAJOBBOARD_SOCIAL_SHARE_PARAMETERS_TAB_DESC"
+	>
+    <field
+      type="spacer"
+      name="social-share-label"
+      class="text-info"
+      label="COM_CAJOBBOARD_SOCIAL_SHARE_OPTIONS_GROUP_LABEL"
+    />
 
-  <!--Configuration options tab #3: "Media" -->
-  <!--  Image media height is set with "constrain aspect ratio" option in image category configuration options -->
+    <field
+      name="facebook_app_id"
+      type="text"
+      label="COM_CAJOBBOARD_FACEBOOK_APP_ID_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_FACEBOOK_APP_ID_FOR_SOCIAL_SHARES_DESC"
+    />
+
+    <field
+      name="twitter_handle"
+      type="text"
+      label="COM_CAJOBBOARD_TWITTER_HANDLE_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_TWITTER_HANDLE_FOR_SOCIAL_SHARES_DESC"
+    />
+
+    <field
+      name="description__intro_length_required"
+      type="radio"
+      class="btn-group btn-group-yesno"
+      default="1"
+      label="COM_CAJOBBOARD_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_DESC"
+    >
+      <option value="0">COM_CAJOBBOARD_LENGTH_NOT_ENFORCED</option>
+      <option value="1">COM_CAJOBBOARD_LENGTH_TRUNCATE_ON_EXCEEDED</option>
+      <option value="1">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
+    </field>
+
+    <field
+      name="description__intro_length"
+      type="number"
+      default="280"
+      label="COM_CAJOBBOARD_INTRO_LENGTH_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_INTRO_LENGTH_FOR_SOCIAL_SHARES_DESC"
+    />
+
+    <field
+      name="title_length_required"
+      type="radio"
+      class="btn-group btn-group-yesno"
+      default="1"
+      label="COM_CAJOBBOARD_TITLE_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_TITLE_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_DESC"
+    >
+      <option value="0">COM_CAJOBBOARD_LENGTH_NOT_ENFORCED</option>
+      <option value="1">COM_CAJOBBOARD_LENGTH_TRUNCATE_ON_EXCEEDED</option>
+      <option value="1">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
+    </field>
+
+    <field
+      name="title_length"
+      type="number"
+      default="70"
+      label="COM_CAJOBBOARD_TITLE_LENGTH_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_TITLE_LENGTH_FOR_SOCIAL_SHARES_DESC"
+    />
+
+    <field
+      name="should_titlecase_title"
+      type="radio"
+      class="btn-group btn-group-yesno"
+      default="1"
+      label="COM_CAJOBBOARD_SHOULD_TITLECASE_TITLE_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_SHOULD_TITLECASE_TITLE_FOR_SOCIAL_SHARES_DESC"
+    >
+      <option value="0">JNO</option>
+      <option value="1">JYES</option>
+    </field>
+  </fieldset>
+
+  <!-- Configuration options tab #4: "Media" -->
+  <!-- Image media height is set with "constrain aspect ratio" option in image category configuration options -->
   <fieldset
 		name="media"
 		label="COM_CAJOBBOARD_MEDIA_PARAMETERS_TAB_LABEL"
 		description="COM_CAJOBBOARD_MEDIA_PARAMETERS_TAB_DESC"
 	>
-    <!-- Width settings for system image sizes -->
     <field
       name="image-size"
       type="spacer"

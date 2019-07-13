@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_message_templates` (
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Machine name for this e-mail template. Aliased by title property.',
   description TEXT COMMENT 'Description of this e-mail template.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: none (internal use only) */
   subject TEXT COMMENT 'Text template with shortcodes for the subject field of the e-mail.',

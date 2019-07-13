@@ -10,7 +10,7 @@
  *
  */
 
-namespace Akeeba\Subscriptions\Admin\Helper;
+namespace Calligraphic\Cajobboard\Admin\Helper;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter as Filter;
 use Akeeba\Subscriptions\Admin\Model\Levels;
@@ -31,7 +31,7 @@ defined('_JEXEC') or die;
 /**
  * A helper class for parsing short codes embedded in email template subject and body
  */
-abstract class ShortCode
+class ShortCode
 {
 	/**
 	 * The component's container
@@ -39,20 +39,16 @@ abstract class ShortCode
 	 * @var   Container
 	 */
 	protected static $container;
-	/**
-	 * Returns the component's container
-	 *
-	 * @return  Container
-	 */
 
 
-	protected static function getContainer()
-	{
-		if (is_null(self::$container))
-		{
-			self::$container = Container::getInstance('com_akeebasubs');
-		}
-		return self::$container;
+  /**
+   * Public class constructor
+ 	 *
+   * @param   Container  $container  The configuration variables to this model
+   */
+  public function __construct(Container $container)
+  {
+    $this->container = $container;
   }
 
 
@@ -68,7 +64,7 @@ abstract class ShortCode
 	public static function processSubscriptionTags($text, $sub, $extras = array())
 	{
 		// Get the user object for this subscription
-    $joomlaUser = self::getContainer()->platform->getUser($sub->user_id);
+    $joomlaUser = $this->container->platform->getUser($sub->user_id);
 
 		// Get the subscription level
 		/** @var Levels $level */
@@ -76,6 +72,7 @@ abstract class ShortCode
 
 		if ( !is_object($level) || (($sub->level instanceof Levels) && ($sub->level->akeebasubs_level_id != $sub->akeebasubs_level_id))	)
 		{
+      // HMVC
 			/** @var Levels $levelModel */
 			$levelModel = Container::getInstance('com_akeebasubs')->factory->model('Levels')->tmpInstance();
 			$level      = $levelModel->id($sub->akeebasubs_level_id)->firstOrNew();
@@ -290,7 +287,7 @@ abstract class ShortCode
 		{
 			try
 			{
-				$couponData = self::getContainer()
+				$couponData = $this->container
 					->factory->model('Coupons')->tmpInstance()
           ->findOrFail($sub->akeebasubs_coupon_id);
 
@@ -303,7 +300,7 @@ abstract class ShortCode
     }
 
 		// -- Get the site name
-    $config   = self::getContainer()->platform->getConfig();
+    $config   = $this->container->platform->getConfig();
 
     $sitename = $config->get('sitename');
 
@@ -325,7 +322,7 @@ abstract class ShortCode
 
 		if ($isCli)
 		{
-			$baseURL    = self::getContainer()->params->get('siteurl', 'http://www.example.com');
+			$baseURL    = $this->container->params->get('siteurl', 'http://www.example.com');
 			$temp       = str_replace('http://', '', $baseURL);
 			$temp       = str_replace('https://', '', $temp);
 			$parts      = explode($temp, '/', 2);
@@ -382,8 +379,8 @@ abstract class ShortCode
     $renewalURL = rtrim($baseURL, '/') . '/' . ltrim($url, '/');
 
 		// Currency
-		$currency     = self::getContainer()->params->get('currency', 'EUR');
-    $symbol       = self::getContainer()->params->get('currencysymbol', 'EUR');
+		$currency     = $this->container->params->get('currency', 'EUR');
+    $symbol       = $this->container->params->get('currencysymbol', 'EUR');
 
 		// Dates
 		$jFrom = new Date($sub->publish_up);

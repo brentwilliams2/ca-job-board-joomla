@@ -32,15 +32,33 @@ use \thiagoalessio\TesseractOCR\TesseractOCR;
 /**
  *
  */
-abstract class OCR
+class OCR
 {
-  public static function getText($image)
+  /**
+	 * The container attached to the model
+	 *
+	 * @var Container
+	 */
+  protected $container;
+
+
+  /**
+  * Public class constructor
+ 	 *
+   * @param   Container  $container  The configuration variables to this model
+   */
+  public function __construct(Container $container)
+  {
+    $this->container = $container;
+  }
+
+  public function getText($image)
   {
     return (new TesseractOCR('text.png'))->run();
   }
 
 
-  public static function convertPdfToJpeg($pdf)
+  public function convertPdfToJpeg($pdf)
   {
     // one approach using ImageMagick, ImageMagick uses GhostScript to process JPEGs
     // so could also exec GhostScript directly

@@ -45,6 +45,8 @@ namespace Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
+use \Joomla\CMS\Language\Text;
+use \Calligraphic\Cajobboard\Admin\Controller\Exception\TaskNotAllowed;
 
 // no direct access
 defined('_JEXEC') or die;

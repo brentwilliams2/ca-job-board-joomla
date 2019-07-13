@@ -40,11 +40,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_data_feeds` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this data feed in the back-end interface.',
+  note TEXT COMMENT 'A note to save with this data feed in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the data feed, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Description of the data feed.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
+  image JSON COMMENT 'Image metadata for social share and page header images',
 
   /* SQL DDL */
   PRIMARY KEY (data_feed_id)

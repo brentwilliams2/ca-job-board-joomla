@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="plugin" group="privacy" method="upgrade">
 	<name>PLG_PRIVACY_CAJOBBOARD</name>
-	<author></author>
-	<creationDate></creationDate>
-	<copyright></copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail></authorEmail>
-	<authorUrl></authorUrl>
-	<version></version>
+  <creationDate>May 2019</creationDate>
+  <author>Kevin Brown</author>
+  <authorEmail>admin@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <copyright>Copyright (C) 2019 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <version>0.0.1</version>
 	<description>PLG_PRIVACY_CAJOBBOARD_DESC</description>
 
   <files>
@@ -16,8 +16,9 @@
     <filename>cajobboard.xml</filename>
     <folder>language</folder>
   </files>
+
 	<languages>
-		<language tag="en-GB">en-GB.plg_privacy_cajobboard.ini</language>
-		<language tag="en-GB">en-GB.plg_privacy_cajobboard.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_privacy_cajobboard.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_privacy_cajobboard.sys.ini</language>
 	</languages>
 </extension>

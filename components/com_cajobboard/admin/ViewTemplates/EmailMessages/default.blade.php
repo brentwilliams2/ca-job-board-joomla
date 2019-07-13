@@ -16,7 +16,7 @@
   use \Calligraphic\Cajobboard\Admin\Model\EmailTemplates;
   use \FOF30\Utils\FEFHelper\BrowseView;
   use \FOF30\Utils\SelectOptions;
-\
+
   /**
    * @var  FOF30\View\DataView\Html $this
    * @var  EmailTemplates           $row

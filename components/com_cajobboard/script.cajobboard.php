@@ -23,8 +23,6 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('This component requires FOF 3.0.');
 }
 
-JLog::addLogger(array('text_file' => 'com_cajobboard.log.php'), JLog::DEBUG, array('com_cajobboard'));
-
 class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 {
 	/**
@@ -92,40 +90,68 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 * @var    Array
 	 */
   public $categories = array(
-    'Uncategorised',
-    'Alerts',
-    'Analytics',
+    'AddressRegions',
+    'AnalyticAggregates',
     'Answers',
-    'ApplicantTrackingRecords',
+    'ApplicationLetters',
     'Applications',
     'AudioObjects',
     'Awards',
+    'BackgroundChecks',
+    'BaseDataModel',
+    'BaseListModel',
+    'BaseTreeModel',
     'Candidates',
-    'Compliance',
-    'Email',
+    'Categories',
+    'Certifications',
+    'Comments',
+    'ControlPanels',
+    'CreditReports',
+    'DataFeeds',
+    'DigitalDocuments',
+    'DigitalSignatures',
+    'DiversityPolicies',
+    'EmailMessageTemplates',
+    'EmailMessages',
+    'EmployerAggregateRatings',
+    'EmployerDepartments',
+    'EmploymentTypes',
+    'FCRA',
+    'GeoCoordinates',
     'Help',
     'ImageObjects',
+    'Interviews',
+    'IssueReportCategories',
+    'IssueReports',
+    'JobAlerts',
     'JobPostings',
     'Messages',
+    'OccupationalCategories',
+    'OccupationalCategoryGroups',
+    'Offers',
+    'OrganizationRoles',
+    'OrganizationTypes',
     'Organizations',
-    'Panels',
+    'PersonallyIdentifiableInformation',
     'Persons',
     'Places',
-    'Profiles',
     'QAPages',
-    'Questionnaires',
+    'QAPages',
     'Questions',
-    'Recommendations',
     'References',
     'Registrations',
     'Reports',
+    'ResumeAlerts',
     'Resumes',
     'Reviews',
     'Scheduling',
-    'Search',
+    'ScoreCards',
+    'SearchResultPages',
     'Subscriptions',
     'Tasks',
-    'VideoObjects'
+    'Uncategorised',
+    'VideoObjects',
+    'WorkFlows'
   );
 
 
@@ -140,7 +166,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     'access'           => 1,
     'created_user_id'  => 0,
     'language'         => '*',
-    'params'           => '{"category_layout": "", "image": "", "image_alt": "", "thumbnail_aspect_ratio": "aspect-ratio-4-3", "image_aspect_ratio": "aspect-ratio-4-3"}',
+    'params'           => '{"category_layout": "", "robots":"","image": "", "image_alt": "", "thumbnail_aspect_ratio": "aspect-ratio-4-3", "image_aspect_ratio": "aspect-ratio-4-3"}',
     'metadata'         => '{"author": "", "robots": ""}',
   );
 
@@ -520,7 +546,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 
 
   /**
-   * Initialize Comments model
+   * Initialize Comments and Messages model
    *
    * @return void
    */
@@ -531,7 +557,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 
 
   /**
-   * Initialize Comments model
+   * Initialize Comments and Messages model
    *
    * @return void
    */
@@ -548,6 +574,6 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    */
   function insertTreeRootRecord()
   {
-
+    // @TODO: implement install script method to insert mandatory root record for nested set hierarchical tables (FOF TreeModel) (comments and messages)
   }
 }

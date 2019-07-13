@@ -82,7 +82,7 @@ class AssetFiles
    *
    * @return  void
    */
-  protected function setAssetPaths()
+  public function setAssetPaths()
   {
     if ( $this->container->platform->isBackend() )
     {
@@ -95,7 +95,7 @@ class AssetFiles
       $this->areaName = 'frontend';
     }
 
-    $this->minified =  DEBUG ? '' : '.min';
+    $this->minified =  JDEBUG ? '' : '.min';
   }
 
 
@@ -110,15 +110,17 @@ class AssetFiles
    *
    * @return void
    */
-  public function addViewCSS(View $view = null)
+  public function addViewCss(View $view = null)
   {
-    $viewName = $this->container->inflector->normalizeMediaAssetName( $view->getName() );
-
-    if (!$viewName)
+    if (!$view)
     {
       // media://com_cajobboard/css/backend.min.css
       $this->container->template->addCSS('media://com_cajobboard/css/'. $this->areaFolder . '/' . $this->areaName . $this->minified . '.css', true, false);
+
+      return;
     }
+
+    $viewName = $this->container->inflector->normalizeMediaAssetName( $view->getName() );
 
     if ( in_array($viewName, $this->cssFiles) )
     {
@@ -138,18 +140,20 @@ class AssetFiles
    * Note that the $view variable may have a different container object
    * attached than this object's $container class property if HMVC in use.
    *
-   * @param  View   A FOF30 View object. If no value provided, component Javascript file is loaded.
+   * @param  View|null   A FOF30 View object. If no value provided, component Javascript file is loaded.
    *
    * @return void
    */
-  public function addViewJS(View $view = null)
+  public function addViewJavascript(View $view = null)
   {
-    $viewName = $this->container->inflector->normalizeMediaAssetName( $view->getName() );
-
-    if (!$viewName)
+    if (!$view)
     {
       $this->container->template->addJS('media://com_cajobboard/js/'. $this->areaFolder . '/' . $this->areaName . $this->minified . '.js', true, false);
+
+      return;
     }
+
+    $viewName = $this->container->inflector->normalizeMediaAssetName( $view->getName() );
 
     if ( in_array($viewName, $this->javascriptFiles) )
     {
@@ -167,9 +171,9 @@ class AssetFiles
    *
    * @return void
    */
-  public function addComponentCSS()
+  public function addComponentCss()
   {
-    $this->addViewCSS();
+    $this->addViewCss();
   }
 
 
@@ -178,8 +182,8 @@ class AssetFiles
    *
    * @return void
    */
-  public function addComponentJS()
+  public function addComponentJavascript()
   {
-    $this->addViewJS();
+    $this->addViewJavascript();
   }
 }

@@ -20,7 +20,7 @@
    *
    * @var   Boolean   $isErrorPage
    */
-  if (is_a($this, '\Joomla\CMS\Document\ErrorDocument'))
+  if ( is_a($this, '\Joomla\CMS\Document\ErrorDocument') )
   {
     $this->isErrorPage = true;
   }

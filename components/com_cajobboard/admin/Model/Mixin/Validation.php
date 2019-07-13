@@ -17,9 +17,7 @@ defined('_JEXEC') or die;
 trait Validation
 {
   /**
-   * The Check behaviour is designed to run on the onBeforeCheck event. Any
-   * other behaviours interested in the Check events should run on onAfterCheck.
-   * The onAfterCheck event is not implemented in FOF30 DataModel as of May 2019.
+   * The onCheck and onAfterCheck event is not implemented in FOF30 DataModel as of May 2019.
    *
    * To override validation behaviour for a particular model, create a directory
    * named 'Behaviour' in a directory named after the model and use the same file
@@ -37,10 +35,13 @@ trait Validation
 			return $this;
     }
 
-    // Runs the Check behaviour
+    // Runs before the Check behaviour, use to add fields to the 'skip check field' list
     $this->triggerEvent('onBeforeCheck');
 
-    // Run the check routine event
+    // Runs the Check behaviour
+    $this->triggerEvent('onCheck');
+
+    // Runs field-specific validation behaviours performed after the base checks
     $this->triggerEvent('onAfterCheck');
 
     return $this;

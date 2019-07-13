@@ -17,8 +17,8 @@
   defined('_JEXEC') or die;
 
   // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
-  $this->container->AssetFiles->addComponentJS($this);
-  $this->container->AssetFiles->addComponentJS($this);
+  $this->container->AssetFiles->addComponentCss($this);
+  $this->container->AssetFiles->addViewJavascript($this);
 
   /** @var \Calligraphic\Cajobboard\Site\Model\Answers $item */
   $item = $this->getItem();
@@ -47,10 +47,10 @@
   $userId = $user->id;
   $authorId = $item->Author->getId();
 
-  $authorAvatarUri = User::getAvatar($authorId);
-  $authorProfileLink = User::getLinkToUserProfile($authorId);
-  $canUserEdit = User::canEdit($user, $item);
-  $lastSeen = User::lastSeen($item->Author->lastvisitDate);
+  $authorAvatarUri = $this->container->User::getAvatar($authorId);
+  $authorProfileLink = $this->container->User->getLinkToUserProfile($authorId);
+  $canUserEdit = $this->container->User->canEdit($user, $item);
+  $lastSeen = $this->container->User->lastSeen($item->Author->lastvisitDate);
   $name = $item->Author->getFieldValue('name');
   $postedOn = Format::getCreatedOnText($createdOn);
 

@@ -12,7 +12,8 @@
 
 namespace Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
-use \FOF30\Container\Container;
+use \Joomla\CMS\Language\Text;
+use \Calligraphic\Cajobboard\Admin\Controller\Exception\FeatureToggleFailure;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -34,7 +35,7 @@ trait Feature
     }
     catch (\Exception $error)
     {
-      $this->setRedirect($this->getRedirectUrl(), $error, 'error');
+      throw new FeatureToggleFailure( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_FEATURE_TOGGLE_FAILURE'), 500 );
     }
 
     $this->setRedirect($this->getRedirectUrl(), $this->getRedirectFlashMsg('feature'), 'message');
@@ -56,7 +57,7 @@ trait Feature
     }
     catch (\Exception $error)
     {
-      $this->setRedirect($this->getRedirectUrl(), $error, 'error');
+      throw new FeatureToggleFailure( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_FEATURE_TOGGLE_FAILURE') );
     }
 
     $this->setRedirect($this->getRedirectUrl(), $this->getRedirectFlashMsg('unfeature'), 'message');
@@ -87,7 +88,7 @@ trait Feature
 		}
 		catch (\Exception $e)
 		{
-			return $e->getMessage();
+			throw new FeatureToggleFailure( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_FEATURE_TOGGLE_FAILURE') );
     }
   }
 }

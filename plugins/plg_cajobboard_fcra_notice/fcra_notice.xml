@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="cajobboard" method="upgrade">
+<extension version="3.9" type="plugin" group="cajobboard" method="upgrade">
   <name>PLG_CAJOBBOARD_FCRA_NOTICE</name>
   <creationDate>May 2018</creationDate>
   <author>Kevin Brown</author>
@@ -16,6 +16,7 @@
     <filename>fcra_notice.xml</filename>
     <folder>language</folder>
   </files>
+
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_fcra_notice.ini</language>
     <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_fcra_notice.sys.ini</language>

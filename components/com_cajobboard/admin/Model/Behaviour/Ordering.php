@@ -20,12 +20,10 @@ use \JDatabaseQuery;
 defined( '_JEXEC' ) or die;
 
 /**
-/**
  * To override validation behaviour for a particular model, create a directory
  * named 'Behaviour' in a directory named after the model and use the same file
  * name as this behaviour ('Ordering.php'). The model file cannot go in this
  * directory, it must stay in the root Model folder.
- */
  *
  * Ordering and order direction are checked for validity in the DataModel
  * before use so no danger here of setting them to request state

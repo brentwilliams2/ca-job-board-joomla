@@ -44,12 +44,11 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_applications` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the application, used for the text shown on social media via shares and search engine results.',
-
+  description TEXT COMMENT 'Description of the application.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   application_template /* FK */
   about__job_posting /* FK */
-
 
   /* SQL DDL */
   PRIMARY KEY (application_id)
@@ -65,7 +64,5 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_applications` (
 
   ContentHistory doesn't make sense, because the changes would be in the relations (Answers).
 
-  Need option to handle "locking" an application, so a job seeker can't change it after it's submitted: how to do this?
-  There needs to be a special button to message a job seeker from a received application to ask for changed / additional
-  information, and unlock the application until that happens. Needs to message back to the employer when the changes are made.
+
 */

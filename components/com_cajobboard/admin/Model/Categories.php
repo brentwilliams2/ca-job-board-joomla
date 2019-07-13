@@ -92,3 +92,38 @@ class Categories extends BaseDataModel
     $this->autoChecks = false;
   }
 }
+
+
+/*
+  // @TODO: need to manually add the following categories for models added since component installation:
+
+  'Categories',
+  'Comments',
+  'CreditReports',
+  'DataFeeds',
+  'DigitalDocuments',
+  'DigitalSignatures',
+  'DiversityPolicies',
+  'EmailMessageTemplates',
+  'EmployerAggregateRatings',
+  'EmployerDepartments',
+  'EmploymentTypes',
+  'FCRA',
+  'GeoCoordinates',
+  'Help',
+  'Interviews',
+  'IssueReportCategories',
+  'IssueReports',
+  'OccupationalCategories',
+  'OccupationalCategoryGroups',
+  'Offers',
+  'OrganizationRoles',
+  'OrganizationTypes',
+  'PersonallyIdentifiableInformation',
+  'QAPages',
+  'QAPages',
+  'ResumeAlerts',
+  'ScoreCards',
+  'Uncategorised',
+  'WorkFlows'
+*/

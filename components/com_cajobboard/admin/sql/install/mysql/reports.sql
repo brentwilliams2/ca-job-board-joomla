@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reports` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the report, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Description of the report.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: Thing(additionalType) -> Schedule */
   repeat_frequency CHAR(32) COMMENT 'How often this report should be generated. Use ISO 8601 duration format, e.g. PM1 for monthly, PW1 for weekly, PD1 for daily, PT0S for never-recurring.',

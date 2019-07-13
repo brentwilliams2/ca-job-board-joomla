@@ -27,29 +27,24 @@ use \Joomla\CMS\Language\Text;
 /**
  * A helper class for generating graph images
  */
-abstract class Graph
+class Graph
 {
-	/**
-	 * The component's container
+  /**
+	 * The container attached to the model
 	 *
-	 * @var   Container
+	 * @var Container
 	 */
-  protected static $container;
+  protected $container;
 
 
-	/**
-	 * Returns the component's container
-	 *
-	 * @return  Container
-	 */
-	protected static function getContainer()
-	{
-		if ( is_null(self::$container) )
-		{
-			self::$container = Container::getInstance('com_cajobboard');
-    }
-
-		return self::$container;
+  /**
+  * Public class constructor
+ 	 *
+   * @param   Container  $container  The configuration variables to this model
+   */
+  public function __construct(Container $container)
+  {
+    $this->container = $container;
   }
 
 

@@ -37,7 +37,7 @@ class PlgSystemCajobboard_library_loader extends CMSPlugin
 
     // Add the library namespaces
     $autoloader->addMap('Calligraphic\\Library\\Cajobboard\\', JPATH_LIBRARIES . '/calligraphic/component/cajobboard');
-    $autoloader->addMap('Calligraphic\\Library\\Platform\\', JPATH_LIBRARIES . '/calligraphic/platform');
+    $autoloader->addMap('Calligraphic\\Library\\Platform\\', JPATH_LIBRARIES . '/calligraphic/component/platform');
 
     // Register modified autoload function
     $autoloader->register(false);

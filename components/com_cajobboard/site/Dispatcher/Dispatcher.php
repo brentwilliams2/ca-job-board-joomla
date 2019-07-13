@@ -18,9 +18,15 @@ if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 use \Calligraphic\Cajobboard\Admin\Dispatcher\Dispatcher as AdminDispatcher;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\VideoObjectAspectRatiosEnum;
-use \Calligraphic\Cajobboard\Site\Helper\JobPosting as JobPostingHelper;
+use \Calligraphic\Cajobboard\Site\Helper\JobPosting;
 use \Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
 use \FOF30\Container\Container;
+
+// Classes injected into Container
+use \Calligraphic\Cajobboard\Site\Helper\Pagination;
+use \Calligraphic\Cajobboard\Site\Helper\Registration;
+use \Calligraphic\Cajobboard\Site\Helper\Semantic;
+use \Calligraphic\Cajobboard\Site\Helper\User;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -33,16 +39,50 @@ class Dispatcher extends AdminDispatcher
   public $defaultView = 'JobPostings';
 
 
+  /**
+	 * @param Container   $container
+	 * @param array       $config
+	 */
+  public function __construct(Container $container, array $config = array())
+	{
+    parent::__construct($container, $config);
+
+    // Setup any front-end view aliases in use: PII, FCRA
+    $this->setViewAliases(array(
+      //
+    ));
+  }
+
+
   /*
    * Services to add to the component's container. The container object ($c)
    * is available  inside the closure.
    */
   protected function addContainerServices()
   {
+    // Add services common to both back-end and front-end of the site
     parent::addContainerServices();
 
-    $this->container->RegistrationHelper = function ($c) {
-      return new RegistrationHelper($c);
+    // Add services that are only used in the front-end from here down
+
+    $this->container->Pagination = function ($container) {
+      return new Pagination($container);
+    };
+
+    $this->container->Registration = function ($container) {
+      return new Registration($container);
+    };
+
+    $this->container->Semantic = function ($container) {
+      return new Semantic($container);
+    };
+
+    $this->container->User = function ($container) {
+      return new User($container);
+    };
+
+    $this->container->JobPosting = function ($container) {
+      return new JobPosting();
     };
   }
 }

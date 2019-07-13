@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'The text of the recommendation.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: CreativeWork */
   has_part__digital_document INT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */

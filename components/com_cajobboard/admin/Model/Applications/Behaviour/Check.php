@@ -25,16 +25,6 @@ class Check extends \Calligraphic\Cajobboard\Admin\Model\Behaviour\Check
   /**
 	 * @param   DataModel  $model
 	 */
-	public function onBeforeCheck(DataModel $model)
-	{
-    // Check for empty fields that are declared as NOT NULL and don't have a default value in the DB table
-    $this->checkForEmpty($model);
-  }
-
-
-  /**
-	 * @param   DataModel  $model
-	 */
 	public function onAfterCheck(DataModel $model)
 	{
     $this->checkForEmptyMandatoryAnswers($model);
@@ -42,7 +32,9 @@ class Check extends \Calligraphic\Cajobboard\Admin\Model\Behaviour\Check
 
 
   /**
-	 * Checks for mandatory answers (from Answers model as a relation) that are empty
+	 * Checks for mandatory answers from Answers model as a relation that are empty.
+   * These are not detected by parent checkForEmpty() method as there is no database
+   * table metadata for dynamic fields.
 	 *
 	 * @param   DataModel  $model
 	 */

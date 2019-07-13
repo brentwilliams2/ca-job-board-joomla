@@ -39,11 +39,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
   language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the article or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this comment in the back-end interface.',
+  note TEXT COMMENT 'A note to save with this comment in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'The text of the comment.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the comment, used for the text shown on social media via shares and search engine results.',
+  image JSON COMMENT 'Image metadata for social share and page header images',
   about__foreign_model_id BIGINT UNSIGNED NOT NULL COMMENT 'The foreign model primary key that this comment belongs to',
   about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign model this comment belongs to, discriminator field for single-table inheritance',
 

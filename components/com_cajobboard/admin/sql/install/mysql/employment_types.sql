@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_employment_types` (
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  publish_up DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   publish_down DATETIME COMMENT 'Date and time to change the state to unpublished.',
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
   metadata JSON COMMENT 'JSON encoded metadata field for this item.',
@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_employment_types` (
   /* SCHEMA: Thing */
   `name` CHAR(96) NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)',
   description TEXT NOT NULL COMMENT 'Detailed description about type of employment',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browe views.',
   url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for type of employment, e.g. wikipedia page on Full Time',
 
   /* SQL DDL */

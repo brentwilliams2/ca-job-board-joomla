@@ -36,11 +36,6 @@ class Html extends BaseHtml
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
-
-    $this->loadLanguageFileForView('answers');
-
-    // Load javascript file for Answer views
-    $this->addJavascriptFile('media://com_cajobboard/js/Site/answers.js');
   }
 
 

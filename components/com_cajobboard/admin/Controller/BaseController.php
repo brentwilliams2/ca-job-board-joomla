@@ -14,11 +14,12 @@ namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
 use \FOF30\Container\Container;
-use \FOF30\Controller\DataController;
-use \FOF30\View\Exception\AccessForbidden;
+use \Calligraphic\Library\Platform\DataController;
 
 // no direct access
 defined('_JEXEC') or die;
+
+// @TODO: extend from FOF30 DataController when debugging no longer needed
 
 class BaseController extends DataController
 {

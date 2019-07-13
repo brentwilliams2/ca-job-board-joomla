@@ -9,7 +9,6 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * See \Calligraphic\Cajobboard\Admin\DispatcherDispatcher for exception handling logic
- *
  */
 
 namespace Calligraphic\Cajobboard\Admin\Controller\Exception;
@@ -28,7 +27,7 @@ class TaskNotAllowed extends \RuntimeException
 	{
 		if (empty($message))
 		{
-      $message = Text::_('COM_CAJOBBOARD_TASK_NOT_IN_LIST');
+      $message = Text::_('COM_CAJOBBOARD_EXCEPTION_TASK_NOT_IN_LIST_DEFAULT');
     }
 
 		parent::__construct($message, $code, $previous);

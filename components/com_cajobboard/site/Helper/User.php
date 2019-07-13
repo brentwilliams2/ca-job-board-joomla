@@ -18,16 +18,25 @@ use \Joomla\CMS\Language\Text;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Log\Log;
-
-// Identicon avatar generator. Keep below 'defined or die' clause (third-party library)
-use \Identicon\Identicon;
-
-/**
- * A helper class for formatting data for display
- */
-abstract class User
+class User
 {
+  /**
+   * A reference to the application container
+   *
+   * @property Container
+   */
+  protected $container = null;
+
+
+  /**
+	 * @param   Container   $container    The application container
+	 */
+	public function __construct ($container)
+	{
+    $this->container = $container;
+  }
+
+
 	/**
 	 * Return the avatar for a user
 	 *
@@ -35,12 +44,10 @@ abstract class User
 	 *
 	 * @return  string    Formatted HTML for display
 	 */
-	public static function getAvatar($userId)
+	public function getAvatar($userId)
 	{
-    $identicon = new Identicon();
-
     // create identicon avatar 24X24
-    return $identicon->getImageDataUri($userId, 24);
+    return $this->container->Identicon->getImageDataUri($userId, 24);
   }
 
 
@@ -51,7 +58,7 @@ abstract class User
 	 *
 	 * @return  string    Formatted HTML for display
 	 */
-	public static function lastSeen($date)
+	public function lastSeen($date)
 	{
     return Text::_('COM_CAJOBBOARD_ANSWERS_AUTHOR_LAST_SEEN_BUTTON_LABEL') . ' ' . Format::convertToTimeAgoString($date);
   }
@@ -65,11 +72,9 @@ abstract class User
 	 *
 	 * @return  bool    True if user has permission to edit this item
 	 */
-	public static function canEdit($user, $item)
+	public function canEdit($user, $item)
 	{
     $assetName = $item->getAssetName();
-
-    //Log::add('User::canEdit(), $assetName: ' . $assetName . ', itemId: ' . , Log::DEBUG, 'cajobboard');
 
     // Manager and Super Users user groups are allowed to edit on the front-end
     if ( $user->authorise('core.manage', $assetName) || $user->authorise('core.admin', $assetName) )
@@ -94,7 +99,7 @@ abstract class User
 	 *
 	 * @return  string    URI
 	 */
-	public static function getLinkToUserProfile($userId)
+	public function getLinkToUserProfile($userId)
 	{
     // @TODO: implement real link to user's profile
     return '#';

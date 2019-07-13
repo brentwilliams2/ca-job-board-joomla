@@ -17,7 +17,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  abstract class JobPosting {
+  class JobPosting {
     /**
     * Handle formatting pay if range given
     *
@@ -26,7 +26,7 @@
     *
     * @return   string  Formatted time
     */
-    public static function formatPayToValueOrRange($value = null, $min_value = null, $max_value = null, $duration='P0H1')
+    public function formatPayToValueOrRange($value = null, $min_value = null, $max_value = null, $duration='P0H1')
     {
       $payPeriod = 'COM_CAJOBBOARD_PAY_FORMATTER_' . $duration;
 
@@ -43,6 +43,7 @@
       return null;
     }
 
+
     /**
     * Create a teaser sentence from a longer string of text
     *
@@ -51,7 +52,7 @@
     *
     * @return   string  Formatted time
     */
-    public static function getTeaser($string, $count)
+    public function getTeaser($string, $count)
     {
       $words = explode(' ', $string);
 

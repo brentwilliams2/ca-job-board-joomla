@@ -14,9 +14,8 @@
   defined('_JEXEC') or die;
 
   use \Calligraphic\Cajobboard\Site\Helper\Format;
-  use \Calligraphic\Cajobboard\Site\Helper\JobPosting as JobPostingHelper;
   use \Joomla\CMS\Language\Text;
-  use \Joomla\CMS\\Helper\TagsHelper;
+  use \Joomla\CMS\Helper\TagsHelper;
 
   $item = $this->getItem();
 
@@ -53,7 +52,7 @@
 
   $employmentType = Text::_($item->employmentType->name);
 
-  $formattedPay = JobPostingHelper::formatPayToValueOrRange(
+  $formattedPay = $this->container->JobPosting->formatPayToValueOrRange(
     $item->base_salary__value,
     $item->base_salary__min_value,
     $item->base_salary__max_value,

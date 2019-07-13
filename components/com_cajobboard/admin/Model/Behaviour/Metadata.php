@@ -1,6 +1,8 @@
 <?php
 /**
- * FOF model behavior class to set the 'metadata' JSON field on record save
+ * FOF model behavior class to add the 'metadata' attribute (property)
+ * to the 'skip check field' list for validation checks on record save,
+ * and set the attribute value from state on record save.
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -44,39 +46,76 @@ class Metadata extends Observer
   }
 
 
+  /**
+   * Check the length of the title on calls to applySave method and handle text
+   * that is too long according to the current configuration parameters. Set the
+   * data object that will be bound to the model in the applySave method to the
+   * input state, and update the state with any transformed values of 'metadata'.
+   *
+   * @param DataModel $model  The data model associated with this call
+   * @param array     $data   An associative array populated by \Joomla\Input\Input from the $_REQUEST global variable
+   *
+   * @return void
+   */
   public function onBeforeSave(DataModel $model, &$data)
   {
+    $platform = $this->container->platform;
+
     $metadataField = $model->getFieldAlias('metadata');
 
-    if ( !$model->hasField($metadataField) )
+    // Return if the $data param isn't set or is empty, or the model doesn't have a 'title' field
+    if ( !is_array($data) || !$model->hasField($metadataField) )
 		{
 			return;
     }
 
-    // Set 'metadata' field to new JRegistry object when save is for a new item (add task)
+    // Set 'metadata' field to new JRegistry object when task is 'add' (bind not called yet)
     if (!is_object($model->metadata) && (!$model->metadata instanceof Registry))
     {
       $model->metadata = new Registry();
     }
 
-    // save() method doesn't save state to session by default, but redirect to edit()
-    // after an apply() will call save() for checkIn and lose the transformed data
-    // (model repopulates from state by default).
 
-    $author = $model->input->get('metadata_author');
+    if ( isset($data['metadata_author']) && $author = $data['metadata_author'] )
+		{
+      // Remove HTML
+      $author = $platform->filterText($author);
 
-    if ($author)
-    {
-      $model->metadata->set('author', $author);
-      $model->setState('author', $author);
+			$model->metadata->set('author', $author);
     }
 
-    $robots = $model->input->get('metadata_robots');
-
-    if ($robots)
+    if ( isset($data['robots']) && $robots = $data['robots'] )
     {
+      $robots = $this->parseRobots($robots);
+
       $model->metadata->set('robots', $robots);
-      $model->setState('robots', $robots);
     }
+
+    // Set the state to the (possibly) modified metadata registry object
+    $model->setState('metadata', $model->metadata);
+  }
+
+
+  /**
+   * Parse the 'robots' state variable and format it to Google standards
+   *
+   * @param string $value   The 'robots' state variable value
+   *
+   * @return string   The formatted 'robots' text
+   */
+  private function parseRobots($value)
+  {
+      $value = strtoupper( str_replace(' ', '', $value) );
+
+      // Default to INDEX
+      $shouldIndex = strpos($value, 'NOINDEX') === false;
+
+      // Default to FOLLOW
+      $shouldFollow = strpos($value, 'NOFOLLOW') === false;
+
+      $robots = $shouldIndex ? 'INDEX,' : 'NOINDEX,';
+      $robots .= $shouldFollow ? 'FOLLOW' : 'NOFOLLOW';
+
+      return $robots;
   }
 }

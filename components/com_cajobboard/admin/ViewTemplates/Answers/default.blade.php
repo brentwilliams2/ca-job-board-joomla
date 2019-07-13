@@ -24,8 +24,8 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
 // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
-$this->container->AssetFiles->addComponentJS($this);
-$this->container->AssetFiles->addComponentJS($this);
+$this->container->AssetFiles->addComponentCss($this);
+  $this->container->AssetFiles->addViewJavascript($this);
 
 /**
  * @var  Form       $this

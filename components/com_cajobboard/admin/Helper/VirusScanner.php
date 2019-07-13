@@ -17,6 +17,25 @@ defined( '_JEXEC' ) or die;
 
 class VirusScanner
 {
+  /**
+	 * The container attached to the model
+	 *
+	 * @var Container
+	 */
+  protected $container;
+
+
+  /**
+  * Public class constructor
+ 	 *
+   * @param   Container  $container  The configuration variables to this model
+   */
+  public function __construct(Container $container)
+  {
+    $this->container = $container;
+  }
+
+
   /*
    * Rewrite the image through Image Magick to prevent embedded script in the image file
    */

@@ -18,11 +18,6 @@ use \Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use TheSeer\Tokenizer\Exception;
 
-/**
- * Utility class for categories
- *
- * @since  0.0.1
- */
 abstract class Category
 {
   /**

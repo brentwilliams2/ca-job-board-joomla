@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_issue_reports` (
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  publish_up DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   publish_down DATETIME COMMENT 'Date and time to change the state to unpublished.',
   version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_issue_reports` (
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'A title or header for this report.',
   description TEXT COMMENT 'A description of the problem.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: CreativeWork */
   about__model VARCHAR(50) NOT NULL COMMENT 'The foreign model name the item of this report refers to, e.g. Answers.',

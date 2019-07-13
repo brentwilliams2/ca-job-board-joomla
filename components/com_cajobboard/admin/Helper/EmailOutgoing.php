@@ -81,19 +81,14 @@ class EmailOutgoing
   protected $container;
 
 
-	/**
-	 * Returns the component's container
-	 *
-	 * @return  Container
-	 */
-	protected function getContainer()
-	{
-		if ( is_null(self::$container) )
-		{
-			self::$container = Container::getInstance('com_cajobboard');
-    }
-
-		return self::$container;
+  /**
+  * Public class constructor
+ 	 *
+   * @param   Container  $container  The configuration variables to this model
+   */
+  public function __construct(Container $container)
+  {
+    $this->container = $container;
   }
 
 
@@ -138,7 +133,7 @@ class EmailOutgoing
 
       PluginHelper::importPlugin('calligraphic');
 
-      $app = Factory::getApplication();
+      $app = $this->container->platform->getApplication();
 
       // 'section' => 'plugin-name',
 			// 'title'   => 'Subscriber',
@@ -211,11 +206,11 @@ class EmailOutgoing
 	{
 		if (!($user instanceof User))
 		{
-			$user = self::getContainer()->platform->getUser();
+			$user = $this->container->platform->getUser();
     }
 
 		// Load the language files and their overrides
-    $jlang = Factory::getLanguage();
+    $jlang = $this->container->platform->getLanguage();
 
 		// -- English (default fallback)
 		$jlang->load($extension, JPATH_ADMINISTRATOR, 'en-GB', true);
@@ -259,7 +254,7 @@ class EmailOutgoing
 
 		if (is_null($user))
 		{
-			$user = self::getContainer()->platform->getUser();
+			$user = $this->container->platform->getUser();
     }
 
 		// Parse the key
@@ -275,7 +270,7 @@ class EmailOutgoing
     $isHTML       = false;
 
 		// Look for desired languages
-    $jLang     = Factory::getLanguage();
+    $jLang     = $this->container->platform->getLanguage();
 
     $userLang  = $user->getParam('language', '');
 
@@ -287,7 +282,7 @@ class EmailOutgoing
 			'*'
     );
 
-		// Look for an override in the database
+		// HMVC. Look for an override in the database
 		/** @var EmailTemplates $templatesModel */
     $templatesModel = Container::getInstance('com_akeebasubs')->factory->model('EmailTemplates')->tmpInstance();
 
@@ -421,7 +416,7 @@ HTML;
 	public function getPreloadedMailer(Subscriptions $sub, $key, array $extras = array())
 	{
 		// Load the template
-    list($isHTML, $subject, $templateText, $loadLanguage) = self::loadEmailTemplate($key, $sub->akeebasubs_level_id, self::getContainer()->platform->getUser($sub->user_id));
+    list($isHTML, $subject, $templateText, $loadLanguage) = self::loadEmailTemplate($key, $sub->akeebasubs_level_id, $this->container->platform->getUser($sub->user_id));
 
 		if (empty($subject))
 		{

@@ -10,7 +10,6 @@
   *
   */
 
-  use \Calligraphic\Cajobboard\Site\Helper\User;
   use \Calligraphic\Cajobboard\Site\Helper\Format;
 
   // no direct access
@@ -42,11 +41,11 @@
   $userId = $user->id;
   $authorId = $item->Author->getId();
 
-  $canUserEdit = User::canEdit($user, $item);
+  $canUserEdit = $this->container->User::canEdit($user, $item);
 
-  $authorAvatarUri = User::getAvatar($authorId);
-  $authorProfileLink = User::getLinkToUserProfile($authorId);
-  $lastSeen = User::lastSeen($item->Author->lastvisitDate);
+  $authorAvatarUri = $this->container->User->getAvatar($authorId);
+  $authorProfileLink = $this->container->User->getLinkToUserProfile($authorId);
+  $lastSeen = $this->container->User->lastSeen($item->Author->lastvisitDate);
   $name = $item->Author->getFieldValue('name');
   $postedOn = Format::getCreatedOnText($createdOn);
 

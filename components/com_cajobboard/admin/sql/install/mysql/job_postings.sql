@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  publish_up DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   publish_down DATETIME COMMENT 'Date and time to change the state to unpublished.',
   version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
@@ -41,12 +41,15 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_postings` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this job posting in the back-end interface.',
+  note TEXT COMMENT 'A note to save with this job posting in the back-end interface.',
+
+  /* SCHEMA: Thing */
+  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
+  description TEXT COMMENT 'Long description of the job posting.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  image JSON COMMENT 'Image metadata for social share and page header images',
 
   /* SCHEMA: JobPosting */
-  title CHAR(255) COMMENT 'The title of the job posting.',
-  disambiguating_description TEXT COMMENT 'Short description of the job, used in cajobboard on job posting list pages, etc.',
-  description TEXT COMMENT 'Long description of the job posting.',
   education_requirements TEXT COMMENT 'Educational background needed for the position or Occupation.',
   experience_requirements TEXT COMMENT 'Description of skills and experience needed for the position or Occupation.',
   incentive_compensation TEXT COMMENT 'Description of bonus and commission compensation aspects of the job. Supersedes incentives.',

@@ -118,6 +118,20 @@ class CommonTemplate extends BaseTemplate
    */
   public $description;
 
+	/**
+	 * A description of the item.
+	 *
+	 * @var    string
+   */
+  public $description__intro;
+
+	/**
+	 * A description of the item.
+	 *
+	 * @var    string
+   */
+  public $image;
+
   /**
 	 * Date the item was created
 	 *
@@ -139,6 +153,14 @@ class CommonTemplate extends BaseTemplate
    * @var    \JUser
    */
   public $modified_by;
+
+
+  /**
+	 * Same as created_on date by default, date and time the item is published.
+	 *
+   * @var    \JUser
+   */
+  public $publish_up;
 
 
   /**
@@ -254,6 +276,25 @@ class CommonTemplate extends BaseTemplate
     $this->description = $faker->paragraph;
   }
 
+  public function description__intro ($config, $faker)
+  {
+    $this->description__intro = $faker->text(280);
+  }
+
+  public function image ($config, $faker)
+  {
+    $this->image = '{
+      "image_intro":"images\/sampledata\/fruitshop\/apple.jpg",
+      "float_intro":"right",
+      "image_intro_alt":"Sample intro image alt get",
+      "image_intro_caption":"A job board image",
+      "image_fulltext":"images\/sampledata\/parks\/banner_cradle.jpg",
+      "float_fulltext":"",
+      "image_fulltext_alt":"Sample fulltext image alt text",
+      "image_fulltext_caption":"a park!"
+    }';
+  }
+
   public function created_by ($config, $faker)
   {
     $this->created_by = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
@@ -264,6 +305,12 @@ class CommonTemplate extends BaseTemplate
     $dateTime = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
 
     $this->created_on = $dateTime->format('Y-m-d H:i:s');
+    $this->publish_up = $dateTime->format('Y-m-d H:i:s');
+  }
+
+  public function publish_up ($config, $faker)
+  {
+    return;
   }
 
   public function modified_by ($config, $faker)

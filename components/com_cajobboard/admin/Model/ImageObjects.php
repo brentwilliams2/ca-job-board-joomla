@@ -153,6 +153,12 @@ class ImageObjects extends BaseDataModel
 
    */
 
+  // @TODO: update script.cajobboard.php with the correct parameters for image handling. Right now they're set to:
+  //          'params'           => '{"category_layout": "", "image": "", "image_alt": "", "thumbnail_aspect_ratio": "aspect-ratio-4-3", "image_aspect_ratio": "aspect-ratio-4-3"}',
+  //        also files:
+  //          admin/Cli/InstallScriptTester.php
+  //          admin/models/forms/category.answers.xml  which is a template for setting parameters per-model
+
   // @TODO: Need to warn the administrator if the sizes for thumb / small / medium / large images are changed
   //        that all images will need to be resized, and then trigger all images to reprocess. Might need a job control shell script.
 

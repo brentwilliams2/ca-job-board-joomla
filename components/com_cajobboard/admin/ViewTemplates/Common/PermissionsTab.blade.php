@@ -78,7 +78,7 @@
 
   */
 
-  @TODO: Finish this
+  // @TODO: Finish this
 ?>
 
 <input id="jform_title" type="hidden" name="helloworld-message-title"/>

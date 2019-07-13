@@ -17,6 +17,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\EmptyField;
+use \Calligraphic\Cajobboard\Admin\Model\Exception\SearchEngineUnfriendlyTitleField;
 
 // no direct access
 defined( '_JEXEC' ) or die;
@@ -30,33 +31,56 @@ defined( '_JEXEC' ) or die;
 class Check extends Observer
 {
   /**
+   * The model attached to this validation instance. Behaviours are outside of the
+   * context of the model they are created in (using addBehaviour in the model constructor).
+   *
+   * @var DataModel
+   */
+  private $model;
+
+
+  /**
+   * Models that should require search-engine friendly page titles, e.g. sixty characters or less
+   */
+  public $sefFriendlyModels = array(
+    'JobPostings',
+    'Organizations'
+  );
+
+
+  /**
 	 * Add the category id field to the fieldsSkipChecks list of the model.
 	 * it should be empty so that we can fill it in through this behaviour.
 	 *
 	 * @param   DataModel  $model
 	 */
-	public function onBeforeCheck(DataModel $model)
+	public function onCheck(DataModel $model)
 	{
-    $this->checkForEmpty($model);
+    $this->model = $model;
+
+    $this->checkForEmpty();
+
+    $this->checkForSearchEngineFriendlyTitle();
   }
 
 
   /**
 	 * Checks for empty fields that are declared as NOT NULL and don't have a default value
-	 *
-	 * @param   DataModel  $model
 	 */
-	protected function checkForEmpty(DataModel $model)
+	protected function checkForEmpty()
 	{
-		foreach ($model->getKnownFields() as $fieldName => $field)
+		foreach ($this->model->getKnownFields() as $fieldName => $field)
 		{
 			// Never check the key if it's empty; an empty key is normal for new records
-			if ($fieldName == $model->idFieldName)
+			if ($fieldName == $this->model->idFieldName)
 			{
 				continue;
-			}
+      }
 
-			$value = $model->getFieldValue($fieldName);
+      // Get the value of the field, accounting for field aliases
+      $value = $model->getFieldValue( $model->getFieldAlias($fieldName) );
+
+
 
 			if (
         // Check if the table SQL is set to NOT NULL
@@ -65,7 +89,8 @@ class Check extends Observer
         // Check if the field is null
         empty($value) && !is_numeric($value) &&
 
-        // Make sure the model's not set to skip checking for this field
+        // Make sure the model's not set to skip checking for this field. Assumes real field
+        // names (and not aliases) are used in the skip_checks configuration parameter.
         is_array($model->fieldsSkipChecks) && !in_array($fieldName, $model->fieldsSkipChecks)
       )
 			{
@@ -77,11 +102,39 @@ class Check extends Observer
 					continue;
 				}
 
-        $modelItemName = $model->getContainer()->inflector->singularize( $model->getName();
+        $modelItemName = $model->getContainer()->inflector->singularize( $model->getName() );
 
 				throw new EmptyField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_NOT_NULL_MODEL_FIELD_EMPTY'), $modelItemName, $fieldName );
 			}
 		}
+  }
+
+
+  /**
+	 * Checks that the title field or it's aliased field is search-engine friendly (e.g. length-limited to 60 characters)
+	 */
+	protected function checkForSearchEngineFriendlyTitle()
+	{
+    // only check title field length on models that will be
+    // shown in search results or shared on social networks
+    if ( !in_array( $this->model->getName(), $this->sefFriendlyModels ) )
+    {
+      return;
+    }
+
+    $value = $model->getFieldValue( $model->getFieldAlias('title') );
+
+    // Strip HTML from the title field  @TODO: move to mixin
+    $value = $this->container->input->getCmd($value, '');
+
+    $model->setFieldValue($fieldName, $value);
+
+    $length = strlen($value);
+
+    if ( $length > 60 )
+    {
+      throw new SearchEngineUnfriendlyTitleField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_MODEL_FIELD_TITLE_IS_SEARCH_ENGINE_UNFRIENDLY'), $length );
+    }
   }
 }
 

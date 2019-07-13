@@ -12,25 +12,35 @@
 
 namespace Calligraphic\Cajobboard\Admin\Dispatcher;
 
+// no direct access
+defined('_JEXEC') or die;
+
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
+if(!defined('LENGTH_NOT_ENFORCED')) define('LENGTH_NOT_ENFORCED', 0);
+if(!defined('LENGTH_TRUNCATE_ON_EXCEEDED')) define('LENGTH_TRUNCATE_ON_EXCEEDED', 1);
+if(!defined('LENGTH_REJECT_ON_EXCEEDED')) define('LENGTH_REJECT_ON_EXCEEDED', 2);
 
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Toolbar\Toolbar;
 use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Dispatcher\ContainerServices;
+use \Calligraphic\Cajobboard\Admin\Dispatcher\Exception\UnknownControllerFailure;
 
 // Classes injected into Container
 use \Calligraphic\Cajobboard\Admin\Dispatcher\ExceptionHandler;
 use \Calligraphic\Cajobboard\Admin\Helper\AssetFiles;
 use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
 use \Calligraphic\Cajobboard\Admin\Helper\EmailOutgoing;
+use \Calligraphic\Cajobboard\Admin\Helper\Format;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\VideoObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
+use \Calligraphic\Cajobboard\Admin\Helper\SefLinks;
+use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 use \Calligraphic\Library\Platform\Inflector;
-
-// no direct access
-defined('_JEXEC') or die;
+use \Identicon\Identicon;
 
 // Load extended array functions, based on Laravel 4's "helpers.php"
 require_once(JPATH_LIBRARIES . DS . 'fof30' . DS . 'Utils' . DS . 'helpers.php');
@@ -52,7 +62,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	protected $viewNameAliases = [];
 
 
-	/**
+  /**
 	 * @param Container   $container
 	 * @param array       $config
 	 */
@@ -67,9 +77,13 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     // MUST be called affer container services are added
     $this->initInflectorVocab();
 
-    $this->setViewAliases(array(
-      // @TODO: Setup any view aliases in use: PII, FCRA?
-    ));
+    // Setup any back-end view aliases in use: PII, FCRA
+    if ( $this->container->platform->isBackend() )
+    {
+      $this->setViewAliases(array(
+        //
+      ));
+    }
   }
 
 
@@ -92,22 +106,53 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     $this->loadTranslations();
 
     // Load assets
-    $this->setAssetPaths();
-    $this->addJavascript();
-    $this->addCss();
+    $this->container->AssetFiles->setAssetPaths();
+    $this->container->AssetFiles->addComponentJavascript();
+    $this->container->AssetFiles->addComponentCss();
   }
 
 
   /**
 	 * Set view aliases. Call from onBeforeDispatch methods.
    *
-   * @param array $aliases   An array of view aliases to set
+   * @param array $aliases   An array of view aliases to set, in the format 'alias' => 'RealView'
 	 *
 	 * @return  void
 	 */
 	public function setViewAliases($aliases)
 	{
     array_merge($this->viewNameAliases, $aliases);
+  }
+
+
+  /**
+	 * Get a view name from its alias, if set.
+   *
+   * @param string $alias   The view alias to get the real name for
+	 *
+	 * @return  string|false   Returns the real name for the view alias, or false if no match
+	 */
+	public function getViewNameFromAlias($alias)
+	{
+    if ( isset($this->viewNameAliases[$alias]) )
+    {
+      return $this->viewNameAliases[$alias];
+    }
+
+    return false;
+  }
+
+
+  /**
+	 * Get a view alias from its name, if set.
+   *
+   * @param string $alias   The view name to get the alias for
+	 *
+	 * @return  string|false   Returns the view alias, or false if no match
+	 */
+	public function getViewAlias($name)
+	{
+    return array_search($name, $this->viewNameAliases);
   }
 
 
@@ -153,60 +198,59 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
    */
   protected function addContainerServices()
   {
-    $this->container->ImageObjectAspectRatiosEnum = function ($c) {
+    // Add any admin-only services here
+    if ( $this->container->platform->isBackend() )
+    {
+      $this->container->SefLinks = function ($container) {
+        return new SefLinks($container);
+      };
+    }
+
+    // Common services for both back-end and front-end of the site
+    $this->container->AssetFiles = function ($container) {
+      return new AssetFiles($container);
+    };
+
+    $this->container->EmailIncoming = function ($container) {
+      return new EmailIncoming($container);
+    };
+
+    $this->container->EmailOutgoing = function ($container) {
+      return new EmailOutgoing($container);
+    };
+
+    $this->container->ExceptionHandler = function ($container) {
+      return new ExceptionHandler($container);
+    };
+
+    $this->container->Format = function ($container) {
+      return new Format($container);
+    };
+
+    $this->container->Identicon = function ($container) {
+      return new Identicon();
+    };
+
+    $this->container->ImageObjectAspectRatiosEnum = function ($container) {
       return new ImageObjectAspectRatiosEnum();
     };
 
-    $this->container->VideoObjectAspectRatiosEnum = function ($c) {
-      return new VideoObjectAspectRatiosEnum();
-    };
-
-    $this->container->EmailOutgoing = function ($c) {
-      return new EmailOutgoing();
-    };
-
-    $this->container->EmailIncoming = function ($c) {
-      return new EmailIncoming();
-    };
-
-    $this->container->MessageCounts = function ($c) {
-      return new MessageCounts();
-    };
-
-    $this->container->AssetFiles = function ($c) {
-      return new AssetFiles();
-    };
-
-    $this->container->ExceptionHandler = function ($c) {
-      return new ExceptionHandler();
-    };
-
-    // overriding inflector already loaded, not an option in fof.xml
-    $this->container->inflector = function ($c) {
+    // overriding inflector already loaded, not an option to set the inflector in fof.xml
+    $this->container->inflector = function ($container) {
       return new Inflector();
     };
-  }
 
+    $this->container->MessageCounts = function ($container) {
+      return new MessageCounts($container);
+    };
 
-  /*
-   * Load component-wide and individual component Javascript files
-   *
-   * @return  void
-   */
-  protected function addJavascript()
-  {
-    $this->container->AssetFiles->addComponentJS();
-  }
+    $this->container->TableFields = function ($container) {
+      return new TableFields($container);
+    };
 
-
-  /*
-   * Load component-wide and individual component style sheets
-   *
-   * @return  void
-   */
-  protected function addCss()
-  {
-    $this->container->AssetFiles->addComponentCSS();
+    $this->container->VideoObjectAspectRatiosEnum = function ($container) {
+      return new VideoObjectAspectRatiosEnum();
+    };
   }
 
 
@@ -250,7 +294,14 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
       }
 
       // Get and execute the controller
-      $this->controller = $this->container->factory->controller($this->view, $this->config)->execute($task);
+      $this->controller = $this->container->factory->controller($this->view, $this->config);
+
+      $status = $this->controller->execute($task);
+
+      if (!$status)
+      {
+        throw new UnknownControllerFailure();
+      }
 
 		  $this->triggerEvent( $isCli ? 'onAfterDispatchCLI' : 'onAfterDispatch' );
     }

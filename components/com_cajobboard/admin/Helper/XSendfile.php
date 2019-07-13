@@ -51,5 +51,21 @@ use \FOF30\Container\Container;
 
 class XSendfile
 {
+  /**
+	 * The container attached to the model
+	 *
+	 * @var Container
+	 */
+  protected $container;
 
+
+  /**
+  * Public class constructor
+ 	 *
+   * @param   Container  $container  The configuration variables to this model
+   */
+  public function __construct(Container $container)
+  {
+    $this->container = $container;
+  }
 }

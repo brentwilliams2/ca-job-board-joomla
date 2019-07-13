@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_work_flows` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the work flow, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Description of the work flow.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
 
   /* SQL DDL */
   PRIMARY KEY (work_flow_id)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="cajobboard" method="upgrade">
+<extension version="3.9" type="plugin" group="actionlog" method="upgrade">
   <name>PLG_ACTIONLOG_CAJOBBOARD_ANALYTICS</name>
   <creationDate>May 2019</creationDate>
   <author>Kevin Brown</author>
@@ -13,9 +13,12 @@
   <files>
     <filename plugin="cajobboard_analytics">cajobboard_analytics.php</filename>
     <filename>index.html</filename>
-    <filename>cajobboard_analytics.xml</filename>
+    <filename>cajobboard_analytics.script.php</filename>
     <folder>language</folder>
   </files>
+
+  <scriptfile>cajobboard_analytics.script.php</scriptfile>
+
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_actionlog_cajobboard_analytics.ini</language>
     <language tag="en-GB">language/en-GB/en-GB.plg_actionlog_cajobboard_analytic.sys.ini</language>

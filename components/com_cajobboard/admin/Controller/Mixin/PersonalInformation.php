@@ -13,14 +13,16 @@
 namespace Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
 use \FOF30\Container\Container;
+use \Joomla\CMS\Language\Text;
+use \Calligraphic\Cajobboard\Admin\Controller\Exception\FeatureToggleFailure;
 
 // no direct access
 defined('_JEXEC') or die;
 
 trait PersonalInformation
 {
-  // @TODO: Need to decide exactly where PII access control will be handled. We have a behaviour for models,
-  //        and also can use it per-field in view emplates.
+  // PII access control is handled in the controller, with a behaviour for models,
+  // and can be used per-field in view templates.
 
 	/**
 	 * Runs before executing a task in the controller
@@ -31,16 +33,14 @@ trait PersonalInformation
 	 */
 	public function onBeforeExecute($task)
 	{
-		/** @var Container $container */
-    $container = $this->container;
-
 		/** @var \JUser $user */
     $user = $container->platform->getUser();
 
 		if (!$user->authorise('cajobboards.pii', 'com_cajobboard'))
 		{
-			throw new \RuntimeException(\JText::_('COM_CAJOBBOARD_COMMON_NO_ACL_PII'), 403);
-		}
+			throw new \RuntimeException( Text::_('COM_CAJOBBOARD_EXCEPTION_COMMON_NO_ACL_PII'), 403 );
+    }
+
 		return true;
 	}
 }

@@ -10,13 +10,13 @@
  *
  */
 
-header(“Cache-Control: no-cache, must-revalidate”);
-header(“Expires: Mon, 26 Jul 1997 05:00:00 GMT”);
-header(“content-type: text/xml”);
+header('Cache-Control: no-cache, must-revalidate');
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('content-type: text/xml');
 ?>
 
-<?xml version=”1.0″ encoding=”utf-8″?>
-<rss xmlns:content=”http://purl.org/rss/1.0/modules/content/” version=”2.0″>
+<?xml version='1.0″ encoding='utf-8″?>
+<rss xmlns:content='http://purl.org/rss/1.0/modules/content/' version='2.0″>
 
 <title>{{$YOUR_SITE_TITLE_MENTIONED_IN_GLOBAL_CONFIGURATION}}</title>
 <link>{{{$YOUR_DOMAIN_BASE_URL}}}</link>

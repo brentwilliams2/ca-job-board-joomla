@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages` (
 
   /* SCHEMA: Thing */
   description TEXT COMMENT 'Body text of this message.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
   name VARCHAR(255) COMMENT 'Subject field of the e-mail. Aliased by title property.',
   about__foreign_model_id BIGINT UNSIGNED NOT NULL COMMENT 'The foreign ATS model primary key that this message belongs to',
   about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign ATS model this message belongs to, discriminator field for single-table inheritance',

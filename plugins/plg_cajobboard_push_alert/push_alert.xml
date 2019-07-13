@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <extension version="3.9" type="plugin" group="cajobboard" method="upgrade">
+	<name>PLG_CAJOBBOARD_PUSH_ALERT</name>
+  <creationDate>May 2019</creationDate>
+  <author>Kevin Brown</author>
+  <authorEmail>admin@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <copyright>Copyright (C) 2019 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <version>0.0.1</version>
+  <description>PLG_CAJOBBOARD_PUSH_ALERT_DESC</description>
+
+  <files>
+    <filename plugin="push_alert">push_alert.php</filename>
+    <folder>language</folder>
+  </files>
+
+  <languages>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_push_alert.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_push_alert.sys.ini</language>
+  </languages>
+
+	<config>
+		<fields name="params" >
+			<fieldset name="basic">
+				<field name="pushalert_web_id" type="text" default="" label="PushAlert Website ID" description="Please enter the PushAlert Website ID from your Dashboard Settings here."/>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

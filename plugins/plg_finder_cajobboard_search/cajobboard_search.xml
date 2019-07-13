@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.1" type="plugin" group="finder" method="upgrade">
+<extension version="3.9" type="plugin" group="finder" method="upgrade">
 	<name>PLG_FINDER_CAJOBBOARD_SEARCH</name>
-	<author></author>
-	<creationDate></creationDate>
-	<copyright></copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail></authorEmail>
-	<authorUrl></authorUrl>
-	<version></version>
+  <creationDate>May 2019</creationDate>
+  <author>Kevin Brown</author>
+  <authorEmail>admin@calligraphic.design</authorEmail>
+  <authorUrl>www.calligraphic.design</authorUrl>
+  <copyright>Copyright (C) 2019 Calligraphic. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <version>0.0.1</version>
 	<description>PLG_FINDER_CAJOBBOARD_SEARCH_DESC</description>
 
   <files>
@@ -16,6 +16,7 @@
     <filename>cajobboard_search.xml</filename>
     <folder>language</folder>
   </files>
+
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.plg_finder_cajobboard_search.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_finder_cajobboard_search.sys.ini</language>

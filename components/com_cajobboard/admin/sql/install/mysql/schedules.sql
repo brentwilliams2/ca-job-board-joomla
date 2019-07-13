@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_schedules` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Short description of the schedule, used for the text shown on social media via shares and search engine results.',
+  description TEXT COMMENT 'Description of the schedule',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SQL DDL */
   PRIMARY KEY (schedule_id)

@@ -181,20 +181,19 @@ class JobPostings extends BaseDataModel
          also "Share this job with User x" button to message / email a request
   */
 
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
+
+	/**
+   * Add an Action Log entry for analytics via the analytics plugin
+   *
+	 * @param   DataModel  $model
+	 * @param   \stdClass  $dataObject
 	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_JOB_POSTING_ERR_TITLE');
+  public function onBeforeCreate(&$subject, &$dataObject)
+  {
+    $createdOnField = $this->getFieldAlias('created_on');
 
-		parent::check();
+    $dataObject->$createdOnField = $model->getFieldValue('created_on');
 
-    return $this;
+    $this->triggerEvent('onCalligraphicJobPostingCreate');
   }
 }

@@ -3,15 +3,16 @@
  * Extended Pagination object for use in site views
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   July 13, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
 
 namespace Calligraphic\Cajobboard\Site\Helper;
 
+use \FOF30\Model\DataModel;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Pagination\Pagination as JoomlaPagination;
@@ -20,44 +21,99 @@ use \Joomla\CMS\Pagination\Pagination as JoomlaPagination;
 defined('_JEXEC') or die;
 
 /**
- * Pagination Class. Provides a common interface for content pagination for the Joomla! CMS.
- *
- * @since  1.5
+ * Pagination Class. Provides a common interface for content pagination using Joomla! CMS classes.
  */
-class Pagination extends JoomlaPagination
+class Pagination
 {
-	/**
-	 * Creates a dropdown box for selecting how many records to show per page.
-	 *
-	 * @return  string  The HTML for the limit # input box.
-	 */
-	public function getLimitBox()
-	{
-    $limits = array();
+  /**
+   * A reference to the application container
+   *
+   * @property Container
+   */
+  protected $container = null;
 
-		// Make the option list. $limits looks like: 5, 10, 15, 20, 25, 30, 50, 100, All
-		for ($i = 5; $i <= 30; $i += 5)
+
+  /**
+	 * @param   Container   $container    The application container
+	 */
+	public function __construct ($container)
+	{
+    $this->container = $container;
+  }
+
+
+  /**
+	 * Return a Joomla! Pagination instance.
+	 *
+	 * @param   integer         $total       The total number of items.
+	 * @param   integer         $limitstart  The offset of the item to start at.
+	 * @param   integer         $limit       The number of items to display per page.
+	 * @param   string          $prefix      The prefix used for request variables.
+	 * @param   CMSApplication  $app         The application object
+	 */
+  public function getJoomlaPaginator($total, $limitstart, $limit, $prefix = '', CMSApplication $app = null)
+  {
+    return new JoomlaPagination($total, $limitstart, $limit, $prefix, $app);
+  }
+
+
+  /**
+	 * Create the pagination options for this view. This logic is refactored
+   * out of the base Raw view's onBeforeBrowse() method.
+   *
+   * @param  DataModel  $model    The model object for this view
+	 *
+	 * @return void
+	 */
+	public function getPaginationParams(DataModel $model)
+	{
+    // Display limits
+    $defaultLimit = 20;
+
+  	// Create the lists object
+    $paginationOptions = new \stdClass();
+
+    $defaultLimit = $this->container->platform->getConfigOption('list_limit', 20);
+
+    $model->limitstart = $paginationOptions->limitStart = $model->getState('limitstart', 0, 'int');
+
+    $model->limit = $paginationOptions->limit = $model->getState('limit', $defaultLimit, 'int');
+
+    // Ordering information
+    // @TODO: display by "featured" at top and by date or other criteria like in admin section for Answers
+    $paginationOptions->order = $model->getState('filter_order', 'created_on', 'cmd');
+
+    $paginationOptions->order_Dir = $model->getState('filter_order_Dir', 'ASC', 'cmd');
+
+		if ($paginationOptions->order_Dir)
 		{
-			$limits[] = HTMLHelper::_('select.option', "$i");
+			$paginationOptions->order_Dir = strtolower($paginationOptions->order_Dir);
     }
 
-		$limits[] = HTMLHelper::_('select.option', '50', Text::_('J50'));
-		$limits[] = HTMLHelper::_('select.option', '100', Text::_('J100'));
-    $limits[] = HTMLHelper::_('select.option', '0', Text::_('JALL'));
+    // $paginationOptions->order      The field name to order by
+    // $paginationOptions->order_Dir  The direction to order by (ASC for ascending or DESC for descending)
+    // Alias of $this->setState('filter_order', $paginationOptions->order) and $this->setState('filter_order_Dir', $paginationOptions->order_Dir)
+    $model->orderBy($paginationOptions->order, $paginationOptions->order_Dir);
 
-    $selected = $this->viewall ? 0 : $this->limit;
+    return $paginationOptions;
+  }
 
-		// Build the select list.
-    $html = HTMLHelper::_(
-      'select.genericlist',
-      $limits,
-      'pagination-limit',
-      'class="pagination-limit" size="1" onchange="paginationLimitSubmit()"',
-      'value',
-      'text',
-      $selected
-    );
 
-		return $html;
-	}
+  /**
+   * Create a Pagination object by querying the DB for a count of total items,
+   * based on the previous query filters used to actually fetch the data.
+   *
+   * @param  DataModel  $model    The model object for this view
+   * @param  \StdClass  $options  An object with properties
+	 *
+	 * @return void
+   */
+  public function getPaginator(DataModel $model, $paginationOptions)
+	{
+    // Run a "count all" query on the DB (or get the cached count)
+    $this->itemCount = $model->count();
+
+    // Create the view's pagination object with results from the model
+    return $this->getJoomlaPaginator($this->itemCount, $paginationOptions->limitStart, $paginationOptions->limit);
+  }
 }

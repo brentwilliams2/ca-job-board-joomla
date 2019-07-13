@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="cajobboard" method="upgrade">
+<extension version="3.9" type="plugin" group="cajobboard" method="upgrade">
   <name>PLG_CAJOBBOARD_MAIL</name>
   <creationDate>May 2019</creationDate>
   <author>Kevin Brown</author>
@@ -11,9 +11,9 @@
   <description>PLG_CAJOBBOARD_MAIL_DESC</description>
 
   <files>
-    <filename plugin="cajobboard_mail">cajobboard_mail.php</filename>
+    <filename plugin="mail">mail.php</filename>
     <filename>index.html</filename>
-    <filename>cajobboard_mail.xml</filename>
+    <filename>mail.xml</filename>
     <folder>language</folder>
   </files>
 

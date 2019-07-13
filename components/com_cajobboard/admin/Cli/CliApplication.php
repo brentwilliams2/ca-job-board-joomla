@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 /**
  * CLI that loads FOF and Joomla! framework
@@ -34,6 +33,7 @@ define('JPATH_BASE', rtrim(realpath(dirname(__DIR__) . '/../../../'), DIRECTORY_
 // Load Joomla's constant definitions
 require_once JPATH_BASE . '/includes/defines.php';
 
+
 // Load the framework classes
 if (file_exists(JPATH_LIBRARIES . '/import.legacy.php'))
 {
@@ -60,23 +60,27 @@ JFactory::getConfig()->set('session_name', 'administrator');
 // Current path to script
 $path = array(realpath(dirname(__FILE__)) . '/');
 
+$autoloader = FOF30\Autoloader\Autoloader::getInstance();
+
 // Add the current namespace to the autoloader
-FOF30\Autoloader\Autoloader::getInstance()->addMap('Calligraphic\\Cajobboard\\Admin\\Cli\\', $path);
+$autoloader->addMap('Calligraphic\\Cajobboard\\Admin\\Cli\\', $path);
 
 // Path to Helper directory
 $helperPath = array(realpath(dirname(__FILE__) . '/../Helper') . '/');
 
 // Add the Helper namespace to the autoloader
-FOF30\Autoloader\Autoloader::getInstance()->addMap('Calligraphic\\Cajobboard\\Admin\\Helper\\', $helperPath);
+$autoloader->addMap('Calligraphic\\Cajobboard\\Admin\\Helper\\', $helperPath);
 
 // Path to Form directory
 $formPath = array(realpath(dirname(__FILE__) . '/../Form') . '/');
 
 // Quiet errors about forms on model save by adding the Form namespace to the autoloader
-FOF30\Autoloader\Autoloader::getInstance()->addMap('Calligraphic\\Cajobboard\\Admin\\Form\\', $formPath);
+$autoloader->addMap('Calligraphic\\Cajobboard\\Admin\\Form\\', $formPath);
+
+/* Plugin events not firing on CLI? */
 
 // Rebuild the PHP global autoloader
-FOF30\Autoloader\Autoloader::getInstance()->register();
+$autoloader->register();
 
 // Add Composer autoloader for applications in vendor directory
 require_once JPATH_ADMINISTRATOR . '/components/com_cajobboard/vendor/autoload.php';
@@ -142,13 +146,54 @@ class CliApplication extends JApplicationCli
 	 */
   public function execute()
   {
+    \JPluginHelper::importPlugin('system');
+
+    // Trigger the onAfterInitialise event.
+    $this->triggerEvent('onAfterInitialise');
+
     // Get a FOF Container to use. Must be in execute() method.
     $this->container = Container::getInstance('com_cajobboard');
 
-    // Sections can be 'auto', 'inverse', 'site', or 'admin'
+    // Sections for FOF30 use, can be 'auto', 'inverse', 'site', or 'admin'
     $this->container->factory->setSection('admin');
+
+    // The container lazy-loads services, so services that are set on the container
+    // in the dispatcher constructor or onBeforeDispatch event aren't available in
+    // cases where the CLI script accesses models directly without going through a
+    // controller. This access instantiates the dispatcher to make those services available.
+    $this->container->dispatcher;
   }
 
+  //-----------------------------------------------------------------------
+  // Following Joomla! CMSApplication and Web Application methods are for
+  // the benefit of system plugins responding to onAfterInitialise event
+  //-----------------------------------------------------------------------
+  public function isClient($identifier)
+	{
+		return 'administrator' === $identifier;
+  }
+
+  public function isSite()
+	{
+		return $this->isClient('site');
+  }
+
+  public function isAdmin()
+	{
+		return $this->isClient('administrator');
+  }
+
+	public function getName()
+	{
+		return 'administrator';
+	}
+
+  public function getUserState($key, $default = null)
+	{
+    return $default;
+  }
+
+  //-----------------------------------------------------------------------
 
   /**
    * Default banner to display above CLI application output

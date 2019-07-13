@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   locked_by INT DEFAULT '0' COMMENT 'User ID who locked the record, auto-filled by lock(), unlock().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
-  publish_up DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   publish_down DATETIME COMMENT 'Date and time to change the state to unpublished.',
   version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
@@ -41,7 +41,20 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this organization in the back-end interface.',
+  note TEXT COMMENT 'A note to save with this organization in the back-end interface.',
+
+  /* SCHEMA: Thing */
+  name CHAR(255) NOT NULL COMMENT 'The name of this organization.',
+  description TEXT COMMENT 'A description of the organization.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  image JSON COMMENT 'Image metadata for social share and page header images',
+  url VARCHAR(2083) COMMENT 'URL of employer\'s website.',
+
+  /* SCHEMA: Thing(additionalType) -> Role(roleName) */
+  role_name BIGINT UNSIGNED COMMENT 'The role of the organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_role */
+
+  /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
+  organization_type BIGINT UNSIGNED COMMENT 'The structure of the organization e.g. Non-Profit, Corporation, Sole Proprietorship, etc.', /* FK to #__cajobboard_organization_type */
 
   /* SCHEMA: Organization */
   legal_name VARCHAR(255) COMMENT 'The official name of the employer.',
@@ -55,18 +68,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   aggregate_rating BIGINT UNSIGNED COMMENT 'The overall rating, based on a collection of reviews or ratings, of the item.', /* FK to employer_reviews table */
   member_of BIGINT UNSIGNED COMMENT 'An Organization (or ProgramMembership) to which this Person or Organization belongs.', /* FK to organizations_organizations join table */
   parent_organization BIGINT UNSIGNED COMMENT 'The larger organization that this organization is a subOrganization of, if any.', /* FK to organizations table */
-
-  /* SCHEMA: Thing */
-  name CHAR(255) NOT NULL COMMENT 'The name of this organization.',
-  description TEXT COMMENT 'A description of the item.',
-  url VARCHAR(2083) COMMENT 'URL of employer\'s website.',
-  image BIGINT UNSIGNED COMMENT	'Images of the employer.', /* FK to images table */
-
-  /* SCHEMA: Thing(additionalType) -> Role(roleName) */
-  role_name BIGINT UNSIGNED COMMENT 'The role of the organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_role */
-
-  /* SCHEMA: Thing(additionalType) -> extended types in private namespace (default) */
-  organization_type BIGINT UNSIGNED COMMENT 'The structure of the organization e.g. Non-Profit, Corporation, Sole Proprietorship, etc.', /* FK to #__cajobboard_organization_type */
 
   PRIMARY KEY (organization_id)
 )
@@ -238,18 +239,6 @@ VALUES(
         "asset_id":"asset_id"
     },
     "special":{
-        "legal_name": "legal_name",
-        "email": "email",
-        "telephone": "telephone",
-        "fax_number": "fax_number",
-        "number_of_employees": "number_of_employees",
-        "location": "location",
-        "diversity_policy": "diversity_policy",
-        "aggregate_rating": "aggregate_rating",
-        "member_of": "member_of",
-        "parent_organization": "parent_organization",
-        "disambiguating_description": "disambiguating_description",
-        "image": "image"
     }
   }',
   /* router */

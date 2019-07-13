@@ -15,8 +15,8 @@
   defined('_JEXEC') or die;
 
   // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
-  $this->container->AssetFiles->addComponentJS($this);
-  $this->container->AssetFiles->addComponentJS($this);
+  $this->container->AssetFiles->addComponentCss($this);
+  $this->container->AssetFiles->addViewJavascript($this);
 
   /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
   $item = $this->getItem();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="cajobboard" method="upgrade">
+<extension version="3.9" type="plugin" group="cajobboard" method="upgrade">
   <name>PLG_CAJOBBOARD_USERGROUPS</name>
   <creationDate>May 2019</creationDate>
   <author>Kevin Brown</author>
@@ -16,8 +16,9 @@
     <filename>usergroups.xml</filename>
     <folder>language</folder>
   </files>
+
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_usergroups.ini</language>
-    <language tag="en-GB">language/en-GB/en-GB.plg_system_cajobboard_library_loader.sys.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.plg_cajobboard_usergroups.sys.ini</language>
   </languages>
 </extension>

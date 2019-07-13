@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8" type="plugin" group="osmap" method="upgrade">
+<extension version="3.9" type="plugin" group="osmap" method="upgrade">
   <name>PLG_OSMAP_CAJOBBOARD_SITEMAPS</name>
   <creationDate>May 2019</creationDate>
   <author>Kevin Brown</author>
@@ -16,6 +16,7 @@
     <filename>cajobboard_sitemaps.xml</filename>
     <folder>language</folder>
   </files>
+
   <languages>
     <language tag="en-GB">language/en-GB/en-GB.plg_osmap_cajobboard_sitemaps.ini</language>
     <language tag="en-GB">language/en-GB/en-GB.plg_osmap_cajobboard_sitemaps.sys.ini</language>

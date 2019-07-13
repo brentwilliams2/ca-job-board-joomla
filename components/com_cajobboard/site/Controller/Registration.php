@@ -18,8 +18,6 @@ use \FOF30\View\Exception\AccessForbidden;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 
-use Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
-
 // no direct access
 defined('_JEXEC') or die;
 
@@ -72,7 +70,7 @@ class Registration extends Controller
 
     try
     {
-      $$this->container->RegistrationHelper->registerUser(
+      $$this->container->Registration->registerUser(
         $model->getState('email'),
         $model->getState('userName'),
         $model->getState('name'),

@@ -6,7 +6,7 @@ die();
 @TODO: putting this in manifest files:
     <help key="JHELP_EXTENSIONS_MODULE_MANAGER_LOGIN" />
 */
-
+/*
 use \Joomla\CMS\Toolbar\Toolbar;
 use \Joomla\CMS\Component\ComponentHelper;
 use \Joomla\CMS\Factory;
@@ -122,6 +122,7 @@ public function getlimits()
 /**
 * Make sure we only call the create event through the json format.
 */
+/*
 protected function onBeforeCreate()
 {
   $format = $this->input->getCmd('format', 'html');
@@ -178,11 +179,11 @@ protected function onBeforeCreate()
     throw new AccessForbidden;
   }
 }
-
+/*
 // Coupons controller has a simple task added to predefinedTaskList ('generate'):
 public function generate($cachable = false, $urlparams = false, $tpl = null)
 {
-  /** @var  $model Akeeba\Subscriptions\Admin\Model\MakeCoupons */
+  /** @var  $model Akeeba\Subscriptions\Admin\Model\MakeCoupons *//*
   $model = $this->getModel();
   $model->makeCoupons();
   $this->setRedirect('index.php?option=com_akeebasubs&view=MakeCoupons');
@@ -230,7 +231,7 @@ protected function onBeforeEdit()
   // Try to load a record based on the Joomla! user ID
   if ($user_id)
   {
-    /** @var Users $model */
+    /** @var Users $model *//*
     $model = $this->getModel()->savestate(false);
 
     $item = $model->user_id($user_id)->firstOrNew();
