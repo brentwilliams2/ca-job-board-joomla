@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
   language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the article or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
+  hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note TEXT COMMENT 'A note to save with this comment in the back-end interface.',
 
@@ -45,17 +46,25 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'The text of the comment.',
   description__intro VARCHAR(280) COMMENT 'Short description of the comment, used for the text shown on social media via shares and search engine results.',
-  image JSON COMMENT 'Image metadata for social share and page header images',
-  about__foreign_model_id BIGINT UNSIGNED NOT NULL COMMENT 'The foreign model primary key that this comment belongs to',
+  image BIGINT UNSIGNED COMMENT 'ImageObject to use for social share and page header images.',
+  about__foreign_model_id BIGINT UNSIGNED COMMENT 'The primary key of the foreign model item that this comment belongs to.',
   about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign model this comment belongs to, discriminator field for single-table inheritance',
 
   /* SCHEMA: Comment */
-  parent_item BIGINT UNSIGNED COMMENT 'The comment is a child of. FK to #__cajobboard_comments(comment_id)',
   upvote_count INT DEFAULT '0' COMMENT 'Upvote count for this item.',
   downvote_count INT DEFAULT '0' COMMENT 'Downvote count for this item.',
 
+  /* Tree DataModel fields */
+  lft INT,
+  rgt INT,
+  `hash` CHAR(40),
+
   /* SQL DDL */
-  PRIMARY KEY (comment_id)
+  PRIMARY KEY (comment_id),
+  INDEX lft (lft),
+  INDEX rgt (rgt),
+  INDEX composite_lft_rgt (lft, rgt),
+  INDEX `hash` (`hash`)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
@@ -151,35 +160,39 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"comment_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"cat_id",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "core_content_item_id":"comment_id",
+      "core_title":"name",
+      "core_state":"enabled",
+      "core_alias":"slug",
+      "core_created_time":"created_on",
+      "core_modified_time":"modified_on",
+      "core_body":"description",
+      "core_hits":"hits",
+      "core_publish_up":"publish_up",
+      "core_publish_down":"publish_down",
+      "core_access":"access",
+      "core_params":"params",
+      "core_featured":"featured",
+      "core_metadata":"metadata",
+      "core_metakey":"metakey",
+      "core_metadesc":"metadesc",
+      "core_language":"language",
+      "core_images":"null",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_ordering":"null",
+      "core_catid":"cat_id",
+      "core_xreference":"xreference",
+      "asset_id":"asset_id"
     },
     "special":{
-        "parent_item":"parent_item",
-        "upvote_count":"upvote_count",
-        "downvote_count":"downvote_count"
+      "description":"description",
+      "description__intro":"description__intro",
+      "image":"image",
+      "about__foreign_model_id":"about__foreign_model_id",
+      "about__foreign_model_name":"about__foreign_model_name",
+      "upvote_count":"upvote_count",
+      "downvote_count":"downvote_count"
     }
   }',
   /* router */

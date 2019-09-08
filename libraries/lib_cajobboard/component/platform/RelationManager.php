@@ -32,10 +32,10 @@ class RelationManager extends \FOF30\Model\DataModel\RelationManager
 		if (empty(static::$relationTypes))
 		{
       $relationClasses = array(
-        'BelongsTo' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsTo',
-        'BelongsToMany' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsToMany',
-        'HasMany' => '\\FOF30\\Model\\DataModel\\Relation\\HasMany',
-        'HasOne' => '\\FOF30\\Model\\DataModel\\Relation\\HasOne',
+        'belongsTo' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsTo',
+        'belongsToMany' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsToMany',
+        'hasMany' => '\\FOF30\\Model\\DataModel\\Relation\\HasMany',
+        'hasOne' => '\\FOF30\\Model\\DataModel\\Relation\\HasOne',
 
         // inverseSideOfHasOne is an alias for belongsTo() relation. FOF has a hasOne() relation, where the
         // relation field is in the foreign table and allowing 1 : 0..1 relations with a NOT NULL FK field.
@@ -45,7 +45,7 @@ class RelationManager extends \FOF30\Model\DataModel\RelationManager
         // though all Schema.org properties allow collections (FOF belongsTo).
         'inverseSideOfHasOne' => '\\FOF30\\Model\\DataModel\\Relation\\BelongsTo',
         // BelongsToSTI implements BelongsTo relationship with single table inheritance
-        'BelongsToSTI' => '\\Calligraphic\\Library\\Platform\\BelongsTo'
+        'belongsToSTI' => '\\Calligraphic\\Library\\Platform\\BelongsTo'
       );
 
 			foreach ($relationClasses as $relationClassName => $relationClass)
@@ -57,3 +57,6 @@ class RelationManager extends \FOF30\Model\DataModel\RelationManager
 		return static::$relationTypes;
 	}
 }
+
+
+

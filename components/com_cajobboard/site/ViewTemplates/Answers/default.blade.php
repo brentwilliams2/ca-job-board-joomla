@@ -16,8 +16,6 @@
   // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
   $this->container->AssetFiles->addComponentCss($this);
   $this->container->AssetFiles->addViewJavascript($this);
-
-  $isPaginated = $this->container->input->get('showPagesLinks', true);
 ?>
 
 @section('header')
@@ -25,9 +23,9 @@
 
     <h4>Answers</h4>
 
-    @if ($isPaginated)
+    @if ($this->showLimitBox)
       <span class="pagination-select pull-right">
-        {{ $this->pagination->getLimitBox() }}
+        @include('site:com_cajobboard/Common/PaginationSelectResultsLimit')
       </span>
     @endif
 
@@ -49,17 +47,7 @@
 @show
 
 @section('footer')
-  @if ($isPaginated)
-    <div class="answers-footer">
-      <?php $options = array();
-        /*
-        * @TODO: Any options to pass?
-        *        showPagesLinks - whether pagination links should appear on page
-        *        showLimitStart - the hidden input box with 'limitstart' name and value
-        */
-      ?>
-      {{ $this->pagination->getPaginationLinks('joomla.pagination.links', $options) }}
-    </div>
-  @endif
+  <div class="answers-footer">
+    {{ $this->pagination->getPaginationLinks('joomla.pagination.links') }}
+  </div>
 @show
-

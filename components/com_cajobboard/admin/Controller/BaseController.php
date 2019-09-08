@@ -23,11 +23,9 @@ defined('_JEXEC') or die;
 
 class BaseController extends DataController
 {
-  use Mixin\Feature;
-  use Mixin\Redirect;
-
-  // Overrides execute() to provide predefined tasks
-  use Mixin\PredefinedTaskList;
+  use Mixin\ToggleField;          // Method to toggle boolean state fields
+  use Mixin\Redirect;             // Utilities for handling redirects in controller classes
+  use Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
 
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -46,5 +44,27 @@ class BaseController extends DataController
       'feature', 'unfeature',
       'publish', 'unpublish'
     ]);
+  }
+
+
+  /**
+	 * Set featured status to
+	 *
+	 * @return  void
+	 */
+  public function feature()
+  {
+    $this->toggleField('featured', true);
+  }
+
+
+  /**
+   * Unactivate the selected user(s)
+   *
+   * @return  void
+   */
+  public function unfeature()
+  {
+    $this->toggleField('featured', false);
   }
 }

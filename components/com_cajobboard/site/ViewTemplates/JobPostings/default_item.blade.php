@@ -1,6 +1,6 @@
 <?php
  /**
-  * Job Postings Item for Browse View Template
+  * Job Postings Item for Site Browse View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -43,8 +43,6 @@
   $saved = false;
 
   // @TODO: "Share this" social media button on job
-
-
 
    // @TODO: move all code for aggregate reviews to Job Postings repository
   $aggregateReview = new stdClass();

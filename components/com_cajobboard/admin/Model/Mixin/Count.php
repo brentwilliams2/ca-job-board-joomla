@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 trait Count
 {
   /**
-   * A count of the number of records for this model when
+   * A count of the number of records for this model
    *
    * @var int
    */

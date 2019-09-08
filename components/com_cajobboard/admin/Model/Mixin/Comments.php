@@ -58,6 +58,6 @@ trait Comments
 
     // many-to-many FK to #__cajobboard_comments
     // @TODO: check syntax
-    $this->belongsToMany('Comments', 'Comments@com_cajobboard', $this->getName() . '_id', 'comment_id', '#__cajobboard_comments_foreign_models', 'comment_id', 'foreign_model_id');
+    //$this->belongsToMany('Comments', 'Comments@com_cajobboard', $this->getName() . '_id', 'comment_id', '#__cajobboard_comments_foreign_models', 'comment_id', 'foreign_model_id');
   }
 }

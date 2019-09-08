@@ -1,0 +1,96 @@
+/**
+ * Styles for Admin Control Panel Views
+ *
+ * @package   Calligraphic Job Board
+ * @version   0.1 May 1, 2018
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+//-----------------------------------------------------------------------------
+// import ControlPanel ViewTemplate SASS Variables
+//-----------------------------------------------------------------------------
+
+@import './_control_panel_variables'; // sass-lint:disable-line clean-import-paths
+
+//-----------------------------------------------------------------------------
+// ControlPanel ViewTemplate - default view                  default.blade.php
+//-----------------------------------------------------------------------------
+
+//.control-panel-header
+//.control-panel-body
+
+//-----------------------------------------------------------------------------
+// ControlPanel ViewTemplate - header view                    header.blade.php
+//-----------------------------------------------------------------------------
+
+.tile-count {
+  margin-bottom: 20px;
+  margin-top: 5px;
+
+  .tile-stats-count {
+    overflow: hidden;
+    padding: 0 10px 0 20px;
+    position: relative;
+
+    .count-top {
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    &::before {
+      border-left: 2px solid $header-border-left;
+      content: '';
+      height: 65px;
+      left: 0;
+      margin-top: 10px;
+      position: absolute;
+    }
+
+    &:first-child {
+      &::before {
+        border-left: 0;
+      }
+    }
+
+    .count {
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 47px;
+      text-align: center;
+    }
+
+    .count-bottom {
+      font-size: 10px;
+      text-align: center;
+
+      i {
+        width: 12px;
+      }
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
+// ControlPanel ViewTemplate - sidebar navigation            sidebar.blade.php
+//-----------------------------------------------------------------------------
+
+.sidebar-nav {
+  .dropdown-toggle {
+    font-size: 16px;
+  }
+}
+
+.sidebar-footer {
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 15px;
+
+  a {
+    font-size: 17px;
+    padding: 7px 0 3px;
+    text-align: center;
+  }
+}

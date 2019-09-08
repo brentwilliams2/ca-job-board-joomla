@@ -12,7 +12,6 @@
 
 namespace Calligraphic\Cajobboard\Site\Helper;
 
-use \Calligraphic\Cajobboard\Site\Helper\Format;
 use \Joomla\CMS\Language\Text;
 
 // no direct access
@@ -60,7 +59,7 @@ class User
 	 */
 	public function lastSeen($date)
 	{
-    return Text::_('COM_CAJOBBOARD_ANSWERS_AUTHOR_LAST_SEEN_BUTTON_LABEL') . ' ' . Format::convertToTimeAgoString($date);
+    return Text::_('COM_CAJOBBOARD_ANSWERS_AUTHOR_LAST_SEEN_BUTTON_LABEL') . ' ' . $this->container->Format->convertToTimeAgoString($date);
   }
 
 

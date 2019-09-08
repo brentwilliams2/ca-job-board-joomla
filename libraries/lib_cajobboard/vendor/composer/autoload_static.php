@@ -16,6 +16,10 @@ class ComposerStaticInit164f6af515f100c020b6979374b6d0c7
         array (
             'thiagoalessio\\TesseractOCR\\' => 27,
         ),
+        'b' => 
+        array (
+            'bheller\\ImagesGenerator\\' => 24,
+        ),
         'S' => 
         array (
             'Symfony\\Component\\Process\\' => 26,
@@ -26,17 +30,33 @@ class ComposerStaticInit164f6af515f100c020b6979374b6d0c7
         array (
             'Opis\\Closure\\' => 13,
         ),
+        'N' => 
+        array (
+            'NewAgeIpsum\\' => 12,
+        ),
         'M' => 
         array (
             'Malas\\BounceHandler\\' => 20,
+        ),
+        'I' => 
+        array (
+            'Identicon\\' => 10,
         ),
         'G' => 
         array (
             'GravityMedia\\Ghostscript\\' => 25,
         ),
+        'F' => 
+        array (
+            'Faker\\' => 6,
+        ),
         'D' => 
         array (
             'Ddeboer\\Imap\\' => 13,
+        ),
+        'C' => 
+        array (
+            'CompanyNameGenerator\\' => 21,
         ),
         'A' => 
         array (
@@ -55,6 +75,10 @@ class ComposerStaticInit164f6af515f100c020b6979374b6d0c7
         array (
             0 => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src',
         ),
+        'bheller\\ImagesGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bheller/images-generator/src',
+        ),
         'Symfony\\Component\\Process\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
@@ -71,17 +95,33 @@ class ComposerStaticInit164f6af515f100c020b6979374b6d0c7
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
         ),
+        'NewAgeIpsum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/frequenc1/newage-ipsum/src',
+        ),
         'Malas\\BounceHandler\\' => 
         array (
             0 => __DIR__ . '/..' . '/malas/php-bounce-handler/src',
+        ),
+        'Identicon\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yzalis/identicon/src/Identicon',
         ),
         'GravityMedia\\Ghostscript\\' => 
         array (
             0 => __DIR__ . '/..' . '/gravitymedia/ghostscript/src',
         ),
+        'Faker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
+        ),
         'Ddeboer\\Imap\\' => 
         array (
             0 => __DIR__ . '/..' . '/ddeboer/imap/src',
+        ),
+        'CompanyNameGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fzaninotto/company-name-generator/src/CompanyNameGenerator',
         ),
         'Amenadiel\\JpGraph\\Util\\' => 
         array (

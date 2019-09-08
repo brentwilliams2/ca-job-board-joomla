@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
+use \FOF30\Platform\PlatformInterface;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Router\Route;
 
@@ -61,7 +62,8 @@ class Image extends Observer
 
   public function onBeforeSave(DataModel $model, &$data)
   {
-    $platform = $this->container->platform;
+    /** @var PlatformInterface $platform */
+    $platform = $model->getContainer()->platform;
 
     $imageField = $model->getFieldAlias('image');
 
@@ -98,9 +100,9 @@ class Image extends Observer
     {
       if ( isset($data[$param]) && $value = $data['image'] )
       {
-        $func = 'clean' . $container->inflector->camelize($param);
+        $func = 'clean' . $platform->inflector->camelize($param);
 
-        $value = $this->$func($value);
+        $value = $this->$func($value, $platform);
 
         $model->image->set($param, $value);
       }
@@ -117,7 +119,7 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanImageIntro($value)
+  protected function cleanImageIntro($value, PlatformInterface $platform)
   {
     // fails on internationalized domains
     $options = array(
@@ -139,7 +141,7 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanFloatIntro($value)
+  protected function cleanFloatIntro($value, PlatformInterface $platform)
   {
     $value = trim( strtolower($value) );
 
@@ -160,9 +162,9 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanImageIntroAlt($value)
+  protected function cleanImageIntroAlt($value, PlatformInterface $platform)
   {
-    return $this->container->platform->filterText($value);
+    return $platform->filterText($value);
   }
 
 
@@ -173,9 +175,9 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanImageIntroCaption($value)
+  protected function cleanImageIntroCaption($value, PlatformInterface $platform)
   {
-    return $this->container->platform->filterText($value);
+    return $platform->filterText($value);
   }
 
 
@@ -186,7 +188,7 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanImageFulltext($value)
+  protected function cleanImageFulltext($value, PlatformInterface $platform)
   {
     // fails on internationalized domains
     $options = array(
@@ -208,7 +210,7 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanFloatFulltext($value)
+  protected function cleanFloatFulltext($value, PlatformInterface $platform)
   {
     $value = trim( strtolower($value) );
 
@@ -229,9 +231,9 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanImageFulltextAlt($value)
+  protected function cleanImageFulltextAlt($value, PlatformInterface $platform)
   {
-    return $this->container->platform->filterText($value);
+    return $platform->filterText($value);
   }
 
 
@@ -242,8 +244,8 @@ class Image extends Observer
    *
    * @return string
    */
-  protected function cleanImageFulltextCaption($value)
+  protected function cleanImageFulltextCaption($value, PlatformInterface $platform)
   {
-    return $this->container->platform->filterText($value);
+    return $platform->filterText($value);
   }
 }

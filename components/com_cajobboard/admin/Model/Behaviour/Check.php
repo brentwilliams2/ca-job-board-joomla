@@ -31,15 +31,6 @@ defined( '_JEXEC' ) or die;
 class Check extends Observer
 {
   /**
-   * The model attached to this validation instance. Behaviours are outside of the
-   * context of the model they are created in (using addBehaviour in the model constructor).
-   *
-   * @var DataModel
-   */
-  private $model;
-
-
-  /**
    * Models that should require search-engine friendly page titles, e.g. sixty characters or less
    */
   public $sefFriendlyModels = array(
@@ -56,23 +47,23 @@ class Check extends Observer
 	 */
 	public function onCheck(DataModel $model)
 	{
-    $this->model = $model;
+    $this->checkForEmpty($model);
 
-    $this->checkForEmpty();
-
-    $this->checkForSearchEngineFriendlyTitle();
+    $this->checkForSearchEngineFriendlyTitle($model);
   }
 
 
   /**
-	 * Checks for empty fields that are declared as NOT NULL and don't have a default value
+   * Checks for empty fields that are declared as NOT NULL and don't have a default value
+   *
+   * @param   DataModel  $model
 	 */
-	protected function checkForEmpty()
+	protected function checkForEmpty(DataModel $model)
 	{
-		foreach ($this->model->getKnownFields() as $fieldName => $field)
+		foreach ($model->getKnownFields() as $fieldName => $field)
 		{
 			// Never check the key if it's empty; an empty key is normal for new records
-			if ($fieldName == $this->model->idFieldName)
+			if ($fieldName == $model->idFieldName)
 			{
 				continue;
       }
@@ -111,30 +102,34 @@ class Check extends Observer
 
 
   /**
-	 * Checks that the title field or it's aliased field is search-engine friendly (e.g. length-limited to 60 characters)
+   * Checks that the title field or it's aliased field is search-engine friendly (e.g. length-limited to 60 characters)
+   *
+   * @param   DataModel  $model
 	 */
-	protected function checkForSearchEngineFriendlyTitle()
+	protected function checkForSearchEngineFriendlyTitle(DataModel $model)
 	{
     // only check title field length on models that will be
     // shown in search results or shared on social networks
-    if ( !in_array( $this->model->getName(), $this->sefFriendlyModels ) )
+    if ( !in_array( $model->getName(), $this->sefFriendlyModels ) )
     {
       return;
     }
 
-    $value = $model->getFieldValue( $model->getFieldAlias('title') );
+    $fieldName = $model->getFieldAlias('title');
 
-    // Strip HTML from the title field  @TODO: move to mixin
-    $value = $this->container->input->getCmd($value, '');
+    $fieldValue = $model->getFieldValue($fieldName);
 
-    $model->setFieldValue($fieldName, $value);
+    // Strip HTML from the title field
+    $sanitizedValue = $model->getContainer()->input->getCmd($fieldValue, '');
 
-    $length = strlen($value);
+    $length = strlen($sanitizedValue);
 
     if ( $length > 60 )
     {
       throw new SearchEngineUnfriendlyTitleField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_MODEL_FIELD_TITLE_IS_SEARCH_ENGINE_UNFRIENDLY'), $length );
     }
+
+    $model->setFieldValue($fieldName, $sanitizedValue);
   }
 }
 

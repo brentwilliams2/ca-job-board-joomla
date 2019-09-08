@@ -33,7 +33,6 @@ define('JPATH_BASE', rtrim(realpath(dirname(__DIR__) . '/../../../'), DIRECTORY_
 // Load Joomla's constant definitions
 require_once JPATH_BASE . '/includes/defines.php';
 
-
 // Load the framework classes
 if (file_exists(JPATH_LIBRARIES . '/import.legacy.php'))
 {
@@ -89,6 +88,7 @@ use \FOF30\Container\Container;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Input\Cli;
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\Exception\CliApplicationException;
+
 
 /**
  * Calligraphic Job Board CLI Application

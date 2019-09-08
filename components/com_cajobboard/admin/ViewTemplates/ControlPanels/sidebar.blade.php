@@ -17,46 +17,9 @@
 
   $root = Uri::base(false);
 
-  // @TODO: See the code in FOF30\Toolbar renderSubmenu() for ideas
+  $sidebarLinks = $this->container->toolbar->getLinks();
 
-  /*
-(link title, icon, url, submenu items)
 
-Analytics
-Job Postings
-ATS
-  Applications
-  References
-  Recommendations
-  Questionnaires
-  Score Cards
-  Candidates
-  Tasks
-  Scheduling
-Subscriptions
-Job Alerts
-Resumes
-Profiles
-  Employer
-  Job Seeker
-  Recruiter
-  Connector
-Social Media
-  Facebook
-  Linkedin
-  Twitter
-  Instagram
-Other
-  Q&A
-  Messages
-  Reviews
-  Places
-  Media
-    Images
-    Audio
-    Video
-  Comments
-  */
 ?>
 
 <div class="control-panel-sidebar-nav">
@@ -66,13 +29,23 @@ Other
     <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown">
         <i class="icon-chart"></i>
-        Q & A
+        Links
         <span class="icon-arrow-down-3"></span>
       </a>
 
       <ul class="dropdown-menu">
-        <li><a href="#">Questions</a></li>
-      <li><a href="{{ $root }}index.php?option=com_cajobboard&view=Answers">Answers</a></li>
+        @foreach ($sidebarLinks as $link)
+          <li>
+            <a
+              href="{{ $root . $link['link'] }}" 
+              @if( $link['active'] )
+                class="active"
+              @endif
+            >
+              {{ $link['name'] }}
+            </a>
+          </li>
+        @endforeach
       </ul>
     </li>
   </ul>

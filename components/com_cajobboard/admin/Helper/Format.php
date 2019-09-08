@@ -17,6 +17,7 @@ use \FOF30\Container\Container;
 use \FOF30\Date\Date;
 use \JLoader;
 use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -27,27 +28,35 @@ defined('_JEXEC') or die;
 class Format
 {
   /**
-    * A reference to the application container
-    *
-    * @property Container
-    */
-    protected $container = null;
+   * A reference to the application container
+   *
+   * @property Container
+   */
+  protected $container;
 
 
   /**
-    * Where the currency symbol is positioned relative to the amount, valid values are 'before' and 'after
-    *
-    * @property string
-    */
-    protected $currencyPosition = null;
+   * Where the currency symbol is positioned relative to the amount, valid values are 'before' and 'after
+   *
+   * @property string
+   */
+  protected $currencyPosition;
 
 
   /**
-    * What currency symbol to use
-    *
-    * @property string
-    */
-    protected $currencySymbol = null;
+   * What currency symbol to use
+   *
+   * @property string
+   */
+  protected $currencySymbol;
+
+
+  /**
+   * The dateformat to use for this object, e.g. 'm-d-Y'
+   *
+   * @property string
+   */
+  protected $dateFormat;
 
 
   /**
@@ -66,7 +75,7 @@ class Format
 
 		if (empty($format))
 		{
-			$format = $this->container->platform->getConfigOption('dateformat', 'm-d-Y');
+			$this->dateFormat = $this->container->platform->getConfigOption('dateformat', 'm-d-Y');
     }
   }
 
@@ -125,7 +134,7 @@ class Format
 			}
     }
 
-    return $dateObject->format($this->dateformat, true);
+    return $dateObject->format($this->dateFormat, true);
   }
 
 

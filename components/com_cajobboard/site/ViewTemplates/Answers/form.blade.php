@@ -10,7 +10,6 @@
   *
   */
 
-  use \Calligraphic\Cajobboard\Site\Helper\Format;
   use \Joomla\CMS\Language\Text;
 
   // no direct access
@@ -26,14 +25,14 @@
   // model data fields
   $answerId       = $item->answer_id;
   //$created_by     = $item->created_by;      // userid of the creator of this answer.
-  $createdOn      = Format::getCreatedOnText($item->created_on);
+  $createdOn      = $this->container->Format->getCreatedOnText($item->created_on);
   //$description    = $item->description;     // Text of the answer.
   //$downvoteCount  = $item->downvote_count;  // Downvote count for this item.
   //$featured       = $item->featured;        // bool whether this answer is featured or not
   //$hits           = $item->hits;            // Number of hits this answer has received
   //$isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
   //$modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
-  $modifiedOn     = Format::getCreatedOnText($item->modified_on);
+  $modifiedOn     = $this->container->Format->getCreatedOnText($item->modified_on);
   $title          = $item->name;            // A title to use for the answer.
   //$parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questions(question_id)
   //$Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).

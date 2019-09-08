@@ -59,7 +59,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 *
 	 * @property  array
 	 */
-	protected $viewNameAliases = [];
+	protected $viewNameAliases = array();
 
 
   /**
@@ -81,7 +81,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     if ( $this->container->platform->isBackend() )
     {
       $this->setViewAliases(array(
-        //
+        'ControlPanels' => 'ControlPanel'
       ));
     }
   }
@@ -296,14 +296,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
       // Get and execute the controller
       $this->controller = $this->container->factory->controller($this->view, $this->config);
 
-      $status = $this->controller->execute($task);
+      $this->controller->execute($task);
 
-      if (!$status)
-      {
-        throw new UnknownControllerFailure();
-      }
-
-		  $this->triggerEvent( $isCli ? 'onAfterDispatchCLI' : 'onAfterDispatch' );
+      $this->triggerEvent( $isCli ? 'onAfterDispatchCLI' : 'onAfterDispatch' );
     }
 		catch (\Exception $e)
 		{

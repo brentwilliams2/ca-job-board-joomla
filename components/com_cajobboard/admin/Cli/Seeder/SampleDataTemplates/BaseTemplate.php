@@ -60,6 +60,12 @@ class BaseTemplate
 
     foreach (array_keys(get_object_vars($this)) as $property)
     {
+      // skip 'hasRoot' property used in tree data models
+      if ($property == 'hasRoot')
+      {
+        continue;
+      }
+
       if ( !method_exists($this, $property) )
       {
         throw new \Exception('Exception calling property function in CLI seeder BaseTemplate generate() method, $property: ' . $property);

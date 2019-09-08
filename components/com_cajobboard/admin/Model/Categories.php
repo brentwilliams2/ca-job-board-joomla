@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
 
 /**
  * Fields:
@@ -51,7 +51,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property  string  $language 	        Language for this category or '*' for all
  * @property  string  $version            Version history for this category
  */
-class Categories extends BaseDataModel
+class Categories extends BaseTreeModel
 {
   /*
 	 * @param   Container $container The configuration variables to this model
@@ -120,10 +120,21 @@ class Categories extends BaseDataModel
   'OrganizationRoles',
   'OrganizationTypes',
   'PersonallyIdentifiableInformation',
-  'QAPages',
-  'QAPages',
+  'QAPageCategories',
+  'Questions',
   'ResumeAlerts',
   'ScoreCards',
   'Uncategorised',
   'WorkFlows'
+
+
+
+
+  // Existing categories that don't have models for them
+	Awards
+	Help
+	Questionnaires   // Questions
+	Scheduling      // Schedules
+
+  Uncategorised
 */

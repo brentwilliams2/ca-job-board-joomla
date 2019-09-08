@@ -33,7 +33,7 @@ class BaseDataModel extends DataModel
   use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
   use Mixin\Core;                 // Utility methods
   use Mixin\Count;                // Overridden count() method to cache value
-  use Mixin\Featured;             // Toggle method for 'featured' field
+  use Mixin\FieldState;           // Toggle method for boolean fields
   use Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
   use Mixin\Validation;           // Provides over-ridden 'check' method
 

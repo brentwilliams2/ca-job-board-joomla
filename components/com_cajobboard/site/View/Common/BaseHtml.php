@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers Site Base Class for HTML View
+ * Site Base Class for HTML View
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -15,12 +15,30 @@ use \FOF30\Container\Container;
 use \FOF30\Model\DataModel\Collection;
 use \FOF30\Model\Model\DataModel;
 use \FOF30\View\DataView\Html;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;
 
 class BaseHtml extends Html
 {
+  /**
+   * Whether a combo box to choose the number of results per page should
+   * be shown on browse views
+   *
+   * @property  boolean
+   */
+  public $showLimitBox;
+
+
+  /**
+   * Whether the pagination links should be shown at the bottom of browse views
+   *
+   * @property  boolean
+   */
+   public $showPagesLinks;
+
+
 	/**
 	 * Overridden. Load view-specific language file.
 	 *
@@ -75,6 +93,8 @@ class BaseHtml extends Html
 
     // Return a pagination object using the state set previously and the results of the model query
     $this->pagination = $this->container->Pagination->getPaginator($model, $paginationOptions);
+
+    $this->showLimitBox = $model->getState('showLimitBox', true);
   }
 
 
@@ -97,5 +117,91 @@ class BaseHtml extends Html
   public function isCollection()
 	{
     return $this->items instanceof Collections;
+  }
+
+
+  /**
+   * Indicate whether the user is registered and logged in
+   *
+   * @return  boolean   Returns true if the user is registered and logged in
+   */
+  public function isUserLoggedIn()
+  {
+    // current user ID
+    $userId = $this->container->platform->getUser()->id;
+
+    return $userId != 0;
+  }
+
+
+  /**
+   * Test whether the current task matches a parameter
+   *
+   * @param   string    $task   The name of the task to compare to the current task
+   *
+   * @return  boolean   Returns true if the current task matches the parameter
+   */
+   public function isTask($task)
+   {
+     return $this->getTask() == $task;
+   }
+
+
+  /**
+   * Returns the title for the model item if it's set, or placeholder text for new records
+   *
+   * @param   string    $item
+   *
+   * @return  boolean
+   */
+  public function getTitle($item)
+  {
+    if ( isset($item->title) )
+    {
+      return $item->title;
+    }
+
+    // e.g. JobPostings
+    $viewName = $this->getName();
+
+    // e.g. COM_CAJOBBOARD_JOB_POSTINGS_TITLE_EDIT_PLACEHOLDER
+    $translationKey = 'COM_CAJOBBOARD_' . strtoupper( $this->container->inflector->underscore($viewName) ) . '_TITLE_EDIT_PLACEHOLDER';
+
+    return Text::_($translationKey);
+  }
+
+
+  /**
+   *
+   *
+   * @param   string    $item
+   *
+   * @return  boolean
+   */
+  public function getTags($item)
+  {
+    // Get Joomla! tags
+    // \Site\Model\JobPostings: protected '_has_tags' => boolean false
+    $tags = new TagsHelper;
+
+    return $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
+  }
+
+
+  /**
+   * Build the URL to for the form's action attribute
+   *
+   * @return  string   Returns the fully-qualified path to submit the form to
+   */
+  public function getFormActionUrl()
+  {
+    $url = 'index.php?option=' . $this->getContainer()->componentName . '&view=' . $this->getName();
+
+    if ( $this->isTask('edit') )
+    {
+      $url .= '&id=' . $this->getItem()->getId();
+    }
+
+    return $url;
   }
 }

@@ -1,6 +1,6 @@
 <?php
  /**
-  * Job Postings Edit View Template
+  * Job Postings Site Edit View Template
   *
   * @package   Calligraphic Job Board
   * @version   0.1 May 1, 2018
@@ -11,126 +11,109 @@
   */
 
   // Framework classes
-  use FOF30\Utils\FEFHelper\BrowseView;
-  use FOF30\Utils\SelectOptions;
+  use \FOF30\Utils\FEFHelper\BrowseView;
+  use \FOF30\Utils\SelectOptions;
+  use \Calligraphic\Cajobboard\Site\Helper\Format;
+  use \Joomla\CMS\Language\Text;
 
   // no direct access
   defined('_JEXEC') or die;
 
   $item = $this->getItem();
 
+  // @TODO: Need Database field for employer's requisition / job number and EEO statement
 
-  // URL to post the form to
-  $task = $this->getTask();
-  $action = 'index.php?option=' . $this->getContainer()->componentName . '&view=' . $this->getName();
-  if ($task === 'edit') $action .= '&id=' . $this->getItem()->getId();
+  // @TODO: Need access control for new records. Separate into add and edit files?
 ?>
 
 {{--
-#1 - Comment Title
+  #1 - Name of Employer
+  // @TODO: Need to provide access control for who should be able to change the employer a job posting links to
+  // @TODO: Should provide a drop-down list of employers to choose from that the user belongs to / can create job postings for
+  // @TODO: How do I know what employers a user belongs to?    #__cajobboard_organizations_employees
+  // @TODO: Can the employer be changed after the job posting is created?
 --}}
-@section('comment_title')
-{{-- link to individual comment --}}
-<h4>
-  <label>
-    @lang('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_LABEL')
-  </label>
-</h4>
-<input
-  type="text"
-  class="form-control"
-  name="name"
-  id="comment_title"
-  value="{{{ $title }}}"
-  placeholder="<?php echo $this->escape(isset($title) ? $title : \JText::_('COM_CAJOBBOARD_COMMENTS_TITLE_EDIT_PLACEHOLDER')); ?>"
-/>
+@section('employer_name')
+  <div class="employer-name">
+    <h4>
+      <label for="text">
+        @lang('COM_CAJOBBOARD_JOB_POSTINGS_EMPLOYER_EDIT_LABEL')
+      </label>
+    </h4>
+
+    <a
+      class="media-object employer-logo"
+      href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. $this->getEmployerId($item) )"
+    >
+      <img src="{{{ $this->getEmployerLogoSource($item) }}}" alt="{{{ $this->getEmployerLogoCaption($item) }}}">
+    </a class="media-object">
+
+    <input
+      type="text"
+      class="form-control"
+      name="employer-name"
+      id="employer-name"
+      value="{{ $this->getEmployerName($item) }}"
+    />
+  </div>
 @overwrite
 
+
 {{--
-#2 - Comment Text
+  #2 - Job Posting Title
 --}}
-@section('comment_text')
-<div class="comment_text">
-  <h4>
-    <label for="text">
-      @lang('COM_CAJOBBOARD_COMMENTS_EDIT_TEXT_LABEL')
-    </label>
-  </h4>
-  <textarea name="text" id="comment_text" class="form-control" rows="8">
-    <?php echo $this->escape(isset($text) ? $text : \JText::_('COM_CAJOBBOARD_COMMENTS_EDIT_TEXT_PLACEHOLDER')); ?>
-  </textarea>
-</div>
+@section('job_title')
+  <div class="job-title">
+    <h4>
+      <label for="text">
+        @lang('COM_CAJOBBOARD_JOB_POSTINGS_TITLE_EDIT_LABEL')
+      </label>
+    </h4>
+
+    <input
+      type="text"
+      class="form-control"
+      name="job-title-text"
+      id="job-title-text"
+      value="{{ $this->getTitle($item) }}"
+      rows="8"
+    />
+  </div>
 @overwrite
 
-{{--
-#3 - Comment Posted Date
---}}
-@section('comment_posted_date')
-{{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
-<span class="comment-posted-date">
-  @lang('COM_CAJOBBOARD_COMMENTS_POSTED_ON_BUTTON_LABEL')
-  <?php echo date("d/m/Y", strtotime($createdOn)); ?>
-</span>
-@overwrite
+
+
 
 {{--
-#4 - Comment Last Modified Date
+  Responsive container for desktop and mobile
 --}}
-@section('comment_modified_date')
-@if ($modifiedOn)
-  {{-- @TODO: check configuration for how to display, e.g. exact date and what format, or "days ago" format --}}
-  <span class="comment-posted-date">
-    @lang('COM_CAJOBBOARD_COMMENTS_MODIFIED_ON_BUTTON_LABEL')
-    <?php echo date("d/m/Y", strtotime($modifiedOn)); ?>
-  </span>
-@endif
-@overwrite
+<div class="job-posting-item">{{-- @TODO: Need to make the main container linkable $item->slug, and add special class if $item->featured --}}
 
-{{--
-  Responsive component
---}}
-@section('comment-edit-container')
-  <form action="{{{ $action }}}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
+  {{-- #1 Employer Logo --}}
+  <div class="employer-name-container">
+    @yield('employer_name')
+  </div>
+  
+  {{-- Main container --}}
+  <div class="job-posting-list-item-main-container col-md-10 col-xs-12">
 
-    <div class="comment-edit-container">
-      <div class="cajobboard-edit-form" id="cajobboard-comment-edit-form">
+    <div class="row">
+      <div class="col-md-9 col-xs-12">
 
-        <header class="block-header">
-          <h3>
-            @if($task === 'edit')
-              @lang('COM_CAJOBBOARD_COMMENTS_EDIT_HEADER')
-            @else
-              @lang('COM_CAJOBBOARD_COMMENTS_ADD_HEADER')
-            @endif
-          </h3>
-        </header>
+        <div class="row">
+          <div class="col-xs-12">
+            {{-- #2 Job Title --}}
+            @yield('job_title')
 
-        <div class="form-group">
-          <h4>@yield('comment_title')</h4>
+          </div>
         </div>
-
-        <div class="form-group">
-          <p>@yield('comment_text')</p>
-        </div>
-
-        <div class="form-group">
-          @yield('comment_posted_date')
-        </div>
-
-        <div class="form-group">
-          @yield('comment_modified_date')
-        </div>
-
-        <button class="btn btn-primary pull-right comment-submit" type="submit">
-          @lang('COM_CAJOBBOARD_SUBMIT_BUTTON_LABEL')
-        </button>
 
       </div>
+
     </div>
 
-    {{-- Hidden form fields --}}
-    <div class="cajobboard-form-hidden-fields">
-      <input type="hidden" name="@token()" value="1"/>
-    </div>
-  </form>
-@show
+  </div>{{-- End main container --}}
+
+  <div class="clearfix"></div>
+
+</div>{{-- End responsive container --}}

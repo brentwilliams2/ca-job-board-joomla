@@ -12,7 +12,7 @@
 
 namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates;
 
-use Calligraphic\Cajobboard\Admin\Cli\Seeder\JoinTableManager;
+use \Calligraphic\Cajobboard\Admin\Cli\Seeder\JoinTableManager;
 
 // no direct access
 defined('_JEXEC') or die;

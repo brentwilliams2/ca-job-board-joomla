@@ -7,13 +7,18 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'thiagoalessio\\TesseractOCR\\' => array($vendorDir . '/thiagoalessio/tesseract_ocr/src'),
+    'bheller\\ImagesGenerator\\' => array($vendorDir . '/bheller/images-generator/src'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Dotenv\\' => array($vendorDir . '/symfony/dotenv'),
     'Spatie\\Async\\' => array($vendorDir . '/spatie/async/src'),
     'Opis\\Closure\\' => array($vendorDir . '/opis/closure/src'),
+    'NewAgeIpsum\\' => array($vendorDir . '/frequenc1/newage-ipsum/src'),
     'Malas\\BounceHandler\\' => array($vendorDir . '/malas/php-bounce-handler/src'),
+    'Identicon\\' => array($vendorDir . '/yzalis/identicon/src/Identicon'),
     'GravityMedia\\Ghostscript\\' => array($vendorDir . '/gravitymedia/ghostscript/src'),
+    'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
     'Ddeboer\\Imap\\' => array($vendorDir . '/ddeboer/imap/src'),
+    'CompanyNameGenerator\\' => array($vendorDir . '/fzaninotto/company-name-generator/src/CompanyNameGenerator'),
     'Amenadiel\\JpGraph\\Util\\' => array($vendorDir . '/amenadiel/jpgraph/src/util'),
     'Amenadiel\\JpGraph\\Themes\\' => array($vendorDir . '/amenadiel/jpgraph/src/themes'),
     'Amenadiel\\JpGraph\\Text\\' => array($vendorDir . '/amenadiel/jpgraph/src/text'),

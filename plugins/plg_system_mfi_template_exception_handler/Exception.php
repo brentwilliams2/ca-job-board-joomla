@@ -26,8 +26,6 @@ defined('JPATH_PLATFORM') or die;
 
 /**
  * Displays the Multi Family Insiders template's custom error page when an uncaught exception occurs.
- *
- * @since  1.0
  */
 class MfiTemplateExceptionHandler
 {
@@ -37,30 +35,30 @@ class MfiTemplateExceptionHandler
 	 * @param   \Throwable  $error  A Throwable (PHP 7+) object for which to render the error page.
 	 *
 	 * @return  void
-	 *
-	 * @since   3.0
 	 */
 	public static function render($error)
 	{
+    if (php_sapi_name() == "cli") {
+      self::logError($error);
+
+      echo(
+        "There was a FATAL ERROR while executing the CLI script:\n"
+        . $error->getMessage() . "\n"
+        . $error->getFile() . "\n"
+        . $error->getLine() . "\n"
+        . $error->getTraceAsString()
+      );
+
+      jexit(1);
+    }
+
     // Exception is the base class for all user exceptions in PHP 7
     // Exception and Error both implement the Throwable interface
 		if ($error instanceof \Throwable)
 		{
 			try
 			{
-				// Try to log the error, but don't let the logging cause a fatal error
-				try
-				{
-					Log::add(
-						sprintf( 'Uncaught \Throwable of type %1$s thrown. Stack trace: %2$s', get_class($error), $error->getTraceAsString()	),
-						Log::CRITICAL,
-						'error'
-					);
-				}
-				catch (\Throwable $e)
-				{
-					// Logging failed, continue exception handling
-				}
+        self::logError($error);
 
         $app = Factory::getApplication();
 
@@ -87,9 +85,9 @@ class MfiTemplateExceptionHandler
 
         $document = Document::getInstance('error', $attributes);
 
+        // Quit if something went wrong getting an error document
 				if (!$document)
 				{
-					// We're probably in an CLI environment
 					jexit($error->getMessage());
         }
 
@@ -152,7 +150,7 @@ class MfiTemplateExceptionHandler
 
 		if ($error instanceof \Throwable)
 		{
-      // This is reached if unable to create and render an error document
+      // This is reached if unable to create and render a Joomla! error document
 
       // Only display sensitive data in non-production environments, but config file
       // (to check $config->debug) may not have loaded when this point is reached
@@ -221,5 +219,26 @@ EOT;
     }
 
 		jexit(1);
-	}
+  }
+
+
+	/**
+	 * Try to log the error, but don't let the logging cause a fatal error
+	 *
+	 * @param   \Throwable  $error  A Throwable (PHP 7+) object to use for rendering the log message.
+	 *
+	 * @return  void
+	 */
+	public static function logError($error)
+	{
+    try {
+      Log::add(
+        sprintf('Uncaught \Throwable of type %1$s thrown. Stack trace: %2$s', get_class($error), $error->getTraceAsString()),
+        Log::CRITICAL,
+        'error'
+      );
+    } catch (\Throwable $e) {
+      // Logging failed, continue exception handling
+    }
+  }
 }

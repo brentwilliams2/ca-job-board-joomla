@@ -111,9 +111,44 @@ class Pagination
   public function getPaginator(DataModel $model, $paginationOptions)
 	{
     // Run a "count all" query on the DB (or get the cached count)
-    $this->itemCount = $model->count();
+    $itemCount = $model->count();
+
+    $this->initShowLimitBox($model, $itemCount);
 
     // Create the view's pagination object with results from the model
-    return $this->getJoomlaPaginator($this->itemCount, $paginationOptions->limitStart, $paginationOptions->limit);
+    return $this->getJoomlaPaginator($itemCount, $paginationOptions->limitStart, $paginationOptions->limit);
+  }
+
+
+  /**
+   * Sets state variable to control whether a combo box to control results per page
+   * should be shown. Override state variable 'showLimitBox' in View if desired. This 
+   * logic is handled in the Joomla! Pagination class for the pagination buttons, but
+   * the Job Board uses a Blade template instead of a JHtml template to show the limit box.
+   * 
+   * @param   DataModel   $model    The model attached to this view
+   * @param   int         $count    The number of records to be paginated for this view
+   *
+   * @return void
+   */
+  public function initShowLimitBox(DataModel $model, $count)
+  {
+    // Don't show the limit box if there's less than a single page of results
+    if ($count <= $model->limit)
+    {
+      $model->setState('showLimitBox', false);
+      
+      return;
+    }
+
+    $showLimitBox = false;
+    
+    // Whether to show option to set number of results per page. Override in View if desired.
+    if ( null === $model->getState('showLimitBox') )
+    {
+      $showLimitBox = $this->container->platform->getConfigOption('showLimitBox', true, $model);
+    }
+
+    $model->setState('showLimitBox', false);
   }
 }

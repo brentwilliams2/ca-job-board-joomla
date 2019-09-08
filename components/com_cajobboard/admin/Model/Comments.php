@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin Comments Model
+ * 
+ * TreeModel to handle nesting of comments efficiently
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -61,6 +63,18 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
+
+ // If you need to be able to store multiple trees then simply make the root node of each such
+ // tree a child node under the single root node and adjust your code to take this into account.
+ // SEEMS like we'd have two roots: the over-arching top-level root (node 1), and then a layer of nodes
+ //       underneath that represent entities (using level = 1), and all real comments under the
+ //       item-level entities. So real items would have level = 2 and getting the tree for an item 
+ //       would be adding where clauses to the query (e.g. about__foreign_model_id = n and level = 1)
+ //         $childCategoryTree = $table->getTree($id);
+ //       First element in tree is the current category, so we can skip that one
+ //	        unset($childCategoryTree[0]);
+ //  Retrieves a one-dimensional array of all the nodes in the subtree, ordered by 'lft' column
+
 class Comments extends BaseTreeModel
 {
   use \FOF30\Model\Mixin\Assertions;
@@ -105,59 +119,16 @@ class Comments extends BaseTreeModel
     // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
-    // table field for inverseSideOfHasOne relation is in this model's table
+    // many-to-one FK to  #__cajobboard_image_objects
+    $this->hasOne('Image', 'ImageObjects@com_cajobboard', 'image', 'image_object_id');
 
-    // one-to-one FK to  #__cajobboard_comments
-    $this->inverseSideOfHasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
-
-    // STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
+    // @TODO: STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
   }
 
-  // @TODO: Should this be a TreeModel, to handle nesting of comments efficiently?
-
-  // @TODO: View needs to handle state fields for join table: foreign_model_id and foreign_model_name
+  // @TODO: handle foreign_model_id and foreign_model_name
 
   // @TODO: Add method to "attach" a message thread to a root comment if the comment is attached to particular ATS views.
   //        The idea is to provide a system where there is a special category of comment: instead of showing a normal
   //        comment thread, it pulls a message thread in to allow it to be attached to an ATS entity for candidate
   //        tracking (instead of the messages just being in user's inboxes and not reference to any ATS entity)
-
-
-
-  /**
-	 * Convenience wrapper for BaseModel getComments() method
-	 *
-	 * @return    DataCollection   Collection of Comments models
-	 */
-	public static function getComments($model)
-	{
-    return $model->getComments();
-  }
-
-
-
-  /**
-	 * Make sure we save the foreign model name in the EAV join table
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function onAfterCreate()
-	{
-    $this->saveEavJoinRecord();
-  }
-
-
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_COMMENTS_TITLE_ERR');
-
-		parent::check();
-
-    return $this;
-  }
 }

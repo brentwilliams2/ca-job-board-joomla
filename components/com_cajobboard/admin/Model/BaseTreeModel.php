@@ -16,7 +16,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
+use \FOF30\Model\TreeModel;
 use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 
 /**
@@ -33,9 +33,8 @@ class BaseTreeModel extends TreeModel
   use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
   use Mixin\Core;                 // Utility methods
   use Mixin\Count;                // Overridden count() method to cache value
-  use Mixin\Featured;             // Toggle method for 'featured' field
+  use Mixin\FieldState;           // Toggle method for boolean fields
   use Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
-  use Mixin\Attributes\Params;    // Attribute getter / setter
   use Mixin\Validation;           // Provides over-ridden 'check' method
 
   // Transformations for model properties (attributes) to an appropriate data type (e.g.
@@ -45,6 +44,17 @@ class BaseTreeModel extends TreeModel
   use Mixin\Attributes\Image;     // Attribute getter / setter
   use Mixin\Attributes\Metadata;  // Attribute getter / setter
   use Mixin\Attributes\Params;    // Attribute getter / setter
+
+  /*
+    SQL:
+      lft INT,
+      rgt INT,
+      `hash` CHAR(40),
+      INDEX lft (lft),
+      INDEX rgt (rgt),
+      INDEX composite_lft_rgt (lft, rgt),
+      INDEX `hash` (`hash`),
+  */
 
  	/**
 	 * @param   Container $container The configuration variables to this model

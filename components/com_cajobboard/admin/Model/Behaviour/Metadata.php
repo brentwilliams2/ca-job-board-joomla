@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
+use \FOF30\Platform\PlatformInterface;
 use \Joomla\Registry\Registry;
 
 // no direct access
@@ -59,7 +60,9 @@ class Metadata extends Observer
    */
   public function onBeforeSave(DataModel $model, &$data)
   {
-    $platform = $this->container->platform;
+    /** @var PlatformInterface $platform */
+
+    $platform = $model->getContainer()->platform;
 
     $metadataField = $model->getFieldAlias('metadata');
 

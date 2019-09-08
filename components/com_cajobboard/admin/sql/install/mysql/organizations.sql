@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   description TEXT COMMENT 'A description of the organization.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
   image JSON COMMENT 'Image metadata for social share and page header images',
-  url VARCHAR(2083) COMMENT 'URL of employer\'s website.',
+  url VARCHAR(2083) COMMENT 'URL of employer website.',
 
   /* SCHEMA: Thing(additionalType) -> Role(roleName) */
   role_name BIGINT UNSIGNED COMMENT 'The role of the organization e.g. Employer, Recruiter, etc.', /* FK to #__cajobboard_organization_role */

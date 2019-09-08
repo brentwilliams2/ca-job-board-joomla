@@ -295,8 +295,8 @@ class Platform extends \FOF30\Platform\Joomla\Platform
     /* @var  \Joomla\CMS\Language\Language  $language */
     $language = $this->getLanguage();
 
-    $siteLangDir  = JPATH_SITE . '/components/' . $component . '/language';
-    $adminLangDir = JPATH_ADMINISTRATOR . '/components/' . $component . '/language';
+    $siteLangDir  = JPATH_SITE . '/components/' . $component;
+    $adminLangDir = JPATH_ADMINISTRATOR . '/components/' . $component;
 
     $isBackend = $this->isBackend();
 
@@ -333,20 +333,17 @@ class Platform extends \FOF30\Platform\Joomla\Platform
 
     $view = $this->container->inflector->normalizeMediaAssetName($view);
 
-    // Language method adds file prefix and suffix
-    $qualifiedName = $component . '_' . $view;
-
     if ($isBackend)
     {
       // core language file in /administrator/language folder
-      $language->load($qualifiedName, $adminLangDir, 'en-GB', true);
-      $language->load($qualifiedName, $adminLangDir, null, true);
+      $language->load($view, $adminLangDir, 'en-GB', true);
+      $language->load($view, $adminLangDir, null, true);
     }
     else
     {
       // core language file in /language folder
-      $language->load($qualifiedName, $siteLangDir, 'en-GB', true);
-      $language->load($qualifiedName, $siteLangDir, null, true);
+      $language->load($view, $siteLangDir, 'en-GB', true);
+      $language->load($view, $siteLangDir, null, true);
     }
   }
 

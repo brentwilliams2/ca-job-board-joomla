@@ -22,7 +22,7 @@ const freader = require("fs");
 const del = require('del');
 
 // Gulp task runner
-const { src, dest, parallel, series } = require('gulp');
+const { src, dest, parallel, series, task } = require('gulp');
 
 // Filesystem watcher
 const watch = require('gulp-watch');
@@ -408,13 +408,6 @@ function compressJs() {
 }
 
 /*
- * @TODO: Implement default task
- */
-function defaultTask() {
-  console.log("Implementation of default task is empty");
-}
-
-/*
  * Output error message and die if necessary environmental variables aren't set
  */
 function noDirEnvVar() {
@@ -431,9 +424,18 @@ function noDirEnvVar() {
   process.exit();
 }
 
-exports.default = defaultTask;
 
-exports.watch = series(
+/*
+ * @TODO: Implement default task
+ */
+function defaultTask(cb) {
+  console.log("Implementation of default task is empty");
+  cb();
+}
+
+task('default', defaultTask);
+
+task('watch', series(
   init,
   rsyncRepoToLiveSite,
   parallel(
@@ -442,13 +444,13 @@ exports.watch = series(
     watchRepoJs,
     watchRepoOther
   )
-);
+));
 
-exports.build = series(
+task('build', series(
   init,
   compileCss,
   minifyCss,
   compressCss,
   minifyJs,
   compressJs
-);
+));

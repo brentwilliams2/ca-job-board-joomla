@@ -14,93 +14,20 @@ namespace Calligraphic\Cajobboard\Admin\Toolbar;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Toolbar\ToolbarHelper as JToolBarHelper;
-use \Joomla\CMS\Language\Text;
-use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Toolbar\ToolbarHelper;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Toolbar\ToolbarHelper as JToolBarHelper;
 
+/**
+ * Toolbar class for the Job Board admin pages.
+ * 
+ * This file has onTask() methods that control the formatting of the toolbar for the 
+ * various admin views: onBrowse, onRead, onAdd, onEdit
+ */
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {
-  /**
-   * The `option` input parameter, e.g. `com_cajobboard`
-   *
-   *  @var  string
-   */
-  protected $option = null;
-
-
-	/**
-	 * Public constructor.
-	 *
-	 * The $config array can contain the following optional values:
-	 *
-	 * renderFrontendButtons	bool	Should I render buttons in the front-end of the component?
-	 * renderFrontendSubmenu	bool	Should I render the submenu in the front-end of the component?
-	 * useConfigurationFile		bool	Should we use the configuration file (fof.xml) of the component?
-	 *
-	 * @param   Container  $c       The container for the component
-	 * @param   array      $config  The configuration overrides, see above
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-    parent::__construct($container, $config);
-
-    $this->option = $container->componentName;
-  }
-
-
-  /**
-	 * Renders the toolbar for the current view and task
-	 *
-	 * @param   string   $view  The view of the component
-	 * @param   string   $task  The exact task of the view
-	 *
-	 * @return  void
-	 */
-/*
-	public function renderToolbar($view = null, $task = null)
-	{
-
-  }
-*/
-
-
-	/**
-	 * Renders the submenu (toolbar links) for all defined views of this component
-	 *
-	 * @return  void
-	 */
-/*
-	public function renderSubmenu()
-  {
-    // @TODO: do PII access control for submenu links:
-    // ...code
-    if (!$this->container->platform->getUser()->authorise('com_cajobboard.pii', 'com_cajobboard'))
-		{
-      unset ($views[x]);
-    }
-    // ...code
-  }
-*/
-
-
-	/**
-	 * Renders the toolbar for the Control Panel page
-	 *
-	 * @return  void
-	 */
-	public function onControlPanelsDefault()
-	{
-    if ( !$this->container->platform->isBackend() )
-    {
-      return;
-    }
-
-    $this->renderSubmenu();
-
-    $this->renderTitle('default');
-  }
-
+  // Trait with overridden base-class Toolbar methods
+  use \Calligraphic\Cajobboard\Admin\Toolbar\Mixin\ToolbarBase;
 
 	/**
 	 * Renders the toolbar for the component's Browse pages (the plural views)
@@ -114,70 +41,89 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
       return;
     }
 
-    $this->renderSubmenu();
-
-		// Setup
-		try
-		{
-      $view   = $this->container->input->getCmd('view', 'cpanel');
+    // Setup
+    try
+    {
+      $view  = $this->container->input->getCmd('view', 'cpanel');
       $model = $this->container->factory->model($view);
-		}
-		catch (\Exception $e)
-		{
-			$model = null;
+    }
+    catch (\Exception $e)
+    {
+      $model = null;
     }
 
+    $this->renderSubmenu();
     $this->renderTitle('browse');
 
-		if (!$this->isDataView())
-		{
-			return;
+    if (!$this->isDataView())
+    {
+      return;
     }
 
+    // #1 "New" button
 		$this->perms->create && JToolBarHelper::addNew();
 
+    // #2 "Edit" button
 		$this->perms->edit && JToolBarHelper::editList();
 
-    // Published buttons are only added if there is an 'enabled' field in the table
+    // #3 "Publish" and "Unpublish" buttons
     if ($model && $model->hasField('enabled') && $this->perms->editstate)
     {
       JToolBarHelper::publishList();
       JToolBarHelper::unpublishList();
     }
 
-    // Featured buttons are only added if there is a 'featured' field in the table
+    // #4 "Feature" and "Unfeature" buttons
     if ($model && $model->hasField('featured') && $this->perms->editstate)
     {
       ToolbarHelper::featureList();
       ToolbarHelper::unfeatureList();
     }
 
+    // #5 "Archive" button
     $this->perms->editstate && JToolBarHelper::archiveList();
 
-    // A Check-In button is only added if there is a locked_on field in the table
-    // @TODO: move this into the job board widget helper class and use a nicer Bootstrap modal, and lose the all caps
+    // #6 Check-in button
     ($model && $model->hasField('locked_on') && $this->perms->edit) && JToolBarHelper::checkin();
 
+    // #7 "Trash" button
     $this->perms->delete && JToolBarHelper::trash('trash');
 
-    $this->perms->delete && JToolBarHelper::deleteList(strtoupper(Text::_($this->option . '_CONFIRM_DELETE')));
+    // #8 "Delete" button
+    $this->perms->delete && JToolBarHelper::deleteList(strtoupper(Text::_('COM_CAJOBBOARD_CONFIRM_DELETE')));
 
     JToolBarHelper::divider();
 
-    // "Options" button that launches a modal of com_config view for this component
-    JToolBarHelper::preferences($this->option);
+    // #9 "Options" button (launches a modal of com_config view for this component)
+    JToolBarHelper::preferences('COM_CAJOBBOARD');
+
+    // #10 "Help" button
 
     // string  $ref        The name of the popup file (excluding the file extension for an xml file).
-    // bool    $com        Use the help file in the component directory.
+    // bool    $com        Use the help file in the component directory. Set to true to force the use of local component help files.
     // string  $override   Use this URL instead of any other
     // string  $component  Name of component to get Help (null for current component)
-    // @TODO: Add "Help" button
+
     // JToolBarHelper::help($ref, $com = false, $override = null, $component = null);
+
+    // A translation key of Components_Banners_Banners for $ref gives the following URL:
+    // https://help.joomla.org/proxy?keyref=Help39:Components_Banners_Banners&lang=en
+
+    // JToolbarHelper::help( 'MY_COMPONENT_HELP_VIEW_TYPE1', true );
+    // MY_COMPONENT_HELP_VIEW_TYPE1="view_type1"
+    // /components/com_my_component/help/en-GB/view_type1.html
+
+    // JToolbarHelper::help( 'MY_COMPONENT_HELP_VIEW_TYPE1', false, '', 'com_mycomponent' );
+    // MY_COMPONENT_HELP_VIEW_TYPE1="http://www.example.com/{component}/{keyref}/{langcode}"
+    // http://www.example.com/com_mycomponent/view_type1/en
+
   }
 
 
 	/**
 	 * Renders the toolbar for the component's Read pages
+   * 
+   * @TODO: Where is this used? All admin item views are edit views
 	 *
 	 * @return  void
 	 */
@@ -189,10 +135,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
     }
 
     $this->renderSubmenu();
-
 		$this->renderTitle('read');
-
-    JToolBarHelper::title(Text::_(strtoupper($this->option)) . ': ' . Text::_($subtitle_key), $componentName);
 
 		if (!$this->isDataView())
 		{
@@ -217,12 +160,31 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
     $this->renderTitle('add');
 
+    // #1 "Save" button
 		($this->perms->edit || $this->perms->editown) && JToolBarHelper::apply();
 
+    // #2 "Save & Close" button
     JToolBarHelper::save();
 
-		$this->perms->create && JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+    // #3 "Save & New" button
+    $this->perms->create && JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+    
+    // @TODO: "Save as Copy" button
+    // For new records, check the create permission.
+		if ($isNew && (count($user->getAuthorisedCategories('com_content', 'core.create')) > 0))
+		{
+			JToolbarHelper::save2copy('article.save2copy');
+    }
 
+    // @TODO: "Versions" button
+    if (JComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $itemEditable)
+    {
+      JToolbarHelper::versions('com_content.article', $this->item->id);
+    }
+
+    // @TODO: "Help" button
+
+    // #4 "Close" button
 		JToolBarHelper::cancel();
   }
 
@@ -241,30 +203,39 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
     $this->renderTitle('edit');
 
+    // #1 "Save" button
 		($this->perms->edit || $this->perms->editown) && JToolBarHelper::apply();
 
+    // #2 "Save & Close" button
     JToolBarHelper::save();
 
+    // #3 "Save & New" button
 		($this->perms->create) && JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 
+    // @TODO: "Save as Copy" button
+
+    // @TODO: "Versions" button
+
+    // @TODO: "Help" button
+
+    // #4 "Close" button
 		JToolBarHelper::cancel();
   }
 
 
 	/**
-	 * Renders the title for admin pages
+	 * Renders the toolbar for the Control Panel page
 	 *
-	 * @param   string    $task   The task of the page the title should be rendered for
+	 * @return  void
 	 */
-	public function renderTitle($task)
+	public function onControlPanelsDefault()
 	{
-    // Set toolbar title
-    $view = $this->container->inflector->pluralize($this->container->input->getCmd('view', 'cpanel'));
+    if ( !$this->container->platform->isBackend() )
+    {
+      return;
+    }
 
-    $title_key = Text::_(strtoupper($this->option));
-
-    $subtitle_key = Text::_(strtoupper($this->option . '_TITLE_' . $view . '_' . $task));
-
-    JToolBarHelper::title($title_key . ': ' . $subtitle_key, 'com_cajobboard');
+    $this->renderSubmenu();
+    $this->renderTitle('default');
   }
 }

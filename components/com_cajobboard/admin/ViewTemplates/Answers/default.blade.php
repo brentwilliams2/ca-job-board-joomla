@@ -11,7 +11,6 @@
 
 use Joomla\CMS\HTML\HTMLHelper;
 use \Calligraphic\Cajobboard\Site\Model\Answers;
-use \Calligraphic\Cajobboard\Admin\Helper\Format;
 use \FOF30\View\DataView\Form;
 use \FOF30\Utils\FEFHelper\BrowseView;
 use \FOF30\Utils\SelectOptions;
@@ -25,7 +24,7 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 
 // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
 $this->container->AssetFiles->addComponentCss($this);
-  $this->container->AssetFiles->addViewJavascript($this);
+$this->container->AssetFiles->addViewJavascript($this);
 
 /**
  * @var  Form       $this
@@ -216,7 +215,7 @@ $widthPct = array
 
       {{-- COLUMN #8: Date Created --}}
       <td width="{{ $widthPct['#8'] }}%" class="center row-created">
-        {{ Format::date($item->created_on) }}
+        {{ $this->container->Format->date($item->created_on) }}
       </td>
 
       {{-- COLUMN #9: Hits Counter --}}

@@ -102,56 +102,56 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     'BaseListModel',
     'BaseTreeModel',
     'Candidates',
-    'Categories',
+    'Categories', //
     'Certifications',
-    'Comments',
+    'Comments', //
     'ControlPanels',
-    'CreditReports',
-    'DataFeeds',
-    'DigitalDocuments',
-    'DigitalSignatures',
-    'DiversityPolicies',
-    'EmailMessageTemplates',
+    'CreditReports', //
+    'DataFeeds', //
+    'DigitalDocuments', //
+    'DigitalSignatures', //
+    'DiversityPolicies', //
+    'EmailMessageTemplates', //
     'EmailMessages',
-    'EmployerAggregateRatings',
-    'EmployerDepartments',
-    'EmploymentTypes',
-    'FCRA',
-    'GeoCoordinates',
+    'EmployerAggregateRatings', //
+    'EmployerDepartments', //
+    'EmploymentTypes', //
+    'FCRA', //
+    'GeoCoordinates', //
     'Help',
     'ImageObjects',
-    'Interviews',
-    'IssueReportCategories',
-    'IssueReports',
+    'Interviews', //
+    'IssueReportCategories', //
+    'IssueReports', //
     'JobAlerts',
     'JobPostings',
     'Messages',
-    'OccupationalCategories',
-    'OccupationalCategoryGroups',
-    'Offers',
-    'OrganizationRoles',
-    'OrganizationTypes',
+    'OccupationalCategories', //
+    'OccupationalCategoryGroups', //
+    'Offers', //
+    'OrganizationRoles', //
+    'OrganizationTypes', //
     'Organizations',
-    'PersonallyIdentifiableInformation',
+    'PersonallyIdentifiableInformation', //
     'Persons',
     'Places',
-    'QAPages',
+    'Profiles',
     'QAPages',
     'Questions',
     'References',
     'Registrations',
     'Reports',
-    'ResumeAlerts',
+    'ResumeAlerts', //
     'Resumes',
     'Reviews',
     'Scheduling',
-    'ScoreCards',
+    'ScoreCards', //
     'SearchResultPages',
     'Subscriptions',
     'Tasks',
     'Uncategorised',
     'VideoObjects',
-    'WorkFlows'
+    'WorkFlows' //
   );
 
 

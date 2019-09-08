@@ -64,4 +64,21 @@ class Inflector extends \FOF30\Inflector\Inflector
 	{
     return $this->underscore( $this->pluralize($name) );
   }
+
+
+	/**
+	 * Convert a CamelCased word into a hyphenated-word
+	 *
+	 * @param   string  $word   Word to hyphenate
+	 *
+	 * @return  string  Returns the hyphenated word
+	 */
+	public function hyphenate($word)
+	{
+    $word = preg_replace('/(\s)+/', '-', $word);
+
+    $word = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '-\\1', $word));
+
+		return $word;
+	}
 }

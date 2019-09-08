@@ -10,8 +10,6 @@
   *
   */
 
-  use \Calligraphic\Cajobboard\Site\Helper\Format;
-
   // no direct access
   defined('_JEXEC') or die;
 
@@ -41,13 +39,13 @@
   $userId = $user->id;
   $authorId = $item->Author->getId();
 
-  $canUserEdit = $this->container->User::canEdit($user, $item);
+  $canUserEdit = $this->container->User->canEdit($user, $item);
 
   $authorAvatarUri = $this->container->User->getAvatar($authorId);
   $authorProfileLink = $this->container->User->getLinkToUserProfile($authorId);
   $lastSeen = $this->container->User->lastSeen($item->Author->lastvisitDate);
   $name = $item->Author->getFieldValue('name');
-  $postedOn = Format::getCreatedOnText($createdOn);
+  $postedOn = $this->container->Format->getCreatedOnText($createdOn);
 
   $componentName = $this->getContainer()->componentName;
   $view = $this->getName();

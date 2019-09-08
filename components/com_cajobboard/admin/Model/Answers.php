@@ -115,22 +115,6 @@ class Answers extends BaseDataModel
      // table field for belongsTo relation is in this model's table
 
     // many-to-one FK to  #__cajobboard_persons
-     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
-  }
-
-
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_ANSWERS_TITLE_ERR');
-    $this->assertNotEmpty($this->text, 'COM_CAJOBBOARD_ANSWERS_TEXT_ERR');
-
-		parent::check();
-
-    return $this;
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
   }
 }

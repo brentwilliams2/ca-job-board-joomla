@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
+use \FOF30\Platform\PlatformInterface;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Language\Text;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\LengthExceeded;
@@ -61,7 +62,8 @@ class Title extends Observer
    */
   public function onBeforeSave(DataModel $model, &$data)
   {
-    $platform = $this->container->platform;
+    /** @var PlatformInterface $platform */
+    $platform = $model->getContainer()->platform;
 
     $titleField = $model->getFieldAlias('title');
 

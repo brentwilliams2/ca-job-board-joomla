@@ -461,7 +461,28 @@ class PopulateSampleData extends CliApplication
 
           $data = $template->generate($nextConfig, $this->seed++);
 
-          $recordId = $model->create($data)->getId();
+          // save the new record
+          if ( property_exists($template, 'hasRoot') )
+          {
+            // TreeModel
+            $model->bind($data);
+
+            $model->setFieldValue( 'hash', sha1($model->slug) );
+
+            // Can't use getRoot() method before a record is saved initially
+            $rootNode = $this->container->factory->model($modelName, array('factoryClass' => 'FOF30\\Factory\\MagicFactory'));
+
+            $rootNode->load(1);
+
+            $recordId = $model->insertAsLastChildOf($rootNode);
+
+            $recordId = $model->getId();
+          }
+          else
+          {
+            // DataModel
+            $recordId = $model->create($data)->getId();
+          }
 
           $this->out("Saved $modelName item #$recordId");
         }

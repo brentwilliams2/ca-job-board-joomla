@@ -10,10 +10,7 @@
   *
   */
 
-  use \Calligraphic\Cajobboard\Site\Helper\User;
-  use \Calligraphic\Cajobboard\Site\Helper\Format;
-
-  // no direct access
+   // no direct access
   defined('_JEXEC') or die;
 
   // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
@@ -47,12 +44,12 @@
   $userId = $user->id;
   $authorId = $item->Author->getId();
 
-  $authorAvatarUri = $this->container->User::getAvatar($authorId);
+  $authorAvatarUri = $this->container->User->getAvatar($authorId);
   $authorProfileLink = $this->container->User->getLinkToUserProfile($authorId);
   $canUserEdit = $this->container->User->canEdit($user, $item);
   $lastSeen = $this->container->User->lastSeen($item->Author->lastvisitDate);
   $name = $item->Author->getFieldValue('name');
-  $postedOn = Format::getCreatedOnText($createdOn);
+  $postedOn = $this->container->Format->getCreatedOnText($createdOn);
 
   $componentName = $this->getContainer()->componentName;
   $view = $this->getName();

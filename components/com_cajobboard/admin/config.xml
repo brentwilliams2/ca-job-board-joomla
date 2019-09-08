@@ -70,7 +70,7 @@
       default="0"
       label="COM_CAJOBBOARD_CURRENCY_POSITION_OPTIONS_LABEL"
       description="COM_CAJOBBOARD_CURRENCY_POSITION_OPTIONS_DESC"
-    />
+    >
       <option value="0">COM_CAJOBBOARD_FORMAT_CURRENCY_POSITION_OPTION_BEFORE</option>
       <option value="1">COM_CAJOBBOARD_FORMAT_CURRENCY_POSITION_OPTION_AFTER</option>
     </field>

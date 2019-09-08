@@ -36,8 +36,6 @@ abstract class HelperBrowseWidgets
    * @param   string   $slug   The SEF slug (alias) for the record
 	 *
 	 * @return  string
-	 *
-	 * @since   0.1
 	 */
 	public static function alias($slug)
 	{
@@ -61,8 +59,6 @@ abstract class HelperBrowseWidgets
    * @param   string    $cat_id   The category id of this item
 	 *
 	 * @return  string    HTML string of the text for the item category
-	 *
-	 * @since   0.1
 	 */
 	public static function category($cat_id)
 	{
@@ -90,8 +86,6 @@ abstract class HelperBrowseWidgets
    * @param   int     $i            The index of this item in the browse view list
 	 *
 	 * @return  string
-	 *
-	 * @since   0.1
 	 */
 	public static function featured($isFeatured, $i)
 	{
@@ -100,7 +94,6 @@ abstract class HelperBrowseWidgets
 
     $alt = Text::_('JGLOBAL_TOGGLE_FEATURED');
     $icon = $isFeatured ? 'icon-featured' : 'icon-unfeatured';
-    $action = $isFeatured ? Text::_('JFEATURED') : Text::_('JUNFEATURED');
 
     $html = '<a href="javascript:void(0)"';
     // listItemTask( id, task ) in core-uncompressed.js, 'id' is the checkbox id name
@@ -108,7 +101,6 @@ abstract class HelperBrowseWidgets
     $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $task . '\')"';
     $html .= 'class="btn btn-micro hasTooltip"';
     $html .= 'title="'. $alt . '"';
-    $html .= 'data-original-title="'. $action . '"';
     $html .= '>';
     $html .= '<span class="' . $icon . '" aria-hidden="true"></span>';
     $html .= '</a>';
@@ -123,8 +115,6 @@ abstract class HelperBrowseWidgets
    * @param   string  $language  The language string, e.g. 'en-GB' or '*' for all languages
 	 *
 	 * @return  string
-	 *
-	 * @since   0.1
 	 */
 	public static function language($language)
 	{
@@ -161,8 +151,6 @@ abstract class HelperBrowseWidgets
    * @param   Pagination  $paginationObject  The Joomla! pagination object
 	 *
 	 * @return  string
-	 *
-	 * @since   0.1
 	 */
 	public static function pagination($paginationObject)
 	{
@@ -182,8 +170,6 @@ abstract class HelperBrowseWidgets
 	 * @param   integer  $i             The index of this item in the browse view list
 	 *
 	 * @return  string
-	 *
-	 * @since   1.0
 	 */
 	public static function published($status, $i)
 	{
@@ -236,8 +222,6 @@ abstract class HelperBrowseWidgets
 	 * @param   integer  $i             The index of this item in the browse view list
 	 *
 	 * @return  string
-	 *
-	 * @since   1.0
 	 */
 	public static function publishedDropdown($status, $name, $i)
 	{
@@ -279,8 +263,6 @@ abstract class HelperBrowseWidgets
    * @param   string   $text    The text field to backfill an empty title with
 	 *
 	 * @return  string
-	 *
-	 * @since   0.1
 	 */
 	public static function title($title, $text)
 	{
@@ -296,5 +278,65 @@ abstract class HelperBrowseWidgets
 
     return $title;
   }
+
+
+	/**
+	 * Activated button for the Persons admin page
+   *
+   * @param   bool    $isActivated  Whether the user is currently activated
+   * @param   int     $i            The index of this item in the browse view list
+	 *
+	 * @return  string
+	 */
+   public static function activated($isActivated, $i)
+   {
+     // $task is FSM showing subsequent task, not current task
+     $task = $isActivated ? 'unactivate' : 'activate';
+ 
+     $alt = Text::_('COM_CAJOBBOARD_TOGGLE_USER_ACTIVATED');
+     $icon = $isActivated ? 'checkmark-2' : 'not-ok';
+ 
+     $html = '<a href="javascript:void(0)"';
+     // listItemTask( id, task ) in core-uncompressed.js, 'id' is the checkbox id name
+     // for the item e.g. 'cb0', 'task' is given to window.submitform() handler
+     $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $task . '\')"';
+     $html .= 'class="btn btn-micro hasTooltip"';
+     $html .= 'title="'. $alt . '"';
+     $html .= '>';
+     $html .= '<span class="' . $icon . '" aria-hidden="true"></span>';
+     $html .= '</a>';
+ 
+     return $html;
+   }
+
+
+	/**
+	 * Blocked button for the Persons admin page
+   *
+   * @param   bool    $isBlocked    Whether the user is currently blocked
+   * @param   int     $i            The index of this item in the browse view list
+	 *
+	 * @return  string
+	 */
+   public static function blocked($isBlocked, $i)
+   {
+     // $task is FSM showing subsequent task, not current task
+     $task = $isBlocked ? 'unblock' : 'block';
+ 
+     $alt = Text::_('COM_CAJOBBOARD_TOGGLE_USER_BLOCKED');
+     $icon = $isBlocked ? 'checkmark-2' : 'not-ok';
+ 
+     $html = '<a href="javascript:void(0)"';
+     // listItemTask( id, task ) in core-uncompressed.js, 'id' is the checkbox id name
+     // for the item e.g. 'cb0', 'task' is given to window.submitform() handler
+     $html .= 'onclick="return listItemTask(\'cb' . $i . '\', \'' . $task . '\')"';
+     $html .= 'class="btn btn-micro hasTooltip"';
+     $html .= 'title="'. $alt . '"';
+     $html .= '>';
+     $html .= '<span class="' . $icon . '" aria-hidden="true"></span>';
+     $html .= '</a>';
+ 
+     return $html;
+   }
 }
 

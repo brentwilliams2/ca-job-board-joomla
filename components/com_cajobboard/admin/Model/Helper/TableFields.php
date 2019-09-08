@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Model\Helper;
 use \Calligraphic\Cajobboard\Admin\Model\BaseListModel;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
+use \Calligraphic\Cajobboard\Admin\Model\Persons;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
 
@@ -51,7 +52,7 @@ class TableFields
    */
   public function getTableFieldsMetadata($model)
   {
-    $modelMetadata = $this->container->inflector->underscore ( $model->getName() ) . '_TableFieldMetadata';
+    $modelMetadata = $this->container->inflector->underscore ( $model->getName() ) . 'TableFieldMetadata';
 
     if ($model instanceof BaseListModel)
     {
@@ -80,6 +81,16 @@ class TableFields
         $this->$modelMetadata()
       );
     }
+
+    if ($model instanceof Persons)
+    {
+      return array_merge(
+        $this->primaryKeyTableFieldMetadata($model),
+        $this->$modelMetadata()
+      );
+    }
+
+    throw new \Exception('Could not match the table type in admin\Helper\TableFields');
   }
 
   /**
@@ -208,7 +219,7 @@ class TableFields
   /**
 	 *    Answers
 	 */
-  private function answers_TableFieldMetadata()
+  private function answersTableFieldMetadata()
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -501,7 +512,7 @@ class TableFields
   /**
 	 *    Interviews
 	 */
-  private function interviews_TableFieldMetadata()
+  private function interviewsTableFieldMetadata()
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -699,7 +710,7 @@ class TableFields
 
 
   /**
-	 *    PersonallyIdentifiableInformation
+	 *    Personally Identifiable Information
 	 */
   private function personally_identifiable_informationTableFieldMetadata()
   {
@@ -718,7 +729,35 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'text'              => (object) ['Field' => 'text',           'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
+        'name'              => (object) ['Field' => 'name',           'Type' => 'varchar(400)',         'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'username'          => (object) ['Field' => 'username',       'Type' => 'varchar(150)',         'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'email'             => (object) ['Field' => 'email',          'Type' => 'varchar(100)',         'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'password'          => (object) ['Field' => 'password',       'Type' => 'varchar(100)',         'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'block'             => (object) ['Field' => 'block',          'Type' => 'tinyint(4)',           'Null' => 'NO',   'Default' => '0'],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'sendEmail'         => (object) ['Field' => 'sendEmail',      'Type' => 'tinyint(4)',           'Null' => 'YES',  'Default' => '0'],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'registerDate'      => (object) ['Field' => 'registerDate',   'Type' => 'datetime',             'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'lastvisitDate'     => (object) ['Field' => 'lastvisitDate',  'Type' => 'datetime',             'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'activation'        => (object) ['Field' => 'activation',     'Type' => 'varchar(100)',         'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'params'            => (object) ['Field' => 'params',         'Type' => 'text',                 'Null' => 'NO',   'Default' => '{}'],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'lastResetTime'     => (object) ['Field' => 'lastResetTime',  'Type' => 'text',                 'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'resetCount'        => (object) ['Field' => 'resetCount',     'Type' => 'int(11)',              'Null' => 'NO',   'Default' => '0'],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'otpKey'            => (object) ['Field' => 'otpKey',         'Type' => 'varchar(1000)',        'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'otep'              => (object) ['Field' => 'otep',           'Type' => 'varchar(1000)',        'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'requireReset'      => (object) ['Field' => 'requireReset',   'Type' => 'tinyint(4)',           'Null' => 'ordering', 'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }
@@ -732,6 +771,23 @@ class TableFields
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'text'              => (object) ['Field' => 'text',           'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+    );
+  }
+
+
+  /**
+	 *    Profiles
+	 */
+  private function profilesTableFieldMetadata()
+  {
+    return array(
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'profile_key'       => (object) ['Field' => 'profile_key',    'Type' => 'varchar(100)',         'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'profile_value'     => (object) ['Field' => 'profile_value',  'Type' => 'text',                 'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'ordering'          => (object) ['Field' => 'ordering',       'Type' => 'int(11)',              'Null' => 'NO',   'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }
