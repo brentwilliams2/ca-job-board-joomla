@@ -32,7 +32,7 @@ trait Tree
 
 
 	/**
-	 * Class constructor
+	 * Called from class constructor
    *
    * @throws \RuntimeException
 	 */

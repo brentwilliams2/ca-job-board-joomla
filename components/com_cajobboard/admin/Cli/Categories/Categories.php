@@ -61,8 +61,9 @@ class Categories extends CliApplication
    */
   public function getFieldArray($categoryName)
   {
-    $humanized  = $this->container->inflector->humanize($categoryName);
-    $hyphenated = $this->container->inflector->hyphenate($categoryName);
+    $underscored = $this->container->inflector->underscore($categoryName);
+    $humanized   = $this->container->inflector->humanize($underscored);
+    $hyphenated  = $this->container->inflector->hyphenate($categoryName);
 
     return array(
       'id'          => 0,  // Force a new node to be created
@@ -119,7 +120,16 @@ class Categories extends CliApplication
       throw new \Exception('The category model failed the check method before saving');
     }
 
-    $model->store();
+    $status = $model->store();
+
+    if ($status)
+    {
+      echo "Successfully added category " . $fieldArray['alias'] . "\n";
+    }
+    else
+    {
+      echo "Could not add the category with path " . $fieldArray['alias'] . ", is it an existing category?\n";
+    }
   }
 
 
@@ -141,6 +151,8 @@ class Categories extends CliApplication
       if ($status)
       {
         $model->delete();
+
+        echo "Successfully deleted category $normalCategory \n";
       }
       else
       {

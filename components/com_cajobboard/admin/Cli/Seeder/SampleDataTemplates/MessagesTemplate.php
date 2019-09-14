@@ -16,99 +16,57 @@ use Faker;
 // no direct access
 defined('_JEXEC') or die;
 
-class MessagesTemplate extends BaseTemplate
+class MessagesTemplate extends CommonTemplate
 {
-	/**
-	 * Category ID for this item.
-	 *
-	 * @var    int
-   */
-  public $cat_id;
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\SeedJoinTable;
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Tree;
 
 	/**
-	 * Alias for SEF URL.
+	 * The primary key of the foreign model item that this comment belongs to.
 	 *
-	 * @var    string
+	 * @property    int
    */
-  public $slug;
+  public $about__foreign_model_id;
+
 
 	/**
-	 * FK to the #__viewlevels table for access view control purposes.
+	 * The name of the foreign model this comment belongs to, discriminator field for single-table inheritance.
 	 *
-	 * @var    int
-  */
-  public $access;
+	 * @property    string    VARCHAR(255)
+   */
+  public $about__foreign_model_name;
+
 
   /**
-	 * Send status: -2 for trashed and marked for deletion, -1 for mail
-   * delivery failure, 0 for not yet mailed, and 1 for mailed.
+	 *  The date/time at which the message was opened by the recipient.
 	 *
-	 * @var    int
-   */
-  public $enabled;
-
-  /**
-	 * JSON encoded parameters for this item.
-	 *
-	 * @var    string
-   */
-  public $params;
-
-	/**
-	 * Used by the outgoing mail processor to save any information about mail delivery status.
-	 *
-	 * @var    string
-   */
-  public $note;
-
-	/**
-	 * A title to use for this item.
-	 *
-	 * @var    string
-   */
-  public $name;
-
-	/**
-	 * A description of the item.
-	 *
-	 * @var    string
-   */
-  public $description;
-
-  /**
-	 * Date the item was created
-	 *
-	 * @var    \DateTime
-   */
-  public $created_on;
-
-  /**
-	 * Userid of the creator of this item.
-	 *
-	 * @var    \JUser
-   */
-  public $created_by;
-
-  /**
-	 * Userid of person that last modified this item.
-	 *
-   * @var    \JUser
-   */
-  public $modified_by;
-
-	/**
-	 *  The date/time at which the message was sent.
-	 *
-	 * @property    string
+	 * @property    int
    */
   public $date_read;
 
+
 	/**
-	 *  The recipient for this message. FK to #__cajobboard_persons
+	 *  The recipient of this message, FK to #__cajobboard_persons
 	 *
-	 * @property    string
+	 * @property    int
    */
   public $recipient;
+
+
+	/**
+	 *  Optional Comment that this message should anchor to, FK to #__cajobboard_comments
+	 *
+	 * @property    int
+   */
+  public $is_part_of;
+
+
+	/**
+	 *  JSON encoded state field to indicate attachment counts for this message
+	 *
+	 * @property    int
+   */
+  public $attachment_counts;
 
 
 	/**
@@ -134,6 +92,7 @@ class MessagesTemplate extends BaseTemplate
    */
   public $message_attachment__image;
 
+
 	/**
 	 *  A VidioObject attachment for this message. FK to #__cajobboard_messages_video_objects join table
 	 *
@@ -142,173 +101,110 @@ class MessagesTemplate extends BaseTemplate
   public $message_attachment__video;
 
 
+	/**
+	 * Class constructor
+   *
+   * @throws \RuntimeException
+	 */
+  public function __construct()
+  {
+    $this->validateTreeTable('#__cajobboard_messages');
+  }
+
+
   /**
-	 * Setters for Answer fields
+	 * Setters for Message fields
    */
 
-  public function cat_id ($config, $faker)
+  // $this->belongsToMany('DigitalDocumentAttachment', 'DigitalDocuments@com_cajobboard', 'message_attachment__digital_document', 'digital_document_id', '#__cajobboard_messages_digital_documents');
+  public function message_attachment__document ($config, $faker)
   {
-    // need to get model name being worked on, normalized to human-readable form e.g. "Job Postings"
-    $className = explode( '\\', get_class($this) );
-    $modelName = preg_replace('/Template$/', '', array_pop($className) );
-    $normalModelName = preg_replace('/(?<!^)[A-Z]/', ' $0', $modelName);
+    $this->seedJoinTable ($faker, $config, 5, '#__cajobboard_messages_digital_documents', 'message_id', 'DigitalDocuments', 'digital_document_id');
 
-    foreach ($config->categories as $category)
-    {
-      if ($category->title == $normalModelName)
-      {
-        $this->cat_id = $category->id;
-
-        return;
-      }
-    }
-
-    $this->cat_id = null;
+    unset($this->message_attachment__document);
   }
 
-  public function slug ($config, $faker)
+
+  // $this->belongsToMany('AudioMessageAttachment', 'AudioObjects@com_cajobboard', 'message_attachment__audio', 'audio_object_id', '#__cajobboard_messages_audio_objects');
+  public function message_attachment__audio ($config, $faker)
   {
-    $this->slug = $faker->slug();
+    $this->seedJoinTable ($faker, $config, 5, '#__cajobboard_messages_audio_objects', 'message_id', 'AudioObjects', 'audio_object_id');
+
+    unset($this->message_attachment__audio);
   }
 
-  // Set to a view level for this item: 1 is "Public", 2 is "Registered", etc.
-  public function access ($config, $faker)
+
+  // $this->belongsToMany('ImageMessageAttachment', 'ImageObjects@com_cajobboard', 'message_attachment__image', 'image_object_id', '#__cajobboard_messages_image_objects');
+  public function message_attachment__image ($config, $faker)
   {
-    $this->access = 1;
+    $this->seedJoinTable ($faker, $config, 5, '#__cajobboard_messages_image_objects', 'message_id', 'ImageObjects', 'image_object_id');
+
+    unset($this->message_attachment__image);
   }
 
-  // Set 10% of records to trashed (-2), 10% to mail delivery failure (-1),
-  // 10% to  not yet mailed (0), and rest to mailed (1).
-  public function enabled ($config, $faker)
+
+  // $this->belongsToMany('VideoMessageAttachment', 'VideoObjects@com_cajobboard', 'message_attachment__video', 'video_object_id', '#__cajobboard_messages_video_objects');
+  public function message_attachment__video ($config, $faker)
   {
-    switch ($faker->numberBetween(1, 10)) {
-      case 1:
-        $this->enabled = -2;
-        break;
-      case 2:
-        $this->enabled = -1;
-        break;
-      case 2:
-        $this->enabled = 0;
-        break;
-      default:
-        $this->enabled = 1;
-    }
+    $this->seedJoinTable ($faker, $config, 5, '#__cajobboard_messages_video_objects', 'message_id', 'VideoObjects', 'video_object_id');
+
+    unset($this->message_attachment__video);
   }
 
-  public function params ($config, $faker)
+
+  // $this->hasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
+  public function about__foreign_model_id ($config, $faker)
   {
-    $this->params = '{"image":"","image_alt":""}';
+    $foreignModels = array(
+      'JobPostings',
+      'Organizations',
+      'Places'
+    );
+
+    $this->about__foreign_model_name = $foreignModels[$faker->numberBetween(0, count($foreignModels) - 1 )];
+
+    $this->about__foreign_model_id = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, $this->about__foreign_model_name);
   }
 
-  public function note ($config, $faker)
+
+  public function about__foreign_model_name ($config, $faker)
   {
-    $this->note = $faker->paragraph;
+    return;
   }
 
-  public function name ($config, $faker)
-  {
-    $this->name = $faker->sentence;
-  }
-
-  public function description ($config, $faker)
-  {
-    $this->description = $faker->paragraph;
-  }
-
-  public function created_by ($config, $faker)
-  {
-    $this->created_by = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
-  }
-
-  public function created_on ($config, $faker)
-  {
-    $dateTime = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
-
-    $this->created_on = $dateTime->format('Y-m-d H:i:s');
-  }
-
-  public function modified_by ($config, $faker)
-  {
-    $this->modified_by = 0;
-  }
 
   public function date_read ($config, $faker)
   {
-    $dateTime = $faker->dateTimeBetween($startDate = '-1 days', $endDate = 'now', $timezone = null);
+    $dateTime = $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now', $timezone = null);
+
     $this->date_read = $dateTime->format('Y-m-d H:i:s');
   }
+
 
   public function recipient ($config, $faker)
   {
     $this->recipient = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
   }
 
-  // $this->belongsToMany('DigitalDocumentAttachment', 'DigitalDocuments@com_cajobboard', 'message_attachment__digital_document', 'digital_document_id', '#__cajobboard_messages_digital_documents');
-  public function message_attachment__document ($config, $faker)
-  {
-    $this->seedJoinTable ($faker, $config, 2, '#__cajobboard_messages_digital_documents', 'message_id', 'DigitalDocuments', 'digital_document_id');
 
-    unset($this->message_attachment__document);
+  // $this->belongsTo('IsPartOf', 'Comments@com_cajobboard', 'is_part_of', 'comment_id');
+  public function is_part_of ($config, $faker)
+  {
+    $this->is_part_of = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Comments');
   }
 
-  // $this->belongsToMany('AudioMessageAttachment', 'AudioObjects@com_cajobboard', 'message_attachment__audio', 'audio_object_id', '#__cajobboard_messages_audio_objects');
-  public function message_attachment__audio ($config, $faker)
+
+  public function attachment_counts ($config, $faker)
   {
-    $this->seedJoinTable ($faker, $config, 2, '#__cajobboard_messages_audio_objects', 'message_id', 'AudioObjects', 'audio_object_id');
+    $attachmentCounts = new \stdClass();
 
-    unset($this->message_attachment__audio);
-  }
+    $attachmentCounts->audio_objects = $faker->numberBetween(1, 10);
+    $attachmentCounts->digital_documents = $faker->numberBetween(1, 10);
+    $attachmentCounts->image_objects = $faker->numberBetween(1, 10);
+    $attachmentCounts->video_objects = $faker->numberBetween(1, 10);
 
-  // $this->belongsToMany('ImageMessageAttachment', 'ImageObjects@com_cajobboard', 'message_attachment__image', 'image_object_id', '#__cajobboard_messages_image_objects');
-  public function message_attachment__image ($config, $faker)
-  {
-    $this->seedJoinTable ($faker, $config, 2, '#__cajobboard_messages_image_objects', 'message_id', 'ImageObjects', 'image_object_id');
-
-    unset($this->message_attachment__image);
-  }
-
-  // $this->belongsToMany('VideoMessageAttachment', 'VideoObjects@com_cajobboard', 'message_attachment__video', 'video_object_id', '#__cajobboard_messages_video_objects');
-  public function message_attachment__video ($config, $faker)
-  {
-    $this->seedJoinTable ($faker, $config, 2, '#__cajobboard_messages_video_objects', 'message_id', 'VideoObjects', 'video_object_id');
-
-    unset($this->message_attachment__video);
-  }
-
-  /*
-   * Seed a join table with sample data
-   *
-   * @property Faker  $faker
-   * @property array  $config                 This template's configuration object
-   * @property int    $chance                 Number between 0 and 10 indicating probability a record should be generated. 0 is no chance, 10 is 100%.
-   * @property string $pivotTableName         The name of the join table
-   * @property string $pivotLocalKeyName      The name of the local key field in the join table
-   * @property string $foreignModelName       The name of the foreign model being joined to
-   * @property string $pivotForeignKeyName    The name of the foreign key field in the join table
-   */
-  public function seedJoinTable ($faker, $config, $chance, $pivotTableName, $pivotLocalKeyName, $foreignModelName, $pivotForeignKeyName)
-  {
-    $randomInt = $faker->numberBetween( 1, 10 );
-
-    if ($chance > $randomInt)
-    {
-      return;
-    }
-
-    // Get the name of this model
-    $className = explode( '\\', get_class($this) );
-    $modelName = preg_replace('/Template$/', '', array_pop($className) );
-
-    $localKeyValue = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, $modelName);
-
-    $foreignKeyValue = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, $foreignModelName);
-
-    $profile = new \stdClass();
-
-    $profile->$pivotLocalKeyName = $localKeyValue;
-    $profile->$pivotForeignKeyName = $foreignKeyValue;
-
-    \JFactory::getDbo()->insertObject($pivotTableName, $profile);
+    $this->attachment_counts = json_encode($attachmentCounts);
   }
 }
+
+

@@ -66,7 +66,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
 
  // If you need to be able to store multiple trees then simply make the root node of each such
  // tree a child node under the single root node and adjust your code to take this into account.
- // SEEMS like we'd have two roots: the over-arching top-level root (node 1), and then a layer of nodes
+ // We have two roots: the over-arching top-level root (node 1), and then a layer of nodes
  //       underneath that represent entities (using level = 1), and all real comments under the
  //       item-level entities. So real items would have level = 2 and getting the tree for an item 
  //       would be adding where clauses to the query (e.g. about__foreign_model_id = n and level = 1)

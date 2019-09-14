@@ -474,9 +474,7 @@ class PopulateSampleData extends CliApplication
 
             $rootNode->load(1);
 
-            $recordId = $model->insertAsLastChildOf($rootNode);
-
-            $recordId = $model->getId();
+            $recordId = $model->insertAsLastChildOf($rootNode)->getId();
           }
           else
           {

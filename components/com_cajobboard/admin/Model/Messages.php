@@ -17,7 +17,6 @@ defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
-use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
 
 /**
  * Fields:
@@ -78,6 +77,7 @@ class Messages extends BaseTreeModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
+      'AttachmentCounts', // model-specific behaviour
       //'ContentHistory', // Add Joomla! content history support
       //'Own',        // Filter access to items owned by the currently logged in user only
       //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
@@ -95,7 +95,12 @@ class Messages extends BaseTreeModel
     // many-to-one FK to  #__cajobboard_organizations
     $this->belongsTo('Recipient', 'Persons@com_cajobboard', 'recipient', 'id');
 
-    // relation field for belongsToMany is in a join table
+    // many-to-one FK to  #__cajobboard_organizations
+    $this->belongsTo('IsPartOf', 'Comments@com_cajobboard', 'is_part_of', 'comment_id');
+
+    /*
+     * Relation field for belongsToMany is in a JOIN TABLE
+     */
 
     // many-to-many FK to  #__cajobboard_audio_objects via join table
     $this->belongsToMany('AudioMessageAttachment', 'AudioObjects@com_cajobboard', 'message_attachment__audio', 'audio_object_id', '#__cajobboard_messages_audio_objects', 'message_id');
@@ -110,21 +115,59 @@ class Messages extends BaseTreeModel
     $this->belongsToMany('VideoMessageAttachment', 'VideoObjects@com_cajobboard', 'message_attachment__video', 'video_object_id', '#__cajobboard_messages_video_objects', 'message_id');
   }
 
-    // @TODO: Should this be a TreeModel, to handle nesting of messages efficiently?
+  /*
+     @TODO:  'about__' field references what ATS entity the message is about (like an Application), need
+              a UI button to automatically attach it to that entity (displaying the message with Comment view html)
+  */
+
+  // @TODO: STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
+
+  // @TODO: handle foreign_model_id and foreign_model_name
+
+  // @TODO: COPIED FROM COMMENTS MODEL
+  //        Add method to "attach" a message thread to a root comment if the comment is attached to particular ATS views.
+  //        The idea is to provide a system where there is a special category of comment: instead of showing a normal
+  //        comment thread, it pulls a message thread in to allow it to be attached to an ATS entity for candidate
+  //        tracking (instead of the messages just being in user's inboxes and not reference to any ATS entity)
 
   /**
-	 * @throws    \RuntimeException when the assertion fails
+	 * Update the 'messagesTotal' and 'messagesUnread' keys in the Person model 'params' field
 	 *
-	 * @return    $this   For chaining.
+	 * @return    void
 	 */
-	public function onBeforeBind()
+	public function onBeforeBind($data)
 	{
     if ( $this->shouldIncrementViewCounts() )
     {
-      $this->container->MessageCounts->updateMessageCounts( $this->get('recipient') );
+      $recipient = $data->recipient;
+
+      $this->container->MessageCounts->updateMessageCounts($recipient);
     }
   }
 
-  // @TODO: Need a field that can reference what ATS entity the message is about (like an Application),
-  //        and a UI button to automatically attach it to that entity (via a Comment)
+
+  /**
+	 * Transform attachment_counts' field to a JRegistry object on bind
+	 *
+	 * @return  Registry
+	 */
+  protected function getAttachmentCountsAttribute($value)
+  {
+    $default = '{"audio_objects":0,"digital_documents":0,"image_objects":0,"video_objects":0}';
+
+    $attachmentCounts = $this->transformJsonToRegistry($value, $default);
+
+    return $attachmentCounts;
+  }
+
+
+  /**
+	 * Transform 'attachment_counts' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  string  JSON string
+	 */
+  protected function setAttachmentCountsAttribute($value)
+  {
+    return $this->transformRegistryToJson($value);
+  }
 }

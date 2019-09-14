@@ -3,8 +3,8 @@
  * Base Admin List Model for all Job Board Models
  *
  * This base model is intended for support models that allow relations to core models.
- * Use for modeling lists, enums, categories, types, and the like. It is intended to be
- * simpler than either the data or hierarchical (tree) base models.
+ * Use for modeling lists, enums, categories, types, and the like. Used in AddressRegions,
+ * EmployerAggregateRatings, and EmployerAggregateRatings
  *
  * @package   Calligraphic Job Board
  * @version   July 2, 2019
@@ -52,7 +52,14 @@ class BaseListModel extends DataModel
     );
 
     // Merge any behaviours passed from the child model into our base class default behaviours
-    $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
+    if ( array_key_exists('behaviours', $config) )
+    {
+      $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
+    }
+    else
+    {
+      $config['behaviours'] = $behaviours;
+    }
 
     /* Parent constructor */
     parent::__construct($container, $config);

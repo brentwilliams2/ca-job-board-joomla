@@ -161,19 +161,4 @@ class EmailMessages extends BaseDataModel
       //Log($e);
     }
   }
-
-
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EMAIL_MESSAGES_TITLE_ERR');
-
-		parent::check();
-
-    return $this;
-  }
 }

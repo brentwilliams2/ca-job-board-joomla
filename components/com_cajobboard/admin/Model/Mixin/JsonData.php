@@ -21,19 +21,21 @@ trait JsonData
   /**
 	 * Transform JSON to a JRegistry object
    *
-   * @param   string    $json   A JSON-encoded string
+   * @param   Registry|string    $json      A JSON-encoded string or Registry object
+   * @param   string             $default   Default values in a JSON-encoded string
 	 *
 	 * @return  Registry  Returns a Registry object holding the JSON-encoded data
 	 */
-  protected function transformJsonToRegistry($json)
+  protected function transformJsonToRegistry($json, $default = null)
   {
-    // Make sure it's not a JRegistry already
-    if (is_object($json) && ($json instanceof Registry))
+    if ( !is_object($json) || !($json instanceof Registry) )
     {
-        return $json;
+        $json = new Registry($default, 'JSON');
+        
+        $json->loadString($json, 'JSON');
     }
 
-    return new Registry($json, 'JSON');
+    return $json;
   }
 
 

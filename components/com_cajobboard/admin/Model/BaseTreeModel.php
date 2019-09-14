@@ -82,7 +82,14 @@ class BaseTreeModel extends TreeModel
     );
 
     // Merge any behaviours passed from the child model into our base class default behaviours
-    $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
+    if ( array_key_exists('behaviours', $config) )
+    {
+      $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
+    }
+    else
+    {
+      $config['behaviours'] = $behaviours;
+    }
 
     /* Overridden constructor */
     $this->constructor($container, $config);
@@ -101,3 +108,6 @@ class BaseTreeModel extends TreeModel
     return $this->container->TableFields->getTableFieldsMetadata($this);
   }
 }
+
+
+

@@ -22,7 +22,7 @@ use \Joomla\Registry\Registry;
 defined('_JEXEC') or die;
 
 /**
- * A helper class for getting and updating aggrete total and unread Messages counts
+ * A helper class for getting and updating aggregate total and unread Messages counts
  */
 class MessageCounts
 {
@@ -60,7 +60,7 @@ class MessageCounts
    *
    * @param   int   $userId   The ID of the user to return message counts for
 	 */
-  protected function updateMessageCounts($userId)
+  public function updateMessageCounts($userId)
   {
     $personModel = $this->getPersonModel($userId);
 
@@ -74,15 +74,15 @@ class MessageCounts
       $params->set('messagesTotal', $messagesTotal++);
 
       $params->set('messagesUnread', $this->calculateMessagesUnread($messagesUnread));
-    }
 
-    $personModel->setParam( 'params', $params->toString('JSON') );
+      $personModel->setParam( 'params', $params->toString('JSON') );
 
-    $success = $personModel->save();
+      $success = $personModel->save();
 
-    if (!$success)
-    {
-      throw new \Exception( Text::sprintf('COM_CAJOBBOARD_MESSAGE_COUNTS_EXCEPTION_USER_SAVE_FAILED', $userId));
+      if (!$success)
+      {
+        throw new \Exception( Text::sprintf('COM_CAJOBBOARD_MESSAGE_COUNTS_EXCEPTION_USER_SAVE_FAILED', $userId));
+      }
     }
   }
 
@@ -129,7 +129,7 @@ class MessageCounts
 	 *
 	 * @return  Persons   A Persons model of the user
 	 */
-  public function getPersonModel($userId)
+  protected function getPersonModel($userId)
   {
     $config = array();
 

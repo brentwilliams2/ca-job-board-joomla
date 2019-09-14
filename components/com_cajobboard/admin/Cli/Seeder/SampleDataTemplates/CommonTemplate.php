@@ -125,13 +125,6 @@ class CommonTemplate extends BaseTemplate
    */
   public $description__intro;
 
-	/**
-	 * A description of the item.
-	 *
-	 * @var    string
-   */
-  public $image;
-
   /**
 	 * Date the item was created
 	 *
@@ -142,7 +135,7 @@ class CommonTemplate extends BaseTemplate
   /**
 	 * Userid of the creator of this item.
 	 *
-	 * @var    \JUser
+	 * @var    \Joomla\CMS\User\User
    */
   public $created_by;
 
@@ -150,7 +143,7 @@ class CommonTemplate extends BaseTemplate
   /**
 	 * Userid of person that last modified this item.
 	 *
-   * @var    \JUser
+   * @var    \Joomla\CMS\User\User
    */
   public $modified_by;
 
@@ -158,7 +151,7 @@ class CommonTemplate extends BaseTemplate
   /**
 	 * Same as created_on date by default, date and time the item is published.
 	 *
-   * @var    \JUser
+   * @var    \Joomla\CMS\User\User
    */
   public $publish_up;
 
@@ -279,20 +272,6 @@ class CommonTemplate extends BaseTemplate
   public function description__intro ($config, $faker)
   {
     $this->description__intro = $faker->text(280);
-  }
-
-  public function image ($config, $faker)
-  {
-    $this->image = '{
-      "image_intro":"images\/sampledata\/fruitshop\/apple.jpg",
-      "float_intro":"right",
-      "image_intro_alt":"Sample intro image alt get",
-      "image_intro_caption":"A job board image",
-      "image_fulltext":"images\/sampledata\/parks\/banner_cradle.jpg",
-      "float_fulltext":"",
-      "image_fulltext_alt":"Sample fulltext image alt text",
-      "image_fulltext_caption":"a park!"
-    }';
   }
 
   public function created_by ($config, $faker)

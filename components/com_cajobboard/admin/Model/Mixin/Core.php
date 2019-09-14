@@ -48,6 +48,6 @@ trait Core
 
     // @TODO: exclude access forbidden or other aborts to an item view in shouldIncrementViewCounts() in BaseModel
 
-    return true;
+    return false;
   }
 }

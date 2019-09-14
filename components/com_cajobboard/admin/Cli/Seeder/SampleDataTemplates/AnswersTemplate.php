@@ -18,6 +18,8 @@ defined('_JEXEC') or die;
 
 class AnswersTemplate extends CommonTemplate
 {
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
+  
 	/**
 	 * This property points to a Question entity associated with this answer.
 	 *

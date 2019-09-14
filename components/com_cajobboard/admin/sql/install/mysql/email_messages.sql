@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_messages` (
 
   /* SCHEMA: Thing */
   description TEXT COMMENT 'Note for internal use concerning this e-mail.',
-  description__intro VARCHAR(280) COMMENT 'Short description of the email to show in browse views.',
   name VARCHAR(255) COMMENT 'Subject field of the e-mail. Aliased by title property.',
 
   /* SCHEMA: CreativeWork */

@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
-namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
+namespace Calligraphic\Cajobboard\Admin\Model\Comments\Behaviour;
 
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;

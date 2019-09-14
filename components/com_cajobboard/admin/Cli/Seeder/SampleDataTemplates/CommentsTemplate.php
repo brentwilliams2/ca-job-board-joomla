@@ -18,15 +18,8 @@ defined('_JEXEC') or die;
 
 class CommentsTemplate extends CommonTemplate
 {
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
   use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Tree;
-
-	/**
-	 * The primary key of the ImageObject to use for social share and page header images.
-	 *
-	 * @property    int
-   */
-  public $image;
-
 
 	/**
 	 * The primary key of the foreign model item that this comment belongs to.
@@ -42,14 +35,6 @@ class CommentsTemplate extends CommonTemplate
 	 * @property    string    VARCHAR(255)
    */
   public $about__foreign_model_name;
-
-
-	/**
-	 * This property points to a Question entity associated with this answer.
-	 *
-	 * @property    int
-   */
-  public $parent_item;
 
 
 	/**
@@ -80,15 +65,8 @@ class CommentsTemplate extends CommonTemplate
 
 
   /**
-	 * Setters for Answer fields
+	 * Setters for Comment fields
    */
-
-  // $this->hasOne('Image', 'ImageObjects@com_cajobboard', 'image', 'image_object_id');
-  public function image ($config, $faker)
-  {
-    $this->image = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'ImageObjects');
-  }
-
 
   // $this->hasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
   public function about__foreign_model_id ($config, $faker)
@@ -100,21 +78,14 @@ class CommentsTemplate extends CommonTemplate
     );
 
     $this->about__foreign_model_name = $foreignModels[$faker->numberBetween(0, count($foreignModels) - 1 )];
-    $this->about__foreign_model_id = $config->relationMapper->getFKValue('BelongsTo', $config, false, $faker, $this->about__foreign_model_name);
+
+    $this->about__foreign_model_id = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, $this->about__foreign_model_name);
   }
 
 
   public function about__foreign_model_name ($config, $faker)
   {
     return;
-  }
-
-
-  // $this->inverseSideOfHasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
-  public function parent_item ($config, $faker)
-  {
-    //
-    $this->parent_item = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, false, $faker, 'Comments');
   }
 
 

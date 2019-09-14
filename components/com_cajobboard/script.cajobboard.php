@@ -23,6 +23,10 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('This component requires FOF 3.0.');
 }
 
+use \Joomla\CMS\Log\Log;
+use \Joomla\CMS\Table\Table;
+use \Joomla\CMS\Language\Text;
+
 class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 {
 	/**
@@ -199,7 +203,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 */
   public function __construct()
 	{
-    $this->componentTitle = JText::_('COM_CAJOBBOARD');
+    $this->componentTitle = Text::_('COM_CAJOBBOARD');
   }
 
 
@@ -211,13 +215,11 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 *
 	 * @return  boolean  True on success
 	 */
-  public function preflight($type, JAdapterInstance $adapter)
+  public function preflight($type, \JAdapterInstance $adapter)
   {
     parent::preflight($type, $adapter);
 
-    // @TODO: Add a Post-Installation Message (PIM) to show as a flash message in the admin's dashboard area
-    // See fof/Utils/InstallScript/BaseInstaller.php
-    // $this->addPostInstallationMessage($options);
+    $this->checkRequiredPhpModules();
 
     // abort if the component being installed is not newer than the currently installed version
     if ($type == 'update' && !$this->isInstallVersionNewer())
@@ -229,6 +231,87 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
   }
 
 
+  /**
+   * Add a message to the post install message queue
+   * 
+   *
+	 * The $options array contains the following mandatory keys:
+	 *
+	 *   type                 One of message, link or action. Their meaning is:
+   *
+	 *                        message     Informative message. The user can dismiss it.
+   *
+	 *                        link        The action button links to a URL. The URL is defined in the action parameter.
+   *
+	 *                        action      A PHP action takes place when the action button is clicked. You need to specify the
+	 *                                    action_file (RAD path to the PHP file) and action (PHP function name) keys. See
+	 *                                    below for more information.
+	 *
+	 *   title_key            The translation key for the title of this PIM
+	 *
+	 *   description_key      The translation key for the main body (description) of this PIM
+   *
+	 *   language_extension   The extension name which holds the translation keys used above
+	 *
+	 *   language_client_id   Should we load the front-end (0) or back-end (1) translation keys?
+	 *
+	 *   version_introduced   Which was the version of your extension where this message appeared for the first time?
+	 *                        Example: 3.2.1
+	 *
+	 *   enabled              Must be 1 for this message to be enabled. If you omit it, it defaults to 1.
+	 *
+	 *   condition_file       The RAD path (e.g. admin://components/com_foobar/helpers/postinstall.php) to a PHP file
+	 *                        containing a PHP function which determines whether this message should be shown to the user.
+   *                        Joomla! will include this file before calling the condition_method.
+	 *
+	 *   condition_method     The name of a PHP function which will be used to determine whether to show this message to
+	 *                        the user. This must be a simple PHP user function (not a class method, static method etc)
+	 *                        which returns true to show the message and false to hide it. This function is defined in the
+	 *                        condition_file.
+	 *
+   *
+	 * The following additional keys are required when the 'type' key's value is 'link':
+	 *
+	 *   action               The URL which will open when the user clicks on the PIM's action button
+	 *                        Example:    index.php?option=com_foobar&view=tools&task=installSampleData
+   *
+	 *   action_key           The translation key for the action button. Ignored and not required when the 'type' key's value is 'message'
+	 *
+   *
+	 * The following additional keys are required when the 'type' key's value is 'action':
+	 *
+	 *   action_file          The RAD path to a PHP file containing a PHP function which performs the action of this PIM.
+	 *
+	 *   action               The name of a PHP function which will be used to run the action of this PIM. This must be a
+	 *                        simple PHP user function (not a class method, static method etc) which returns no result.
+   *
+	 *   action_key           The translation key for the action button. Ignored and not required when the 'type' key's value is 'message'
+   *
+   * @param   array   $options    See fof/Utils/InstallScript/BaseInstaller.php for description
+   */
+  protected function setPostInstallationMessage(array $options)
+	{
+    $defaultOptions = array(
+      'type'               => 'message',
+      'title_key'          => '',
+      'description_key'    => '',
+      'language_extension' => 'com_cajobboard',
+      'language_client_id' => '1',
+      'condition_file'     => '',
+      'condition_method'   => '',
+      'version_introduced' => '1.0',
+      'enabled'            => '1',
+    );
+
+    foreach ($options as $key => $value)
+    {
+      $defaultOptions[$key] = $value;
+    }
+
+    array_push($this->postInstallationMessages, $defaultOptions);
+  }
+
+
 	/**
 	 * Called after any type of action is ran, can set parameters for component here
 	 *
@@ -237,7 +320,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 *
 	 * @return  boolean  True on success
 	 */
-  public function postflight($type, JAdapterInstance $adapter)
+  public function postflight($type, \JAdapterInstance $adapter)
   {
     parent::postflight($type, $adapter);
 
@@ -260,7 +343,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 *
 	 * @return  boolean  True on success
 	 */
-  public function install(JAdapterInstance $adapter)
+  public function install(\JAdapterInstance $adapter)
   {
     $this->setParams();
 
@@ -277,7 +360,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 *
 	 * @return  boolean  True on success
 	 */
-  public function update(JAdapterInstance $adapter)
+  public function update(\JAdapterInstance $adapter)
   {
     return true;
   }
@@ -288,7 +371,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 *
 	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 */
-  public function uninstall(JAdapterInstance $adapter)
+  public function uninstall(\JAdapterInstance $adapter)
   {
     parent::uninstall($adapter);
 
@@ -303,8 +386,6 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 	 */
   public function isInstallVersionNewer()
   {
-    JLog::add('Version to be installed checked for newer in installation script', JLog::DEBUG, 'com_cajobboard');
-
     // Get a db connection so we can find the installed version from #__extensions
     $db = JFactory::getDbo();
     $query = $db->getQuery(true);
@@ -322,7 +403,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     if (version_compare($newRelease, $installedRelease, 'le'))
     {
       JFactory::getApplication()->enqueueMessage(
-        JText::sprintf('COM_CAJOBBOARD_NO_UPDATE_TO_AN_OLDER_VERSION', $installedRelease, $newRelease), 'error'
+        Text::sprintf('COM_CAJOBBOARD_NO_UPDATE_TO_AN_OLDER_VERSION', $installedRelease, $newRelease), 'error'
       );
 
       return false;
@@ -359,7 +440,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    *
    * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 */
-	protected function renderPostInstallation($adapter)
+	protected function renderPostInstallation(\JAdapterInstance $adapter)
 	{
 		?>
       <h1>Calligraphic Job Board</h1>
@@ -401,7 +482,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    *
    * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 */
-	protected function renderPostUninstallation($adapter)
+	protected function renderPostUninstallation(\JAdapterInstance $adapter)
 	{
 		?>
       <h2 style="font-size: 14pt; font-weight: bold; padding: 0; margin: 0 0 0.5em;">&nbsp;Callibraphic Job Board Uninstallation</h2>
@@ -433,11 +514,12 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
 
       // Set the category description from the translation key in en-GB.com_cajobboard.sys.ini
       // remove any spaces from the category title when building the translation key
-      $data['title'] = JText::_('COM_CAJOBBOARD_CATEGORY_TITLE_' . strtoupper(str_replace(' ', '', $category)));
+      $data['title'] = Text::_('COM_CAJOBBOARD_CATEGORY_TITLE_' . strtoupper(str_replace(' ', '', $category)));
+
       $data['description'] = $data['title'];
 
       // Initialize a new category
-      $category = \JTable::getInstance('Category');
+      $category = Table::getInstance('Category');
 
       // Bind passed category parameters to Category model
       $category->bind($data);
@@ -448,7 +530,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
       // Check to make sure our data is valid. check() will auto generate alias if not set above.
       if (!$category->check())
       {
-        throw new Error($category->getError(), 500);
+        throw new \Exception($category->getError(), 500);
 
         return false;
       }
@@ -456,7 +538,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
       // Store the category
       if (!$category->store(true))
       {
-        throw new Error($category->getError(), 500);
+        throw new \Exception($category->getError(), 500);
 
         return false;
       }
@@ -465,7 +547,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
       $category->rebuildPath($category->id);
     }
 
-    \JTable::getInstance('Category')->rebuild();
+    Table::getInstance('Category')->rebuild();
   }
 
 
@@ -498,7 +580,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    */
   function addUserGroups()
   {
-    JLog::add('User groups added in installation script', JLog::DEBUG, 'com_cajobboard');
+    Log::add('User groups added in installation script', JLog::DEBUG, 'com_cajobboard');
 
     $db = JFactory::getDbo();
 
@@ -532,7 +614,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     {
       if (!in_array($userGroup, $existingUserGroups))
       {
-        $groupModel = \JTable::getInstance('Usergroup');
+        $groupModel = Table::getInstance('Usergroup');
 
         $groupModel->save(array(
           'title' => $userGroup,
@@ -541,7 +623,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
       }
     }
 
-    \JTable::getInstance('Usergroup')->rebuild();
+    Table::getInstance('Usergroup')->rebuild();
   }
 
 
@@ -552,7 +634,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    */
   function seedCommentRootRecord()
   {
-    $this->insertTreeRootRecord();
+    $this->insertTreeRootRecord('#__cajobboard_comments');
   }
 
 
@@ -563,17 +645,54 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
    */
   function seedMessageRootRecord()
   {
-    $this->insertTreeRootRecord();
+    $this->insertTreeRootRecord('#__cajobboard_messages');
   }
 
 
   /**
    * Insert mandatory root record for nested set hierarchical tables (FOF TreeModel)
+   * 
+   * @param string $tableName   The name of the table to initialize
    *
-   * @return void
-   */
-  function insertTreeRootRecord()
+   * @throws \RuntimeException
+   *
+   * @return boolean  Whether the root record could be inserted successfuly
+	 */
+  protected function insertTreeRootRecord($tableName)
   {
-    // @TODO: implement install script method to insert mandatory root record for nested set hierarchical tables (FOF TreeModel) (comments and messages)
+    $root = new \stdClass();
+
+    $root->slug = 'root';
+    $root->name = 'Root Node';
+    $root->description = 'The root node for this table.';
+    $root->lft = '1';
+    $root->rgt = '2';
+    $root->hash = sha1($root->slug);
+
+    return \JFactory::getDbo()->insertObject($tableName, $root);
+  }
+
+
+  /**
+   * Insert mandatory root record for nested set hierarchical tables (FOF TreeModel)
+   * @param string $tableName   The name of the table to initialize
+   *
+   * @throws \RuntimeException
+	 */
+  protected function checkRequiredPhpModules()
+  {
+    // Make sure BCMATH is installed to support MySQL geospatial operations
+    $isBcmathInstalled = extension_loaded('bcmath');
+
+
+    if (!$isBcmathInstalled)
+    {
+      $options = array(
+        'title_key'          => 'COM_CAJOBBOARD_PIM_BCMATH_MISSING_TITLE',
+        'description_key'    => 'COM_CAJOBBOARD_PIM_BCMATH_MISSING_DESC'
+      );
+
+      $this->setPostInstallationMessage($options);
+    }
   }
 }

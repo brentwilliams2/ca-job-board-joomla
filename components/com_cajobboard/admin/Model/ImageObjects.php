@@ -127,8 +127,31 @@ class ImageObjects extends BaseDataModel
     }
   }
 
+
+  /**
+	 * Transform 'exif_data' field to a JRegistry object on bind
+	 *
+	 * @return  Registry
+	 */
+  protected function getExifDataAttribute($value)
+  {
+    return $this->transformJsonToRegistry($value);
+  }
+
+
+  /**
+	 * Transform 'exif_data' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  string  JSON string
+	 */
+  protected function setExifDataAttribute($value)
+  {
+    return $this->transformRegistryToJson($value);
+  }
+
+
   /*
-    @NOTE: Use single table inheritance, with fields like:
+    @NOTE: Use single table inheritance, with fields like:  WHY??
 
       about__discriminator
       about__organization
@@ -316,23 +339,5 @@ class ImageObjects extends BaseDataModel
   protected function extractExifDataFromImage()
   {
 
-  }
-
-
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_IMAGE_OBJECTS_ERR_TITLE');
-
-		parent::check();
-
-    return $this;
   }
 }

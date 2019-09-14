@@ -95,46 +95,17 @@ class Categories extends BaseTreeModel
 
 
 /*
-  // @TODO: need to manually add the following categories for models added since component installation:
+  // @TODO: determine if need to manually add the following categories for models added since component installation:
 
-  'Categories',
-  'Comments',
-  'CreditReports',
-  'DataFeeds',
-  'DigitalDocuments',
-  'DigitalSignatures',
-  'DiversityPolicies',
-  'EmailMessageTemplates',
   'EmployerAggregateRatings',
   'EmployerDepartments',
   'EmploymentTypes',
-  'FCRA',
   'GeoCoordinates',
-  'Help',
-  'Interviews',
   'IssueReportCategories',
-  'IssueReports',
   'OccupationalCategories',
   'OccupationalCategoryGroups',
-  'Offers',
   'OrganizationRoles',
   'OrganizationTypes',
   'PersonallyIdentifiableInformation',
   'QAPageCategories',
-  'Questions',
-  'ResumeAlerts',
-  'ScoreCards',
-  'Uncategorised',
-  'WorkFlows'
-
-
-
-
-  // Existing categories that don't have models for them
-	Awards
-	Help
-	Questionnaires   // Questions
-	Scheduling      // Schedules
-
-  Uncategorised
 */
