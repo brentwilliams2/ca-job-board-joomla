@@ -300,29 +300,33 @@ class Platform extends \FOF30\Platform\Joomla\Platform
 
     $isBackend = $this->isBackend();
 
-    // load component and exception translation files if no view given
+    // load the enum translation file
+    $language->load('enum', $adminLangDir, 'en-GB', true);
+
+    // load the exceptions translation file
+    $language->load('exceptions', $adminLangDir, 'en-GB', true);
+
+    // common language file for front-end and back-end in /administrator/language folder
+    $language->load($component . '_common', $adminLangDir, 'en-GB', true);
+    $language->load($component . '_common', $adminLangDir, null, true);
+
+    // load component translation file
+    if ($isBackend)
+    {
+      // core language file in /administrator/language folder
+      $language->load($component, $adminLangDir, 'en-GB', true);
+      $language->load($component, $adminLangDir, null, true);
+    }
+    else
+    {
+      // core language file in /language folder
+      $language->load($component, $siteLangDir, 'en-GB', true);
+      $language->load($component, $siteLangDir, null, true);
+    }
+
+    // Exit if no view was given
     if (!$view)
     {
-      // load the exceptions translation file
-      $language->load('exceptions', $adminLangDir, 'en-GB', true);
-
-      // common language file for front-end and back-end in /administrator/language folder
-      $language->load($component . '_common', $adminLangDir, 'en-GB', true);
-      $language->load($component . '_common', $adminLangDir, null, true);
-
-      if ($isBackend)
-      {
-        // core language file in /administrator/language folder
-        $language->load($component, $adminLangDir, 'en-GB', true);
-        $language->load($component, $adminLangDir, null, true);
-      }
-      else
-      {
-        // core language file in /language folder
-        $language->load($component, $siteLangDir, 'en-GB', true);
-        $language->load($component, $siteLangDir, null, true);
-      }
-
       return;
     }
 
@@ -345,16 +349,5 @@ class Platform extends \FOF30\Platform\Joomla\Platform
       $language->load($view, $siteLangDir, 'en-GB', true);
       $language->load($view, $siteLangDir, null, true);
     }
-  }
-
-
-  /**
-	 * Load the component translation files
-	 *
-	 * @return  void
-	 */
-	public function loadComponentTranslations()
-	{
-    $this->loadViewTranslations();
   }
 }

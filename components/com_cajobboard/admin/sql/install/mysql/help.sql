@@ -13,5 +13,5 @@ INSERT INTO `#__content` (`id`, `title`, `alias`, `introtext`, `fulltext`, `crea
 VALUES(
   /* type_id */
   null,
-  /* @TODO: create these pages and copy them over to SQL */
+  /* @TODO: create these pages and copy them over to SQL, so they can be automatically inserted. Probably need to move this to an install script so the id's can be set to component parameters. */
 );

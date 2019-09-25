@@ -42,12 +42,15 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_occupational_category_groups` (
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note VARCHAR(255) COMMENT 'A note to save with this job posting in the back-end interface.',
 
+  /* SCHEMA: Thing */
+  name CHAR(255) COMMENT 'The name of this occupational category group.',
+  description TEXT COMMENT 'Occupational category group description.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  image JSON COMMENT 'Image metadata for social share and page header images',
+  url VARCHAR(2083) COMMENT 'link to schema for occupational category, e.g. wikipedia page on Management',
+
   /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
   `group` CHAR(96) NOT NULL COMMENT 'Name for this group of occupational categories, e.g. office staff',
-
-  /* SCHEMA: Thing */
-  description TEXT NOT NULL COMMENT 'Occupational category group description',
-  url VARCHAR(2083) NOT NULL COMMENT 'link to schema for occupational category, e.g. wikipedia page on Management',
 
   /* SQL DDL */
   PRIMARY KEY (occupational_category_group_id)

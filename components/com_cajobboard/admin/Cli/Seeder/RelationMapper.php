@@ -27,10 +27,9 @@ defined('_JEXEC') or die;
  * instantiated, and unavailable to other classes using the autoloader.
  */
 abstract class RelationTypes extends BasicEnum {
-  const BelongsTo = 0;
-  const InverseSideOfHasOne = 1;
-  const InverseSideOfHasMany = 2;
-  const BelongsToMany = 3;
+  const BelongsTo = null;
+  const InverseSideOfHasOne = null;
+  const InverseSideOfHasMany = null;
 }
 
 /*
@@ -75,10 +74,11 @@ class RelationMapper
    *  @param   bool    $isRequired        Whether this foreign key value is required or not. Defaults to true.
    *  @param   Faker   $faker             A Faker object for generating deterministic random numbers.
    *  @param   string  $foreignModelName  The name of the foreign model being joined. Defaults to null.
+   *  @param   string  $joinTableName     The Join Table name for HasMany relations
 	 */
-  public function getFKValue($relationType, $config, $isRequired = true, $faker = null, $foreignModelName = null)
+  public function getFKValue($relationType, $config, $isRequired = true, $faker = null, $foreignModelName = null, $joinTableName = null)
   {
-    if (!RelationTypes::isValidName($relationType))
+    if (!RelationTypes::isValidConstant($relationType))
     {
       throw new Exception('Relation type in Relation Mapper\'s getFKValue() method is not valid: ' . $relationType);
     }
@@ -92,19 +92,6 @@ class RelationMapper
     if ( !isset($foreignModelName) )
     {
       throw new Exception('foreignModelName given to Relation Mapper\'s getFKValue() method is not set or is invalid: ' . $foreignModelName . ', $relationType: ' . $relationType);
-    }
-
-    if (RelationTypes::BelongsToMany == $relationType)
-    {
-      // Determine the model and property being worked on
-      list($null, $caller) = debug_backtrace(false, 2);
-
-      $callingClassArray = explode('\\', $caller['class'] );
-      $callingClass = array_pop($callingClassArray);
-
-      $modelName = preg_replace('/Template$/', '', $callingClass);
-
-      return $this->BelongsToMany($config, $faker, $modelName, $foreignModelName, $caller['function']);
     }
 
     // RelationType must be InverseSideOfHasMany or BelongsTo
@@ -183,31 +170,35 @@ class RelationMapper
   /**
 	 * Seeder for BelongsToMany relations
 	 *
-	 * @param   Array  $config   The config object passed to the calling method by generate()
+	 * @param   Array   $config                   The config object passed to the calling method by generate()
+   * @param   Faker   $faker                    A Faker object for generating deterministic random numbers.
+   * @param   string  $foreignModelName         The name of the foreign model
+   * @param   string  $modelIdFieldName         The PK of this model
+   * @param   string  $foreignModelIdFieldName  The PK of the foreign model
+   * @param   string  $joinTableName            The name of the join table, e.g. '#__cajobboard_interviews_questions'
+   * @param   int     $count                    The number of join records to create for this single seed record
 	 */
-  public function BelongsToMany($config, $faker, $modelName, $foreignModelName, $field)
+  public function BelongsToMany($config, $faker, $modelIdFieldName, $foreignModelName, $foreignModelIdFieldName, $joinTableName, $count = 1)
   {
-    throw new Exception('Implement BelongsToMany in RelationMapper');
-
-    // @TODO: Need the container to get the singulizer
-
-    $tableName = $config->joinTables[$modelName . '.' . $field];
-
-    $modelKey = $modelName; // @TODO: build the PK
-
-    $foreignModelKey = $foreignModelName;
-
     $db = Factory::getDbo();
 
-    $query = $db->getQuery(true);
+    if (1 == $config->item_id)
+    {
+      $db->truncateTable($joinTableName);
+    }
 
-    $query
-      ->insert( $db->quoteName($tableName) )
-      ->columns( $db->quoteName( array($modelKey, $foreignModelKey) ) )
-      ->values( implode(',', array(1001, 1) ) );
+    for ($i = 0; $i < $count; $i++)
+    {
+      $query = $db->getQuery(true);
 
-    $db->setQuery($query);
+      $query
+        ->insert( $db->quoteName($joinTableName) )
+        ->columns( $db->quoteName( array($modelIdFieldName, $foreignModelIdFieldName) ) )
+        ->values( implode(',', array($config->item_id, $this->BelongsTo($config, true, $faker, $foreignModelName) ) ) );
 
-    $db->execute();
+      $db->setQuery($query);
+
+      $db->execute();
+    }
   }
 }

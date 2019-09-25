@@ -424,6 +424,8 @@ class Assets extends Observer
 
     $db->setQuery($query);
 
+    $isAssetIdSaved = null;
+
     try
     {
       $isAssetIdSaved = $db->execute();

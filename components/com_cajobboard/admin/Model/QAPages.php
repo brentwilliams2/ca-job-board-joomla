@@ -22,8 +22,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * Fields:
  *
  * UCM
- * @property int                $qapage_id          Surrogate primary key.
- * @property string             $slug               Alias for SEF URL.
+ * @property int            $q_a_page_id          Surrogate primary key.
+ * @property string         $slug               Alias for SEF URL.
  *
  * FOF "magic" fields
  * @property int            $asset_id           FK to the #__assets table for access control purposes.
@@ -53,16 +53,10 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string             $name               A name for this question and answer page.
- * @property string             $description        A long description of this question and answer page.
- * @property Questions          $MainEntityOfPage   The Question this page is about.
- *
- * SCHEMA: CreativeWork
- * @property Organizations      $About              The organization this question-and-answer page is about. FK to #__cajobboard_organizations(organization_id).
- * @property string             $text                Long description of the question and answer page.
- *
- * SCHEMA: QAPage
- * @property QAPageCategories   $Specialty          A category to which this question and answer page's content applies. FK to #__cajobboard_qapage_categories(qapage_category_id).
+ * @property string         $name             A title to use for the QA Page.
+ * @property string         $description      A description of the QA Page.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * 
  */
 class QAPages extends BaseDataModel
 {
@@ -75,11 +69,11 @@ class QAPages extends BaseDataModel
 	public function __construct(Container $container, array $config = array())
 	{
     // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_qapages';
-    $config['idFieldName'] = 'qapage_id';
+		$config['tableName'] = '#__cajobboard_q_a_pages';
+    $config['idFieldName'] = 'q_a_page_id';
 
     // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.qapages';
+    $config['contentType'] = 'com_cajobboard.q_a_pages';
 
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
@@ -100,95 +94,21 @@ class QAPages extends BaseDataModel
      * Set up relations
      */
 
-    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_questions_qapages
-    $this->belongsToMany('HasPart', 'Questions@com_cajobboard', 'has_part', 'is_part_of', '#__cajobboard_questions_qapages');
+    // one-to-many FK to #__cajobboard_answers, key in foreign table
+    // @TODO: Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages'
+    //$this->hasMany('Answers', 'Answers@com_cajobboard', 'q_a_page_id', 'is_part_of');
 
     // one-to-one FK to  #__cajobboard_questions
-    $this->hasOne('MainEntityOfPage', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
+    $this->hasOne('Question', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
 
     // Many-to-one FK to  #__cajobboard_organizations
-    $this->belongsTo('About', 'Organizations@com_cajobboard', 'about', 'organization_id');
+    $this->belongsTo('About', 'Organizations@com_cajobboard', 'about__organization', 'organization_id');
   }
 
   /*
   @TODO: implement a "Can you answer this question?" feature like Quora (email to users) for job posting QA Pages / questions,
          also "Request an Answer from User x" button to message / email a request
   */
-
-	/**
-	 * Override to add join field for #__cajobboard_qapage_categories as $Specialty
-	 *
-	 * @param   boolean $overrideLimits Should I override limits
-	 *
-	 * @return  \JDatabaseQuery  The database query to use
-	 */
-  public function buildQuery($overrideLimits = false)
-	{
-		// Join category table specialty field to QAPages table
-    $db = $this->getDbo();
-
-		$query = $db->getQuery(true)
-      ->select(array(
-        $db->quoteName('qapages.*'),
-        $db->quoteName('category.name', 'Specialty')
-      ))
-      ->from($db->quoteName('#__cajobboard_qapages', 'qapages'))
-      ->join('INNER', $db->quoteName('#__cajobboard_qapage_categories', 'category') . ' ON (' . $db->quoteName('qapages.specialty') . ' = ' . $db->quoteName('category.qapage_category_id') . ')');
-
-      // @TODO: main_entity_of_page -> accepted_answer -> answer_id: name, description, upvote_count, downvote_count
-      // @TODO: remove is_part_of column from #__cajobboard_answers
-
-    // Apply custom WHERE clauses
-		if (count($this->whereClauses))
-		{
-			foreach ($this->whereClauses as $clause)
-			{
-				$query->where($clause);
-			}
-    }
-
-    // Handle checking state for order and setting it if needed
-    $order = $this->getState('filter_order', null, 'cmd');
-
-		if (!array_key_exists($order, $this->knownFields))
-		{
-			$order = $this->getIdFieldName();
-			$this->setState('filter_order', $order);
-    }
-
-    $order = $db->qn($order);
-
-    $dir = strtoupper($this->getState('filter_order_Dir', null, 'cmd'));
-
-		if (!in_array($dir, array('ASC', 'DESC')))
-		{
-			$dir = 'ASC';
-			$this->setState('filter_order_Dir', $dir);
-    }
-
-		$query->order($order . ' ' . $dir);
-
-  	return $query;
-  }
-
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_QAPAGE_ERR_TITLE');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_QAPAGE_ERR_DESCRIPTION');
-    $this->assertNotEmpty($this->url, 'COM_CAJOBBOARD_QAPAGE_ERR_URL');
-
-		parent::check();
-
-    return $this;
-  }
 }
 
 

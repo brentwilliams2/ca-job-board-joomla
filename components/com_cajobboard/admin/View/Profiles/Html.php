@@ -21,20 +21,6 @@ defined('_JEXEC') or die;
 class Html extends BaseHtml
 {
 	/**
-	 * Overridden. Load view-specific language file.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-    parent::__construct($container, $config);
-
-    $this->loadLanguageFileForView('profiles');
-  }
-
-
-	/**
 	 * Overridden. Executes before rendering the page for the Browse task.
    * Modified to eager load Author relation to Persons model and push the
    * model to the view templates.

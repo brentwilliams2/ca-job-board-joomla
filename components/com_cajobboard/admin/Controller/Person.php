@@ -18,14 +18,8 @@ defined('_JEXEC') or die;
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
 
-class  Person extends BaseController
+class Person extends BaseController
 {
-  /* Traits to include in the class */
-
-  use Mixin\ToggleField;          // Method to toggle boolean state fields
-  use Mixin\Redirect;             // Utilities for handling redirects in controller classes
-  use Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
-
 	/*
 	 * Overridden. Limit the tasks that are allowed to execute.
 	 *
@@ -36,14 +30,14 @@ class  Person extends BaseController
 	{
     $this->modelName = 'Persons';
 
+    parent::__construct($container, $config);
+
     $this->addPredefinedTaskList(array(
       'activate',
       'unactivate',
       'block',
       'unblock'
     ));
-
-    parent::__construct($container, $config);
   }
 
 

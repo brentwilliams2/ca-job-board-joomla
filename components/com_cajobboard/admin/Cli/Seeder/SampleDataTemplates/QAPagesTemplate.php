@@ -18,83 +18,73 @@ defined('_JEXEC') or die;
 
 class QAPagesTemplate extends CommonTemplate
 {
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
+
 	/**
-	 * This property points to a QAPage entity associated with this question and answer page.
+	 * The question this page is about. FK to #__cajobboard_questions.
 	 *
 	 * @property    int
    */
-  public $is_part_of;
+  public $main_entity_of_page;
+
 
 	/**
-	 * The company that wrote this question and answer page.
+	 * The organization this question-and-answer page is about. FK to #__cajobboard_organizations.
 	 *
 	 * @property    int
    */
-  public $publisher;
-
-	/**
-	 * The actual text of the question and answer page itself.
-	 *
-	 * @property    string
-   */
-  public $text;
-
-	/**
-	 * The question this question and answer page is intended for.
-	 *
-	 * @property    int
-   */
-  public $parent_item;
-
-	/**
-	 *Upvote count for this item.
-	 *
-	 * @property    int
-   */
-  public $upvote_count;
-
-	/**
-	 * Downvote count for this item.
-	 *
-	 * @property    int
-   */
-	public $downvote_count;
+  public $about__organization;
 
 
   /**
 	 * Setters for QAPage fields
    */
 
-  // $this->hasOne('isPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'qapage_id');
-  public function is_part_of ($config, $faker)
+  public function cat_id ($config, $faker)
   {
-    $this->is_part_of = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker); // @TODO: Not in model
+    if ( !property_exists($config, 'qapage_categories') )
+    {
+      $parent_cat_id = null;
+
+      foreach ($config->categories as $categoryObj)
+      {
+        if ($categoryObj->title == 'QAPages')
+        {
+          $parent_cat_id = $categoryObj->id;
+          break;
+        }
+      }
+
+      // Get the 'QAPages' categories
+      $db = \JFactory::getDbo();
+
+      $query = $db->getQuery(true);
+
+      $query
+        ->select('id')
+        ->from($db->quoteName('#__categories'))
+        ->where($db->quoteName('parent_id')." = ".$db->quote($parent_cat_id));
+
+      // Reset the query using our newly populated query object.
+      $db->setQuery($query);
+
+      $config->qapage_categories = $db->loadColumn();
+    }
+
+    $this->cat_id = $config->qapage_categories[$faker->numberBetween(0, count($config->qapage_categories) - 1 )];
   }
 
-  // $this->hasOne('parentItem', 'Questions@com_cajobboard', 'parent_item', 'question_id');
-  public function parent_item ($config, $faker)
+
+  // $this->hasOne('MainEntityOfPage', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
+  public function main_entity_of_page ($config, $faker)
   {
-    $this->parent_item = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker);
+    $this->main_entity_of_page = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Questions');
   }
 
-  // $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
-  public function publisher ($config, $faker)
-  {
-    $this->publisher = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Organizations');
-  }
 
-  public function text ($config, $faker)
+  // $this->belongsTo('About', 'Organizations@com_cajobboard', 'about', 'organization_id');
+  public function about__organization ($config, $faker)
   {
-    $this->text = implode("\n", $faker->paragraphs($faker->numberBetween(1, 3)));
-  }
-
-  public function upvote_count ($config, $faker)
-  {
-    $this->upvote_count = $faker->numberBetween(1, 10);
-  }
-
-  public function downvote_count ($config, $faker)
-  {
-    $this->downvote_count = $faker->numberBetween(1, 30);
+    $this->about__organization = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Organizations');
   }
 }

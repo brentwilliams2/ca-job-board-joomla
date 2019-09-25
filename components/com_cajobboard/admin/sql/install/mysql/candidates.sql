@@ -46,6 +46,16 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_candidates` (
   description TEXT COMMENT 'Description of the candidate.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
+
+/* SCHEMA: CreativeWork */
+  about__application_id
+  about__application_version
+  
+  about__job_posting BIGINT UNSIGNED COMMENT 'The Job Posting this application is about. FK to #__cajobboard_job_postings.',
+  
+  about__question_list BIGINT UNSIGNED COMMENT 'The Question List to be cloned into this application. FK to #__cajobboard_question_lists.',
+  about__workflow BIGINT UNSIGNED COMMENT 'The Workflow this application is about. FK to #__cajobboard_workflows.',
+
   /* SQL DDL */
   PRIMARY KEY (candidate_id)
 )

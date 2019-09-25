@@ -16,7 +16,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectSizeEnum;
 use \FOF30\Container\Container;
+use \Joomla\Registry\Registry;
 
 /*
  * Fields:
@@ -52,25 +54,25 @@ use \FOF30\Container\Container;
  * @property int            $featured         Whether this item is featured or not.
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
- * SCHEMA: ImageObject
- * @property  string	      $caption          Caption for the property image
- * @property  string	      $exif_data        JSON-encoded exif data for this image
+ * SCHEMA: Thing
+ * @property  string	      $name             A name for this image
+ * @property  string	      $description      A long description of this image
+ * @property  string        $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image            Image metadata for social share and page header images.
  *
  * SCHEMA: MediaObject
  * @property  string	      $content_url      Filename of the property image
- *
  * @property  int			      $content_size     File size in bytes
  * @property  int			      $height           Height of the property image in px
  * @property  int			      $width            Width of the property image in px
  * @property  string	      $encoding_format  RFC 2045 mime type for this image to disambiguate different encodings of the same image, e.g. image/jpeg, image/png, image/gif, image/svg+xml
  *
- * SCHEMA: CreativeWork
- * @property  Object	      $ContentLocation  Place depicted or described in the image, FK to #__cajobboard_places
- *
- * SCHEMA: Thing
- * @property  string	      $name             A name for this image
- * @property  string	      $description      A long description of this image
- * @property  Object        $Author           The author of this content or rating, FK to #__users
+ * SCHEMA: ImageObject
+ * @property  string	      $caption          Caption for the property image
+ * @property  string	      $exif_data        JSON-encoded exif data for this image
+ * 
+ * SCHEMA: Thing(additionalType) -> https://calligraphic.design/schema/AspectRatios
+ * @property  string	      $aspect_ratio     An aspect ratio describing this image, using ENUM constants from Admin\Helper\Enum\ImageObjectSizeEnum
  */
 class ImageObjects extends BaseDataModel
 {
@@ -121,6 +123,7 @@ class ImageObjects extends BaseDataModel
     // Relation to category table for $Category
     $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
 
+    // @TODO: Move isXRedirectAvailable() somewhere to share with other media types: video, documents, etc.
     if (!$this->isXRedirectAvailable)
     {
       $this->isXRedirectAvailable();
@@ -128,43 +131,7 @@ class ImageObjects extends BaseDataModel
   }
 
 
-  /**
-	 * Transform 'exif_data' field to a JRegistry object on bind
-	 *
-	 * @return  Registry
-	 */
-  protected function getExifDataAttribute($value)
-  {
-    return $this->transformJsonToRegistry($value);
-  }
-
-
-  /**
-	 * Transform 'exif_data' field's JRegistry object to a JSON string before save
-	 *
-	 * @return  string  JSON string
-	 */
-  protected function setExifDataAttribute($value)
-  {
-    return $this->transformRegistryToJson($value);
-  }
-
-
   /*
-    @NOTE: Use single table inheritance, with fields like:  WHY??
-
-      about__discriminator
-      about__organization
-      about__place
-      about__message
-      about__comment
-      about__person
-      about__application
-      about__resume
-      about__job_posting
-      about__geo_coordinates
-      about__job_alert
-
     When an image_object is accessed directly or through a relation, send the x-header to the web
     server translating the SEF filename to the system filename. That way when the client requests
     it, it's already available.
@@ -198,6 +165,11 @@ class ImageObjects extends BaseDataModel
         -- thumb is constrained to a fixed width and height, so requires cropping
     4. Nice to have option to permit crops instead of simple resizing, so an image could e.g. focus in on people as it is scaled down (like for thumb)
   */
+
+  // @TODO: URL CONSTRUCTION: Note Helper/Enum/ImageObjectSizeEnum that gives a list like 'original', 'thumb', 'small', 'medium', and 'large'
+
+  // @TODO: Note Helper/Enum/ImageObjectAspectRatioEnum that gives a list of objects with properties 'widthAspect', 'heightAspect', and 'aspectRatio',
+  //        and keys 'Square', 'WideLandscape', 'StandardLandscape', 'StandardPortrait', 'MediumLandscape', and 'MediumPortrait'
 
   /*
     @TODO: MOVE this note to view
@@ -248,10 +220,7 @@ class ImageObjects extends BaseDataModel
 	 */
 	public function setImageProperties(ImageObjectSizes $size)
 	{
-    // @TODO: implement, MOVE to controller
-
-    $height = $model->metadata->get($size . '.height', ImageObjectSizes::Original . '.height');
-    $width = $model->metadata->get($size . '.width', ImageObjectSizes::Original . '.width');
+    // @TODO: implement, also getter?, uses ImageObjectAspectRatioEnum helper
   }
 
 
@@ -260,10 +229,9 @@ class ImageObjects extends BaseDataModel
 	 */
 	public function getImageUrl()
 	{
-    // @TODO: implement
+    // @TODO: implement, uses ImageObjectSizeEnum helper
 
-    // NOTE: category name is the same as the model name (organizations, persons, places) so can be normalized using the model name
-    // {sitename}/media/{component name}/images/{category name}/[ original | thumb | small | medium | large ]/{hashed_file_name}.jpg or {slug}.jpg
+    // {sitename}/media/{component name}/images/user_uploads/[ original | thumb | small | medium | large ]/{hashed_file_name}.jpg or {slug}.jpg
   }
 
 
@@ -296,40 +264,22 @@ class ImageObjects extends BaseDataModel
   /**
 	 * Transform 'exif_data' field to a JRegistry object on bind
 	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 * @return  \Joomla\Registry\Registry
 	 */
   protected function getExifDataAttribute($value)
   {
-    // Make sure it's not a JRegistry already
-    if (is_object($value) && ($value instanceof Registry))
-    {
-        return $value;
-    }
-
-    // Return the data transformed to a JRegistry object
-    return new Registry($value);
+    return $this->transformJsonToRegistry($value);
   }
 
 
   /**
-   * Transform 'exif_data' field's JRegistry object to a JSON string before save
+	 * Transform 'exif_data' field's JRegistry object to a JSON string before save
 	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
+	 * @return  string  JSON string
 	 */
   protected function setExifDataAttribute($value)
   {
-    // Make sure it a JRegistry object, otherwise return the value
-    if ( !($value instanceof Registry) )
-    {
-      return $value;
-    }
-
-    // Return the data transformed to JSON
-    return $value->toString('JSON');
+    return $this->transformRegistryToJson($value);
   }
 
 

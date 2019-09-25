@@ -15,8 +15,10 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \FOF30\Model\DataModel;
+use \Joomla\Registry\Registry;
 
 /**
  * Fields:
@@ -26,39 +28,48 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
- * @property int            $asset_id           FK to the #__assets table for access control purposes.
- * @property int            $access             The Joomla! view access level.
- * @property int            $enabled            Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
- * @property string         $created_on         Timestamp of record creation, auto-filled by save().
- * @property int            $created_by         User ID who created the record, auto-filled by save().
- * @property string         $modified_on        Timestamp of record modification, auto-filled by save(), touch().
- * @property int            $modified_by        User ID who modified the record, auto-filled by save(), touch().
- * @property string         $locked_on          Timestamp of record locking, auto-filled by lock(), unlock().
- * @property int            $locked_by          User ID who locked the record, auto-filled by lock(), unlock().
+ * @property int            $asset_id                     FK to the #__assets table for access control purposes.
+ * @property int            $access                       The Joomla! view access level.
+ * @property string         $created_on                   Timestamp of record creation, auto-filled by save().
+ * @property int            $created_by                   User ID who created the record, auto-filled by save().
+ * @property string         $modified_on                  Timestamp of record modification, auto-filled by save(), touch().
+ * @property int            $modified_by                  User ID who modified the record, auto-filled by save(), touch().
+ * @property string         $locked_on                    Timestamp of record locking, auto-filled by lock(), unlock().
+ * @property int            $locked_by                    User ID who locked the record, auto-filled by lock(), unlock().
  *
- * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
- * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
- * @property string         $publish_down     Date and time to change the state to unpublished.
- * @property int            $version          Version of this item.
- * @property int            $ordering         Order this record should appear in for sorting.
- * @property object         $metadata         JSON encoded metadata field for this item.
- * @property string         $metakey          Meta keywords for this item.
- * @property string         $metadesc         Meta description for this item.
- * @property string         $xreference       A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.
- * @property string         $params           JSON encoded parameters for this item.
- * @property string         $language         The language code for the article or * for all languages.
- * @property int            $cat_id           Category ID for this item.
- * @property int            $hits             Number of hits the item has received on the site.
- * @property int            $featured         Whether this item is featured or not.
- * @property string         $note             A note to save with this item for use in the back-end interface.
+ * SCHEMA: Joomla UCM fields, used by Joomla!s           UCM when using the FOF ContentHistory behaviour
+ * @property int            $ordering                   Order this record should appear in for sorting.
+ * @property string         $params                     JSON encoded parameters for this item.
+ * @property int            $cat_id                     Category ID for this item.
+ * @property string         $note                       A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the analytic.
- * @property string         $description      A description of the analytic.
+ * @property string         $name                       A title to use for the analytic.
+ * @property string         $description                A description of the analytic.
+ * @property string         $description__intro         Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property int            $about__foreign_model_id    The foreign model primary key that this comment belongs to
+ * @property string         $about__foreign_model_name  The name of the foreign model this comment belongs to, discriminator field for single-table inheritance
+ *
+ * @property json           $structured_value           The values for this analytic aggregate, in a JSON string.
  */
-class AnalyticAggregates extends BaseDataModel
+class AnalyticAggregates extends DataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
+  /* Traits to include in the class */
+
+  use Mixin\Asset;                // Joomla! role-based access control handling
+  use Mixin\Comments;             // 'saveComment' method
+  use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
+  use Mixin\Core;                 // Utility methods
+  use Mixin\Count;                // Overridden count() method to cache value
+  use Mixin\FieldState;           // Toggle method for boolean fields
+  use Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
+  use Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
+
+  // Transformations for model properties (attributes) to an appropriate data type (e.g.
+  // Registry objects). Validation checks and setting attribute values from state should
+  // be done in Behaviours (which can be enabled and overridden per model).
+
+  use Mixin\Attributes\Params;    // Attribute getter / setter
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -84,10 +95,12 @@ class AnalyticAggregates extends BaseDataModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      //'ContentHistory', // Add Joomla! content history support
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
-      //'Tags'        // Add Joomla! Tags support
+      'Category',   // Set category in new records
+      'Ordering',   // Order items owned by featured status and then descending by date
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+
+      /* Model property (attribute) Behaviours for validation and setting value from state */
+      'DescriptionIntro',   // Check the length of the 'description__intro' field
     );
 
     /* Parent constructor */
@@ -97,59 +110,88 @@ class AnalyticAggregates extends BaseDataModel
   }
 
 
-/*
+  // @TODO: Create new records on-demand, so everything is an update (no separate create function)
+  //        Set up eventing system to use for other triads to notify when analytics data is being generated
 
-Joomla! >= 3.9 has a built in 'actions' system. We could use this model just for aggregates,
-and use the 'actions' system for the raw data.
+  //  DON'T NEED SEEDER for this model
 
-Spec mentions the following analytics:
+  /**
+	 * Transform 'structured_value' field to a JRegistry object on bind
+	 *
+	 * @return  Registry
+	 */
+  protected function getStructuredValueAttribute($value)
+  {
+    $structuredValue = $this->transformJsonToRegistry($value);
 
-  i. View job -> Apply to job
-  ii. Create employer account -> Buy package
-  iii. Clicked from email job alert
-  iv. Popup sharing a job -> Did they share the job
-  v. For job listings using an external application link, track how many times that application link was clicked.
-
-This is the place to keep aggregate counts of comments to show on list views, or other aggregates on the job board.
-
-
-Possible database schemas:
-
-Events             EventId int,  EventTypeId varchar,   TS timestamp
-EventAttrValueInt  EventId int,  AttrName varchar,  Value int
-EventAttrValueChar EventId int,  AttrName varchar,  Value varchar
-
-* sessionId :int (FK)
-* actionStart :time
-* actionEnd :time
-* actionType :varchar
-* actionDetail :text
-
-select *
-from Events
-  join EventAttrValueInt  on Id = EventId and AttrName = 'APPVERSION' and Value > 4
-  join EventAttrValueChar on Id = EventId and AttrName = 'APP_NAME'
-                                          and Value like "%Office%"
-where EventTypeId = "APP_LAUNCH"
+    return $structuredValue;
+  }
 
 
-Quarterly reports:
-  applications per open requisition (and % that are referrals)
-  applicants to interviews (and % that are screened)
-  offers vs. hires (and % up or down from last quarter)
-  average time-to-hire (days)
-  Job posting # of views
-  invoicing / cost to fill the job
+  /**
+	 * Transform 'structured_value' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  string  JSON string
+	 */
+  protected function setStructuredValueAttribute($value)
+  {
+    return $this->transformRegistryToJson($value);
+  }
 
 
- Reporting options:
-    The status of job seekers in the application process
-    What time of day applicants view your job posting
-    Which job board or career site brings in more applicants
-    The strengths of potential applicants
-    Custom categories applicants fall under
-    Applicants’ engagement in the hiring process
-    Questionnaire answers
+  /*
 
-  */
+  Joomla! >= 3.9 has a built in 'actions' system. We could use this model just for aggregates,
+  and use the 'actions' system for the raw data.
+
+  Spec mentions the following analytics:
+
+    i. View job -> Apply to job
+    ii. Create employer account -> Buy package
+    iii. Clicked from email job alert
+    iv. Popup sharing a job -> Did they share the job
+    v. For job listings using an external application link, track how many times that application link was clicked.
+
+  This is the place to keep aggregate counts of comments to show on list views, or other aggregates on the job board.
+
+
+  Possible database schemas:
+
+  Events             EventId int,  EventTypeId varchar,   TS timestamp
+  EventAttrValueInt  EventId int,  AttrName varchar,  Value int
+  EventAttrValueChar EventId int,  AttrName varchar,  Value varchar
+
+  * sessionId :int (FK)
+  * actionStart :time
+  * actionEnd :time
+  * actionType :varchar
+  * actionDetail :text
+
+  select *
+  from Events
+    join EventAttrValueInt  on Id = EventId and AttrName = 'APPVERSION' and Value > 4
+    join EventAttrValueChar on Id = EventId and AttrName = 'APP_NAME'
+                                            and Value like "%Office%"
+  where EventTypeId = "APP_LAUNCH"
+
+
+  Quarterly reports:
+    applications per open requisition (and % that are referrals)
+    applicants to interviews (and % that are screened)
+    offers vs. hires (and % up or down from last quarter)
+    average time-to-hire (days)
+    Job posting # of views
+    invoicing / cost to fill the job
+
+
+  Reporting options:
+      The status of job seekers in the application process
+      What time of day applicants view your job posting
+      Which job board or career site brings in more applicants
+      The strengths of potential applicants
+      Custom categories applicants fall under
+      Applicants’ engagement in the hiring process
+      Questionnaire answers
+
+    */
 }

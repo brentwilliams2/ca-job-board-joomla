@@ -51,14 +51,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_digital_documents` (
   description TEXT COMMENT 'Description of this document.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
   image JSON COMMENT 'Image metadata for social share and page header images',
-  author BIGINT UNSIGNED COMMENT 'The author of this content or rating.', /* FK to #__users */
 
-    /* SCHEMA: Thing(encoding) -> MediaObject */
+  /* SCHEMA: Thing(encoding) -> MediaObject */
   content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the document file referred to by the record.',
-  content_size BIGINT(20) COMMENT 'File size in bytes.',
+  content_size BIGINT(20) UNSIGNED COMMENT 'File size in bytes.',
 
   /* SCHEMA: CreativeWork */
-  encodingFormat
+  encoding_format CHAR(32) COMMENT 'MIME format of the document, e.g. application/pdf',
 
   PRIMARY KEY (digital_document_id)
 )
@@ -129,7 +128,7 @@ VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Digital Documents',
+  'DigitalDocuments',
   /* type_alias */
   'com_cajobboard.digital_documents',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
@@ -153,42 +152,38 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"job_posting_id",
-        "core_title":"title",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"occupational_category",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"occupational_category",
+      "core_content_item_id":"digital_document_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"title",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "name":"name",
-        "description":"description",
-        "author":"author",
-        "caption":"caption",
-        "exif_data":"exif_data",
-        "content_url":"content_url",
-        "content_size":"content_size",
-        "height":"height",
-        "width":"width",
-        "content_location":"content_location"
+      "content_size":"content_size",
+      "content_url":"content_url",
+      "description__intro":"description__intro",
+      "encoding_format":"encoding_format",
+      "image":"image",
+      "note":"note"
     }
   }',
   /* router */

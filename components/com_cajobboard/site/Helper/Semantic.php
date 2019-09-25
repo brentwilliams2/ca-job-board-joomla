@@ -58,7 +58,7 @@ class Semantic
     'ImageObjects' => 'media',
     'JobPostings' => 'content',
     'Organizations' => 'company',
-    'Persons' => 'person',
+    'Profiles' => 'person',
     'Places' => 'place',
     'QAPages' => 'content',
     'Questions' => 'content',

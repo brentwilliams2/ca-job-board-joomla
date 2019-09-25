@@ -57,13 +57,9 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $description      Text of the question.
  *
  * SCHEMA: CreativeWork
- * @property QAPage         $IsPartOf         This property points to a QAPage entity associated with this question. FK to #__cajobboard_qapage(qapage_id)
- * @property Answer         $HasPart          The answers related to this question
- * @property Organization   $Publisher        The company that wrote this question. FK to #__organizations(organization)id).
  * @property string         $text             The actual text of the question itself.
  *
  * * SCHEMA: Question
- * @property Answer         $AcceptedAnswer   Use acceptedAnswer for the best answer to a question.  FK to #__cajobboard_answers(answer_id)
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  *
@@ -104,30 +100,15 @@ class Questions extends BaseDataModel
      * Set up relations
      */
 
-
     // table field for belongsTo relation is in this model's table
 
     // many-to-one FK to  #__organizations
     $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
 
-
     // table field for inverseSideOfHasOne relation is in this model's table
 
     // one-to-one FK to  #__cajobboard_answers
     $this->inverseSideOfHasOne('AcceptedAnswer', 'Answers@com_cajobboard', 'accepted_answer', 'answer_id');
-
-
-    // relation field for hasMany is in the foreign table
-
-    // one-to-many relation to #__cajobboard_answers
-    // @TODO: we have 'is_part_of' field in this table
-    $this->hasMany('HasPart', 'Answers@com_cajobboard', 'question_id', 'is_part_of');
-
-
-    // relation field for belongsToMany is in a join table
-
-    // many-to-many FK to #__cajobboard_qapage using join table #__cajobboard_questions_qapages
-    $this->belongsToMany('IsPartOf', 'QAPages@com_cajobboard', 'is_part_of', 'has_part', '#__cajobboard_questions_qapages');
   }
 
 	/**
@@ -139,7 +120,6 @@ class Questions extends BaseDataModel
 	 */
 	public function check()
 	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_QUESTION_TITLE_ERR');
     $this->assertNotEmpty($this->text, 'COM_CAJOBBOARD_QUESTION_TEXT_ERR');
 
 		parent::check();

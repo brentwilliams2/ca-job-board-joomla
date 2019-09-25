@@ -58,7 +58,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: CreativeWork
  * @property string   $about__model               The foreign model name the item of this report refers to, e.g. Answers.
  * @property int      $about__id                  The primary key of the foreign model the item of this report refers to.
- * @property string   $category                   The reasons this content is being reported. Use table #__cajobboard_report_reasons to populate in views.
+ * @property string   $category                   The reasons this content is being reported. Use table #__cajobboard_issue_report_categories to populate in views.
  */
 class IssueReports extends BaseDataModel
 {
@@ -106,6 +106,9 @@ class IssueReports extends BaseDataModel
 
     // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+    // many-to-one FK to  #__cajobboard_categories
+    $this->belongsTo('Category', 'IssueReportCategories@com_cajobboard', 'category', 'issue_report_category_id');
   }
 
 

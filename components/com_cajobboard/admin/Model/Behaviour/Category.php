@@ -64,43 +64,30 @@ class Category extends Observer
 			return;
     }
 
-    $categoryId = null;
-    $default = 0;
-
-    $modelName = trim( implode(" ", preg_split( '/(?=[A-Z])/', $model->getName() )));
-
-    // returns array  of objects ($category->id, $category->title, $category->language, $category->level)
-    $categories = CategoryHelper::getCategories();
-
-    foreach ($categories as $category)
+    if ($data->$categoryIdField)
     {
-      if ( $category->title == $modelName )
-      {
-        $categoryId = $category->id;
-        break;
-      }
-
-      if ('Uncategorised' == $category->title)
-      {
-        $default = $category->id;
-      }
+      $model->setFieldValue($categoryIdField, $data->$categoryIdField);
     }
-
-    if ($categoryId)
+    else // logic to give a default category if not specified by input
     {
+      $modelName = trim( implode(" ", preg_split( '/(?=[A-Z])/', $model->getName() )));
+
+      $categoryId = CategoryHelper::getCategoryIdByTitle($modelName);
+
+      if ( !$categoryId )
+      {
+        $categoryId = CategoryHelper::getCategoryIdByTitle('Uncategorised');
+      }
+
+      if ( !$categoryId )
+      {
+        throw new \Exception( Text::_('COM_CAJOBBOARD_BEHAVIOUR_CATEGORY_NOT_FOUND_EXCEPTION', $modelName) );
+      }
+
       // onBeforeCreate is called after data is bound to the model, so need to set on both
       $model->setFieldValue($categoryIdField, $categoryId);
-    }
-    else
-    {
-      $model->setFieldValue($categoryIdField, $default);
-    }
 
-    $data->$categoryIdField = $model->getFieldValue($categoryIdField);
-
-    if ( !$categoryId )
-    {
-      throw new \Exception( Text::_('COM_CAJOBBOARD_BEHAVIOUR_CATEGORY_NOT_FOUND_EXCEPTION', $modelName) );
+      $data->$categoryIdField = $model->getFieldValue($categoryIdField);
     }
   }
 }

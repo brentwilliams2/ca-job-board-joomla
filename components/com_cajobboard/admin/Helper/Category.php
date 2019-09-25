@@ -63,13 +63,11 @@ abstract class Category
 
 
   /**
-   * Returns a category title
+   * Returns a category's 'title' field value by primary key (id)
    *
    * @param   int   $categoryId   The primary key (id) of the category
    *
-   * @return  string              The category title indented with hyphens if it is lower level than root categories
-   *
-   * @since   0.0.1
+   * @return  string   The category title indented with hyphens if it is lower level than root categories
    */
   public static function getCategoryTitleById($categoryId)
   {
@@ -85,6 +83,33 @@ abstract class Category
     }
 
     return self::$categoryMapIdToName[$categoryId];
+  }
+
+
+  /**
+   * Returns a category's primary key (id) field value by 'title' field value
+   *
+   * @param   string   $categoryTitle   The category title indented with hyphens if it is lower level than root categories
+   *
+   * @return  int   The primary key (id) of the category
+   */
+  public static function getCategoryIdByTitle($categoryTitle)
+  {
+    // array, each element is an object: $category->id, $category->title, $category->language, $category->level
+    $categories = self::getCategories();
+
+    $id = null;
+
+    foreach($categories as $category)
+    {
+      if ($categoryTitle == $category->title)
+      {
+        $id = $category->id;
+        break;
+      }
+    }
+
+    return $id;
   }
 
 

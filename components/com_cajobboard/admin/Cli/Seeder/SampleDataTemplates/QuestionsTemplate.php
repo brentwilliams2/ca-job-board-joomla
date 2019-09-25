@@ -18,12 +18,7 @@ defined('_JEXEC') or die;
 
 class QuestionsTemplate extends CommonTemplate
 {
-  /**
-	 * This property points to a QAPage entity associated with this answer.
-	 *
-	 * @property    int
-   */
-  public $is_part_of;
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
 
 	/**
 	 * This property points to an Answer entity associated with this question.
@@ -68,7 +63,7 @@ class QuestionsTemplate extends CommonTemplate
   // $this->inverseSideOfHasOne('acceptedAnswer', 'Answers@com_cajobboard', 'accepted_answer', 'answer_id');
   public function accepted_answer ($config, $faker)
   {
-    $this->accepted_answer = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker);
+    $this->accepted_answer = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Answers');
   }
 
   // $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');

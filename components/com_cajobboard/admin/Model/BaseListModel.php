@@ -64,17 +64,4 @@ class BaseListModel extends DataModel
     /* Parent constructor */
     parent::__construct($container, $config);
   }
-
-
-  /**
-   * Setup the knownFields model property of database table metadata
-   *
-   * @param   string $tableName   Unused, maintain signature for overridden method.
-   *
-   * @return  array  An array of the field metadata.
-   */
-  public function getTableFields($tableName = null)
-  {
-    return $this->container->TableFields->getTableFieldsMetadata($this);
-  }
 }

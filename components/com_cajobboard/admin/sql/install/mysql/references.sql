@@ -7,12 +7,12 @@
  */
 
 /**
- * Recommendations data model SQL
+ * References data model SQL
  *
  * Uses schema https://calligraphic.design/schema/Recommendation
  */
-CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
-  recommendation_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
+  reference_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
@@ -40,21 +40,21 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
-  note VARCHAR(255) COMMENT 'A note to save with this recommendation in the back-end interface.',
+  note VARCHAR(255) COMMENT 'A note to save with this reference in the back-end interface.',
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'The text of the recommendation.',
+  description TEXT COMMENT 'The text of the reference.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: CreativeWork */
-  has_part__digital_document INT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */
-  has_part__image_object INT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
-  about INT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
-  job_posting INT UNSIGNED COMMENT 'The job posting this reference is for.', /* FK to #__cajobboard_persons */
+  has_part__digital_document BIGINT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */
+  has_part__image_object BIGINT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
+  about BIGINT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
+  `text` TEXT COMMENT 'The actual text of the reference.',
 
   /* SQL DDL */
-  PRIMARY KEY (recommendation_id)
+  PRIMARY KEY (reference_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
 
 
 /*
- * Create content types for Recommendations, mapping fields to the UCM standard fields for history feature
+ * Create content types for References, mapping fields to the UCM standard fields for history feature
  *
  * type_id:     auto-increment id number.
  *
@@ -116,23 +116,23 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_recommendations` (
  */
 
 /*
- * Recommendations content type for history component
+ * References content type for history component
  */
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Recommendations',
+  'References',
   /* type_alias */
-  'com_cajobboard.recommendations',
+  'com_cajobboard.references',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_recommendations",
-      "key":"recommendation_id",
-      "type":"Recommendation",
-      "prefix":"RecommendationsTable",
+      "dbtable":"#__cajobboard_references",
+      "key":"reference_id",
+      "type":"Reference",
+      "prefix":"ReferencesTable",
       "config":"array()"
     },
     "common":{
@@ -147,38 +147,38 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"recommendation_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"cat_id",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"reference_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "is_part_of":"is_part_of",
-        "publisher":"publisher",
-        "text":"text",
-        "parent_item":"parent_item",
-        "upvote_count":"upvote_count",
-        "downvote_count":"downvote_count"
+      "about":"about",
+      "description__intro":"description__intro",
+      "has_part__digital_document":"has_part__digital_document",
+      "has_part__image_object":"has_part__digital_document",
+      "note":"note",
+      "text":"text"
     }
   }',
   /* router */

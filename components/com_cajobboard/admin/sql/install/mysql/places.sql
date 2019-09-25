@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
 
   /* Place (address) -> PostalAddress */
   address__street_address VARCHAR(255) COMMENT 'The street address, e.g. 1600 Amphitheatre Pkwy',
-  address__address_locality VARCHAR(50) COMMENT 'The locality, e.g. Mountain View',
-  address_region BIGINT UNSIGNED NOT NULL COMMENT 'The name of the region, e.g. California', /* FK to #__cajobboard_util_address_region(address_region) */
+  address__locality VARCHAR(50) COMMENT 'The locality, e.g. Mountain View',
+  address__region BIGINT UNSIGNED COMMENT 'The name of the region, e.g. California', /* FK to #__cajobboard_util_address_region(address_region) */
   address__postal_code VARCHAR(12) COMMENT 'The postal code, e.g. 94043',
-  address__address_country VARCHAR(2) COMMENT 'The two-letter ISO 3166-1 alpha-2 country code',
+  address__country VARCHAR(2) COMMENT 'The two-letter ISO 3166-1 alpha-2 country code',
   telephone VARCHAR(30) COMMENT 'The E.164 PSTN telephone number',
   opening_hours_specification TEXT COMMENT 'The days and times this location is open.',
   logo BIGINT UNSIGNED COMMENT 'A logo image that represents this place.', /* FK to #__cajobboard_images(image_id) */
@@ -75,12 +75,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_places` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
+
  /**
  * Join table for places and image objects
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_places_images` (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
-  photo BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__places',
+  place_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__places',
   image_object_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__cajobboard_image_objects',
   PRIMARY KEY (id)
 )
@@ -175,47 +176,48 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"job_posting_id",
-        "core_title":"title",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"occupational_category",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"occupational_category",
+      "core_content_item_id":"place_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"title",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "name":"name",
-        "description":"description",
-        "branch_code":"branch_code",
-        "fax_number":"fax_number",
-        "public_access":"public_access",
-        "geo":"geo",
-        "address__street_address":"address__street_address",
-        "address__address_locality":"address__address_locality",
-        "address_region":"address_region",
-        "address__postal_code":"address__postal_code",
-        "address__address_country":"address__address_country",
-        "telephone":"telephone",
-        "openingHoursSpecification":"openingHoursSpecification",
-        "logo":"logo",
-        "photo":"photo"
+      "address__country":"address__country",
+      "address__locality":"address__locality",
+      "address__postal_code":"address__postal_code",
+      "address__region":"address__region",
+      "address__street_address":"address__street_address",
+      "branch_code":"branch_code",
+      "description__intro":"description__intro",
+      "fax_number":"fax_number",
+      "geo":"geo",
+      "image":"image",
+      "logo":"logo",
+      "note":"note",
+      "opening_hours_specification":"opening_hours_specification",
+      "photo":"photo",
+      "public_access":"public_access",
+      "telephone":"telephone"
     }
   }',
   /* router */

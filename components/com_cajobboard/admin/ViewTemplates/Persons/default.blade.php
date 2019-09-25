@@ -3,15 +3,15 @@
  * Persons Admin Default View Template
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-use Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Language\Text;
 use \Calligraphic\Cajobboard\Site\Model\Persons;
-use \Calligraphic\Cajobboard\Admin\Helper\Format;
 use \FOF30\View\DataView\Form;
 use \FOF30\Utils\FEFHelper\BrowseView;
 use \FOF30\Utils\SelectOptions;
@@ -55,7 +55,7 @@ $widthPct = array
   <span class="filter-search btn-group pull-left">
     {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
     {{-- @TODO: modal is empty, no drop-down of author list: need to write helper to do join and get author names --}}
-    @searchfilter('created-by', null, \JText::_('COM_CAJOBBOARD_ANSWERS_FILTER_BY_AUTHOR'))
+    @searchfilter('created-by', null, Text::_('COM_CAJOBBOARD_ANSWERS_FILTER_BY_AUTHOR'))
   </span>
 
   {{-- @TODO: Expand search options --}}
@@ -189,12 +189,12 @@ $widthPct = array
 
       {{-- COLUMN #6: Date Registered --}}
       <td width="{{ $widthPct['#6'] }}%" class="center row-registered">
-        {{ Format::date($item->registerDate) }}
+        {{ $this->container->Format->date($item->registerDate) }}
       </td>
 
       {{-- COLUMN #7: Last Visit Date --}}
       <td width="{{ $widthPct['#7'] }}%" class="center row-last-visit-date">
-        {{ Format::date($item->lastvisitDate) }}
+        {{ $this->container->Format->date($item->lastvisitDate) }}
       </td>
     </tr>
   @endforeach

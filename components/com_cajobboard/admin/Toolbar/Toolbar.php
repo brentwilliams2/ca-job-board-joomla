@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Admin\Toolbar;
 defined('_JEXEC') or die;
 
 use \Calligraphic\Cajobboard\Admin\Toolbar\ToolbarHelper;
+use \Joomla\CMS\Component\ComponentHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Toolbar\ToolbarHelper as JToolBarHelper;
 
@@ -158,6 +159,8 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
       return;
     }
 
+    $user = $this->container->platform->getUser();
+
     $this->renderTitle('add');
 
     // #1 "Save" button
@@ -168,23 +171,23 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
     // #3 "Save & New" button
     $this->perms->create && JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-    
-    // @TODO: "Save as Copy" button
-    // For new records, check the create permission.
-		if ($isNew && (count($user->getAuthorisedCategories('com_content', 'core.create')) > 0))
+
+    // #4 "Copy" button with create permission check.
+		if (count($user->getAuthorisedCategories('com_content', 'core.create')) > 0)
 		{
 			JToolbarHelper::save2copy('article.save2copy');
     }
 
-    // @TODO: "Versions" button
-    if (JComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $itemEditable)
+    // #5 "Versions" button
+    if (ComponentHelper::isEnabled('com_contenthistory') && $this->container->input->get('save_history', 0) && $itemEditable)
     {
       JToolbarHelper::versions('com_content.article', $this->item->id);
     }
 
-    // @TODO: "Help" button
+    // #6 "Help" button
+    // @TODO: implement "Help" button
 
-    // #4 "Close" button
+    // #7 "Close" button
 		JToolBarHelper::cancel();
   }
 

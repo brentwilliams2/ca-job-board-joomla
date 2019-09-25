@@ -54,6 +54,13 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property  string	      $name             A name for this digital document
  * @property  string	      $description      A long description of this digital document
+ * @property  string        $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image             Image metadata for social share and page header images.
+ *
+ * SCHEMA: MediaObject
+ * @property  string	      $content_url      Filename of the digital document
+ * @property  int			      $content_size     File size in bytes
+ * @property  string	      $encoding_format  MIME format of the document, e.g. application/pdf
  */
 class DigitalDocuments extends BaseDataModel
 {
@@ -91,59 +98,48 @@ class DigitalDocuments extends BaseDataModel
     // one-to-one FK to  #__cajobboard_persons
     $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
-// @TODO: Could this be done using JTable\Categories, and the FOF Categories model removed from this project?
-// @TODO: Something like: $category = \JTable::getInstance('Category');
-
-// @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
-/*
-  httpd.conf:
-
-  #
-  # X-Sendfile
-  #
-  LoadModule xsendfile_module modules/mod_xsendfile.so
-  XSendFile On
-  # enable sending files from parent dirs of the script directory
-  XSendFileAllowAbove On
-
-  header('X-Sendfile: ' . $absoluteFilePath);
-
-  // The Content-Disposition header allows you to tell the browser if
-  // it should download the file or display it. Use "inline" instead of
-  // "attachment" if you want it to display in the browser. You can
-  // also set the filename the browser should use.
-  header('Content-Disposition: attachment; filename="somefile.jpg"');
-
-  // The Content-Type header tells the browser what type of file it is.
-  header('Content-Type: digital document/jpeg');
-
-  // Nginx uses x-accel.redirect
-
-  can check what Apache modules loaded with apache_get_modules(), returns indexed array of module names,
-  also set up a configuration option for whether the ugly name or a SEO-friendly name should be used.
-
-  Need to handle digital document processing asynchronously, see admin/Cli/MediaProcessor
-*/
-
     // Relation to category table for $Category
     $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
-  }
 
+    /*
+    if (!$this->isXRedirectAvailable)
+    {
+      $this->isXRedirectAvailable();
+    }
+    */
 
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_DIGITAL_DOCUMENTS_ERR_TITLE');
+    // @TODO: Could this be done using JTable\Categories, and the FOF Categories model removed from this project?
+    // @TODO: Something like: $category = \JTable::getInstance('Category');
 
-		parent::check();
+    // @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
+    /*
+      httpd.conf:
 
-    return $this;
+      #
+      # X-Sendfile
+      #
+      LoadModule xsendfile_module modules/mod_xsendfile.so
+      XSendFile On
+      # enable sending files from parent dirs of the script directory
+      XSendFileAllowAbove On
+
+      header('X-Sendfile: ' . $absoluteFilePath);
+
+      // The Content-Disposition header allows you to tell the browser if
+      // it should download the file or display it. Use "inline" instead of
+      // "attachment" if you want it to display in the browser. You can
+      // also set the filename the browser should use.
+      header('Content-Disposition: attachment; filename="somefile.jpg"');
+
+      // The Content-Type header tells the browser what type of file it is.
+      header('Content-Type: digital document/jpeg');
+
+      // Nginx uses x-accel.redirect
+
+      can check what Apache modules loaded with apache_get_modules(), returns indexed array of module names,
+      also set up a configuration option for whether the ugly name or a SEO-friendly name should be used.
+
+      Need to handle digital document processing asynchronously, see admin/Cli/MediaProcessor
+    */
   }
 }

@@ -93,26 +93,22 @@ class WorkFlows extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // many-to-one FK to #__cajobboard_job_postings
+    $this->belongsTo('AboutJobPosting', 'JobPostings@com_cajobboard', 'about__job_posting_id', 'job_posting_id');
+
+    // many-to-one FK to #__cajobboard_question_lists
+    $this->belongsTo('ApplicationQuestionList', 'QuestionLists@com_cajobboard', 'has_part__application__question_list', 'question_list_id');
+
+    // many-to-one FK to #__cajobboard_question_lists
+    $this->belongsTo('InterviewQuestionList', 'QuestionLists@com_cajobboard', 'has_part__interview__question_list', 'question_list_id');
   }
 
+  /*
+    The views for WorkFlows is the place to show a Kanban board, and handle moving tasks around:
 
-/*
-  The views for WorkFlows is the place to show a Kanban board, and handle moving tasks around:
+      https://github.com/riktar/jkanban
+  */
 
-    https://github.com/riktar/jkanban
-*/
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_WORK_FLOWS_TITLE_ERR');
-
-		parent::check();
-
-    return $this;
-  }
 }

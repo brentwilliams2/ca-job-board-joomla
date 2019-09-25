@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_message_templates` (
 
 
 REPLACE INTO `#__cajobboard_email_message_templates` (`email_message_template_id`, `name`, `description`, `subject`, `body`) VALUES
-	(1, 'analytics_report', 'Analytics reports template', 'Your [SITENAME] report for [TIMEPERIOD]', '<div style=\"background-color: #e0e0e0; padding: 10px 20px;\">\r\n<div style=\"background-color: #f9f9f9; border-radius: 10px; padding: 5px 10px;\">\r\n<p>Hello [FIRSTNAME],</p>\r\n<p>Attached is your <span style=\"line-height: 1.3em;\">[TIMEPERIOD] </span><span style=\"line-height: 1.3em;\">report</span></p>\r\n</div>\r\n<p style=\"font-size: x-small; color: #667;\">You are receiving this automatic email message because you have set up automatic report generation on <em>[SITENAME]</em>. <span style=\"line-height: 1.3em;\">Do not reply to this email, it\'s sent from an unmonitored email address.</span></p>\r\n</div>'),
+	(1, 'analytics_report', 'Analytics reports template', 'Your [SITENAME] report for [TIMEPERIOD]', '<div style=\"background-color: #e0e0e0; padding: 10px 20px;\">\r\n<div style=\"background-color: #f9f9f9; border-radius: 10px; padding: 5px 10px;\">\r\n<p>Hello [FIRSTNAME],</p>\r\n<p>Attached is your <span style=\"line-height: 1.3em;\">[TIMEPERIOD] </span><span style=\"line-height: 1.3em;\">report</span></p>\r\n</div>\r\n<p style=\"font-size: x-small; color: #667;\">You are receiving this automatic email message because you have set up automatic report generation on <em>[SITENAME]</em>. <span style=\"line-height: 1.3em;\">Do not reply to this email, it is sent from an unmonitored email address.</span></p>\r\n</div>'),
   (2, 'new_comment_posted_notification', 'New comment posted notification template', 'subject', 'body'),
   (3, 'new_question_posted_notification', 'New question posted notification template', 'subject', 'body'),
   (4, 'new_answer_posted_notification', 'New answer posted notification template', 'subject', 'body'),
@@ -161,30 +161,31 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"email_message_templates_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"cat_id",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"email_message_template_id",
+      "core_created_time":"created_on",
+      "core_images":"null",
+      "core_language":"language",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
+      "core_urls":"null",
+      "core_version":"version"
     },
     "special":{
-        "name":"name",
-        "description":"description",
-        "subject":"subject",
-        "body":"body"
+      "body":"body",
+      "description__intro":"description__intro",
+      "image":"image",
+      "note":"note",
+      "subject":"subject"
     }
   }',
   /* router */

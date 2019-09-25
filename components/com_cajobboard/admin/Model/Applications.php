@@ -3,9 +3,9 @@
  * Admin Applications Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -55,6 +55,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the application.
  * @property string         $description      A description of the application.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
  */
 class Applications extends BaseDataModel
 {
@@ -94,24 +95,57 @@ class Applications extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
+    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'application_id', 'question_id', '#__cajobboard_applications_questions');
+
+    // one-to-many FK to #__cajobboard_answers, key in foreign table
+    // @TODO: Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages'. Note we've stuffed an 'is_required' field into the join table.
+    $this->hasMany('Answers', 'Answers@com_cajobboard', 'q_a_page_id', 'is_part_of');
+
+    // Many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('MainEntityOfPage', 'Persons@com_cajobboard', 'main_entity_of_page', 'id');
+
+    // Many-to-one FK to  #__cajobboard_question_lists
+    $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
   }
 
-  // @see Calligraphic\Cajobboard\Admin\Model\Applications\Behaviour\Check
+  // @TODO: Need ability to mark questions as "must-have", so candidates can be rejected if they don't have it e.g. "has visa"
 
 
-
-  // Need ability to mark questions as "must-have", so candidates can be rejected if they don't have it e.g. "has visa"
-
-
+  /**
+   * Perform necessary tasks after creation of a new Application
+   *
+   * @return void
+   */
   public function onAfterCreate()
   {
+    $this->cloneApplicationQuestions();
+
     $this->createCandidate();
 
-    // @TODO: redirect on succesful save to browse view with similar jobs list with "Quick apply" link next to each job.
+    $this->redirectToSimilarJobPostings();
   }
 
 
   /**
+   * Uses the QuestionList model to clone the Question List join table records for a given
+   * QuestionList item (#__cajobboard_question_lists_questions) into the join table for this
+   * Application item (#__cajobboard_applications_questions), substituting this item's
+   * 'application_id' field value for QuestionList's 'question_list_id'
+   *
+   * @return void
+   */
+  public function cloneApplicationQuestions()
+  {
+    $questionListModel = $this->container->factory->model('QuestionLists', array('factoryClass' => 'FOF30\\Factory\\MagicFactory'));
+
+    $questionListModel->cloneQuestionListToForeignModel($this->getQuestionListId(), '#__cajobboard_applications_questions', 'application_id');
+  }
+
+
+  /**
+   * @TODO: MOVE TO CONTROLLER!!!
    * Create a Candidate in the ATS workflow in response to a job seeker submitting an Application
    *
    * @return void
@@ -121,6 +155,33 @@ class Applications extends BaseDataModel
   {
     // @TODO: implement creating candidate from Application on after create
   }
+
+
+  /**
+   * Redirect on successful Application creation to Job Postings browse view filtered on similar jobs
+   *
+   * @return void
+   *
+   */
+  public function redirectToSimilarJobPostings()
+  {
+    // @TODO: implement redirect
+  }
+
+
+  /**
+   * Get the ID of the Question List to use for this application, set as the default to use in WorkFlows
+   *
+   * @return void
+   *
+   */
+  public function getQuestionListId()
+  {
+    // should have 'about__job_posting' input variable, which can be used to get the workflow template for that job posting
+
+    // @TODO: $this->getFieldValue('about__question_list')
+  }
+
 
 
   /**

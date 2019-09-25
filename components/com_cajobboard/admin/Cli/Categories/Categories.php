@@ -15,6 +15,7 @@ include realpath(__DIR__ . '/../CliApplication.php');
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\Exception\CliApplicationException;
 use \Calligraphic\Library\Platform\Language;
 use \FOF30\Container\Container;
+use \Joomla\CMS\Language\Text;
 
 /**
  * Category CLI Manager
@@ -22,6 +23,19 @@ use \FOF30\Container\Container;
  */
 class Categories extends CliApplication
 {
+  /**
+   * Category parameters
+   *
+   * @var array
+   */
+  private $params = array(
+    'category_layout' => '',
+    'image' => '',
+    'image_alt' => '',
+    'thumbnail_aspect_ratio' => 'aspect-ratio-4-3',
+    'image_aspect_ratio' => 'aspect-ratio-4-3'
+  );
+
   /**
    * Entry point for the script
    *
@@ -44,6 +58,13 @@ class Categories extends CliApplication
     if ( count($this->input->args) != 1 )
     {
       throw new CliApplicationException("Too many arguments, only a single category name permitted.\n" );
+    }
+
+    // Allow seeding Question and Answer Page categories
+    if ( $this->input->args[0] == 'seedQAPageCategories' )
+    {
+      $this->seedQAPageCategories();
+      return;
     }
 
     $fieldArray = $this->getFieldArray($this->input->args[0]);
@@ -76,7 +97,7 @@ class Categories extends CliApplication
       'description' => $humanized,
       'published'   => 1,
       'access'      => 1,
-      'params'      => array('category_layout' => '', 'image' => '', 'image_alt' => '', 'thumbnail_aspect_ratio' => 'aspect-ratio-4-3', 'image_aspect_ratio' => 'aspect-ratio-4-3'),
+      'params'      => $this->params,
       'language'    => '*',
       'metadesc'    => '',
       'metakey'     => '',
@@ -158,6 +179,82 @@ class Categories extends CliApplication
       {
         echo "Could not find the category that has the path $normalCategory \n";
       }
+  }
+
+
+  /**
+   * Seed the Question and Answer Page categories
+   *
+   * @return  void
+   */
+  public function seedQAPageCategories()
+  {
+    // Load the QAPages language file
+    $lang = JFactory::getLanguage();
+
+    $lang->load('qapages', JPATH_ADMINISTRATOR . '/components/com_cajobboard', 'en-GB', true);
+
+    // Get the parent 'QAPages' category
+    $db = \JFactory::getDbo();
+
+    $query = $db->getQuery(true);
+
+    $query
+      ->select('id')
+      ->from($db->quoteName('#__categories'))
+      ->where($db->quoteName('alias')." = ".$db->quote('qapages'));
+
+    // Reset the query using our newly populated query object.
+    $db->setQuery($query);
+
+    $parentCategory = $db->loadResult();
+
+    $categories = array(
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_BENEFITS', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_BENEFITS_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_CAREER_DEVELOPMENT', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_CAREER_DEVELOPMENT_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_COMMUNICATION', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_COMMUNICATION_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_COMPENSATION', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_COMPENSATION_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_CULTURE', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_CULTURE_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_DIVERSITY', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_DIVERSITY_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_ENVIRONMENTAL_FRIENDLINESS', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_ENVIRONMENTAL_FRIENDLINESS_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_HANDICAPPED_ACCESSIBILITY', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_HANDICAPPED_ACCESSIBILITY_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_IMPROVEMENT', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_IMPROVEMENT_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_JOB_SECURITY', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_JOB_SECURITY_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_MANAGEMENT', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_MANAGEMENT_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_PERKS', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_PERKS_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_TEAMWORK', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_TEAMWORK_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_WORK_ENVIRONMENT', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_WORK_ENVIRONMENT_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_WORK_LIFE_BALANCE', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_WORK_LIFE_BALANCE_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_WORKPLACE_SAFETY', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_WORKPLACE_SAFETY_DESCRIPTION'),
+      array('title' => 'CAJOBBOARD_QAPAGE_CATEGORY_OTHER', 'description' => 'COM_CAJOBBOARD_QAPAGE_CATEGORY_OTHER_DESCRIPTION')
+    );
+
+    foreach ($categories as $category)
+    {
+      $hyphenated  = str_replace('cajobboard-qapage-category-', '', strtolower( preg_replace('/_/', '-', Text::_( $category['title'] ))));
+
+      //$this->addCategory(
+      $this->addCategory(
+        array(
+          'id'          => 0,  // Force a new node to be created
+          'parent_id'   => $parentCategory,
+          'level'       => 2,
+          'extension'   => 'com_cajobboard',
+          'path'        => 'qapages/' . $hyphenated,
+          'title'       => $category['title'],
+          'alias'       => $hyphenated,
+          'description' => $category['description'],
+          'published'   => 1,
+          'access'      => 1,
+          'params'      => $this->params,
+          'language'    => '*',
+          'metadesc'    => '',
+          'metakey'     => '',
+          'metadata'    => array('author' => '', 'robots' => ''),
+          'note'        => '',
+        )
+      );
+    }
   }
 }
 

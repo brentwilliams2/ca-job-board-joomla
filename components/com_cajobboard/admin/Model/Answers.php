@@ -55,11 +55,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the answer.
  * @property string         $description      A description of the answer.
- *
- * SCHEMA: CreativeWork
- * @property Question       $IsPartOf         This property points to a Question entity associated with this answer. FK to #__cajobboard_questions(question_id).
- * @property string         $text             The actual text of the answer itself.
- * @property Person         $Author           The author of this comment.  FK to #__cajobboard_persons.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image                Image metadata for social share and page header images.
  *
  * SCHEMA: Answer
  * @property int            $upvote_count     Upvote count for this item.
@@ -115,6 +112,17 @@ class Answers extends BaseDataModel
      // table field for belongsTo relation is in this model's table
 
     // many-to-one FK to  #__cajobboard_persons
-    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+    //$this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+    // @TODO: STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
+    // @TODO: handle about__foreign_model_id and about__foreign_model_name. Seeder template has enum for foreign models:
+    /*
+      $foreignModels = array(
+        'Applications',
+        'Interviews',
+        'QAPages',
+        'Resumes'
+      );
+    */
   }
 }

@@ -12,7 +12,8 @@
         "yzalis/identicon": "^1.2",
 	"fzaninotto/company-name-generator": "dev-master",
 	"frequenc1/newage-ipsum": "dev-master",
-        "bheller/images-generator": "^1.0"
+        "bheller/images-generator": "^1.0",
+        "james-heinrich/getid3": "^1.9"
     },
     "license": "GPLv2",
     "authors": [

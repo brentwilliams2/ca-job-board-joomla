@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_reviews` (
   image JSON COMMENT 'Image metadata for social share and page header images',
 
   /* SCHEMA: Review */
-  item_reviewed BIGINT UNSIGNED NOT NULL COMMENT 'The employer being reviewed/rated.', /* FK to #__cajobboard_organizations */
-  review_body TEXT NOT NULL COMMENT 'The actual body of the review.',
+  item_reviewed BIGINT UNSIGNED COMMENT 'The employer being reviewed/rated.', /* FK to #__cajobboard_organizations */
+  review_body TEXT COMMENT 'The actual body of the review.',
 
   /* SCHEMA: Review(reviewRating) -> Rating(ratingValue) */
   rating_value INT COMMENT 'The rating for the content. Default worstRating 1 and bestRating 5 assumed.',
@@ -148,37 +148,38 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"job_posting_id",
-        "core_title":"title",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"occupational_category",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"review_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"title",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference",
     },
     "special":{
-        "name":"name",
-        "item_reviewed":"item_reviewed",
-        "review_body":"review_body",
-        "rating_value":"rating_value",
-        "author":"author"
+      "description__intro":"description__intro",
+      "image":"image",
+      "item_reviewed":"item_reviewed",
+      "note":"note",
+      "rating_value":"rating_value",
+      "review_body":"review_body"
     }
   }',
   /* router */

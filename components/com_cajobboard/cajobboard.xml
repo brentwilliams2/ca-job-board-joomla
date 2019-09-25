@@ -79,24 +79,54 @@
 
   <install>
     <sql>
+      <file driver="mysql" charset="utf8">sql/install/mysql/address_regions.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/analytic_aggregates.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/answers.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/application_letter.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/applications.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/audio_objects.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/background_checks.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/candidates.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/certifications.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/comments.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/data_feeds.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/digital_documents.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/email_message_templates.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/email_messages.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/employer_aggregate_ratings.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/employer_departments.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/employment_types.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/geo_coordinates.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/help.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/image_objects.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/job_employment_types.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/job_occupational_categories.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/job_occupational_category_groups.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/interviews.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/issue_report_categories.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/issue_reports.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/job_postings.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/messages.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/occupational_categories.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/occupational_category_groups.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/organizations.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/organization_roles.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/organization_types.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/persons.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/places.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/qapages.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/q_a_pages.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/questions.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/question_lists.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/references.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/reports.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/resume_alerts.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/resumes.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/reviews.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/schedules.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/score_cards.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/search_results_pages.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/task_actions.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/utilities.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/vendor.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/video_objects.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/work_flows.sql</file>
     </sql>
   </install>
 

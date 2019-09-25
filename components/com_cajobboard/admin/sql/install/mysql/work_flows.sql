@@ -47,6 +47,12 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_work_flows` (
   description TEXT COMMENT 'Description of the work flow.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
 
+  /* SCHEMA: https://calligraphic.design/schema/WorkFlow */
+  about__job_posting BIGINT UNSIGNED COMMENT 'The job posting this workflow is attached to.',
+  has_part__application__question_list BIGINT UNSIGNED COMMENT 'The QuestionList item that should be used as a template to seed the applications - questions join table.',
+  has_part__interview__question_list BIGINT UNSIGNED COMMENT 'The QuestionList item that should be used as a template to seed the interviews - questions join table.',
+
+
   /* SQL DDL */
   PRIMARY KEY (work_flow_id)
 )

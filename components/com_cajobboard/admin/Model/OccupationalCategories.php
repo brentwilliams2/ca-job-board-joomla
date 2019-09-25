@@ -70,7 +70,8 @@ class OccupationalCategories extends BaseDataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.occupational_categories';
 
-    parent::__construct($container, $config);
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
@@ -89,6 +90,8 @@ class OccupationalCategories extends BaseDataModel
       //'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
       //'Tags'        // Add Joomla! Tags support
     );
+
+    parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
 

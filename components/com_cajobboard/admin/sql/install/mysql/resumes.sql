@@ -1,8 +1,8 @@
 /**
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -11,7 +11,7 @@
  *
  * Uses schema https://calligraphic.design/schema/Resume
  */
-CREATE TABLE IF NOT EXISTS '#__cajobboard_resumes' (
+CREATE TABLE IF NOT EXISTS `#__cajobboard_resumes` (
   /* UCM (unified content model) properties for internal record metadata */
   resume_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
@@ -43,173 +43,27 @@ CREATE TABLE IF NOT EXISTS '#__cajobboard_resumes' (
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note VARCHAR(255) COMMENT 'A note to save with this resume in the back-end interface.',
 
-  /* SCHEMA: */
-
+  /* SCHEMA: Thing */
+  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
+  description TEXT COMMENT 'Description of this question and answer page.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to person this application is about. FK to #__cajobboard_persons.',
 
-  PRIMARY KEY ('resume_id')
+  /* SCHEMA: Thing(encoding) -> MediaObject */
+  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of a resume file attached to the record.',
+  content_size BIGINT(20) UNSIGNED COMMENT 'Size of the resume file in bytes.',
+
+  /* SCHEMA: CreativeWork */
+  encoding_format CHAR(32) COMMENT 'MIME format of the document, e.g. application/pdf.',
+
+  /* SCHEMA: https://calligraphic.design/schema/Resume */
+  resume JSON COMMENT 'JSON-formatted resume data.',
+
+  PRIMARY KEY (resume_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-/*
-  @TODO: Resume model is simple: it has a QAPage of questions and answers, some way of setting the right QAPage + questions as a template,
-         and metadata about the resume - PDF, scan image. Needs an import method for LInkedin, scanning, etc.
-*/
-
-/* These are from Person schema, but are more like resume items */
-award TEXT COMMENT 'An award won by or for this item. Supersedes awards.',
-affiliation Organization 'An organization that this person is affiliated with. For example, a school/university, a club, or a team.' /* FK to */
-memberOf Organization or ProgramMembership 'An Organization (or ProgramMembership) to which this Person or Organization belongs.' /* FK to */
-alumniOf 	EducationalOrganization 'An organization that the person is an alumni of.' /* FK to */
-
-
-/* Schema.org markup suggested for resumes */
-Person and Postal Address (for "Contact and Social Media Links", use html <section id="contact-details">)
-
-Person
-  image
-  name
-  jobTitle
-  telephone
-  email
-  url
-
-PostalAddress
-  streetAddress
-  addressLocality
-  addressRegion
-  postalCode
-  addressCountry
-
-
-ItemList (for skills, use html <section id="skills"> )
-  itemListElement
-
-
-Organization (for experience, use html <section id="experience">)
-  jobTitle
-  name
-  description
-
-Article (for publications, use html <section id="publications">)
-  name
-  url
-
-
-EducationalOrganization and PostalAddress (for education, use html <section id="education">)
-
-  name
-  url
-
-
-/* Schema taken from http://jsonresume.org/schema */
-{
-
-  "basics": {
-    "name": "John Doe",
-    "label": "Programmer",
-    "picture": "",
-    "email": "john@gmail.com",
-    "phone": "(912) 555-4321",
-    "website": "http://johndoe.com",
-    "summary": "A summary of John Doe...",
-    "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
-      "city": "San Francisco",
-      "countryCode": "US",
-      "region": "California"
-    },
-    "profiles": [{
-      "network": "Twitter",
-      "username": "john",
-      "url": "http://twitter.com/john"
-    }]
-  },
-
-  "work": [{
-    "company": "Company",
-    "position": "President",
-    "website": "http://company.com",
-    "startDate": "2013-01-01",
-    "endDate": "2014-01-01",
-    "summary": "Description...",
-    "highlights": [
-      "Started the company"
-    ]
-  }],
-
-  "volunteer": [{
-    "organization": "Organization",
-    "position": "Volunteer",
-    "website": "http://organization.com/",
-    "startDate": "2012-01-01",
-    "endDate": "2013-01-01",
-    "summary": "Description...",
-    "highlights": [
-      "Awarded 'Volunteer of the Month'"
-    ]
-  }],
-
-  "education": [{
-    "institution": "University",
-    "area": "Software Development",
-    "studyType": "Bachelor",
-    "startDate": "2011-01-01",
-    "endDate": "2013-01-01",
-    "gpa": "4.0",
-    "courses": [
-      "DB1101 - Basic SQL"
-    ]
-  }],
-
-  "awards": [{
-    "title": "Award",
-    "date": "2014-11-01",
-    "awarder": "Company",
-    "summary": "There is no spoon."
-  }],
-
-  "publications": [{
-    "name": "Publication",
-    "publisher": "Company",
-    "releaseDate": "2014-10-01",
-    "website": "http://publication.com",
-    "summary": "Description..."
-  }],
-
-  "skills": [{
-    "name": "Web Development",
-    "level": "Master",
-    "keywords": [
-      "HTML",
-      "CSS",
-      "Javascript"
-    ]
-  }],
-
-  "languages": [{
-    "name": "English",
-    "level": "Native speaker"
-  }],
-
-  "interests": [{
-    "name": "Wildlife",
-    "keywords": [
-      "Ferrets",
-      "Unicorns"
-    ]
-  }],
-
-  "references": [{
-    "name": "Jane Doe",
-    "reference": "Reference..."
-  }]
-
-}
-
 
 
 /*
@@ -267,23 +121,23 @@ EducationalOrganization and PostalAddress (for education, use html <section id="
  */
 
 /*
- * Job Postings content type for history component
+ * Resumes content type for history component
  */
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Job Postings',
+  'Resumes',
   /* type_alias */
-  'com_cajobboard.jobpostings',
+  'com_cajobboard.resumes',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_job_postings",
-      "key":"job_posting_id",
-      "type":"JobPosting",
-      "prefix":"JobPostingsTable",
+      "dbtable":"#__cajobboard_resumes",
+      "key":"resume_id",
+      "type":"Resume",
+      "prefix":"ResumesTable",
       "config":"array()"
     },
     "common":{
@@ -298,32 +152,39 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"job_posting_id",
-        "core_title":"title",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"occupational_category",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"occupational_category",
+      "core_content_item_id":"resume_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"title",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
+      "description__intro":"description__intro",
+      "note":"note",
+      "main_entity_of_page":"main_entity_of_page",
+      "content_url":"content_url",
+      "content_size":"content_size",
+      "encoding_format":"encoding_format",
+      "resume":"resume"
     }
   }',
   /* router */

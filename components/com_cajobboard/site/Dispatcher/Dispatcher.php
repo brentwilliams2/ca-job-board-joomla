@@ -16,8 +16,6 @@ if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
 //  Framework classes
 use \Calligraphic\Cajobboard\Admin\Dispatcher\Dispatcher as AdminDispatcher;
-use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
-use \Calligraphic\Cajobboard\Admin\Helper\Enum\VideoObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Site\Helper\JobPosting;
 use \Calligraphic\Cajobboard\Site\Helper\RegistrationHelper;
 use \FOF30\Container\Container;

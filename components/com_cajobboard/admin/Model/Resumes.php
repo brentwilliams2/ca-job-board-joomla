@@ -3,9 +3,9 @@
  * Admin Resumes Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -17,6 +17,7 @@ defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Joomla\Registry\Registry;
 
 /**
  * Fields:
@@ -55,6 +56,18 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the resume.
  * @property string         $description      A description of the resume.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ *
+ * SCHEMA: Thing(encoding) -> MediaObject
+ * @property string         $content_url      System filename of a resume file attached to the record.
+ * @property int            $content_size     Size of the resume file in bytes.
+
+ * SCHEMA: CreativeWork
+ * @property string         $encoding_format  MIME format of the document, e.g. application/pdf.
+ * 
+ * SCHEMA: https://calligraphic.design/schema/Resume
+ * @property Registry       $resume           JSON-formatted resume data.
+ *
  */
 class Resumes extends BaseDataModel
 {
@@ -94,15 +107,37 @@ class Resumes extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // Many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('MainEntityOfPage', 'Persons@com_cajobboard', 'main_entity_of_page', 'id');
   }
 
-/*
-  Resume alerts - idea of a "resume bank" that can be searched by employers, and notifies them if
-  a resume is added that matches an open job listing via their ATS panels.
 
-  Importing resumes from Indeed
-*/
+  /*
+    @TODO: Importing resumes from Indeed
+  */
 
 
+  /**
+	 * Transform 'resume' field to a JRegistry object on bind
+	 *
+	 * @return  Registry
+	 */
+  protected function getResumeAttribute($value)
+  {
+    $resume = $this->transformJsonToRegistry($value);
 
+    return $resume;
+  }
+
+
+  /**
+	 * Transform 'resume' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  string  JSON string
+	 */
+  protected function setResumeAttribute($value)
+  {
+    return $this->transformRegistryToJson($value);
+  }
 }

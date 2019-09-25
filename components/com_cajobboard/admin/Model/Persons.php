@@ -68,12 +68,9 @@ class Persons extends DataModel
 {
   /* Traits to include in the class */
 
-  //use Mixin\Assertions;           // Convenient assertions, e.g. for use in validation / check methods
-  //use Mixin\Asset;                // Joomla! role-based access control handling
+	use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
+	use Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
   use Mixin\Count;                // Overridden count() method to cache value
-  use Mixin\FieldState;           // Toggle method for boolean fields
-  use Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
-  //use Mixin\Validation;           // Provides over-ridden 'check' method
 
   /*
 	 * @param   Container $container The configuration variables to this model
@@ -90,13 +87,18 @@ class Persons extends DataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.persons';
 
-    parent::__construct($container, $config);
+		//parent::__construct($container, $config);
+		/* Overridden constructor */
+		$this->constructor($container, $config);
 
 		// Load the Filters behaviour
     $this->addBehaviour('Filters');
 
 		// Do not run automatic value validation of data before saving it.
-    $this->autoChecks = false;
+		$this->autoChecks = false;
+
+    // many-to-many FK to #__cajobboard_persons_geos
+		$this->belongsToMany('GeoCoordinates', 'GeoCoordinates@com_cajobboard', 'id', 'geo_coordinate_id', '#__cajobboard_organizations_employees', 'person_id', 'geo_coordinate_id');
   }
 
 

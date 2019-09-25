@@ -59,21 +59,6 @@ class BaseHtml extends Html
 
 
   /**
-	 * Load the language file for this view
-	 */
-	public function loadLanguageFileForView($view)
-	{
-    // @TODO: is FOF30 Dispatcher already loading the component language file?
-
-    // Using view-specific language files for maintainability
-    $lang = $this->container->platform->getLanguage();
-
-    // Load Answers language file
-    $lang->load($view, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
-  }
-
-
-  /**
 	 * Executes before rendering the page for the add task.
 	 */
 	protected function onBeforeAdd()
@@ -101,9 +86,10 @@ class BaseHtml extends Html
 
 
 	/**
-	 * Setup for the browse task, called from onBeforeBrowse() View method
+	 * Executes before rendering the page for the Browse task. Modified to eager
+   * load Author relation to Persons model and push the models to the view templates.
 	 */
-	protected function setupBrowse($withModels)
+	protected function onBeforeBrowse()
 	{
 		/** @var DataModel $model */
     $model = $this->getModel();
@@ -111,16 +97,49 @@ class BaseHtml extends Html
 		// Persist the state in the session
     $model->savestate(1);
 
-    // Set the current pagination parameters from the state on the model and view
-    $this->setPaginationParams($model);
+		// Set eager-loaded relations if any
+		if ( $withModels = $this->getBrowseViewEagerRelations() )
+		{
+			$model->with($withModels);
+		}
+
+		// Set a where clause on the model query
+		if ( $whereClause = $this->getBrowseViewWhereClause() )
+		{
+			$model->whereRaw($whereClause);
+		}
 
 		// Assign items to the view
-    $this->items = $model->with($withModels)->get();
+  	$this->items = $model->get();
 
-    $this->itemCount = $model->count();
+    // Set the current pagination parameters from the state on the model and view
+    $this->setPaginationParams($model);
+	}
 
-    // Create the view's pagination object with results from the model
-    $this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
+
+	/**
+	 * Relations to eager load in the browse view models. Override in View classes.
+	 *
+	 * @return array	The names of the models to eager load.
+	 */
+	protected function getBrowseViewEagerRelations()
+	{
+    return array();
+	}
+
+
+	/**
+	 * Add a 'where' clause to the browse view item query. Override in View classes.
+	 *
+	 * @return string		The 'where' clause string to use
+	 * 
+	 * Usage:
+	 *   $db = $model->getDbo();
+   *   return $db->qn('price') . ' = ' . $db->q(12.34);
+	 */
+	protected function getBrowseViewWhereClause()
+	{
+		return null;
   }
 
 
@@ -134,7 +153,9 @@ class BaseHtml extends Html
 	public function setPaginationParams(DataModel $model)
 	{
     // Display limits
-    $defaultLimit = 20;
+		$defaultLimit = 20;
+
+		$this->itemCount = $model->count();
 
   	// Create the lists object
     $this->lists = new \stdClass();

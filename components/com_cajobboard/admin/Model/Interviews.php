@@ -3,9 +3,9 @@
  * Admin Interviews Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -55,6 +55,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the interview.
  * @property string         $description      A description of the interview.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * 
  */
 class Interviews extends BaseDataModel
 {
@@ -94,20 +96,18 @@ class Interviews extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
-  }
 
+    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
+    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'interview_id', 'question_id', '#__cajobboard_interviews_questions');
+    
+    // one-to-many FK to #__cajobboard_answers, key in foreign table
+    // @TODO: Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages'. Note we've stuffed an 'is_required' field into the join table.
+    $this->hasMany('Answers', 'Answers@com_cajobboard', 'application_id', 'is_part_of');
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_INTERVIEWS_TITLE_ERR');
+    // Many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('MainEntityOfPage', 'Persons@com_cajobboard', 'main_entity_of_page', 'id');
 
-		parent::check();
-
-    return $this;
+    // Many-to-one FK to  #__cajobboard_question_list
+    $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
   }
 }

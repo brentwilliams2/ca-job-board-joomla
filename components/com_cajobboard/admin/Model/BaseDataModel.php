@@ -33,8 +33,9 @@ class BaseDataModel extends DataModel
   use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
   use Mixin\Core;                 // Utility methods
   use Mixin\Count;                // Overridden count() method to cache value
-  use Mixin\FieldState;           // Toggle method for boolean fields
+  use Mixin\FieldStateMachine;    // Toggle method for boolean fields
   use Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
+  use Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
   use Mixin\Validation;           // Provides over-ridden 'check' method
 
   // Transformations for model properties (attributes) to an appropriate data type (e.g.
@@ -82,18 +83,5 @@ class BaseDataModel extends DataModel
 
     /* Overridden constructor */
     $this->constructor($container, $config);
-  }
-
-
-  /**
-   * Setup the knownFields model property of database table metadata
-   *
-   * @param   string $tableName   Unused, maintain signature for overridden method.
-   *
-   * @return  array  An array of the field metadata.
-   */
-  public function getTableFields($tableName = null)
-  {
-    return $this->container->TableFields->getTableFieldsMetadata($this);
   }
 }

@@ -49,13 +49,15 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_audio_objects` (
   image JSON COMMENT 'Image metadata for social share and page header images',
 
   /* SCHEMA: MediaObject */
-  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the image file referred to by the record. MD5 hash of original image file, same filename is used in all size folders e.g. thumb, large, etc.',
-  content_size BIGINT(20) COMMENT 'File size of the original image in bytes.',
-  height INT COMMENT 'Height of the original image in px',
-  width INT COMMENT 'Width of the original image in px',
-  bitrate
-  duration
-  encodingFormat
+  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the audio file referred to by the record. MD5 hash of original image file, same filename is used in all size folders e.g. thumb, large, etc.',
+  content_size BIGINT(20) UNSIGNED COMMENT 'File size of the original audio in bytes.',
+  bitrate INT UNSIGNED COMMENT 'The bitrate of the media object in Hz.',
+  duration TIME(0) COMMENT 'The duration of the item (movie, audio recording, event, etc.) in ISO 8601 format, e.g. 00:00:32.', // Datetime datatype?
+  encoding_format CHAR(32) COMMENT 'MIME format of the audio, e.g. audio/mpeg for .mp3',
+
+  /* SCHEMA: AudioObject */
+  caption TEXT COMMENT 'The name of a subtitle file (.srt, HTML5 WebSRT as .vtt).',
+  transcript TEXT COMMENT 'The transcript of this audio object.',
 
   /* SQL DDL */
   PRIMARY KEY (audio_object_id)
@@ -150,38 +152,39 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"audio_object_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"cat_id",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"audio_object_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "is_part_of":"is_part_of",
-        "publisher":"publisher",
-        "text":"text",
-        "parent_item":"parent_item",
-        "upvote_count":"upvote_count",
-        "downvote_count":"downvote_count"
+      "note":"note",
+      "description__intro":"description__intro",
+      "content_url":"content_url",
+      "content_size":"content_size",
+      "encoding_format":"encoding_format",
+      "bitrate":"bitrate",
+      "duration":"duration"
     }
   }',
   /* router */

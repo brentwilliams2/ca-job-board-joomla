@@ -63,7 +63,7 @@
 <!--
   This is a Schema.org external extension for organization departments
 -->
-<div typeof="rdfs:Property" resource="https://calligraphic.design/schema/EmployerDepartments">
+<div typeof="rdfs:Property" resource="https://calligraphic.design/schema/EmployerDepartment">
   <!-- @TODO: implement -->
 </div>
 
@@ -169,6 +169,17 @@
 <!--
   This is a Schema.org external extension for email messages
 -->
-<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/EmailMessages">
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/EmailMessage">
   <!-- @TODO: implement, only email_message_template field -->
+</div>
+
+<!--
+  This is a Schema.org external extension for image aspect ratios
+
+  Used to enumerate image aspect ratios
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/AspectRatios">
+  <span class="h" property="rdfs:label">AspectRatio</span>
+  <span property="rdfs:comment">The aspect ratio of an image.</span>
+  <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/Thing">Thing</a></span>
 </div>

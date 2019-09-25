@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_issue_reports` (
   /* SCHEMA: CreativeWork */
   about__model VARCHAR(50) NOT NULL COMMENT 'The foreign model name the item of this report refers to, e.g. Answers.',
   about__id BIGINT UNSIGNED NOT NULL COMMENT 'The primary key of the foreign model the item of this report refers to.',
-  category BIGINT UNSIGNED COMMENT 'The reason this content is being reported.', /* FK to #__cajobboard_report_reasons */
+  category BIGINT UNSIGNED COMMENT 'The reason this content is being reported.', /* FK to #__cajobboard_issue_report_categories */
 
   /* DDL */
   PRIMARY KEY (issue_report_id)
@@ -122,7 +122,7 @@ VALUES(
   /* type_id */
   null,
   /* type_title */
-  'Issue Reports',
+  'IssueReports',
   /* type_alias */
   'com_cajobboard.issue_reports',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
@@ -146,37 +146,38 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"issue_report_id",
-        "core_title":"title",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"occupational_category",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"occupational_category",
+      "core_content_item_id":"issue_report_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"title",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "name":"name",
-        "description":"description",
-        "about__model":"about__model",
-        "about__id":"about__id",
-        "category":"category"
+      "about__id":"about__id",
+      "about__model":"about__model",
+      "category":"category",
+      "description__intro":"description__intro",
+      "image":"image",
+      "note":"note"
     }
   }',
   /* router */

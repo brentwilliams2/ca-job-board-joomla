@@ -41,14 +41,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_occupational_categories` (
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note VARCHAR(255) COMMENT 'A note to save with this job posting in the back-end interface.',
 
+  /* SCHEMA: Thing */
+  name CHAR(255) NOT NULL COMMENT 'Occupational category title.',
+  description TEXT COMMENT 'A description of the occupational category title.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  image JSON COMMENT 'Image metadata for social share and page header images',
+
   /* SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS */
-  title CHAR(96) NOT NULL COMMENT 'occupational category title',
  	`code` CHAR(10) NOT NULL DEFAULT '0' COMMENT 'BLS code specifying this job category',
   `group` BIGINT UNSIGNED NOT NULL COMMENT 'Group this occupational category should be shown under e.g. office staff', /* FK to #__cajobboard_job_occupational_category_group(job_occupational_category_group_id) */
 
   /* SQL DDL */
   PRIMARY KEY (occupational_category_id),
-  UNIQUE KEY (title),
+  UNIQUE KEY (name),
   INDEX job_category_group_index (`group`)
 )
   ENGINE=innoDB
@@ -59,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_occupational_categories` (
 /**
  * Initial occupational categories
  */
-INSERT INTO `#__cajobboard_occupational_categories` (slug, `code`, ordering, `group`, title) VALUES
+INSERT INTO `#__cajobboard_occupational_categories` (slug, `code`, ordering, `group`, name) VALUES
   ('general-and-operations-managers', '11-1021.00', 1, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_GENERAL_AND_OPERATIONS_MANAGERS'),
   ('property-and-community-managers', '11-9141.00', 2, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_PROPERTY_AND_COMMUNITY_MANAGERS'),
   ('regulatory-affairs-managers', '11-9199.01', 3, 9, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_REGULATORY_AFFAIRS_MANAGERS'),

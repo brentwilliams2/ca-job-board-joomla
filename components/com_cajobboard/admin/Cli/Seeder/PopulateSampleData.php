@@ -41,12 +41,14 @@ class PopulateSampleData extends CliApplication
 	 */
   protected $seed;
 
+
   /**
 	 * The models that this script should generate sample data for.
 	 *
 	 * @var   Array
 	 */
   protected $models;
+
 
   /**
 	 * A scaling factor for how many sample data records should be generated.
@@ -58,6 +60,7 @@ class PopulateSampleData extends CliApplication
 	 */
   protected $scaling;
 
+
   /**
 	 * An array of $modelName => $number showing how many sample data records
    * to generate for each model.
@@ -66,12 +69,6 @@ class PopulateSampleData extends CliApplication
 	 */
   protected $count;
 
-  /**
-	 * An array of modelName.fieldName => joinTableName tuples for BelongsToMany relation join table
-	 *
-	 * @var    Array
-	 */
-  protected $joinTables;
 
   /**
 	 * Array of category records for the Job Board. Each array item is a stdClass object with properties:
@@ -82,12 +79,14 @@ class PopulateSampleData extends CliApplication
 	 */
   protected $categories = null;
 
+
   /**
 	 * Tag records for the Job Board
 	 *
 	 * @var    Array
 	 */
   protected $tags = null;
+
 
   /**
 	 * User records for the Job Board
@@ -100,12 +99,14 @@ class PopulateSampleData extends CliApplication
 	 */
   protected $users;
 
+
  	/**
 	 * A manager to handle foreign keys from sample data in the model templates
 	 *
 	 * @var   RelationMapper
 	 */
   protected $relationMapper;
+
 
 	/**
 	 * Class constructor
@@ -142,7 +143,6 @@ class PopulateSampleData extends CliApplication
     }
 
     $this->count      = $config['count'];
-    $this->joinTables = $config['joinTables'];
     $this->scaling    = $config['scaling'] ? $config['scaling'] : 1;
     $this->seed       = $config['seed'] ? $config['seed'] : 1;
 
@@ -259,9 +259,6 @@ class PopulateSampleData extends CliApplication
     // Get tag records for the Job Board
     $tags = $this->getTags();
     $config->tags =& $tags;
-
-    // Add join table array for BelongsToMany relations to the config object.
-    $config->joinTables =& $this->joinTables;
 
     // add the Join Table Manager object to the config object to pass to field faker methods
     $config->relationMapper = $this->relationMapper;
@@ -437,9 +434,6 @@ class PopulateSampleData extends CliApplication
 
       $nextConfig = clone $config;
 
-      // Get the seed for this model
-      $nextConfig->seed = $this->seed[$modelName];
-
       if ( !array_key_exists($modelName, $this->count) )
       {
         throw new CliApplicationException("Model " . $modelName . " doesn't exist in config.json count parameter.\n");
@@ -459,7 +453,7 @@ class PopulateSampleData extends CliApplication
 
           $template = new $class();
 
-          $data = $template->generate($nextConfig, $this->seed++);
+          $data = $template->generate( $nextConfig, $this->seed++ );
 
           // save the new record
           if ( property_exists($template, 'hasRoot') )

@@ -44,11 +44,12 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_applications` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Description of the application.',
-  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
+  description TEXT COMMENT 'Description of this question and answer page.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to person this application is about. FK to #__cajobboard_persons.',
 
-  application_template /* FK */
-  about__job_posting /* FK */
+  /* SCHEMA: CreativeWork */
+  about__question_list BIGINT UNSIGNED COMMENT 'The Question List to be cloned into this application. FK to #__cajobboard_question_lists.',
 
   /* SQL DDL */
   PRIMARY KEY (application_id)
@@ -57,12 +58,17 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_applications` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-/*
-  @TODO:
 
-  Application model is simple: like a QAPage of questions and answers. Need some way of setting the right template.
-
-  ContentHistory doesn't make sense, because the changes would be in the relations (Answers).
-
-
-*/
+ /**
+ * Application - Question Join Table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_applications_questions` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  application_id BIGINT UNSIGNED NOT NULL,
+  question_id BIGINT UNSIGNED NOT NULL,
+  is_required TINYINT UNSIGNED DEFAULT '0' COMMENT 'Whether this is a mandatory question to answer for the application.',
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;

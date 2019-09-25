@@ -56,6 +56,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the comment.
  * @property string         $description      The text of the comment.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image            Image metadata for social share and page header images.
  * @property int            $about__foreign_model_id    The foreign model primary key that this comment belongs to
  * @property string         $about__foreign_model_name  The name of the foreign model this comment belongs to, discriminator field for single-table inheritance
  *
@@ -123,12 +125,18 @@ class Comments extends BaseTreeModel
     $this->hasOne('Image', 'ImageObjects@com_cajobboard', 'image', 'image_object_id');
 
     // @TODO: STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
+    // @TODO: handle foreign_model_id and foreign_model_name. Seeder template has enum for valid foreign models:
+    /*
+      $foreignModels = array(
+        'JobPostings',
+        'Organizations',
+        'Places'
+      );
+    */
+
+    // @TODO: Add method to "attach" a message thread to a root comment if the comment is attached to particular ATS views.
+    //        The idea is to provide a system where there is a special category of comment: instead of showing a normal
+    //        comment thread, it pulls a message thread in to allow it to be attached to an ATS entity for candidate
+    //        tracking (instead of the messages just being in user's inboxes and not reference to any ATS entity)
   }
-
-  // @TODO: handle foreign_model_id and foreign_model_name
-
-  // @TODO: Add method to "attach" a message thread to a root comment if the comment is attached to particular ATS views.
-  //        The idea is to provide a system where there is a special category of comment: instead of showing a normal
-  //        comment thread, it pulls a message thread in to allow it to be attached to an ATS entity for candidate
-  //        tracking (instead of the messages just being in user's inboxes and not reference to any ATS entity)
 }

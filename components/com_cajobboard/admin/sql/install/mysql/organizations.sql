@@ -6,7 +6,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
- /**
+/**
  * Organization table
  *
  * Uses schema https://schema.org/Organization
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
- /**
+/**
  * Organization - Employee join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_employees` (
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_employees` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
- /**
+/**
  * Organizations - ImageObjects join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_images` (
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_images` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
- /**
+/**
  * Organization - Organization join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_organizations` (
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_organizations` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
- /**
+/**
  * Organization - Place join table
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_places` (
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_places` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-/*
+/**
  * Create content types for relevant tables, mapping fields to the UCM standard fields for history feature
  *
  * type_id:     auto-increment id number.
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_organizations_places` (
  *        displayColumn: The column in the target table to display in the Preview or Compare pop-up window. For example, "name" or "title".
  */
 
-/*
+/**
  * Job Postings content type for history component
  */
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
@@ -213,32 +213,49 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"job_posting_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"logo",
-        "core_urls":"url",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"organization_type",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"organization_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"logo",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
+      "core_urls":"url",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
+      "note":"note",
+      "description__intro":"description__intro",
+      "image":"image",
+      "url":"url",
+      "role_name":"role_name",
+      "organization_type":"organization_type",
+      "legal_name":"legal_name",
+      "email":"email",
+      "telephone":"telephone",
+      "fax_number":"fax_number",
+      "number_of_employees":"number_of_employees",
+      "location":"location",
+      "logo":"logo",
+      "diversity_policy":"diversity_policy",
+      "aggregate_rating":"aggregate_rating",
+      "member_of":"member_of",
+      "parent_organization":"parent_organization"
     }
   }',
   /* router */

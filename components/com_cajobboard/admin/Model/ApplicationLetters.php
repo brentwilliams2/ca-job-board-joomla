@@ -55,10 +55,16 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the application letter.
- * @property string         $description      A description of the application letter.
+ * @property string         $name             A title to use for the comment.
+ * @property string         $description      The text of the comment.
+ * @property string         $description__intro   		Short description of the item, used for the text shown on social media via shares and search engine results.
+ * 
+ * SCHEMA: MediaObject
+ * @property  string	      $content_url      Filename of the digital document
+ * @property  int			      $content_size     File size in bytes
+ * @property  string	      $encoding_format  MIME format of the document, e.g. application/pdf
  */
-class ApplicationLetters extends DigitalDocuments
+class ApplicationLetters extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 
@@ -70,24 +76,66 @@ class ApplicationLetters extends DigitalDocuments
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    // override default table names and primary key id
+		$config['tableName'] = '#__cajobboard_application_letters';
+    $config['idFieldName'] = 'application_letter_id';
+
+    // Define a contentType to enable the Tags behaviour
+    $config['contentType'] = 'com_cajobboard.application_letters';
+
     parent::__construct($container, $config);
 
-    // Override the contentType set in parent
-    // @TODO: need to copy constructor here from DigitalDocuments once it's figured out
-  }
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      //'ContentHistory', // Add Joomla! content history support
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
+      //'Tags'        // Add Joomla! Tags support
+    );
+
+    /* Set up relations after parent constructor */
+
+    // one-to-one FK to  #__cajobboard_persons
+		$this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+		// The organization model primary key that this application letter was created for
+		$this->belongsTo('About', 'Organizations@com_cajobboard', 'about__organization_id', 'organization_id');
+
+		// Relation to category table for $Category
+		$this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
 
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_APPLICATION_LETTERS_TITLE_ERR');
+		// @TODO: access control: sudo apt-get install libapache2-mod-xsendfile
+		/*
+			httpd.conf:
 
-		parent::check();
+			#
+			# X-Sendfile
+			#
+			LoadModule xsendfile_module modules/mod_xsendfile.so
+			XSendFile On
+			# enable sending files from parent dirs of the script directory
+			XSendFileAllowAbove On
 
-    return $this;
+			header('X-Sendfile: ' . $absoluteFilePath);
+
+			// The Content-Disposition header allows you to tell the browser if
+			// it should download the file or display it. Use "inline" instead of
+			// "attachment" if you want it to display in the browser. You can
+			// also set the filename the browser should use.
+			header('Content-Disposition: attachment; filename="somefile.jpg"');
+
+			// The Content-Type header tells the browser what type of file it is.
+			header('Content-Type: digital document/jpeg');
+
+			// Nginx uses x-accel.redirect
+
+			can check what Apache modules loaded with apache_get_modules(), returns indexed array of module names,
+			also set up a configuration option for whether the ugly name or a SEO-friendly name should be used.
+
+			Need to handle digital document processing asynchronously, see admin/Cli/MediaProcessor
+		*/
   }
 }

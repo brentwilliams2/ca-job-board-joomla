@@ -1,8 +1,8 @@
 /**
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -128,9 +128,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
 /*
  * Comments content type for history component
  */
-
-/* @TODO: Check all model SQL content type entries to see if special field mappings have been properly set to model properties / table fields */
-
 INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`, `content_history_options`)
 VALUES(
   /* type_id */
@@ -160,39 +157,42 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-      "core_content_item_id":"comment_id",
-      "core_title":"name",
-      "core_state":"enabled",
-      "core_alias":"slug",
-      "core_created_time":"created_on",
-      "core_modified_time":"modified_on",
-      "core_body":"description",
-      "core_hits":"hits",
-      "core_publish_up":"publish_up",
-      "core_publish_down":"publish_down",
+      "asset_id":"asset_id",
       "core_access":"access",
-      "core_params":"params",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"comment_id",
+      "core_created_time":"created_on",
       "core_featured":"featured",
-      "core_metadata":"metadata",
-      "core_metakey":"metakey",
-      "core_metadesc":"metadesc",
-      "core_language":"language",
+      "core_hits":"hits",
       "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
       "core_urls":"null",
       "core_version":"version",
-      "core_ordering":"null",
-      "core_catid":"cat_id",
-      "core_xreference":"xreference",
-      "asset_id":"asset_id"
+      "core_xreference":"xreference"
     },
     "special":{
-      "description":"description",
-      "description__intro":"description__intro",
-      "image":"image",
       "about__foreign_model_id":"about__foreign_model_id",
       "about__foreign_model_name":"about__foreign_model_name",
-      "upvote_count":"upvote_count",
-      "downvote_count":"downvote_count"
+      "description__intro":"description__intro",
+      "downvote_count":"downvote_count",
+      "hash":"hash",
+      "image":"image",
+      "lft":"lft",
+      "note":"note",
+      "rgt":"rgt",
+      "upvote_count":"upvote_count"
     }
   }',
   /* router */

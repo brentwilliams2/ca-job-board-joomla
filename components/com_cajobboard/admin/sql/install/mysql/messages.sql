@@ -198,10 +198,10 @@ VALUES(
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_comments",
-      "key":"comment_id",
-      "type":"Comment",
-      "prefix":"CommentsTable",
+      "dbtable":"#__cajobboard_messages",
+      "key":"message_id",
+      "type":"Message",
+      "prefix":"MessagesTable",
       "config":"array()"
     },
     "common":{
@@ -216,40 +216,46 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-      "core_content_item_id":"message_id",
-      "core_title":"name",
-      "core_state":"enabled",
-      "core_alias":"slug",
-      "core_created_time":"created_on",
-      "core_modified_time":"modified_on",
-      "core_body":"description",
-      "core_hits":"hits",
-      "core_publish_up":"publish_up",
-      "core_publish_down":"publish_down",
+      "asset_id":"asset_id",
       "core_access":"access",
-      "core_params":"params",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"message_id",
+      "core_created_time":"created_on",
       "core_featured":"featured",
-      "core_metadata":"metadata",
-      "core_metakey":"metakey",
-      "core_metadesc":"metadesc",
-      "core_language":"language",
+      "core_hits":"hits",
       "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
       "core_urls":"null",
       "core_version":"version",
-      "core_ordering":"null",
-      "core_catid":"cat_id",
-      "core_xreference":"xreference",
-      "asset_id":"asset_id"
+      "core_xreference":"xreference"
     },
     "special":{
-      "description":"description",
-      "description__intro":"description__intro",
       "about__foreign_model_id":"about__foreign_model_id",
       "about__foreign_model_name":"about__foreign_model_name",
+      "attachment_counts":"attachment_counts",
       "date_read":"date_read",
-      "recipient":"recipient",
+      "description":"description",
+      "description__intro":"description__intro",
+      "description__intro":"description__intro",
+      "hash":"hash",
+      "image":"image",
       "is_part_of":"is_part_of",
-      "attachment_counts":"attachment_counts"
+      "lft":"lft",
+      "note":"note",
+      "recipient":"recipient",
+      "rgt":"rgt"
     }
   }',
   /* router */

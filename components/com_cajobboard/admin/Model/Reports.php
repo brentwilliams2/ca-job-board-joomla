@@ -53,6 +53,7 @@ use \Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the report.
  * @property string         $description      A description of the report.
+ * @property string         $description__intro     Short description of the item, used for the text shown on browse views.
  *
  * Thing(additionalType) -> Schedule
  * @property string         $repeat_frequency  How often this report should be generated. Use ISO 8601 duration format, e.g. PM1 for monthly, PW1 for weekly, PD1 for daily, PT0S for never-recurring.
@@ -61,7 +62,6 @@ use \Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum;
  *
  * SCHEMA: Message
  * @property string         $date_sent         The date the report was last sen.
- * @property string         message_attachment The URL of the Analytics view that should be used to generate the PDF file.
  */
 class Reports extends BaseDataModel
 {
@@ -104,20 +104,5 @@ class Reports extends BaseDataModel
 
     // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('ToRecipient', 'Persons@com_cajobboard', 'to_recipient', 'id');
-  }
-
-
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_REPORTS_TITLE_ERR');
-
-		parent::check();
-
-    return $this;
   }
 }

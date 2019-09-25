@@ -58,6 +58,10 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the reference.
  * @property string         $description      The text of this reference.
+ * @property string         $description__intro    Short description of the item, used for the text shown on browse views.
+ *
+ * SCHEMA: CreativeWork
+ * @property string         $text             The actual text of the reference.
  */
 class References extends BaseDataModel
 {

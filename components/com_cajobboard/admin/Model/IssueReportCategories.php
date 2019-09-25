@@ -28,7 +28,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string   $category   The category of abusive content report, e.g. spam, inappropriate language, etc.
  * @property string   $url        Link to schema for type of complaint, e.g. wikipedia page on Profanity
  */
-class IssueReports extends BaseDataModel
+class IssueReportCategories extends BaseDataModel
 {
   use \FOF30\Model\Mixin\Assertions;
 

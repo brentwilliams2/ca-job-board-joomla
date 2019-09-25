@@ -52,19 +52,20 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int            $featured         Whether this item is featured or not.
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
- * SCHEMA: AudioObject
- * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)
- * @property string         $transcript       The transcript of this audio object.
+ * SCHEMA: Thing
+ * @property  string	      $name             A name for this audio object
+ * @property  string	      $description      A long description of this audio object
+ * @property  string        $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image             Image metadata for social share and page header images.
  *
  * SCHEMA: MediaObject
  * @property  string	      $content_url      Filename of the audio object
  * @property  int			      $content_size     File size in bytes
  * @property  string	      $encoding_format  RFC 2045 mime type for this audio object to disambiguate different encodings of the same image, e.g. audio/mpeg,	audio/mp4
  *
- * SCHEMA: Thing
- * @property  string	      $name             A name for this audio object
- * @property  string	      $description      A long description of this audio object
- * @property  Object        $Author           The author of this content or rating, FK to #__users
+ * SCHEMA: AudioObject
+ * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)
+ * @property string         $transcript       The transcript of this audio object.
  */
 class AudioObjects extends BaseDataModel
 {
@@ -104,20 +105,18 @@ class AudioObjects extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
-  }
 
+    // one-to-one FK to  #__cajobboard_persons
+    $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_AUDIO_OBJECTS_TITLE_ERR');
+    // Relation to category table for $Category
+    $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
 
-		parent::check();
-
-    return $this;
+    /*
+    if (!$this->isXRedirectAvailable)
+    {
+      $this->isXRedirectAvailable();
+    }
+    */
   }
 }

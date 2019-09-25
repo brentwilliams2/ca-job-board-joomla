@@ -34,8 +34,6 @@ use \Calligraphic\Cajobboard\Admin\Helper\AssetFiles;
 use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
 use \Calligraphic\Cajobboard\Admin\Helper\EmailOutgoing;
 use \Calligraphic\Cajobboard\Admin\Helper\Format;
-use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectAspectRatiosEnum;
-use \Calligraphic\Cajobboard\Admin\Helper\Enum\VideoObjectAspectRatiosEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
 use \Calligraphic\Cajobboard\Admin\Helper\SefLinks;
 use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
@@ -163,9 +161,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 */
 	protected function loadTranslations()
 	{
-    // load the core translation file based on whether backend or frontend, e.g. en-GB.lib_calligraphic.php
-    $this->container->platform->loadComponentTranslations();
-
     // load the current view translation file based on whether backend or frontend
     $this->container->platform->loadViewTranslations($this->view);
   }
@@ -180,7 +175,8 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	{
     $irregularWords = array(
       'FCRA' => 'FCRA',
-      'PersonallyIdentifiableInformation' => 'PersonallyIdentifiableInformation'
+      'PersonallyIdentifiableInformation' => 'PersonallyIdentifiableInformation',
+      'Person' => 'Persons'
     );
 
     foreach ($irregularWords as $singular => $plural)
@@ -231,10 +227,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
       return new Identicon();
     };
 
-    $this->container->ImageObjectAspectRatiosEnum = function ($container) {
-      return new ImageObjectAspectRatiosEnum();
-    };
-
     // overriding inflector already loaded, not an option to set the inflector in fof.xml
     $this->container->inflector = function ($container) {
       return new Inflector();
@@ -246,10 +238,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
     $this->container->TableFields = function ($container) {
       return new TableFields($container);
-    };
-
-    $this->container->VideoObjectAspectRatiosEnum = function ($container) {
-      return new VideoObjectAspectRatiosEnum();
     };
   }
 

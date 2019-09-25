@@ -28,11 +28,13 @@ trait JsonData
 	 */
   protected function transformJsonToRegistry($json, $default = null)
   {
-    if ( !is_object($json) || !($json instanceof Registry) )
+    if ( !is_object($json) && !($json instanceof Registry) )
     {
-        $json = new Registry($default, 'JSON');
-        
-        $json->loadString($json, 'JSON');
+        $registry = new Registry($default, 'JSON');
+
+        $registry->loadString($json, 'JSON');
+
+        return $registry;
     }
 
     return $json;

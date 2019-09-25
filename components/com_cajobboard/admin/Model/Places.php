@@ -58,13 +58,12 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Place (geo) -> GeoCoordinates NOTE: https://schema.org/GeoCoordinates has separate latitude, longitude properties instead of using GIS point.
  * @property  int   	      $geo                            Latitude and longitude of place using MySQL GIS spatial data type. FK to #__cajobboard_geo_coordinates(geo_coordinate_id)
  * Place (address) -> PostalAddress
- * @property  string	      $address__address_country       The two-letter ISO 3166-1 alpha-2 country code.
- * @property  string	      $address__address_locality      The locality, e.g. Mountain View.
+ * @property  string	      $address__country               The two-letter ISO 3166-1 alpha-2 country code.
+ * @property  string	      $address__locality              The locality, e.g. Mountain View.
  * @property  string	      $address__postal_code           The postal code, e.g. 94043.
  * @property  string	      $address__street_address        The street address, e.g. 1600 Amphitheatre Pkwy.
- * @property  int			      $address__address_region        The name of the region, e.g. California', FK to #__cajobboard_util_address_region(address_region)
  * @property  string        $telephone                      The E.164 PSTN telephone number.
- * @property  string	      $opening_hours_specification      The days and times this location is open.
+ * @property  string	      $opening_hours_specification    The days and times this location is open.
  * RELATIONS
  * @property  int			      $Logo                           A logo image that represents this place. FK to #__cajobboard_images(image_id)
  * @property  int			      $Photo                          One or more photographs of this place. FK M:M relationship in to #__cajobboard_images(image_id)
@@ -110,37 +109,19 @@ class Places extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
+    // one-to-one FK to  #__cajobboard_persons
+    $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
     // many-to-one FK to  #__cajobboard_address_regions
-    $this->belongsTo('AddressRegions', 'AddressRegions@com_cajobboard', 'organization_type', 'address_region_id');
+    $this->belongsTo('AddressRegion', 'AddressRegions@com_cajobboard', 'address__region', 'address_region_id');
+
+    // many-to-one FK to  #__cajobboard_geo_coordinates
+    $this->belongsTo('Geo', 'GeoCoordinates@com_cajobboard', 'geo', 'geo_coordinate_id');
 
     // many-to-one FK to  #__cajobboard_image_objects
     $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
 
     // many-to-many FK to  #__cajobboard_image_objects via join table
     $this->belongsToMany('Photo', 'ImageObjects@com_cajobboard', 'place_id', 'image_object_id', '#__cajobboard_places_images');
-
-    // one-to-one FK to  #__cajobboard_persons
-    $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
-
-    // many-to-one FK to  #__cajobboard_geo_coordinates
-    $this->belongsTo('Geo', 'GeoCoordinates@com_cajobboard', 'geo', 'geo_coordinate_id');
-  }
-
-
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_PLACES_ERR_TITLE');
-
-		parent::check();
-
-    return $this;
   }
 }

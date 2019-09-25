@@ -76,4 +76,31 @@ class BaseTemplate
 
     return $this;
   }
+
+
+  /**
+   * Get the primary key value for a category by its human-readable name
+   *
+   * @param   string  $category
+   *
+   * @return  int
+   */
+  public function getCategoryId ($category)
+  {
+    $db = \JFactory::getDbo();
+
+    $query = $db->getQuery(true);
+
+    $query
+      ->select('id')
+      ->from($db->quoteName('#__categories'))
+      ->where($db->quoteName('title') . ' LIKE '. $db->quote( ucfirst($category) ));
+
+    // Reset the query using our newly populated query object.
+    $db->setQuery($query);
+
+    $result = $db->loadResult();
+
+    return $result;
+  }
 }

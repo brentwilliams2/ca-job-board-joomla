@@ -12,7 +12,7 @@
  * Uses schema https://schema.org/@TODO:
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_certifications` (
-  audio_object_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
+  certification_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
@@ -48,19 +48,15 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_certifications` (
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
   image JSON COMMENT 'Image metadata for social share and page header images',
 
-  /* SCHEMA: MediaObject */
+  /* @TODO: copy to content history special */
 
-
-  content_url VARCHAR(255) NOT NULL COMMENT 'System filename of the image file referred to by the record. MD5 hash of original image file, same filename is used in all size folders e.g. thumb, large, etc.',
-  content_size BIGINT(20) COMMENT 'File size of the original image in bytes.',
-  height INT COMMENT 'Height of the original image in px',
-  width INT COMMENT 'Width of the original image in px',
-  bitrate
-  duration
-  encodingFormat
+  /* @TODO: do some cert services have more complex APIs? */
+  url 'The URL to access this certification'
+  about__image_object
+  about__digital_document
 
   /* SQL DDL */
-  PRIMARY KEY (audio_object_id)
+  PRIMARY KEY (certification_id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
@@ -130,12 +126,12 @@ VALUES(
   /* type_title */
   'Certifications',
   /* type_alias */
-  'com_cajobboard.audio_objects',
+  'com_cajobboard.certifications',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
   '{
     "special":{
-      "dbtable":"#__cajobboard_audio_objects",
-      "key":"audio_object_id",
+      "dbtable":"#__cajobboard_certifications",
+      "key":"certification_id",
       "type":"Certification",
       "prefix":"CertificationsTable",
       "config":"array()"
@@ -152,38 +148,35 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"audio_object_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"cat_id",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"certification_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "is_part_of":"is_part_of",
-        "publisher":"publisher",
-        "text":"text",
-        "parent_item":"parent_item",
-        "upvote_count":"upvote_count",
-        "downvote_count":"downvote_count"
+      "note":"note",
+      "description__intro":"description__intro",
+
     }
   }',
   /* router */

@@ -70,23 +70,11 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  *
  * SCHEMA: Thing
  *
- * @property string         $name                 The name of this organization.
- * @property string         $disambiguating_description    A short description of the employer, for example to use on listing pages.
- * @property string         $description          A description of the item.
- * @property string         $url                  URL of employer's website.
- * @property ImageObjects   $Images               Images of the employer, FK to ImageObjects table
- *
- * SCHEMA: Thing(additionalType) -> Role(roleName)
- *
- * @property string         $RoleName             The role of the organization e.g. Employer, Recruiter, etc., FK to #__cajobboard_organization_role
- *
- * SCHEMA: Thing(additionalType) -> extended types in private namespace (default)
- *
- * @property string         $OrganizationType     The type of organization e.g. Employer, Recruiter, etc., FK to #__cajobboard_organization_types
- *
- * SCHEMA: Thing(additionalType) -> extended types in private namespace (default)
- *
- * @property string         $Branches             Properties managed by this organization, FK to #__cajobboard_places
+ * @property string         $name                 A title to use for the organization.
+ * @property string         $description          A description of the organization.
+ * @property string         $description__intro   Short description of the organization, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image                Image metadata for social share and page header images.
+ * @property string         $url                  URL of the organization's website.
  */
 class Organizations extends BaseDataModel
 {

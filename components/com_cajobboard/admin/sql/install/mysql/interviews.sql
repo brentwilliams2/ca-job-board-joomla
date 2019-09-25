@@ -1,8 +1,8 @@
 /**
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -44,8 +44,12 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_interviews` (
 
   /* SCHEMA: Thing */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
-  description TEXT COMMENT 'Description of the interview.',
-  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
+  description TEXT COMMENT 'Description of this question and answer page.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
+  main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to person this interview is about. FK to #__cajobboard_persons.',
+
+  /* SCHEMA: CreativeWork */
+  about__question_list BIGINT UNSIGNED COMMENT 'The Question List to be cloned into this interview. FK to #__cajobboard_question_lists.',
 
   /* SQL DDL */
   PRIMARY KEY (interview_id)
@@ -54,16 +58,31 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_interviews` (
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
 
-/*
-  @TODO: Interview model is simple: it has a QAPage of questions and answers, some way of setting the right QAPage + questions as a template,
-         and metadata about the interview
 
+/**
+ * Interview - Question Join Table
+ */
+CREATE TABLE IF NOT EXISTS `#__cajobboard_interviews_questions` (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key',
+  interview_id BIGINT UNSIGNED NOT NULL,
+  question_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (id)
+)
+  ENGINE=innoDB
+  DEFAULT CHARACTER SET = utf8
+  DEFAULT COLLATE = utf8_unicode_ci;
+
+
+/*
+  @TODO: 
   1. Need pointer to the Job Posting this interview is for;
   2. Need date/time/by whom the interview was conducted, also how (skype, phone, in-person);
   3. Need pointer to the job seeker (user) that participated in the interview;
   4. Maybe pointer to the score card for this interview;
   5. How to handle multiple interviews (e.g. second interview);
   6. How to handle aggregate rating over multiple interviews (is this ScoreCard?);
+
+
 
 Some common interview questions:
 
@@ -177,38 +196,37 @@ VALUES(
   /* field_mappings */
   '{
     "common":{
-        "core_content_item_id":"interview_id",
-        "core_title":"name",
-        "core_state":"enabled",
-        "core_alias":"slug",
-        "core_created_time":"created_on",
-        "core_modified_time":"modified_on",
-        "core_body":"description",
-        "core_hits":"hits",
-        "core_publish_up":"publish_up",
-        "core_publish_down":"publish_down",
-        "core_access":"access",
-        "core_params":"params",
-        "core_featured":"featured",
-        "core_metadata":"metadata",
-        "core_metakey":"metakey",
-        "core_metadesc":"metadesc",
-        "core_language":"language",
-        "core_images":"null",
-        "core_urls":"null",
-        "core_version":"version",
-        "core_ordering":"null",
-        "core_catid":"cat_id",
-        "core_xreference":"xreference",
-        "asset_id":"asset_id"
+      "asset_id":"asset_id",
+      "core_access":"access",
+      "core_alias":"slug",
+      "core_body":"description",
+      "core_catid":"cat_id",
+      "core_content_item_id":"interview_id",
+      "core_created_time":"created_on",
+      "core_featured":"featured",
+      "core_hits":"hits",
+      "core_images":"null",
+      "core_language":"language",
+      "core_metadata":"metadata",
+      "core_metadesc":"metadesc",
+      "core_metakey":"metakey",
+      "core_modified_time":"modified_on",
+      "core_ordering":"null",
+      "core_params":"params",
+      "core_publish_down":"publish_down",
+      "core_publish_up":"publish_up",
+      "core_state":"enabled",
+      "core_title":"name",
+      "core_urls":"null",
+      "core_version":"version",
+      "core_xreference":"xreference"
     },
     "special":{
-        "is_part_of":"is_part_of",
-        "publisher":"publisher",
-        "text":"text",
-        "parent_item":"parent_item",
-        "upvote_count":"upvote_count",
-        "downvote_count":"downvote_count"
+      "about__question_list":"about__question_list",
+      "description__intro":"description__intro",
+      "image":"image",
+      "main_entity_of_page":"main_entity_of_page",
+      "note":"note"
     }
   }',
   /* router */

@@ -52,12 +52,11 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int            $featured         Whether this item is featured or not.
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
- * SCHEMA: VideoObject
- * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)
- * @property ImageObject    $thumbnail 	 	    Thumbnail image for a video object. FK to #__cajobboard_image_objects.
- * @property string         $transcript       The transcript of this video object.
- * @property string         $videoFrameSize 	The frame size of the video.
- * @property string         $videoQuality 	  The quality of the video.
+ * SCHEMA: Thing
+ * @property  string	      $name              A name for this video object
+ * @property  string	      $description       A long description of this video object
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image             Image metadata for social share and page header images.
  *
  * SCHEMA: MediaObject
  * @property  string	      $content_url      Filename of the video object
@@ -66,13 +65,10 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property  int			      $width            Width of the video object in px
  * @property  string	      $encoding_format  RFC 2045 mime type for this video object to disambiguate different encodings of the same video object, e.g. video/mp4, video/x-ms-wmv
  *
- * SCHEMA: CreativeWork
- * @property  Object	      $ContentLocation   Place depicted or described in the video object, FK to #__cajobboard_places
- *
- * SCHEMA: Thing
- * @property  string	      $name              A name for this video object
- * @property  string	      $description       A long description of this video object
- * @property  Object        $Author            The author of this content or rating, FK to #__users
+ * SCHEMA: VideoObject
+ * @property string         $caption          The name of a subtitle file (.srt, HTML5 WebSRT as .vtt)
+ * @property string         $transcript       The transcript of this video object.
+ * @property string         $video_frame_size Aspect ratio of the video file, using VideoObjectAspectRatiosEnum constants.
  */
 class VideoObjects extends BaseDataModel
 {
@@ -112,20 +108,18 @@ class VideoObjects extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
-  }
 
+    // one-to-one FK to  #__cajobboard_persons
+    $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_VIDEO OBJECTS_TITLE_ERR');
+    // Relation to category table for $Category
+    $this->belongsTo('Category', 'Categories@com_cajobboard', 'cat_id', 'id');
 
-		parent::check();
-
-    return $this;
+    /*
+    if (!$this->isXRedirectAvailable)
+    {
+      $this->isXRedirectAvailable();
+    }
+    */
   }
 }
