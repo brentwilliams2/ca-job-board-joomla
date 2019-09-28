@@ -1,11 +1,11 @@
 <?php
 /**
- * Site Email Messages Model
+ * Site Background Checks Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -21,7 +21,7 @@ use \FOF30\Container\Container;
  * Fields:
  *
  * UCM
- * @property int            $email_message_id        Surrogate primary key.
+ * @property int            $background_check_id        Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
@@ -52,28 +52,25 @@ use \FOF30\Container\Container;
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the email message.
- * @property string         $description      A description of the email message.
+ * @property string         $name             A title to use for the background check.
+ * @property string         $description      A description of the background check.
+ * @property string         $description__intro   Short description of the item.
  *
- * SCHEMA: CreativeWork
- * @property string         $text             Body field of the e-mail.
+ * SCHEMA: Thing(potentialAction) -> Action
+ * @property int            $action_status    Status of the action, ENUM defined in \Calligraphic\Cajobboard\Site\Helper\Enum\ActionStatusEnum
+ * @property datetime       $end_time         The date the completed background check was received.
+ * @property datetime       $start_time       The date the background check was requested.
  *
- * SCHEMA: Message
- * @property string         $date_sent                      The date/time at which the message was sent via the MTA.
- * @property string         $recipient__additional_name     An additional name for  of the recipient, can be used for a middle name.
- * @property string         $recipient__email               Email address of the recipient.
- * @property string         $recipient__family_name         Family name of the recipient. In the U.S., the last name of an Person.
- * @property string         $recipient__given_name          Given name of the recipient. In the U.S., the first name of a Person.
- * @property string         $recipient__honorific_prefix    An honorific prefix preceding the recipient's name such as Dr. / Mrs. / Mr.
- * @property string         $recipient__honorific_suffix    An honorific suffix preceding the recipient's name such as M.D. / PhD / MSCSW.
+ * SCHEMA: Thing(potentialAction) -> TradeAction
+ * @property int            $price            The actual cost of the background check from the vendor.
  */
-class EmailMessages extends \Calligraphic\Cajobboard\Admin\Model\EmailMessages
+class BackgroundChecks extends \Calligraphic\Cajobboard\Admin\Model\BackgroundChecks
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
 	 *
-	 * @throws NoTableColumns
+	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
 	 */
 	public function __construct(Container $container, array $config = array())
 	{

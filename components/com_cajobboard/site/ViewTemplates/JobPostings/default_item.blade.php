@@ -21,13 +21,10 @@
   $userId = $this->container->platform->getUser()->id;
 
   // model data fields
-die(var_dump($item));
 
   $logoSource           = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
   $logoCaption          = $item->jobLocation->Logo->caption;
-
   $employerID           = $item->hiringOrganization->organization_id;
-
 
   // Setup Tags
   $tags = new TagsHelper;
@@ -35,7 +32,6 @@ die(var_dump($item));
 
   // @TODO: "Share this" social media button on job
 
-   // @TODO: move all code for aggregate reviews to Job Postings repository
   $aggregateReview = new stdClass();
 
   foreach ( $this->aggregateReviews as $aggregateReviewIteratee )
@@ -64,6 +60,7 @@ die(var_dump($item));
   </a>
 @overwrite
 
+
 {{--
   #2 - Job Title
 --}}
@@ -72,6 +69,7 @@ die(var_dump($item));
     <span>{{{ $jobTitle }}}</span>
   </a>
 @overwrite
+
 
 {{--
   #3 - Job Tag, e.g. "New!" or "Featured" -- from parameters for item, or Joomla! tags?
@@ -87,6 +85,7 @@ die(var_dump($item));
   <?php endif; ?>
 @overwrite
 
+
 {{--
   #4 - Name of Employer
 --}}
@@ -96,6 +95,7 @@ die(var_dump($item));
   </a>
 @overwrite
 
+
 {{--
   #5 - Job Location, link to map slider via Javascript
 --}}
@@ -104,12 +104,14 @@ die(var_dump($item));
   {{-- @TODO need to add $item->jobLocation->address__address_region after repository finished --}}
 @overwrite
 
+
 {{--
   #6 - Short Description of Job
 --}}
 @section('job_description')
   {{ $item->disambiguating_description }}
 @overwrite
+
 
 {{--
   #7 - "Save Job" Button
@@ -140,6 +142,7 @@ die(var_dump($item));
   @endif
 @overwrite
 
+
 {{--
   #8 - "Email Job" Button
 
@@ -165,6 +168,7 @@ die(var_dump($item));
     </button>
   @endif
 @overwrite
+
 
 {{--
   #9 - "Report Job" Button
@@ -192,6 +196,7 @@ die(var_dump($item));
   @endif
 @overwrite
 
+
 {{--
   #10 - Employer Rating, e.g. 1-5 stars and link to Reviews page
 --}}
@@ -201,6 +206,7 @@ die(var_dump($item));
   </a>
 @overwrite
 
+
 {{--
   #11 - Employer Reviews, e.g. number of reviews and link to Reviews page
 --}}
@@ -209,6 +215,7 @@ die(var_dump($item));
     @plural('COM_CAJOBBOARD_JOB_POSTINGS_REVIEW_COUNT', $aggregateReview->review_count)
   </a>
 @overwrite
+
 
 {{--
   #12 - "Quick Apply" Button
@@ -221,6 +228,7 @@ die(var_dump($item));
   </a>
 @overwrite
 
+
 {{--
   #13 - Date Job Posted, format adjustable in parameters
 --}}
@@ -230,6 +238,7 @@ die(var_dump($item));
     <?php echo Format::convertToTimeAgoString($item->created_on, $item->modified_on); ?>
   </span>
 @overwrite
+
 
 {{--
   #14 - Job Hours, e.g. Part-Time, Full-Time
@@ -241,6 +250,7 @@ die(var_dump($item));
   </span>
 @overwrite
 
+
 {{--
   #15 - Benefits, e.g. "Includes medical and dental insurance"
 --}}
@@ -250,6 +260,7 @@ die(var_dump($item));
     {{ $item->job_benefits }}
   </span>
 @overwrite
+
 
 {{--
   #16 - Pay, e.g. "$14 - $15 Per Hour"
@@ -261,6 +272,7 @@ die(var_dump($item));
     </span>
   @endif
 @overwrite
+
 
 {{--
   #17 - Tag Line, e.g. "Earn Extra Cash"

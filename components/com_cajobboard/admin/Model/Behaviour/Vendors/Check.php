@@ -46,19 +46,13 @@ class Check extends BaseCheck
 	 */
 	protected function checkForValidVendorRole(DataModel $model)
 	{
+    // Vendor Role enum keys and values are the same text string
     $vendorRoleName = $model->getFieldValue('role_name');
 
-    if ( is_string($vendorRoleName) )
-    {
-      $vendorRoleName = self::getValueForConstant($vendorRoleName);
-    }
-
-    if ( VendorRoleEnum::isValidEnumValue($vendorRoleName) )
+    if ( !VendorRoleEnum::isValidEnumValue($vendorRoleName) )
     {
       throw new EnumException( Text::_('COM_CAJOBBOARD_EXCEPTION_ENUM_VENDOR_ROLE_INVALID_CONSTANT') );
     }
-
-    $model->setFieldValue('video_frame_size', $vendorRoleName);
   }
 }
 

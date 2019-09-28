@@ -46,19 +46,13 @@ class Check extends BaseCheck
 	 */
 	protected function checkForValidImageAspectRatio(DataModel $model)
 	{
-    $imageAspectRatioName = $model->getFieldValue('aspect_ratio');
+    // Image Object Aspect Ratio enum keys and values are the same text string
+    $imageObjectAspectRatioName = $model->getFieldValue('aspect_ratio');
 
-    if ( is_string($imageAspectRatioName) )
-    {
-      $imageAspectRatioName = self::getValueForConstant($imageAspectRatioName);
-    }
-
-    if ( ImageObjectAspectRatioEnum::isValidEnumValue($imageAspectRatioName) )
+    if ( !ImageObjectAspectRatioEnum::isValidEnumValue($imageObjectAspectRatioName) )
     {
       throw new EnumException( Text::_('COM_CAJOBBOARD_EXCEPTION_ENUM_IMAGE_OBJECT_ASPECT_RATIO_INVALID_CONSTANT') );
     }
-
-    $model->setFieldValue('aspect_ratioe', $imageAspectRatioName);
   }
 }
 

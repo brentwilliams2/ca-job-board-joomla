@@ -53,7 +53,5 @@ class Check extends BaseCheck
     {
       throw new EnumException( Text::_('COM_CAJOBBOARD_EXCEPTION_ENUM_CREDIT_REPORTS_ACTION_STATUS_INVALID_CONSTANT') );
     }
-
-    $model->setFieldValue('action_status', $actionStatusName);
   }
 }

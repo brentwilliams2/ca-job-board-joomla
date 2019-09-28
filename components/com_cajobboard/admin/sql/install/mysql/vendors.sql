@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_vendors` (
   name CHAR(255) NOT NULL COMMENT 'The name of this organization.',
   description TEXT COMMENT 'A description of the organization.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
-  image JSON COMMENT 'Image metadata for social share and page header images',
   url VARCHAR(2083) COMMENT 'URL of vendor website.',
+  additional_type JSON COMMENT 'Additional metadata about this vendor: API secrets, payment limits, etc.',
 
   /* SCHEMA: Thing(additionalType) -> Role(roleName) */
   role_name INT UNSIGNED COMMENT 'The role of the organization e.g. Background Checks, Credit Reports, etc. Uses \Calligraphic\Cajobboard\Admin\Helper\Enum\VendorRolesEnum.',
@@ -185,6 +185,7 @@ VALUES(
       "core_xreference":"xreference"
     },
     "special":{
+      "additional_type":"additional_type",
       "description__intro":"description__intro",
       "email":"email",
       "fax_number":"fax_number",

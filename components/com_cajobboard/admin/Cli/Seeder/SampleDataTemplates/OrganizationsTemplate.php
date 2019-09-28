@@ -25,12 +25,14 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $telephone;
 
+
   /**
 	 * A description of the item.
 	 *
 	 * @property   string
    */
   public $description;
+
 
 	/**
 	 * A short description of the employer, for example to use on listing pages.
@@ -39,12 +41,14 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $disambiguating_description;
 
+
 	/**
 	 * RFC 3696 Email address.
 	 *
 	 * @property   string
    */
   public $email;
+
 
 	/**
 	 *  The E.164 PSTN fax number.
@@ -53,6 +57,7 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $fax_number;
 
+
 	/**
 	 * The official name of the employer.
 	 *
@@ -60,12 +65,6 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $legal_name;
 
-	/**
-	 * The name of this organization.
-	 *
-	 * @property   string
-   */
-  public $name;
 
 	/**
 	 * The number of employees in an organization e.g. business.
@@ -73,12 +72,15 @@ class OrganizationsTemplate extends CommonTemplate
 	 * @property   string
    */
   public $number_of_employees;
+
+
 	/**
 	 * URL of employer's website.
 	 *
 	 * @property   string
    */
   public $url;
+
 
 	/**
 	 * Where the organization is located.
@@ -87,12 +89,14 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $location;
 
+
 	/**
 	 * A logo for this organization.
 	 *
 	 * @property   int
    */
   public $logo;
+
 
 	/**
 	 * Statement on diversity policy of the employer.
@@ -101,12 +105,14 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $diversity_policy;
 
+
 	/**
 	 * The overall rating, based on a collection of reviews or ratings, of the item.
 	 *
 	 * @property   int
    */
   public $aggregate_rating;
+
 
 	/**
 	 * The larger organization that this organization is a subOrganization of, if any.
@@ -115,12 +121,14 @@ class OrganizationsTemplate extends CommonTemplate
    */
   public $parent_organization;
 
+
 	/**
 	 * The type of organization e.g. Employer, Recruiter, etc.
 	 *
 	 * @property   int
    */
   public $organization_type;
+
 
 	/**
 	 * The role of the organization e.g. Employer, Recruiter, etc.
@@ -139,25 +147,30 @@ class OrganizationsTemplate extends CommonTemplate
     $this->telephone = $faker->phoneNumber();
   }
 
+
   public function description ($config, $faker)
   {
     $this->description = implode("\n", $faker->paragraphs($faker->numberBetween(1, 3)));
   }
+
 
   public function disambiguating_description ($config, $faker)
   {
     $this->disambiguating_description = $faker->paragraph();
   }
 
+
   public function email ($config, $faker)
   {
     $this->email = $faker->email();
   }
 
+
   public function fax_number ($config, $faker)
   {
     $this->fax_number = $faker->phoneNumber();
   }
+
 
   public function legal_name ($config, $faker)
   {
@@ -166,20 +179,18 @@ class OrganizationsTemplate extends CommonTemplate
     $this->name = $name;
   }
 
-  public function name ($config, $faker)
-  {
-    return;
-  }
 
   public function number_of_employees ($config, $faker)
   {
     $this->number_of_employees = $faker->numberBetween(1, 30);
   }
 
+
   public function url ($config, $faker)
   {
     $this->url = $faker->url();
   }
+
 
   // $this->belongsTo('Location', 'Places@com_cajobboard', 'location', 'place_id');
   public function location ($config, $faker)
@@ -187,11 +198,13 @@ class OrganizationsTemplate extends CommonTemplate
     $this->location = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Places');
   }
 
+
   // $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
   public function logo ($config, $faker)
   {
     $this->logo = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'ImageObjects');
   }
+
 
   // $this->belongsTo('DiversityPolicy', 'DiversityPolicies@com_cajobboard', 'diversity_policy', 'diversity_policy_id');
   public function diversity_policy ($config, $faker)
@@ -199,11 +212,13 @@ class OrganizationsTemplate extends CommonTemplate
     $this->diversity_policy = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'DiversityPolicies');
   }
 
+
   // $this->belongsTo('RoleName', 'OrganizationRoles@com_cajobboard', 'role_name', 'organization_role_id');
   public function role_name ($config, $faker)
   {
     $this->role_name = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'OrganizationRoles');
   }
+
 
   // $this->belongsTo('OrganizationType', 'OrganizationTypes@com_cajobboard', 'organization_type', 'organization_type_id');
   public function organization_type ($config, $faker)
@@ -211,11 +226,13 @@ class OrganizationsTemplate extends CommonTemplate
     $this->organization_type = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'OrganizationTypes');
   }
 
+
   // $this->inverseSideOfHasOne('AggregateRating', 'EmployerAggregateRatings@com_cajobboard', 'aggregate_rating', 'employer_aggregate_rating_id');
   public function aggregate_rating ($config, $faker)
   {
     $this->aggregate_rating = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'EmployerAggregateRatings');
   }
+
 
   // $this->inverseSideOfHasOne('ParentOrganization', 'Organizations@com_cajobboard', 'parent_organization', 'organization_id');
   public function parent_organization ($config, $faker)

@@ -18,12 +18,21 @@ defined('_JEXEC') or die;
 
 class JobAlertsTemplate extends CommonTemplate
 {
+ /**
+  * The person this job alert belongs to, FK to #__cajobboard_persons
+  *
+  * @property    int
+  */
+ public $about;
+
+
 	/**
 	 * The geographic coordinates of the center of the job seeker's search radius, FK to #__cajobboard_geo_coordinates
 	 *
 	 * @property    int
    */
   public $geo_coordinate;
+
 
 	/**
 	 * The distance in miles to search for jobs from the job seeker's search radius center point.
@@ -32,12 +41,14 @@ class JobAlertsTemplate extends CommonTemplate
    */
   public $geo_radius;
 
+
 	/**
 	 * A category describing the job, FK to #__cajobboard_occupational_categories
 	 *
 	 * @property    string
    */
   public $occupational_category;
+
 
 	/**
 	 * Used to filter jobs shown for this alert. Should be a case-insensitive array of keywords, e.g. [ "great customers", "friendly", "fun" ]
@@ -47,9 +58,24 @@ class JobAlertsTemplate extends CommonTemplate
   public $keywords;
 
 
+	/**
+	 * Date this job alert is no long needed
+	 *
+	 * @property    int
+   */
+  public $expires;
+
+
   /**
 	 * Setters for Answer fields
    */
+
+
+  // $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
+  public function about ($config, $faker)
+  {
+    $this->about = $config->relationMapper->getFKValue('BelongsTo', $config, false, $faker, 'Persons');
+  }
 
 
   // $this->inverseSideOfHasOne('GeoCoordinates', 'GeoCoordinates@com_cajobboard', 'geo_coordinate', 'geo_coordinate_id');
@@ -58,18 +84,29 @@ class JobAlertsTemplate extends CommonTemplate
     $this->geo_coordinate = $config->relationMapper->getFKValue('BelongsTo', $config, false, $faker, 'GeoCoordinates');
   }
 
+
   public function geo_radius ($config, $faker)
   {
     $this->geo_radius = $faker->numberBetween(2, 20) * 5;
   }
+
 
   public function occupational_category ($config, $faker)
   {
     $this->occupational_category = $faker->numberBetween(1, 45);
   }
 
+
   public function keywords ($config, $faker)
   {
     $this->keywords = $faker->words($faker->numberBetween(1, 5));
+  }
+
+
+  public function expires ($config, $faker)
+  {
+    $dateTime = $faker->dateTimeBetween($startDate = 'now', $endDate = '6 months', $timezone = null);
+
+    $this->expires = $dateTime->format('Y-m-d H:i:s');
   }
 }

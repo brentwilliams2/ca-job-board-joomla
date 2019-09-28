@@ -25,12 +25,14 @@ class PlacesTemplate extends CommonTemplate
    */
   public $branch_code;
 
+
  	/**
 	 * The E.164 PSTN fax number.
 	 *
 	 * @property    string
    */
   public $fax_number;
+
 
   /**
 	 * A flag to signal that the Place is open to public visitors. If this property is omitted there is no assumed default boolean value.
@@ -39,12 +41,14 @@ class PlacesTemplate extends CommonTemplate
    */
   public $public_access;
 
+
 	/**
 	 * latitude and longitude of place using MySQL GIS spatial data type. Example: INSERT INTO place(geo) VALUES (Point(1,2));
 	 *
 	 * @property    string
    */
   public $geo;
+
 
 	/**
 	 * The two-letter ISO 3166-1 alpha-2 country code.
@@ -53,12 +57,14 @@ class PlacesTemplate extends CommonTemplate
    */
   public $address__address_country;
 
+
 	/**
 	 * The locality, e.g. Mountain View.
 	 *
 	 * @property    string
    */
   public $address__address_locality;
+
 
 	/**
 	 * The postal code, e.g. 94043.
@@ -67,12 +73,14 @@ class PlacesTemplate extends CommonTemplate
    */
   public $address__postal_code;
 
+
   /**
 	 * The street address, e.g. 1600 Amphitheatre Pkwy.
 	 *
 	 * @property    string
    */
   public $address__street_address;
+
 
 	/**
 	 * The name of the region, e.g. California, FK to #__cajobboard_util_address_region
@@ -81,6 +89,7 @@ class PlacesTemplate extends CommonTemplate
    */
   public $address_region;
 
+
   /**
 	 * The E.164 PSTN telephone number.
 	 *
@@ -88,12 +97,14 @@ class PlacesTemplate extends CommonTemplate
    */
   public $telephone;
 
+
 	/**
 	 * The days and times this location is open.
 	 *
 	 * @property    string
    */
   public $opening_hours_specification;
+
 
 	/**
 	 * A logo image that represents this place. FK to #__cajobboard_images(image_id)
@@ -107,20 +118,24 @@ class PlacesTemplate extends CommonTemplate
 	 * Setters for Review fields
    */
 
+
   public function branch_code ($config, $faker)
   {
     $this->branch_code = $faker->bothify('DEPT ##-??');
   }
+
 
   public function fax_number ($config, $faker)
   {
     $this->fax_number = $faker->phoneNumber();
   }
 
+
   public function public_access ($config, $faker)
   {
     $this->public_access = $faker->boolean($chanceOfGettingTrue = 80);
   }
+
 
   // $this->belongsTo('Geo', 'GeoCoordinates@com_cajobboard', 'geo', 'geo_coordinate_id');
   public function geo ($config, $faker)
@@ -128,25 +143,30 @@ class PlacesTemplate extends CommonTemplate
     $this->geo = $config->relationMapper->getFKValue('BelongsTo', $config, false, $faker, 'GeoCoordinates');
   }
 
+
   public function address__address_country ($config, $faker)
   {
     $this->address__address_country = 'US';
   }
+
 
   public function address__address_locality ($config, $faker)
   {
     $this->address__address_locality = $faker->city();
   }
 
+
   public function address__postal_code ($config, $faker)
   {
     $this->address__postal_code = $faker->postcode();
   }
 
+
   public function address__street_address ($config, $faker)
   {
     $this->address__street_address = $faker->streetAddress();
   }
+
 
   // $this->belongsTo('AddressRegions', 'AddressRegions@com_cajobboard', 'organization_type', 'address_region_id');
   public function address_region ($config, $faker)
@@ -154,15 +174,18 @@ class PlacesTemplate extends CommonTemplate
     $this->address_region = $faker->numberBetween(1, 50);
   }
 
+
   public function telephone ($config, $faker)
   {
     $this->telephone = $faker->phoneNumber();
   }
 
+
   public function opening_hours_specification ($config, $faker)
   {
     $this->opening_hours_specification = '8:00 - 5:00 Monday-Friday';
   }
+
 
   // $this->belongsTo('Logo', 'ImageObjects@com_cajobboard', 'logo', 'image_object_id');
   public function logo ($config, $faker)

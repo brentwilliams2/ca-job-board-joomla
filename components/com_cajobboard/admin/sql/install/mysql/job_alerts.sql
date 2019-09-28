@@ -44,15 +44,16 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_job_alerts` (
   note VARCHAR(255) COMMENT 'A note to save with this alert in the back-end interface.',
 
   /* SCHEMA: Thing */
+  about BIGINT UNSIGNED COMMENT 'The person this job alert belongs to.', /* FK to #__cajobboard_persons */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'Description of the alert.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: https://schema.org/GeoCoordinates */
-  geo_coordinate BIGINT UNSIGNED COMMENT 'The geographic coordinates of the center of the job seeker\'s search radius.', /* FK to #__cajobboard_geo_coordinates */
+  geo_coordinate BIGINT UNSIGNED COMMENT 'The geographic coordinates of the center of the job seekers search radius.', /* FK to #__cajobboard_geo_coordinates */
 
   /* SCHEMA: https://schema.org/geoRadius */
-  geo_radius INT UNSIGNED COMMENT 'The distance in miles to search for jobs from the job seeker\'s search radius center point.',
+  geo_radius INT UNSIGNED COMMENT 'The distance in miles to search for jobs from the job seekers search radius center point.',
 
   /* SCHEMA: https://schema.org/occupationalCategory */
   occupational_category BIGINT UNSIGNED COMMENT 'A category describing the job', /* FK to #__cajobboard_occupational_categories */

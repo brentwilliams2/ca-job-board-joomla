@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
   note VARCHAR(255) COMMENT 'A note to save with this reference in the back-end interface.',
 
   /* SCHEMA: Thing */
+  about BIGINT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'The text of the reference.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
@@ -50,7 +51,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_references` (
   /* SCHEMA: CreativeWork */
   has_part__digital_document BIGINT UNSIGNED COMMENT 'A PDF file representing this reference.', /* FK to #__cajobboard_digital_documents */
   has_part__image_object BIGINT UNSIGNED COMMENT 'An image representing this reference, for example a scan of an original reference letter.', /* FK to #__cajobboard_image_objects */
-  about BIGINT UNSIGNED COMMENT 'The user this reference is about.', /* FK to #__cajobboard_persons */
   `text` TEXT COMMENT 'The actual text of the reference.',
 
   /* SQL DDL */

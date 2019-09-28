@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_resume_alerts` (
   note VARCHAR(255) COMMENT 'A note to save with this alert in the back-end interface.',
 
   /* SCHEMA: Thing */
+  about BIGINT UNSIGNED COMMENT 'The person this resume alert belongs to.', /* FK to #__cajobboard_persons */
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'Description of the alert.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',

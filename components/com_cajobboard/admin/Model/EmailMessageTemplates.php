@@ -60,7 +60,7 @@ use \FOF30\Model\DataModel;
  * @property string         $subject          Text template with shortcodes for the subject field of the e-mail.',
  * @property string         $body             HTML template with shortcodes for the body field of the e-mail.',
  */
-class EmailMessages extends DataModel
+class EmailMessageTemplates extends DataModel
 {
 	/**
 	 * Overrides the constructor to add the Filters behaviour
@@ -70,8 +70,33 @@ class EmailMessages extends DataModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    /* Set up config before parent constructor */
+
+    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
+    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'Answers', array('typeAlias' => 'com_cajobboard.answers'));
+
+    // Not using convention for table names or primary key field
+		$config['tableName'] = '#__cajobboard_email_message_templates';
+    $config['idFieldName'] = 'email_message_template_id';
+
+    // Define a contentType to enable the Tags behaviour
+    $config['contentType'] = 'com_cajobboard.email_message_templates';
+
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+		$config['aliasFields'] = array('title' => 'name');
+
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+			//'ContentHistory', // Add Joomla! content history support
+			'Filters',		// Filter behaviour
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
+      //'Tags'        // Add Joomla! Tags support
+		);
+
 		parent::__construct($container, $config);
-		$this->addBehaviour('Filters');
   }
 
   //  @TODO: Need to send both HTML and text emails in the same message, for Outlook

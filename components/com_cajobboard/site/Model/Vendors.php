@@ -1,22 +1,21 @@
 <?php
 /**
- * Admin Vendors Model
+ * Site Vendors Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined('_JEXEC') or die;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
  * Fields:
@@ -56,10 +55,11 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $name             A title to use for the vendor.
  * @property string         $description      A description of the vendor.
  * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $additional_type  Additional metadata about this vendor: API secrets, payment limits, etc.
  *
  * SCHEMA: Thing(additionalType) -> Role(roleName)
  *
- * @property string         $role_name        The role of the organization e.g. Background Checks, Credit Reports, etc. Uses \Calligraphic\Cajobboard\Admin\Helper\Enum\VendorRolesEnum.
+ * @property string         $role_name        The role of the organization e.g. Background Checks, Credit Reports, etc. Uses \Calligraphic\Cajobboard\Site\Helper\Enum\VendorRolesEnum.
  *
  * SCHEMA: Organization
  *
@@ -76,10 +76,8 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property  string	      $location__address__street_address        The street address, e.g. 1600 Amphitheatre Pkwy.
  *
  */
-class Vendors extends BaseDataModel
+class Vendors extends \Calligraphic\Cajobboard\Admin\Model\Vendors
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -88,37 +86,6 @@ class Vendors extends BaseDataModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    /* Set up config before parent constructor */
-
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'Vendors', array('typeAlias' => 'com_cajobboard.vendors'));
-
-    // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_vendors';
-    $config['idFieldName'] = 'vendor_id';
-
-    // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.vendors';
-
-    // Set an alias for the title field for DataModel's check() method's slug field auto-population
-    $config['aliasFields'] = array('title' => 'name');
-
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
-    $config['behaviours'] = array(
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      //'ContentHistory', // Add Joomla! content history support
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
-      //'Tags'        // Add Joomla! Tags support
-    );
-
-    /* Parent constructor */
     parent::__construct($container, $config);
-
-    /* Set up relations after parent constructor */
-
-    // many-to-one FK to  #__cajobboard_address_regions
-    $this->belongsTo('LocationAddressRegion', 'AddressRegions@com_cajobboard', 'location__address__region', 'address_region_id');
   }
 }

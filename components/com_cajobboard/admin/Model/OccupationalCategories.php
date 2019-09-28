@@ -10,7 +10,7 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -23,6 +23,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  *
  * @property int      $job_occupational_category_id   Surrogate primary key', UCM (unified content model) properties for internal record metadata
  * @property string   $slug                       Alias for SEF URL
+ * 
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
  * @property int      $access                     The Joomla! view access level.
@@ -33,6 +34,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $modified_by                User ID who modified the record, auto-filled by save(), touch().
  * @property string   $locked_on                  Timestamp of record locking, auto-filled by lock(), unlock().
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
+ * 
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
@@ -46,10 +48,10 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $cat_id                     Category ID for this item.
  * @property int      $hits                       Number of hits the item has received on the site.
  * @property int      $featured                   Whether this item is featured or not.
+ * 
  * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
  * @property string   $title                      Occupational category title
  * @property string   $code                       BLS code specifying this job category
- * @property OccupationalCategoryGroups  $OccupationalCategoryGroup  Group this occupational category should be shown under e.g. office staff
  */
 class OccupationalCategories extends BaseDataModel
 {
@@ -75,19 +77,11 @@ class OccupationalCategories extends BaseDataModel
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
-      //'Access',     // Filter access to items based on viewing access levels
-      //'Assets',     // Add Joomla! ACL assets support
-      //'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
       //'ContentHistory', // Add Joomla! content history support
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      //'Publish',    // Set the publish_on field for new records
-      //'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
 

@@ -7,9 +7,9 @@
  * Extends schema.org DigitalDocuments
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 28, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -108,19 +108,4 @@ class DataFeeds extends BaseDataModel
 
     @TODO: Use the same logic as EmailMessages to deliver XML updates
   */
-
-
-  /**
-	 * @throws    \RuntimeException when the assertion fails
-	 *
-	 * @return    $this   For chaining.
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_DATA_FEEDS_TITLE_ERR');
-
-		parent::check();
-
-    return $this;
-  }
 }

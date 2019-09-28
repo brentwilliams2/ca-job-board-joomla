@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_employment_types` (
   note VARCHAR(255) COMMENT 'A note to save with this job posting in the back-end interface.',
 
   /* SCHEMA: Thing */
-  `name` CHAR(96) NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)',
+  name VARCHAR(255) NOT NULL COMMENT 'Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)',
   description TEXT NOT NULL COMMENT 'Detailed description about type of employment',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browe views.',
   url VARCHAR(2083) NOT NULL COMMENT 'Link to schema for type of employment, e.g. wikipedia page on Full Time',

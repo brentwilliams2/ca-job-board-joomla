@@ -19,25 +19,35 @@ defined('_JEXEC') or die;
 class ReferencesTemplate extends CommonTemplate
 {
 	/**
-	 * A PDF file representing this reference.
+	 * A PDF file representing this reference, FK to #__cajobboard_digital_documents
 	 *
 	 * @property    int
    */
   public $has_part__digital_document;
 
+
 	/**
-	 * An image representing this reference, for example a scan of an original reference letter.
+	 * An image representing this reference, for example a scan of an original reference letter, FK to #__cajobboard_image_objects
 	 *
-	 * @property    string
+	 * @property    int
    */
   public $has_part__image_object;
 
+
 	/**
-	 * The user this reference is about.
+	 * The user this reference is about, FK to #__cajobboard_persons
 	 *
 	 * @property    int
    */
   public $about;
+
+
+	/**
+	 * The actual text of the reference.
+	 *
+	 * @property    string
+   */
+  public $text;
 
 
   /**
@@ -53,6 +63,7 @@ class ReferencesTemplate extends CommonTemplate
     $this->has_part__digital_document = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, false, $faker, 'DigitalDocuments');
   }
 
+
   // $this->inverseSideOfHasOne('ImageObject', 'ImageObjects@com_cajobboard', 'has_part__image_object', 'image_object_id');
   public function has_part__image_object ($config, $faker)
   {
@@ -60,9 +71,16 @@ class ReferencesTemplate extends CommonTemplate
     $this->has_part__image_object = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, false, $faker, 'ImageObjects');
   }
 
+
   // $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
   public function about ($config, $faker)
   {
     $this->about = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
+  }
+
+
+  public function text ($config, $faker)
+  {
+    $this->text = $faker->paragraph;
   }
 }

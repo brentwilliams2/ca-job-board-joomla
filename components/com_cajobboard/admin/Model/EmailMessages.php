@@ -2,14 +2,15 @@
 /**
  * Admin EmailMessages Model
  *
- * this model is where e-mail messages to send are queued to, using the "published" flag to indicate
+ * This model is where e-mail messages to send are queued to, using the "published" flag to indicate
  * state of whether the e-mail is sent or not. The CLI script should use transactions to pull mail
- * jobs from this model. The locked_on field is used for concurrency control in This model also serves a log of emails sent.
+ * jobs from this model. The locked_on field is used for concurrency control. This model also serves
+ * as a log of emails sent.
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 28, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */

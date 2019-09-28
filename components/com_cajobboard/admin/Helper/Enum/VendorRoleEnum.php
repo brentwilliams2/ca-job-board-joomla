@@ -18,7 +18,7 @@ defined( '_JEXEC' ) or die;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\BasicEnum;
 use \Joomla\CMS\Language\Text;
 
-abstract class VendorRolesEnum extends BasicEnum
+abstract class VendorRoleEnum extends BasicEnum
 {
   const BACKGROUND_CHECKS = 'BACKGROUND_CHECKS';
   const CREDIT_REPORTS = 'CREDIT_REPORTS';
@@ -40,7 +40,7 @@ abstract class VendorRolesEnum extends BasicEnum
    *
    * @return array  Returns an associative array of human-readable aspect ratio names
    */
-  public static function getHumanReadableVendorRoleNamess()
+  public static function getHumanReadableVendorRoleNames()
   {
     $vendorRolesArray = self::getConstants();
 

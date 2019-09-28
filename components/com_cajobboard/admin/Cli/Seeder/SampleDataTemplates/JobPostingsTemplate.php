@@ -199,16 +199,16 @@ class JobPostingsTemplate extends CommonTemplate
     $this->hiring_organization = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Organizations');
   }
 
-  // $this->belongsTo('employmentType', 'JobEmploymentTypes@com_cajobboard', 'employment_type', 'job_employment_type_id');
+  // $this->belongsTo('EmploymentType', 'EmploymentTypes@com_cajobboard', 'employment_type', 'employment_type_id');
   public function employment_type ($config, $faker)
   {
-    $this->employment_type = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'JobEmploymentTypes');
+    $this->employment_type = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'EmploymentTypes');
   }
 
-  // $this->belongsTo('occupationalCategory', 'JobOccupationalCategories@com_cajobboard', 'occupational_category', 'job_occupational_category_id');
+  // $this->belongsTo('OccupationalCategory', 'OccupationalCategories@com_cajobboard', 'occupational_category', 'occupational_category_id');
   public function occupational_category ($config, $faker)
   {
-    $this->occupational_category = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'JobOccupationalCategories');
+    $this->occupational_category = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'OccupationalCategories');
   }
 
   public function title ($config, $faker)

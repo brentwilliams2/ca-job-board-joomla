@@ -33,6 +33,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $modified_by                User ID who modified the record, auto-filled by save(), touch().
  * @property string   $locked_on                  Timestamp of record locking, auto-filled by lock(), unlock().
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
+ * 
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
@@ -47,11 +48,13 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $cat_id                     Category ID for this content item.
  * @property int      $hits                       Number of hits the content item has received on the site.
  * @property int      $featured                   Whether this content item is featured or not.
+ * 
  * SCHEMA: Thing
  * @property  string  $name                       A name for this review, aliased to title.
+ * 
  * SCHEMA: Review
- * @property  Organizations		  $ItemReviewed     The employer being reviewed/rated, FK to #__cajobboard_organizations
  * @property  string  $review_body                The actual body of the review.
+ * 
  * SCHEMA: Review(reviewRating) -> Rating(ratingValue)
  * @property  int		  $rating_value               The rating for the content. Default worstRating 1 and bestRating 5 assumed.
  */
@@ -104,23 +107,5 @@ class Reviews extends BaseDataModel
 
     // one-to-one FK to  #__cajobboard_persons
     $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
-  }
-
-
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_REVIEWS_ERR_TITLE');
-
-		parent::check();
-
-    return $this;
   }
 }

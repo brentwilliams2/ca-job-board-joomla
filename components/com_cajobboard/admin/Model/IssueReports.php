@@ -58,7 +58,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: CreativeWork
  * @property string   $about__model               The foreign model name the item of this report refers to, e.g. Answers.
  * @property int      $about__id                  The primary key of the foreign model the item of this report refers to.
- * @property string   $category                   The reasons this content is being reported. Use table #__cajobboard_issue_report_categories to populate in views.
  */
 class IssueReports extends BaseDataModel
 {
@@ -123,30 +122,5 @@ class IssueReports extends BaseDataModel
 	public function getReportedContentItem($modelName, $itemId)
 	{
     // @TODO: implement
-  }
-
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_ISSUE_REPORT_ERR_TITLE');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_ISSUE_REPORT_ERR_DESCRIPTION');
-    $this->assertNotEmpty($this->about__model, 'COM_CAJOBBOARD_ISSUE_REPORT_ERR_ABOUT_MODEL');
-    $this->assertNotEmpty($this->about__id, 'COM_CAJOBBOARD_ISSUE_REPORT_ERR_ABOUT_ID');
-    $this->assertNotEmpty($this->category, 'COM_CAJOBBOARD_ISSUE_REPORT_ERR_REASON_CATEGORY');
-
-    // @TODO: Make sure about__model has a valid DataModel name
-
-    // @TODO: Make sure keywords is in #__cajobboard_report_reasons
-
-		parent::check();
-
-    return $this;
   }
 }

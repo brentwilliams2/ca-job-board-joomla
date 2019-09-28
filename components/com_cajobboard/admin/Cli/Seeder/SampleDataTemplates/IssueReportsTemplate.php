@@ -68,7 +68,7 @@ class IssueReportsTemplate extends CommonTemplate
       'VideoObjects'
     );
 
-    $this->about__model = $models[ $faker->numberBetween(0, 18) ];
+    $this->about__model = $models[$faker->numberBetween(0, 18)];
 
     $this->about__id = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, $this->about__model);
   }

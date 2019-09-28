@@ -89,6 +89,7 @@
       <file driver="mysql" charset="utf8">sql/install/mysql/candidates.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/certifications.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/comments.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/data_feed_templates.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/data_feeds.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/digital_documents.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/email_message_templates.sql</file>
@@ -124,7 +125,7 @@
       <file driver="mysql" charset="utf8">sql/install/mysql/search_results_pages.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/task_actions.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/utilities.sql</file>
-      <file driver="mysql" charset="utf8">sql/install/mysql/vendor.sql</file>
+      <file driver="mysql" charset="utf8">sql/install/mysql/vendors.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/video_objects.sql</file>
       <file driver="mysql" charset="utf8">sql/install/mysql/work_flows.sql</file>
     </sql>

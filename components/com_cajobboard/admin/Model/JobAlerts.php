@@ -109,6 +109,9 @@ class JobAlerts extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
+
     // one-to-one FK to #__cajobboard_geo_coordinates
     $this->inverseSideOfHasOne('GeoCoordinates', 'GeoCoordinates@com_cajobboard', 'geo_coordinate', 'geo_coordinate_id');
 

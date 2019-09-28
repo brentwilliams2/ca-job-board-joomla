@@ -46,19 +46,13 @@ class Check extends BaseCheck
 	 */
 	protected function checkForValidVideoFrameSize(DataModel $model)
 	{
-    $videoFrameSizeName = $model->getFieldValue('video_frame_size');
+    // Video Object Aspect Ratio enum keys and values are the same text string
+    $videoObjectFrameSizeName = $model->getFieldValue('video_frame_size');
 
-    if ( is_string($videoFrameSizeName) )
-    {
-      $videoFrameSizeName = self::getValueForConstant($videoFrameSizeName);
-    }
-
-    if ( VideoObjectAspectRatioEnum::isValidEnumValue($videoFrameSizeName) )
+    if ( !VideoObjectAspectRatioEnum::isValidEnumValue($videoObjectFrameSizeName) )
     {
       throw new EnumException( Text::_('COM_CAJOBBOARD_EXCEPTION_ENUM_VIDEO_OBJECT_ASPECT_RATIOS_INVALID_CONSTANT') );
     }
-
-    $model->setFieldValue('video_frame_size', $videoFrameSizeName);
   }
 }
 
