@@ -27,7 +27,7 @@
         name="title"
         type="sql"
         label="Select a Person"
-        query="SELECT person_id AS value, name FROM #__cajobboard_persons"
+        query="SELECT id AS value, name FROM #__cajobboard_persons"
       />
     </fieldset>
   </fields>

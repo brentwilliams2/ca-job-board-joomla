@@ -3,9 +3,9 @@
  * Site Base Class for HTML View
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC, (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (C) 2019 Calligraphic
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -14,13 +14,14 @@ namespace Calligraphic\Cajobboard\Site\View\Common;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel\Collection;
 use \FOF30\Model\Model\DataModel;
-use \FOF30\View\DataView\Html;
+use \Calligraphic\Cajobboard\Admin\View\Common\BaseHtml as AdminBaseHtml;
+use \Joomla\CMS\Helper\TagsHelper;
 use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class BaseHtml extends Html
+class BaseHtml extends AdminBaseHtml
 {
   /**
    * Whether a combo box to choose the number of results per page should
@@ -48,6 +49,9 @@ class BaseHtml extends Html
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
+
+    // Load CSS for site view
+    $this->addCssFile('media://com_cajobboard/css/frontend.css');
   }
 
 
@@ -69,32 +73,73 @@ class BaseHtml extends Html
   }
 
 
-	/**
-	 * Setup for the browse task, called from onBeforeBrowse() View method.
-   * This allows using an onBeforeBrowse() method in inherited views that
-   * just sets up the correct relations for the model, functionality not
-   * default to FOF30 base Raw view's onBeforeBrowse() method.
-   *
-   * @param   Array   $withModels   Array of relations for the model to eager load.
+  /**
+	 * View code to execute before rendering the page for the 'add' task.
 	 */
-	protected function setupBrowse($withModels)
+	protected function onBeforeAdd()
 	{
-		/** @var \FOF30\Model\DataModel $model */
-    $model = $this->getModel();
+    $status = parent::onBeforeAdd();
 
-		// Persist the state in the session
-    $model->savestate(1);
+    return $status;
+  }
 
-    // Set the current pagination parameters from the state on the model and view
-    $paginationOptions = $this->container->Pagination->getPaginationParams($model);
 
-		// Assign items to the view
-    $this->items = $model->with($withModels)->get();
+	/**
+	 *  View code to execute before rendering the page for the 'edit' task.
+	 */
+	protected function onBeforeEdit()
+	{
+    $status = parent::onBeforeEdit();
 
-    // Return a pagination object using the state set previously and the results of the model query
-    $this->pagination = $this->container->Pagination->getPaginator($model, $paginationOptions);
+    return $status;
+  }
 
-    $this->showLimitBox = $model->getState('showLimitBox', true);
+
+	/**
+	 *  View code to execute before rendering the page for the 'read' task.
+	 */
+	protected function onBeforeRead()
+	{
+    $status = parent::onBeforeRead();
+
+		return $status;
+  }
+
+
+	/**
+	 *  View code to execute before rendering the page for the 'browse' task.
+	 */
+	protected function onBeforeBrowse()
+	{
+    $status = parent::onBeforeBrowse();
+
+		return $status;
+  }
+
+
+	/**
+	 * Relations to eager load in the browse view models. Override in View classes.
+	 *
+	 * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
+	 */
+	protected function getBrowseViewEagerRelations()
+	{
+    return array();
+	}
+
+
+	/**
+	 * Add a 'where' clause to the browse view item query. Override in View classes.
+	 *
+	 * @return string		The 'where' clause string to use
+	 * 
+	 * Usage:
+	 *   $db = $model->getDbo();
+   *   return $db->qn('price') . ' = ' . $db->q(12.34);
+	 */
+	protected function getBrowseViewWhereClause()
+	{
+		return null;
   }
 
 

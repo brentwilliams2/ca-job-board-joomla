@@ -11,14 +11,8 @@
  */
 namespace Calligraphic\Cajobboard\Site\Model\Behaviour;
 
-use \FOF30\Event\Observer;
-use \FOF30\Model\DataModel;
-use \Joomla\CMS\Application\ApplicationHelper;
-use \Joomla\CMS\Language\Text;
-
 // no direct access
 defined( '_JEXEC' ) or die;
-
 
 class PII extends \Calligraphic\Cajobboard\Admin\Model\Behaviour\PII
 {

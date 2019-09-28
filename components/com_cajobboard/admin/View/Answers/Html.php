@@ -21,8 +21,6 @@ class Html extends BaseHtml
 {
 	/**
 	 * Overridden. Executes before rendering the page for the Browse task.
-   * Modified to eager load Author relation to Persons model and push the
-   * model to the view templates.
 	 */
 	protected function getBrowseViewEagerRelations()
 	{

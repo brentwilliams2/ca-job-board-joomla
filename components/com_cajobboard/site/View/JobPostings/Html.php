@@ -1,6 +1,6 @@
 <?php
 /**
- * Job Postings HTML View
+ * Site Job Postings HTML View
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -12,15 +12,12 @@
 
 namespace Calligraphic\Cajobboard\Site\View\JobPostings;
 
-use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
-use \FOF30\Container\Container;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Helper\TagsHelper;
-use \Joomla\CMS\Language\Text;
-
 // no direct access
 defined('_JEXEC') or die;
+
+use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
+use \FOF30\Container\Container;
+use \Joomla\CMS\Language\Text;
 
 class Html extends BaseHtml
 {
@@ -39,26 +36,23 @@ class Html extends BaseHtml
   }
 
 
-  /*
-   * Actions to take before list view is executed
-   *
-   * @return  void
-   */
-	protected function onBeforeBrowse()
+	/**
+	 * Overridden. Relations to eager load in the browse view models.
+	 *
+	 * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
+	 */
+	protected function getBrowseViewEagerRelations()
 	{
-    // Relations to eager-load
-    $this->setupBrowse(array(
+    return array(
+      'AggregateReviews',
+      'EmploymentType',
       'HiringOrganization',
       'JobLocation',
-      'EmploymentType',
-      'OccupationalCategory',
-      'AggregateReviews'
-    ));
-  }
+      'OccupationalCategory'
+		);
+	}
 
 
-//-------------------------------------------------------------------------------------
-// @TODO: Maybe these should be refactored into their own class?
 // @TODO: Need to provide access control for who should be able to change the employer a job posting links to
 // @TODO: Should provide a drop-down list of employers to choose from that the user belongs to / can create job postings for
 // @TODO: How do I know what employers a user belongs to?    #__cajobboard_organizations_employees
@@ -135,9 +129,6 @@ class Html extends BaseHtml
 
     return Text::_('COM_CAJOBBOARD_JOB_POSTINGS_EMPLOYER_NAME_EDIT_PLACEHOLDER');
   }
-
-//-------------------------------------------------------------------------------------
-
 
 
   /**

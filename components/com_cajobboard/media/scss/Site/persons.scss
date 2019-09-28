@@ -21,29 +21,184 @@
 // Persons ViewTemplate - Common Classes
 //-----------------------------------------------------------------------------
 
+// Common class applied to (for users with permission) the "Edit" buttons
+.btn-person {
+  border-radius: 5px;
+  margin-left: 5px;
+}
 
 //-----------------------------------------------------------------------------
-// Persons ViewTemplate - list view                          default.blade.php
+// Persons ViewTemplate - list view                      default.blade.php
+//                      - list view item            default_item.blade.php
 //-----------------------------------------------------------------------------
 
+.persons-header {
+  background-color: $body-bg-light;
+  margin: 10px 0;
+  padding: 10px;
 
-//-----------------------------------------------------------------------------
-// Persons ViewTemplate - list view item                default_item.blade.php
-//-----------------------------------------------------------------------------
+  h4 {
+    display: inline;
+  }
+
+  // anchor around "New" button
+  .person-new {
+
+  }
+}
+
+.persons-list {
+
+  // Wrapper for person item in browse view
+  .person-list-item {
+    background-color: $body-bg-light;
+    margin-top: 12px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+  }
+
+  .person-name {
+    color: $brand-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+
+    &:hover,
+    &:focus {
+      color: $brand-info;
+      text-decoration: none;
+    }
+  }
+
+  .person-username {
+    color: $text-color;
+  }
+
+  .person-email {
+    color: $brand-primary;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+      text-decoration: none;
+    }
+  }
+
+  // checkbox input element
+  .person-activation {
+
+  }
+
+  // checkbox input element
+  .person-block {
+
+  }
+
+  .person-register-date {
+    color: $text-color-lighter;
+  }
+
+  .person-last-visited-date {
+    color: $text-color-lighter;
+  }
+
+  .person-profile-fields {
+
+  }
+
+  // <button> elements
+  .report-person {}
+  .edit-person-button {}
+
+  // Link <a> anchor around the "Edit" button (edit-person-button)
+  .edit-person-link {}
+
+  // Link <a> anchor around the "Remove" button (delete-person-button)
+  .delete-person-link {}
+}
+
+.persons-footer {}
 
 
 //-----------------------------------------------------------------------------
 // Persons ViewTemplate - item view                             item.blade.php
 //-----------------------------------------------------------------------------
 
+.person-item {
+  background-color: $body-bg-light;
+  margin-top: 12px !important; // sass-lint:disable-line no-important
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+
+  .person-name {
+    color: $brand-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+  }
+
+  .person-username {
+    color: $text-color;
+  }
+
+  .person-email {
+    color: $brand-primary;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+      text-decoration: none;
+    }
+  }
+
+  .person-activation {
+    color: $text-color-lighter;
+  }
+
+  .person-block {
+    color: $text-color-lighter;
+  }
+
+  .person-register-date {
+    color: $text-color-lighter;
+  }
+
+  .person-last-visited-date {
+    color: $text-color-lighter;
+  }
+
+  .person-profile-fields {
+    color: $text-color-lighter;
+  }
+
+  // <button> elements
+  .report-person {}
+  .edit-person-button {}
+
+  // Link <a> anchor around the "Edit" button (edit-person-button)
+  .edit-person-link {}
+
+  // Link <a> anchor around the "Remove" button (delete-person-button)
+  .delete-person-link {}
+}
 
 //-----------------------------------------------------------------------------
 // Persons ViewTemplate - edit and add view                     form.blade.php
 //-----------------------------------------------------------------------------
 
+.person-edit-container {
 
-//-----------------------------------------------------------------------------
-// Persons ViewTemplate - Login form                           login.blade.php
-//-----------------------------------------------------------------------------
+  // Edit form header text
+  .form-header {
+    text-align: center;
 
-//#email-login-form {}
+    h3 {
+      color: $brand-primary;
+    }
+  }
+}
+

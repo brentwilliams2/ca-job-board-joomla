@@ -61,6 +61,9 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int            $action_status    Status of the action, ENUM defined in \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum
  * @property datetime       $end_time         The date the completed credit report was received.
  * @property datetime       $start_time       The date the credit report was requested.
+ * 
+ * SCHEMA: Thing(potentialAction) -> TradeAction
+ * @property int            $price            The actual cost of the credit report from the vendor.
  */
 class CreditReports extends BaseDataModel
 {
@@ -77,14 +80,14 @@ class CreditReports extends BaseDataModel
     /* Set up config before parent constructor */
 
     // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'BackgroundChecks', array('typeAlias' => 'com_cajobboard.credit reports'));
+    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'BackgroundChecks', array('typeAlias' => 'com_cajobboard.credit_reports'));
 
     // Not using convention for table names or primary key field
-		$config['tableName'] = '#__cajobboard_credit reports';
-    $config['idFieldName'] = 'credit report_id';
+		$config['tableName'] = '#__cajobboard_credit_reports';
+    $config['idFieldName'] = 'credit_report_id';
 
     // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.credit reports';
+    $config['contentType'] = 'com_cajobboard.credit_reports';
 
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');

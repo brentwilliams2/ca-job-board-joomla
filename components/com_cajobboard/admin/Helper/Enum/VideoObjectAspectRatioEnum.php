@@ -29,49 +29,49 @@ abstract class VideoObjectAspectRatioEnum extends BasicEnum
   /**
    * Facebook Feed, Twitter: 720 x 720px. Instagram (?): 600 x 600 px
    */
-  const CAROUSEL;
+  const CAROUSEL = 'CAROUSEL';
 
 
   /**
    * 1080p: 1920 x 1080px (Youtube), 720p: 1280×720px (Youtube, Twitter, Facebook Feed)
    */
-  const WIDE_LANDSCAPE;
+  const WIDE_LANDSCAPE = 'WIDE_LANDSCAPE';
 
 
   /**
    * Facebook Feed, Twitter: 720 x 1280px
    */
-  const WIDE_PORTRAIT;
+  const WIDE_PORTRAIT = 'WIDE_PORTRAIT';
 
 
   /**
    * 480p: 640 x 480px
    */
-  const STANDARD_LANDSCAPE;
+  const STANDARD_LANDSCAPE = 'STANDARD_LANDSCAPE';
 
 
   /**
    * Many
    */
-  const STANDARD_PORTRAIT;
+  const STANDARD_PORTRAIT = 'STANDARD_PORTRAIT';
 
 
   /**
    * Facebook Feed. Instagram (?): 600 by 750 px
    */
-  const MEDIUM_PORTRAIT;
+  const MEDIUM_PORTRAIT = 'MEDIUM_PORTRAIT';
 
 
   /**
    * 9/21 aspect ratio for Facebook
    */
-  const ANAMORPHIC_PORTRAIT;
+  const ANAMORPHIC_PORTRAIT = 'ANAMORPHIC_PORTRAIT';
 
 
   /**
    * Fall-through for undefined aspect ratios
    */
-  const OTHER;
+  const OTHER = 'OTHER';
 
 
   /**
@@ -178,9 +178,9 @@ abstract class VideoObjectAspectRatioEnum extends BasicEnum
    *
    * Twitter:   60 fps or less; dimensions between 32 x 32 and 1280 x 1024; file size <= 512 MB;
    *            duration between 0.5 and 140 seconds; aspect ratio between 1:3 and 3:1
-   * 
+   *
    * Facebook:  minimum width 600px; .mp4 or .mov w/ h.264; max 30 fps; up to 240 mins, up to 4 gb
-   * 
+   *
    * Linkedin:  between 10 and 60 fps; aspect ratio 1:2.4 or 2.4:1; dimensions between 256×144 and
    *            4096×2304; size between 75kb and 5gb; duration between 3 secs and 10 mins; video
    *            AVI, MPEG-1, MPEG-4, MKV, QuickTime, WebM, H264/AVC, MP4, VP8, VP9, WMV2, and WMV3;

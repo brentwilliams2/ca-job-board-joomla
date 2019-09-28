@@ -20,16 +20,16 @@ use \Joomla\CMS\Language\Text;
 
 abstract class VendorRolesEnum extends BasicEnum
 {
-  const BACKGROUND_CHECKS;
-  const CREDIT_REPORTS;
-  const OTHER;
+  const BACKGROUND_CHECKS = 'BACKGROUND_CHECKS';
+  const CREDIT_REPORTS = 'CREDIT_REPORTS';
+  const OTHER = 'OTHER';
 
   /**
    * Get available vendor roles as an associative array, with key as role name
    *
    * @return array
    */
-  public function getVendorRoleNames()
+  public static function getVendorRoleNames()
   {
     return self::getConstants();
   }

@@ -112,17 +112,6 @@ class Answers extends BaseDataModel
      // table field for belongsTo relation is in this model's table
 
     // many-to-one FK to  #__cajobboard_persons
-    //$this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
-
-    // @TODO: STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
-    // @TODO: handle about__foreign_model_id and about__foreign_model_name. Seeder template has enum for foreign models:
-    /*
-      $foreignModels = array(
-        'Applications',
-        'Interviews',
-        'QAPages',
-        'Resumes'
-      );
-    */
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
   }
 }

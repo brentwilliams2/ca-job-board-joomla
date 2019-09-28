@@ -13,6 +13,8 @@
  *
  *   abstract class MyEnum extends BasicEnum
  *   {
+ *     // Note that it's convenient for enum_value to match anEnum, unless doing something like a
+ *     // bitmask. That way you can use constant($varWithConstantName) to get the constant name back.
  *     const anEnum = 'enum_value';
  *   }
  *

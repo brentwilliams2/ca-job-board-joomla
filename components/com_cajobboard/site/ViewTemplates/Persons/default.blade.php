@@ -19,7 +19,7 @@
 ?>
 
 @section('header')
-  <div class="answers-header">
+  <div class="persons-header">
 
     <h4>@lang('PEOPLE')</h4>
 
@@ -29,8 +29,8 @@
       </span>
     @endif
 
-    <a class="answer-new" href="@route('index.php?option=com_cajobboard&view=answer&task=add')">
-      <button type="button" class="btn btn-primary btn-sm btn-answer add-answer-button pull-right">
+    <a class="person-new" href="@route('index.php?option=com_cajobboard&view=Persons&task=add')">
+      <button type="button" class="btn btn-primary btn-sm btn-person add-person-button pull-right">
         @lang('JTOOLBAR_NEW')
       </button>
     </a>
@@ -40,14 +40,14 @@
 @show
 
 @section('item')
-  <div class="container-fluid answers-list">
-    @each('site:com_cajobboard/Answers/default_item', $this->items, 'item', 'text|COM_CAJOBBOARD_ANSWERS_NO_ANSWERS_FOUND')
+  <div class="container-fluid persons-list">
+    @each('site:com_cajobboard/Persons/default_item', $this->items, 'item', 'text|COM_CAJOBBOARD_PERSONS_NO_PERSONS_FOUND')
   </div>
   <div class="clearfix"></div>
 @show
 
 @section('footer')
-  <div class="answers-footer">
+  <div class="persons-footer">
     {{ $this->pagination->getPaginationLinks('joomla.pagination.links') }}
   </div>
 @show

@@ -3,9 +3,9 @@
  * Overridden Platform class
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 11, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -60,6 +60,7 @@ class Platform extends \FOF30\Platform\Joomla\Platform
     $result = substr($wrappedText, 0, $pos );
   }
 
+  // -------------------------------------------------------------------------------------------------------
 
   /**
 	 * Get a configuration option, cascading from highest to lowest priority:
@@ -210,6 +211,9 @@ class Platform extends \FOF30\Platform\Joomla\Platform
   }
 
 
+  // -------------------------------------------------------------------------------------------------------
+
+
   /**
 	 * Get the application object
 	 *
@@ -219,6 +223,9 @@ class Platform extends \FOF30\Platform\Joomla\Platform
    {
      return Factory::getApplication();
    }
+
+
+   // -------------------------------------------------------------------------------------------------------
 
 
   /**
@@ -252,6 +259,9 @@ class Platform extends \FOF30\Platform\Joomla\Platform
 
     return Route::_($uri, true, $isTLS, true);
   }
+
+
+  // -------------------------------------------------------------------------------------------------------
 
 
   /*
@@ -350,4 +360,9 @@ class Platform extends \FOF30\Platform\Joomla\Platform
       $language->load($view, $siteLangDir, null, true);
     }
   }
+
+
+  // -------------------------------------------------------------------------------------------------------
+
+  
 }

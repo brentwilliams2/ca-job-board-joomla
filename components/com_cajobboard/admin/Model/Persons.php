@@ -68,9 +68,9 @@ class Persons extends DataModel
 {
   /* Traits to include in the class */
 
-	use Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
-	use Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
-  use Mixin\Count;                // Overridden count() method to cache value
+	use Mixin\Constructor;	// Refactored base-class constructor, called from __construct method
+	use Mixin\TableFields;	// Use an array of table fields instead of database reads on each table
+  use Mixin\Count;				// Overridden count() method to cache value
 
   /*
 	 * @param   Container $container The configuration variables to this model
@@ -80,25 +80,32 @@ class Persons extends DataModel
    */
 	public function __construct(Container $container, array $config = array())
 	{
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Filter'
+    );
+
 		$config['tableName'] = '#__users';
     $config['idFieldName'] = 'id';
 
-
     // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.persons';
-
-		//parent::__construct($container, $config);
-		/* Overridden constructor */
-		$this->constructor($container, $config);
-
-		// Load the Filters behaviour
-    $this->addBehaviour('Filters');
+		$config['contentType'] = 'com_cajobboard.persons';
 
 		// Do not run automatic value validation of data before saving it.
-		$this->autoChecks = false;
+		$config['autoChecks'] = false;
+
+		/* Overridden constructor */
+    $this->constructor($container, $config);
+
+		// belongsToMany relation uses a join table
 
     // many-to-many FK to #__cajobboard_persons_geos
-		$this->belongsToMany('GeoCoordinates', 'GeoCoordinates@com_cajobboard', 'id', 'geo_coordinate_id', '#__cajobboard_organizations_employees', 'person_id', 'geo_coordinate_id');
+		$this->belongsToMany('GeoCoordinates', 'GeoCoordinates@com_cajobboard', 'id', 'geo_coordinate_id', '#__cajobboard_person_geos', 'person_id', 'geo_id');
+
+		// table field for hasMany relation is in the foreign model's table
+
+		// one-to-many FK to #__cajobboard_profiles
+		$this->hasMany('Profiles', 'Profiles@com_cajobboard', 'id', 'user_id');
   }
 
 

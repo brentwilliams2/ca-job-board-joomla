@@ -102,6 +102,9 @@ class Questions extends BaseDataModel
 
     // table field for belongsTo relation is in this model's table
 
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
     // many-to-one FK to  #__organizations
     $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
 

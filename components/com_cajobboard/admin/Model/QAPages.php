@@ -95,8 +95,8 @@ class QAPages extends BaseDataModel
      */
 
     // one-to-many FK to #__cajobboard_answers, key in foreign table
-    // @TODO: Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages'
-    //$this->hasMany('Answers', 'Answers@com_cajobboard', 'q_a_page_id', 'is_part_of');
+    // Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages' in View/Html file
+    $this->hasMany('Answers', 'Answers@com_cajobboard', 'q_a_page_id', 'about__foreign_model_id');
 
     // one-to-one FK to  #__cajobboard_questions
     $this->hasOne('Question', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');

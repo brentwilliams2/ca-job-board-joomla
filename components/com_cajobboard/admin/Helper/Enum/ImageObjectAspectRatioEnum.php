@@ -17,15 +17,15 @@ defined( '_JEXEC' ) or die;
 
 abstract class ImageObjectAspectRatioEnum extends BasicEnum
 {
-  const CAMERA_LANDSCAPE;
-  const CAMERA_PORTRAIT;
-  const MEDIUM_LANDSCAPE;
-  const MEDIUM_PORTRAIT;
-  const OTHER;
-  const SQUARE;
-  const STANDARD_LANDSCAPE;
-  const STANDARD_PORTRAIT;
-  const WIDE_LANDSCAPE;
+  const CAMERA_LANDSCAPE = 'CAMERA_LANDSCAPE';
+  const CAMERA_PORTRAIT = 'CAMERA_PORTRAIT';
+  const MEDIUM_LANDSCAPE = 'MEDIUM_LANDSCAPE';
+  const MEDIUM_PORTRAIT = 'MEDIUM_PORTRAIT';
+  const OTHER = 'OTHER';
+  const SQUARE = 'SQUARE';
+  const STANDARD_LANDSCAPE = 'STANDARD_LANDSCAPE';
+  const STANDARD_PORTRAIT = 'STANDARD_PORTRAIT';
+  const WIDE_LANDSCAPE = 'WIDE_LANDSCAPE';
 
 
   /**

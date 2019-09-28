@@ -16,8 +16,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_person_geos` (
   person_id BIGINT UNSIGNED NOT NULL COMMENT 'FK to #__cajobboard_persons',
   geo_id BIGINT UNSIGNED NOT NULL  COMMENT 'FK to #__cajobboard_geo_coordinates',
 
-  SPATIAL INDEX spatial_index (geo),
-  PRIMARY KEY (person_geo_id)
+  INDEX person_index (person_id),
+  INDEX geo_index (geo_id),
+  PRIMARY KEY (id)
 )
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8

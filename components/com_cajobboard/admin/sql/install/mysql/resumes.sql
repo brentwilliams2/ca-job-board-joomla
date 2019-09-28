@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_resumes` (
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'Description of this question and answer page.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
-  main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to person this application is about. FK to #__cajobboard_persons.',
+  main_entity_of_page BIGINT UNSIGNED COMMENT 'FK to person this resume is about. FK to #__cajobboard_persons.',
 
   /* SCHEMA: Thing(encoding) -> MediaObject */
   content_url VARCHAR(255) NOT NULL COMMENT 'System filename of a resume file attached to the record.',

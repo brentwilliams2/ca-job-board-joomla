@@ -27,111 +27,100 @@
 ?>
 
 {{--
-  #1 - Answer Title
+  User's Real Name
 --}}
-@section('answer_title')
-  {{-- link to individual answer --}}
-  <a class="answer-title" href="@route('index.php?option=com_cajobboard&view=answer&task=read&id='. (int) $answerId)">
-    {{{ $title }}}
+@section('person_name')
+  {{-- link to individual person --}}
+  <a class="person-title" href="@route('index.php?option=com_cajobboard&view=Persons&task=read&id=' . $item->id)">
+      {{{ $item->name }}}
   </a>
 @overwrite
 
 {{--
-  #2 - Answer Text
+  User's system user name
 --}}
-@section('answer_text')
-  <p class="answer-text">
-    <b>{{{ $text }}}</b>
-  </p>
+@section('person_username')
+  <span class="person-username">
+    <b>{{{ $item->name }}}</b>
+  </span>
 @overwrite
 
 
 {{--
-  #3 - Answer Author's name
+  User's Email
 --}}
-@section('authors_name')
-  <a href="{{ $authorProfileLink }}" class="author-name">
-    {{{ $name }}}
-  </a>
-@overwrite
-
-{{--
-  #4 - Answer Author's avatar
---}}
-@section('authors_avatar')
-  <a href="{{ $authorProfileLink }}" class="author-avatar">
-    <img src="{{{ $authorAvatarUri }}}" alt="Avatar" class="img-thumbnail" height="24" width="24">
-  </a>
-@overwrite
-
-{{--
-  #5 - Answer Author's last seen
---}}
-@section('author_last_seen')
-  <span class="author-last-seen">
-    {{ $lastSeen }}
+@section('person_email')
+  <span class="person-email">
+    {{{ $item->email }}}
   </span>
 @overwrite
 
 {{--
-  #6 - Answer Posted Date
+  Whether user is Activated
 --}}
-@section('answer_posted_date')
-  <span class="answer-posted-date">
-    @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
-    {{ $postedOn }}
+@section('person_activation')
+  <input type="checkbox" name="activation" class="person-activation" value="{{ $item->activation }}">
+@overwrite
+
+{{--
+  Whether user is blocked
+--}}
+@section('person_block')
+  <input type="checkbox" name="block" class="person-block" value="{{ $item->block }}">
+@overwrite
+
+{{--
+  User's registration date
+--}}
+@section('person_register_date')
+  <span class="person-register-date">
+    {{ $this->container->Format->date($item->registerDate) }}
   </span>
 @overwrite
 
 {{--
-  #7 - Answer Upvotes
+  User's last visited date
 --}}
-@section('answer_upvotes')
-  <button class="btn btn-primary btn-xs btn-answer answer-upvotes pull-right" type="button">
-    @lang('COM_CAJOBBOARD_ANSWERS_UPVOTES_BUTTON_LABEL')
-    <span class="badge">
-      {{{ $upvoteCount }}}
-    </span>
-  </button>
+@section('person_last_visited_date')
+  <span class="person-last-visited-date">
+    {{ $this->container->Format->date($item->lastvisitDate) }}
+  </span>
 @overwrite
 
 {{--
-  #8 - Answer Downvotes
+  User's Profiles
 --}}
-@section('answer_downvotes')
-  <button class="btn btn-primary btn-xs btn-answer answer-downvotes pull-right" type="button">
-    @lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTES_BUTTON_LABEL')
-    <span class="badge">
-      {{{ $downvoteCount }}}
-    </span>
-  </button>
+@section('person_profile_fields')
+  <span class="person-profile-fields">
+    @TODO: Add User Profile Fields
+  </span>
 @overwrite
 
 {{--
-  #9 - "Report answer" Button
+  "Report person" Button
 --}}
-@section('report_answer')
-  <button type="button" class="btn btn-primary btn-xs btn-answer report-answer pull-right" data-toggle="modal" data-target="#report-answer">
-    @lang('COM_CAJOBBOARD_REPORT_ANSWERS_BUTTON_LABEL')
+@section('report_person')
+  <button type="button" class="btn btn-primary btn-xs btn-person report-person pull-right" data-toggle="modal" data-target="#report-person">
+    @lang('COM_CAJOBBOARD_REPORT_PERSON_BUTTON_LABEL')
   </button>
 @overwrite
 
 
 {{--
-  #10 - Edit Button for logged-in users that have permission to edit the item
+  Edit Button for logged-in users that have permission to edit the item
 --}}
-@section('edit_answer')
+@section('edit_person')
   @if ($canUserEdit)
 
-    <a class="delete-answer-link" onClick="removeSubmit( {{ $answerId }} )">
-      <button type="button" class="btn btn-danger btn-xs btn-answer delete-answer-button pull-right">
-        @lang('COM_CAJOBBOARD_DELETE_ANSWERS_BUTTON_LABEL')
+    <a class="delete-person-link" onClick="removeSubmit( {{ $item->id }} )">
+      <button type="button" class="btn btn-danger btn-xs btn-person delete-person-button pull-right">
+        @lang('COM_CAJOBBOARD_DELETE_PERSON_BUTTON_LABEL')
       </button>
     </a>
 
-    <a class="edit-answer-link" href="@route('index.php?option=com_cajobboard&view=answer&task=edit&id='. (int) $answerId)">
-      <button type="button" class="btn btn-warning btn-xs btn-answer edit-answer-button pull-right">
-        @lang('COM_CAJOBBOARD_EDIT_ANSWERS_BUTTON_LABEL')
+    <a class="edit-person-link" href="@route('index.php?option=com_cajobboard&view=person&task=edit&id='. (int) $item->id)">
+      <button type="button" class="btn btn-warning btn-xs btn-person edit-person-button pull-right">
+        @lang('COM_CAJOBBOARD_EDIT_PERSON_BUTTON_LABEL')
       </button>
     </a>
 
@@ -142,38 +131,46 @@
 {{--
   Responsive container for desktop and mobile
 --}}
-<div class="row answer-list-item media <?php echo ($featured) ? 'featured' : ''; ?>">
-  <h4>@yield('answer_title')</h4>
-  <p>@yield('answer_text')</p>
+<div class="row person-list-item media">
+  <h4>
+    @yield('person_name')
+  </h4>
 
   <div>
-    @yield('answer_posted_date')
+    @yield('person_username')
   </div>
-
-  <div class="clearfix"></div>
 
   <div>
-    <a href="#">
-      @yield('authors_avatar')
-    </a>
-    <a href="#">
-      @yield('authors_name')
-    </a>
-    @yield('author_last_seen')
+    @yield('person-email')
   </div>
-
-  <div class="clearfix"></div>
 
   <div>
-    @yield('edit_answer')
-    @yield('report_answer')
-    @yield('answer_downvotes')
-    @yield('answer_upvotes')
+    @yield('person_activation')
   </div>
-</div>{{-- End responsive container --}}
+
+  <div>
+    @yield('person_block')
+  </div>
+
+  <div>
+    @yield('person_register_date')
+  </div>
+
+  <div>
+    @yield('person_last_visited_date')
+  </div>
+
+  <div>
+      @yield('person_profile_fields')
+  </div>
+
+  <div>
+    @yield('report_person')
+  </div>
+</div>
 
 {{-- Form with CSRF field for remove action --}}
-<form action="@route($removeAction)" method="post" name="removeForm" id="removeForm-{{ $answerId }}">
+<form action="@route('index.php?option=com_cajobboard&view=Persons&task=remove&id=' . $item->id)" method="post" name="removeForm" id="removeForm-{{ $item->id }}">
   <input type="hidden" name="@token()" value="1"/>
 </form>
 

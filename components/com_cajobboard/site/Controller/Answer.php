@@ -14,8 +14,6 @@ namespace Calligraphic\Cajobboard\Site\Controller;
 
 // Framework classes
 use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
 use Calligraphic\Cajobboard\Site\Controller\BaseController;
 
 // no direct access
@@ -37,7 +35,14 @@ class Answer extends BaseController
 	{
     $this->modelName = 'Answers';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save', 'remove'];
+    $this->predefinedTaskList = array(
+			'add',
+			'browse',
+			'edit',
+			'read',
+			'remove',
+			'save'
+		);
 
     parent::__construct($container, $config);
   }

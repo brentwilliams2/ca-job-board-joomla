@@ -20,6 +20,18 @@ defined('_JEXEC') or die;
 
 class Html extends BaseHtml
 {
+  /**
+   * Overridden. Executes before rendering the page for the Browse task.
+   */
+  protected function getBrowseViewEagerRelations()
+  {
+    return array(
+      'GeoCoordinates',
+      'Profiles'
+    );
+  }
+
+
 	/**
 	 * Overridden. Filter on user group ('Connectors', 'Job Seekers', 'Employers', or 'Recruiters').
 	 */

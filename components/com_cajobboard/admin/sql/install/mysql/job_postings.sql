@@ -214,7 +214,6 @@ VALUES(
       "base_salary__min_value":"base_salary__min_value",
       "base_salary__value":"base_salary__value",
       "description__intro":"description__intro",
-      "disambiguating_description":"disambiguating_description",
       "education_requirements":"education_requirementst",
       "employment_type":"employment_type",
       "experience_requirements":"experience_requirements",

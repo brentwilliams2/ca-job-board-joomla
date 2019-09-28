@@ -1,6 +1,6 @@
 <?php
 /**
- * Organizations (Employer Profiles) HTML View
+ * Site Organizations (Employer Profiles) HTML View
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -12,24 +12,14 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Organizations;
 
-use FOF30\Container\Container;
-use JComponentHelper;
-use JFactory;
-
 // no direct access
 defined('_JEXEC') or die;
 
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
+use \FOF30\Container\Container;
 
-class Html extends \FOF30\View\DataView\Html
+class Html extends BaseHtml
 {
-	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  \JRegistry
-	 */
-  protected $componentParams;
-
 	/**
 	 * Overridden.
 	 *
@@ -39,12 +29,29 @@ class Html extends \FOF30\View\DataView\Html
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
+	}
 
-    // Using view-specific language files for maintainability
-    $lang = JFactory::getLanguage();
-    $lang->load('organizations', JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cajobboard', $lang->getTag(), true);
 
-    // Load javascript file for Job Posting views
-    $this->addJavascriptFile('media://com_cajobboard/js/Site/organizations.js');
-  }
+	/**
+	 * Overridden. Relations to eager load in the browse view models.
+	 *
+	 * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
+	 */
+	protected function getBrowseViewEagerRelations()
+	{
+    return array(
+			'AggregateRating',
+			'Branches',
+			'DiversityPolicy',
+			'Employees',
+			'Images',
+			'Location',
+			'Logo',
+			'MemberOf',
+			'OrganizationType',
+			'ParentOrganization',
+			'Reviews',
+			'RoleName'
+		);
+	}
 }

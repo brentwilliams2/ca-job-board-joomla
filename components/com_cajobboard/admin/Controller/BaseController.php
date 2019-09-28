@@ -35,13 +35,13 @@ class BaseController extends DataController
 	{
     parent::__construct($container, $config);
 
-    $this->addPredefinedTaskList([
+    $this->addPredefinedTaskList( array(
       'browse',  'read',  'edit', 'add',
       'apply',   'save',  'cancel', 'savenew',
       'archive', 'trash', 'remove',
       'feature', 'unfeature',
       'publish', 'unpublish'
-    ]);
+    ));
   }
 
 

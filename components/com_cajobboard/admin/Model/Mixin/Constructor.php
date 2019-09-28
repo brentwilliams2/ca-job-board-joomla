@@ -12,8 +12,9 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 
-use \Calligraphic\Library\Platform\RelationManager;
 use FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Dispatcher\Services;
+use \Calligraphic\Library\Platform\RelationManager;
 use \FOF30\Event\Dispatcher;
 use \Joomla\CMS\Access\Rules;
 
@@ -31,6 +32,9 @@ trait Constructor
   public function constructor($container, $config)
   {
     $this->container = $container;
+
+    // make sure helper classes loaded in container if this is a model called by a relation
+    $this->setValidContainer();
 
 		// Set the model's name from $config
 		if (isset($config['name']))
@@ -98,6 +102,23 @@ trait Constructor
     $this->initRecordData();
 
     $this->triggerEvent('onAfterConstruct');
+  }
+
+
+  /**
+   * The container is loaded with helper classes in the dispatcher when the input URL is routed,
+   * and in HMVC calls. However, models created for relations do not go through the dispatcher
+   * and the tmpInstance of container created for them do not have these helper classes loaded.
+   * This is not an elegant solution, but avoids overwriting core FOF30 class files.
+   */
+  private function setValidContainer()
+  {
+    // The 'TableFields' model helper class callback should always be loaded in the container
+    if ( !$this->container->offsetExists('TableFields') )
+    {
+      $services = new Services($this->container);
+      $services->addContainerServices();
+    }
   }
 
 

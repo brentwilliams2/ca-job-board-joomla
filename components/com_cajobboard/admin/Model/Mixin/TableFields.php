@@ -14,13 +14,17 @@ namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 // no direct access
 defined( '_JEXEC' ) or die;
 
+use \FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Persons;
+use \Calligraphic\Cajobboard\Admin\Model\GeoCoordinates;
+
 /**
  * Trait for dealing with data stored as JSON-encoded strings
  */
 trait TableFields
 {
   /**
-   * Setup the knownFields model property of database table metadata
+   * Setup the knownFields model property of database table metadata. Call from Model constructor.
    *
    * @param   string $tableName   Unused, maintain signature for overridden method.
    *

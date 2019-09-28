@@ -117,6 +117,8 @@ class Resumes extends BaseDataModel
     @TODO: Importing resumes from Indeed
   */
 
+  // @TODO: See Helper/JsonResumeToSemanticParser.php  for handling View of the JSON resume data
+
 
   /**
 	 * Transform 'resume' field to a JRegistry object on bind

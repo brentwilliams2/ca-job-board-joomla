@@ -21,7 +21,7 @@ use \FOF30\Container\Container;
  * Fields:
  *
  * UCM
- * @property int            $answer_id        Surrogate primary key.
+ * @property int            $email_message_id        Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
@@ -52,8 +52,8 @@ use \FOF30\Container\Container;
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the answer.
- * @property string         $description      A description of the answer.
+ * @property string         $name             A title to use for the email message.
+ * @property string         $description      A description of the email message.
  *
  * SCHEMA: CreativeWork
  * @property string         $text             Body field of the e-mail.

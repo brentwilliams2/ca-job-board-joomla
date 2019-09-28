@@ -19,8 +19,6 @@ use \Calligraphic\Library\Platform\DataController;
 // no direct access
 defined('_JEXEC') or die;
 
-// @TODO: extend from FOF30 DataController when debugging no longer needed
-
 class BaseController extends DataController
 {
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Permissions;
@@ -36,5 +34,22 @@ class BaseController extends DataController
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
+  }
+
+
+  /**
+	 * Avoid default access permission check in Controller's triggerEvent method by implementing function
+	 */
+	protected function onBeforeEdit()
+	{
+		// Do ACL checks for user permission here, throw error if not authorized instead of dying quietly
+		$result = $this->checkACL('core.edit') || $this->checkACL('core.edit.own');
+
+		if (!$result)
+		{
+			throw new NoPermissions( Text::_('COM_CAJOBBOARD_EXCEPTION_NO_PERMISSION') );
+		}
+
+    return true;
   }
 }

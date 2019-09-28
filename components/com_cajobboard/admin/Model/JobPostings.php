@@ -185,14 +185,14 @@ class JobPostings extends BaseDataModel
 	/**
    * Add an Action Log entry for analytics via the analytics plugin
    *
-	 * @param   DataModel  $model
 	 * @param   \stdClass  $dataObject
 	 */
-  public function onBeforeCreate(&$subject, &$dataObject)
+  public function onBeforeCreate(&$dataObject)
   {
+    // @TODO: is there an onAfterCreate event? MOVE to BaseModel + autodetect event to trigger, write analytics plugin
     $createdOnField = $this->getFieldAlias('created_on');
 
-    $dataObject->$createdOnField = $model->getFieldValue('created_on');
+    $dataObject->$createdOnField = $this->getFieldValue('created_on');
 
     $this->triggerEvent('onCalligraphicJobPostingCreate');
   }

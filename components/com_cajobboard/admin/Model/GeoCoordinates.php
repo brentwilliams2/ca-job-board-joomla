@@ -15,8 +15,8 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \FOF30\Container\Container;
+use \FOF30\Model\DataModel;
 
 /*
  * Fields:
@@ -27,9 +27,12 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property  string	      $latitude             latitude of a place
  * @property  string	      $longitude            longitude of a place
  */
-class GeoCoordinates extends BaseDataModel
+class GeoCoordinates extends DataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
+  /* Traits to include in the class */
+
+  use Mixin\Constructor;  // Refactored base-class constructor, called from __construct method
+  use Mixin\TableFields;  // Use an array of table fields instead of database reads on each table
 
   /**
    * Latitude
@@ -53,6 +56,11 @@ class GeoCoordinates extends BaseDataModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Filter'
+    );
+
     // override default table names and primary key id
 		$config['tableName'] = '#__cajobboard_geo_coordinates';
     $config['idFieldName'] = 'geo_coordinates_id';
@@ -60,7 +68,8 @@ class GeoCoordinates extends BaseDataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.geo_coordinates';
 
-    parent::__construct($container, $config);
+    /* Overridden constructor */
+    $this->constructor($container, $config);
   }
 
 

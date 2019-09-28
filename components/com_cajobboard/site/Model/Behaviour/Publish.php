@@ -11,10 +11,6 @@
  */
 namespace Calligraphic\Cajobboard\Site\Model\Behaviour;
 
-use \FOF30\Event\Observer;
-use \FOF30\Model\DataModel;
-use \Joomla\CMS\Application\ApplicationHelper;
-
 // no direct access
 defined( '_JEXEC' ) or die;
 

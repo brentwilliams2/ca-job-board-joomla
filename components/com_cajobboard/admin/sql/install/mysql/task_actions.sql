@@ -47,7 +47,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_task_actions` (
   description TEXT COMMENT 'Description of the task action.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on Kanban cards.',
 
-  potential_action CHAR(24) COMMENT 'The type of action for this task, using ENUM constants from Admin\Helper\Enum\ActionsEnum',
+
+
+
+  potential_action CHAR(24) COMMENT 'The type of action for this task, using ENUM constants from Admin\Helper\Enum\ActionTypesEnum',
+
+
+  /* SCHEMA: Thing(potentialAction) -> Action */
+  action_status TINYINT UNSIGNED COMMENT 'Status of the action, ENUM defined in \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum.',
+  end_time DATETIME DEFAULT NULL COMMENT 'The date the completed background check was received.',
+  result BIGINT(20) UNSIGNED COMMENT 'The digital document returned from the background checking service as a result', /* FK to #__cajobboard_digital_documents */
+  start_time DATETIME DEFAULT NULL COMMENT 'The date the background check was requested.',
+
+
 
 /* SCHEMA: CreativeWork */
 

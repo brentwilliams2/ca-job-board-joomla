@@ -1,11 +1,11 @@
 <?php
 /**
- * Answers Admin HTML View
+ * Admin Base Class HTML View
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC, (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (C) 2019 Calligraphic
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -50,43 +50,51 @@ class BaseHtml extends Html
     parent::__construct($container, $config);
 
     // Get component parameters
-    // @TODO: Need page prameters for front-end only?
     $this->componentParams = ComponentHelper::getParams('com_cajobboard');
 
-    // Load CSS for admin view
-    $this->addCssFile('media://com_cajobboard/css/backend.css');
+		// Load CSS for admin view
+		if ( $this->container->platform->isBackend() )
+		{
+			$this->addCssFile('media://com_cajobboard/css/backend.css');
+		}
   }
 
 
   /**
-	 * Executes before rendering the page for the add task.
+	 * View code to execute before rendering the page for the 'add' task.
 	 */
 	protected function onBeforeAdd()
 	{
-    parent::onBeforeAdd();
+    $status = parent::onBeforeAdd();
+
+    return $status;
   }
 
 
 	/**
-	 * Executes before rendering the page for the Edit task.
+	 *  View code to execute before rendering the page for the 'edit' task.
 	 */
 	protected function onBeforeEdit()
 	{
-    parent::onBeforeEdit();
+    $status = parent::onBeforeEdit();
+
+    return $status;
   }
 
 
 	/**
-	 * Executes before rendering the page for the Read task.
+	 *  View code to execute before rendering the page for the 'read' task.
 	 */
 	protected function onBeforeRead()
 	{
-		parent::onBeforeRead();
+    $status = parent::onBeforeRead();
+
+		return $status;
   }
 
 
 	/**
-	 * Executes before rendering the page for the Browse task. Modified to eager
+	 * View code to execute before rendering the page for the 'browse' task. Modified to eager
    * load Author relation to Persons model and push the models to the view templates.
 	 */
 	protected function onBeforeBrowse()
@@ -113,14 +121,16 @@ class BaseHtml extends Html
   	$this->items = $model->get();
 
     // Set the current pagination parameters from the state on the model and view
-    $this->setPaginationParams($model);
+		$this->setPaginationParams($model);
+		
+		return true;
 	}
 
 
 	/**
 	 * Relations to eager load in the browse view models. Override in View classes.
 	 *
-	 * @return array	The names of the models to eager load.
+	 * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
 	 */
 	protected function getBrowseViewEagerRelations()
 	{

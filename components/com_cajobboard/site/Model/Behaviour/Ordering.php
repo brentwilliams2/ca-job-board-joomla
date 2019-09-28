@@ -12,22 +12,9 @@
  */
 namespace Calligraphic\Cajobboard\Site\Model\Behaviour;
 
-use \FOF30\Event\Observer;
-use \FOF30\Model\DataModel;
-use \JDatabaseQuery;
-
 // no direct access
 defined( '_JEXEC' ) or die;
 
-/**
- * To override ordering behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('Ordering.php'). Move the model file into the directory
- * without renaming it (e.g. 'Model/Answers/Answers.php)
- *
- * Ordering and order direction are checked for validity in the DataModel
- * before use so no danger here of setting them to request state
- */
 class Ordering extends \Calligraphic\Cajobboard\Admin\Model\Behaviour\Ordering
 {
 

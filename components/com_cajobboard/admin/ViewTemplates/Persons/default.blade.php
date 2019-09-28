@@ -55,7 +55,7 @@ $widthPct = array
   <span class="filter-search btn-group pull-left">
     {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
     {{-- @TODO: modal is empty, no drop-down of author list: need to write helper to do join and get author names --}}
-    @searchfilter('created-by', null, Text::_('COM_CAJOBBOARD_ANSWERS_FILTER_BY_AUTHOR'))
+    @searchfilter('username', null, Text::_('COM_CAJOBBOARD_PERSONS_FILTER_BY_USERNAME'))
   </span>
 
   {{-- @TODO: Expand search options --}}
@@ -172,7 +172,7 @@ $widthPct = array
       {{-- COLUMN #4: Full name of the user --}}
       <td width="{{ $widthPct['#4'] }}%" class="row-name">
         <div>
-          <a href="@route(\FOF30\Utils\FEFHelper\BrowseView::parseFieldTags('index.php?option=com_cajobboard&view=Answers&task=edit&id=[ITEM:ID]', $item))">
+          <a href="@route(\FOF30\Utils\FEFHelper\BrowseView::parseFieldTags('index.php?option=com_cajobboard&view=Persons&task=edit&id=[ITEM:ID]', $item))">
             @jhtml('helper.browseWidgets.title', $item->name, $item->text)
           </a>
         </div>
@@ -181,7 +181,7 @@ $widthPct = array
       {{-- COLUMN #5: User's username --}}
       <td width="{{ $widthPct['#5'] }}%" class="row-username">
         <div>
-          <a href="@route(\FOF30\Utils\FEFHelper\BrowseView::parseFieldTags('index.php?option=com_cajobboard&view=Answers&task=edit&id=[ITEM:ID]', $item))">
+          <a href="@route(\FOF30\Utils\FEFHelper\BrowseView::parseFieldTags('index.php?option=com_cajobboard&view=Persons&task=edit&id=[ITEM:ID]', $item))">
             @jhtml('helper.browseWidgets.title', $item->username, $item->text)
           </a>
         </div>

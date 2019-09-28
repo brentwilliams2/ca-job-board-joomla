@@ -17,32 +17,28 @@ use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
 
 class Html extends BaseHtml
 {
-	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  \Joomla\Registry\Registry
-	 */
-  protected $componentParams;
-
-	/**
-	 * Overridden. Load view-specific language file.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
+  /**
+   * Overridden. Load view-specific language file.
+   *
+   * @param   Container $container
+   * @param   array     $config
+   */
+  public function __construct(Container $container, array $config = array())
+  {
     parent::__construct($container, $config);
   }
 
 
-	/**
-	 * Overridden. Executes before rendering the page for the Browse task.
-   * Modified to eager load Profile relation to Profiles model and push the
-   * model to the view templates.
-	 */
-	protected function onBeforeBrowse()
-	{
-    // Relations to eager-load
-    $this->setupBrowse(array('Profile'));
+  /**
+   * Overridden. Relations to eager load in the browse view models.
+   *
+   * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
+   */
+  protected function getBrowseViewEagerRelations()
+  {
+    return array(
+      'GeoCoordinates',
+      'Profiles'
+    );
   }
+}

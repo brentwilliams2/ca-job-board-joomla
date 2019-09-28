@@ -49,10 +49,13 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_credit_reports` (
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
 
   /* SCHEMA: Thing(potentialAction) -> Action */
-  action_status TINYINT UNSIGNED COMMENT 'Status of the action, ENUM defined in \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum.',
+  action_status CHAR(24) COMMENT 'Status of the action, ENUM defined in \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum.',
   end_time DATETIME DEFAULT NULL COMMENT 'The date the completed credit report was received.',
   result BIGINT(20) UNSIGNED COMMENT 'The digital document returned from the credit reporting service as a result', /* FK to #__cajobboard_digital_documents */
   start_time DATETIME DEFAULT NULL COMMENT 'The date the credit report was requested.',
+
+  /* SCHEMA: Thing(potentialAction) -> TradeAction */
+  price INT COMMENT 'The actual cost of the credit report from the vendor.',
 
   /* SCHEMA: Thing(potentialAction) -> BuyAction */
   vendor BIGINT(20) UNSIGNED COMMENT 'The organization that will provide credit report services for this item.',  /* FK to #__cajobboard_organizations */

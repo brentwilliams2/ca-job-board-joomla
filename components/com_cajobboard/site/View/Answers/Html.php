@@ -3,9 +3,9 @@
  * Answers Site HTML View
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -15,18 +15,11 @@ namespace Calligraphic\Cajobboard\Site\View\Answers;
 // no direct access
 defined('_JEXEC') or die;
 
-use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
+use \FOF30\Container\Container;
 
 class Html extends BaseHtml
 {
-	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  \Joomla\Registry\Registry
-	 */
-  protected $componentParams;
-
 	/**
 	 * Overridden. Load view-specific language file.
 	 *
@@ -40,13 +33,15 @@ class Html extends BaseHtml
 
 
 	/**
-	 * Overridden. Executes before rendering the page for the Browse task.
-   * Modified to eager load Author relation to Persons model and push the
-   * model to the view templates.
+	 * Overridden. Relations to eager load in the browse view models.
+	 *
+	 * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
 	 */
-	protected function onBeforeBrowse()
+	protected function getBrowseViewEagerRelations()
 	{
-    // Relations to eager-load
-    $this->setupBrowse(array('Author', 'Publisher'));
-  }
+    return array(
+			'Author',
+			'IsPartOf'
+		);
+	}
 }

@@ -1,10 +1,4 @@
 <?php
-
-/*
-FK to DigitalSignatures
-*/
-
-<?php
 /**
  * Admin Job Offers Model
  *
@@ -59,14 +53,14 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the offer.
- * @property string         $description      A description of the offer.
- * @property string         $description__intro   Short description of the item.
+ * @property string         $name                             A title to use for the offer.
+ * @property string         $description                      A description of the offer.
+ * @property string         $description__intro               Short description of the item.
  *
- * SCHEMA: Thing(potentialAction) -> Action
- * @property int            $action_status    Status of the action, ENUM defined in \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum
- * @property datetime       $end_time         The date the completed offer was received.
- * @property datetime       $start_time       The date the offer was requested.
+ * @property \DateTime      $valid_through                    The date this job offer is valid until.
+ * @property int            $price__base_salary__value        The base salary of the job.
+ * @property string         $price__base_salary__currency     Currency the job is paid in, use ISO 4217 currency format e.g. USD.
+ * @property string         $price__base_salary__duration     Pay period for the job, use ISO 8601 duration format, e.g. P2W for bi-weekly.
  */
 class Offers extends BaseDataModel
 {
@@ -112,15 +106,18 @@ class Offers extends BaseDataModel
     // table field for belongsTo relation is in this model's table
 
     // many-to-one FK to  #__cajobboard_persons
-    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+    $this->belongsTo('AboutPerson', 'Persons@com_cajobboard', 'about__person', 'id');
 
-    // many-to-one FK to #__cajobboard_persons
-    $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
+    // many-to-one FK to #__cajobboard_job_postings
+    $this->belongsTo('ItemOffered', 'JobPostings@com_cajobboard', 'item_offered', 'job_posting_id');
+
+    // many-to-one FK to #__cajobboard_organizations
+    $this->belongsTo('OfferedBy', 'Organizations@com_cajobboard', 'offered_by', 'organization_id');
 
     // many-to-one FK to #__cajobboard_digital_documents
-    $this->belongsTo('Result', 'DigitalDocuments@com_cajobboard', 'result', 'digital_document_id');
+    $this->belongsTo('IncludesObjectDigitalDocument', 'DigitalDocuments@com_cajobboard', 'includes_object__digital_document', 'digital_document_id');
 
-    // many-to-one FK to #__cajobboard_vendors
-    $this->belongsTo('Employer', 'Organizations@com_cajobboard', 'vendor', 'organization_id');
+    // many-to-one FK to #__cajobboard_email_messages
+    $this->belongsTo('IncludesObjectEmailMessage', 'EmailMessages@com_cajobboard', 'includes_object__email_message', 'email_message_id');
   }
 }

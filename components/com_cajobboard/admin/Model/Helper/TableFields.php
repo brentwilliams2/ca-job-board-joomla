@@ -24,6 +24,7 @@ use \Calligraphic\Cajobboard\Admin\Model\Messages;
 use \Calligraphic\Cajobboard\Admin\Model\OrganizationRoles;
 use \Calligraphic\Cajobboard\Admin\Model\OrganizationTypes;
 use \Calligraphic\Cajobboard\Admin\Model\Persons;
+use \Calligraphic\Cajobboard\Admin\Model\Profiles;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
 
@@ -58,6 +59,7 @@ class TableFields
     'IssueReports',
     'JobPostings',
     'Messages',
+    'Offers',
     'Places',
     'Questions',
     'References',
@@ -98,7 +100,8 @@ class TableFields
       $model instanceof IssueReportCategories ||
       $model instanceof OrganizationRoles ||
       $model instanceof OrganizationTypes ||
-      $model instanceof Persons
+      $model instanceof Persons ||
+      $model instanceof Profiles
     )
     {
       return array_merge(
@@ -133,7 +136,7 @@ class TableFields
       );
     }
 
-    throw new \Exception('Could not match the table type in admin\Helper\TableFields');
+    throw new \Exception('Could not match the table type in admin\Helper\TableFields, type: ' . $modelMetadata);
   }
 
   /**
@@ -426,6 +429,8 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'start_time'                  => (object) ['Field' => 'start_time',             'Type' => 'datetime',               'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'price'                       => (object) ['Field' => 'price',                  'Type' => 'int',                    'Null' => 'YES',    'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'vendor'                      => (object) ['Field' => 'vendor',                 'Type' => 'bigint(20) unsigned',    'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
@@ -560,6 +565,8 @@ class TableFields
         'result'                      => (object) ['Field' => 'result',                 'Type' => 'bigint(20) unsigned',    'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'start_time'                  => (object) ['Field' => 'start_time',             'Type' => 'datetime',               'Null' => 'YES',    'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'price'                       => (object) ['Field' => 'price',                  'Type' => 'int',                    'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'vendor'                      => (object) ['Field' => 'vendor',                 'Type' => 'bigint(20) unsigned',    'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -884,8 +891,6 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'text'                        => (object) ['Field' => 'text',                        'Null' => 'YES',   'Type' => 'text',                'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'disambiguating_description'  => (object) ['Field' => 'disambiguating_description',  'Null' => 'YES',   'Type' => 'text',                'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'education_requirements'      => (object) ['Field' => 'education_requirements',      'Null' => 'YES',   'Type' => 'text',                'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'experience_requirements'     => (object) ['Field' => 'experience_requirements',     'Null' => 'YES',   'Type' => 'text',                'Default' => NULL],
@@ -960,7 +965,7 @@ class TableFields
   /**
 	 * Occupational Categories
 	 */
-  private function Occupational_categoriesTableFieldMetadata()
+  private function occupational_categoriesTableFieldMetadata()
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -994,7 +999,23 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'text'              => (object) ['Field' => 'text',           'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
+        'about__person'                     => (object) ['Field' => 'about__person',                      'Type' => 'bigint(20) unsigned',  'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'valid_through'                     => (object) ['Field' => 'valid_through',                      'Type' => 'datetime',             'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'item_offered'                      => (object) ['Field' => 'item_offered',                       'Type' => 'bigint(20) unsigned',  'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'offered_by'                        => (object) ['Field' => 'offered_by',                         'Type' => 'bigint(20) unsigned',  'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'includes_object__digital_document' => (object) ['Field' => 'includes_object__digital_document',  'Type' => 'bigint(20) unsigned',  'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'includes_object__email_message'    => (object) ['Field' => 'includes_object__email_message',     'Type' => 'bigint(20) unsigned', 'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'price__base_salary__value'         => (object) ['Field' => 'price__base_salary__value',          'Type' => 'float',               'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'price__base_salary__currency'      => (object) ['Field' => 'price__base_salary__currency',       'Type' => 'char(6)',             'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'price__base_salary__duration'      => (object) ['Field' => 'price__base_salary__duration',       'Type' => 'char(32)',             'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }
@@ -1169,6 +1190,25 @@ class TableFields
 
 
   /**
+	 * Profiles
+	 */
+  private function profilesTableFieldMetadata()
+  {
+    return array(
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'user_id'                     => (object) ['Field' => 'user_id',                      'Type' => 'int(11)',              'Null' => 'NO',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'profile_key'                 => (object) ['Field' => 'profile_key',                  'Type' => 'varchar(100)',         'Null' => 'NO',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'profile_value'               => (object) ['Field' => 'profile_value',                'Type' => 'text',                 'Null' => 'NO',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'ordering'                    => (object) ['Field' => 'ordering',                     'Type' => 'int(11)',              'Null' => 'NO',  'Default' => '0'],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+    );
+  }
+
+
+  /**
 	 * Q A Pages
 	 */
   private function qa_pagesTableFieldMetadata()
@@ -1291,7 +1331,15 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'text'              => (object) ['Field' => 'text',           'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
+        'main_entity_of_page'      => (object) ['Field' => 'main_entity_of_page',     'Type' => 'bigint(20) unsigned',      'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'content_url'              => (object) ['Field' => 'content_url',             'Type' => 'varchar(255)',             'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'content_size'             => (object) ['Field' => 'content_size',            'Type' => 'bigint(20) unsigned',      'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'encoding_format'          => (object) ['Field' => 'encoding_format',         'Type' => 'char(32)',                 'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'resume'                   => (object) ['Field' => 'resume',                  'Type' => 'json',                     'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }

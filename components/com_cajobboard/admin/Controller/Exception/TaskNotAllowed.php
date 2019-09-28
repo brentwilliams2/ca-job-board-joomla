@@ -19,7 +19,7 @@ use \Joomla\CMS\Language\Text;
 defined('_JEXEC') or die;
 
 /**
- * Exception thrown when attempting to save a NOT NULL field without a default value
+ * Exception thrown when requesting a task that is not allowed for a controller
  */
 class TaskNotAllowed extends \RuntimeException
 {

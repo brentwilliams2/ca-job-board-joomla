@@ -21,24 +21,9 @@ if(!defined('LENGTH_NOT_ENFORCED')) define('LENGTH_NOT_ENFORCED', 0);
 if(!defined('LENGTH_TRUNCATE_ON_EXCEEDED')) define('LENGTH_TRUNCATE_ON_EXCEEDED', 1);
 if(!defined('LENGTH_REJECT_ON_EXCEEDED')) define('LENGTH_REJECT_ON_EXCEEDED', 2);
 
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Toolbar\Toolbar;
+use \Calligraphic\Cajobboard\Admin\Dispatcher\Services;
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Dispatcher\ContainerServices;
-use \Calligraphic\Cajobboard\Admin\Dispatcher\Exception\UnknownControllerFailure;
-
-// Classes injected into Container
-use \Calligraphic\Cajobboard\Admin\Dispatcher\ExceptionHandler;
-use \Calligraphic\Cajobboard\Admin\Helper\AssetFiles;
-use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
-use \Calligraphic\Cajobboard\Admin\Helper\EmailOutgoing;
-use \Calligraphic\Cajobboard\Admin\Helper\Format;
-use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
-use \Calligraphic\Cajobboard\Admin\Helper\SefLinks;
-use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
-use \Calligraphic\Library\Platform\Inflector;
-use \Identicon\Identicon;
+use \Joomla\CMS\Toolbar\Toolbar;
 
 // Load extended array functions, based on Laravel 4's "helpers.php"
 require_once(JPATH_LIBRARIES . DS . 'fof30' . DS . 'Utils' . DS . 'helpers.php');
@@ -68,8 +53,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	{
     parent::__construct($container, $config);
 
-    // Add services to the FOF container
-    $this->addContainerServices();
+    // Load component services into the container
+    $services = new Services($container);
+    $services->addContainerServices();
 
     // Add irregular plural form words for component to inflector
     // MUST be called affer container services are added
@@ -183,62 +169,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
     {
       $this->container->inflector->addWord($singular, $plural);
     }
-  }
-
-
-  /*
-   * Services to add to the component's container. The container object ($c)
-   * is available  inside the closure.
-   *
-   * @return  void
-   */
-  protected function addContainerServices()
-  {
-    // Add any admin-only services here
-    if ( $this->container->platform->isBackend() )
-    {
-      $this->container->SefLinks = function ($container) {
-        return new SefLinks($container);
-      };
-    }
-
-    // Common services for both back-end and front-end of the site
-    $this->container->AssetFiles = function ($container) {
-      return new AssetFiles($container);
-    };
-
-    $this->container->EmailIncoming = function ($container) {
-      return new EmailIncoming($container);
-    };
-
-    $this->container->EmailOutgoing = function ($container) {
-      return new EmailOutgoing($container);
-    };
-
-    $this->container->ExceptionHandler = function ($container) {
-      return new ExceptionHandler($container);
-    };
-
-    $this->container->Format = function ($container) {
-      return new Format($container);
-    };
-
-    $this->container->Identicon = function ($container) {
-      return new Identicon();
-    };
-
-    // overriding inflector already loaded, not an option to set the inflector in fof.xml
-    $this->container->inflector = function ($container) {
-      return new Inflector();
-    };
-
-    $this->container->MessageCounts = function ($container) {
-      return new MessageCounts($container);
-    };
-
-    $this->container->TableFields = function ($container) {
-      return new TableFields($container);
-    };
   }
 
 

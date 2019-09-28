@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_candidates` (
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
 
-/* SCHEMA: CreativeWork */
+  /* SCHEMA: CreativeWork */
   about__application_id
   about__application_version
   

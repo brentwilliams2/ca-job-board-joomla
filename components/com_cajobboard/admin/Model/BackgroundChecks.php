@@ -61,6 +61,9 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int            $action_status    Status of the action, ENUM defined in \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum
  * @property datetime       $end_time         The date the completed background check was received.
  * @property datetime       $start_time       The date the background check was requested.
+ *
+ * SCHEMA: Thing(potentialAction) -> TradeAction
+ * @property int            $price            The actual cost of the background check from the vendor.
  */
 class BackgroundChecks extends BaseDataModel
 {

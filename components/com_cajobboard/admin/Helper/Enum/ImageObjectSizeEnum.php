@@ -23,11 +23,11 @@ use \Calligraphic\Cajobboard\Admin\Helper\Enum\BasicEnum;
  */
 abstract class ImageObjectSizeEnum extends BasicEnum
 {
-  const ORIGINAL = 1;
-  const THUMB = 2;
-  const SMALL = 3;
-  const MEDIUM = 4;
-  const LARGE = 5;
+  const ORIGINAL = 'ORIGINAL';
+  const THUMB = 'THUMB';
+  const SMALL = 'SMALL';
+  const MEDIUM = 'MEDIUM';
+  const LARGE = 'LARGE';
 
 
   /**

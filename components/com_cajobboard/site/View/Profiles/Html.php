@@ -21,13 +21,6 @@ use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
 class Html extends BaseHtml
 {
 	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  \Joomla\Registry\Registry
-	 */
-  protected $componentParams;
-
-	/**
 	 * Overridden. Load view-specific language file.
 	 *
 	 * @param   Container $container
@@ -36,17 +29,5 @@ class Html extends BaseHtml
 	public function __construct(Container $container, array $config = array())
 	{
     parent::__construct($container, $config);
-  }
-
-
-	/**
-	 * Overridden. Executes before rendering the page for the Browse task.
-   * Modified to eager load Author relation to Persons model and push the
-   * model to the view templates.
-	 */
-	protected function onBeforeBrowse()
-	{
-    // Relations to eager-load
-    $this->setupBrowse();
   }
 }

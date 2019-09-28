@@ -100,8 +100,8 @@ class Applications extends BaseDataModel
     $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'application_id', 'question_id', '#__cajobboard_applications_questions');
 
     // one-to-many FK to #__cajobboard_answers, key in foreign table
-    // @TODO: Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages'. Note we've stuffed an 'is_required' field into the join table.
-    $this->hasMany('Answers', 'Answers@com_cajobboard', 'q_a_page_id', 'is_part_of');
+    // Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'Applicationss' in View/Html file. Note we've stuffed an 'is_required' field into the join table.
+    $this->hasMany('Answers', 'Answers@com_cajobboard', 'application_id', 'about__foreign_model_name');
 
     // Many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('MainEntityOfPage', 'Persons@com_cajobboard', 'main_entity_of_page', 'id');

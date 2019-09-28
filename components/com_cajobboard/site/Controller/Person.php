@@ -13,13 +13,15 @@
 namespace Calligraphic\Cajobboard\Site\Controller;
 
 use \FOF30\Container\Container;
-use \FOF30\Controller\DataController;
-use \FOF30\View\Exception\AccessForbidden;
+use Calligraphic\Cajobboard\Site\Controller\BaseController;
+
+use \Calligraphic\Cajobboard\Admin\Controller\Exception\NoPermissions;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Person extends Controller
+class Person extends BaseController
 {
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -31,8 +33,15 @@ class Person extends Controller
 	{
     $this->modelName = 'Persons';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save', 'remove'];
+    $this->predefinedTaskList = array(
+			'add',
+			'browse',
+			'edit',
+			'read',
+			'remove',
+			'save',
+		);
 
-    parent::__construct($container, $config);
-  }
+		parent::__construct($container, $config);
+	}
 }

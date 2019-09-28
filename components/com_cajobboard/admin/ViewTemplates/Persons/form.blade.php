@@ -10,9 +10,13 @@
  */
 
   use \FOF30\Utils\FEFHelper\BrowseView;
+  use \Joomla\CMS\HTML\HTMLHelper;
 
   // no direct access
   defined('_JEXEC') or die;
+
+  // Javascript libraries to include
+  HTMLHelper::_('behavior.tooltip');
 
   // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
   $this->container->AssetFiles->addComponentCss($this);
@@ -28,31 +32,132 @@
 {{-- SECTION: Default edit form tab in this section ---------------------------}}
 {{-----------------------------------------------------------------------------}}
 
-
-'name'
-'username'
-'email'
-'registerDate'
-'lastvisitDate'
-'activation'
-'block'
-'params'
-
 @section('basic-options')
-  <fieldset name="text" class="control-group">
-      <div class="control-label">
-        <label
-          for="text"
-          class="hasTip"
-          title="@lang('COM_CAJOBBOARD_ANSWERS_TEXT_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_TEXT_FIELD_TOOLTIP_TEXT')"
-        >
-          @lang('COM_CAJOBBOARD_ANSWERS_TEXT_FIELD_LABEL')
-        </label>
-      </div>
-      <div class="controls">
-        @jhtml('FEFHelper.edit.editor', 'text', $item->text)
-      </div>
+  {{-- Full name --}}
+  <fieldset
+    name="name"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_NAME_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_NAME_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="name">
+        @lang('COM_CAJOBBOARD_PERSONS_NAME_FIELD_LABEL')
+      </label>
+    </div>
+    <div>
+      <input type="text" name="name" value="{{{ $item->name }}}">
+    </div>
   </fieldset>
+
+
+  {{-- User Name --}}
+  <fieldset
+    name="username"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_USERNAME_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_USERNAME_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="username">
+        @lang('COM_CAJOBBOARD_PERSONS_USERNAME_FIELD_LABEL')
+      </label>
+    </div>
+    <div>
+      <input type="text" name="username" value="{{{ $item->username }}}">
+    </div>
+  </fieldset>
+
+
+  {{-- Email --}}
+  <fieldset
+    name="email"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_EMAIL_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_EMAIL_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="email">
+        @lang('COM_CAJOBBOARD_PERSONS_EMAIL_FIELD_LABEL')
+      </label>
+    </div>
+    <div>
+      @if ($item->sendEmail)
+        <a href="index.php?option=com_cajobboard&view=EmailMessages&task=addByPersonId&recipient_id={{$item->id}}">
+          <input type="email" name="username" value="{{{ $item->email }}}">
+        </a>
+      @else
+        <input type="email" name="username" value="{{{ $item->email }}}">
+      @endif
+    </div>
+  </fieldset>
+
+
+  {{-- Is User Activated --}}
+  <fieldset
+    name="activation"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_ACTIVATION_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_ACTIVATION_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="activation">
+        @lang('COM_CAJOBBOARD_PERSONS_ACTIVATION_FIELD_LABEL')
+      </label>
+    </div>
+    <div class="btn-group">
+      <input type="checkbox" name="activation" value="{{ $item->activation }}">
+    </div>
+  </fieldset>
+
+
+  {{-- Is User Blocked --}}
+  <fieldset
+    name="block"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_BLOCK_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_BLOCK_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="block">
+        @lang('COM_CAJOBBOARD_PERSONS_BLOCK_FIELD_LABEL')
+      </label>
+    </div>
+    <div class="btn-group">
+      <input type="checkbox" name="block" value="{{ $item->block }}">
+    </div>
+  </fieldset>
+
+
+  {{-- Date Registered --}}
+  <fieldset
+    name="registerDate"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_REGISTER_DATE_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_REGISTER_DATE_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="registerDate">
+        @lang('COM_CAJOBBOARD_PERSONS_REGISTER_DATE_FIELD_LABEL')
+      </label>
+    </div>
+    <div>
+      <input type="date" name="registerDate" value="{{ $this->container->Format->date($item->registerDate) }}">
+    </div>
+  </fieldset>
+
+
+  {{-- Last Visit Date --}}
+  <fieldset
+    name="lastvisitDate"
+    class="control-group hasTip"
+    title="@lang('COM_CAJOBBOARD_PERSONS_LAST_VISIT_DATE_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_PERSONS_LAST_VISIT_DATE_FIELD_TOOLTIP_TEXT')"
+  >
+    <div class="control-label">
+      <label for="lastvisitDate">
+        @lang('COM_CAJOBBOARD_PERSONS_LAST_VISIT_DATE_FIELD_LABEL')
+      </label>
+    </div>
+    <div>
+      <input type="date" name="lastvisitDate" value="{{ $this->container->Format->date($item->lastvisitDate) }}">
+    </div>
+  </fieldset>
+
+  <h1>@TODO: Add Profile Fields</h1>
 @stop
 
 
@@ -60,53 +165,7 @@
 {{-- SECTION: Advanced options form tab in this section -----------------------}}
 {{-----------------------------------------------------------------------------}}
 
+
 @section('advanced-options')
-  {{-- Answer Description textbox --}}
-  <fieldset
-    name="description"
-    class="control-group hasTip"
-    title="@lang('COM_CAJOBBOARD_ANSWERS_DESCRIPTION_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_DESCRIPTION_FIELD_TOOLTIP_TEXT')"
-  >
-    <div class="control-label">
-      <label for="description">
-        @lang('COM_CAJOBBOARD_ANSWERS_DESCRIPTION_FIELD_LABEL')
-      </label>
-    </div>
-    <div class="controls">
-      <textarea name="description" id="description" rows="5">{{ $item->description }}</textarea>
-    </div>
-  </fieldset>
-
-  {{-- Answer Upvote count input box --}}
-  <fieldset
-    name="upvote_count"
-    class="control-group hasTip"
-    title="@lang('COM_CAJOBBOARD_ANSWERS_UPVOTE_COUNT_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_UPVOTE_COUNT_FIELD_TOOLTIP_TEXT')"
-  >
-    <div class="control-label">
-      <label for="upvote_count">
-        @lang('COM_CAJOBBOARD_ANSWERS_UPVOTES_BUTTON_LABEL')
-      </label>
-    </div>
-    <div class="controls">
-      <input type="number" step="1" name="upvote_count" id="upvote_count"" value="{{{ $item->upvote_count }}}"/>
-    </div>
-  </fieldset>
-
-  {{-- Answer Downvote count input box --}}
-  <fieldset
-    name="downvote_count"
-    class="control-group hasTip"
-    title="@lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTE_COUNT_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTE_COUNT_FIELD_TOOLTIP_TEXT')"
-  >
-    <div class="control-label">
-      <label for="downvote_count">
-        @lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTES_BUTTON_LABEL')
-      </label>
-    </div>
-    <div class="controls">
-      <input type="number" step="1" name="downvote_count" id="downvote_count" value="{{{ $item->downvote_count }}}"/>
-    </div>
-  </fieldset>
 
 @stop
