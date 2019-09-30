@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Employer Controller
+ * Administrator Resumes Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -13,9 +13,8 @@
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
+use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
 
 // Component classes
 
@@ -23,7 +22,7 @@ use FOF30\View\Exception\AccessForbidden;
 // no direct access
 defined('_JEXEC') or die;
 
-class Resume extends DataController
+class Resume extends BaseController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -35,7 +34,11 @@ class Resume extends DataController
 	{
     $this->modelName = 'Resumes';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'save'];
+		// $this->resetPredefinedTaskList();
+
+		$this->addPredefinedTaskList(array(
+
+		));
 
     parent::__construct($container, $config);
   }

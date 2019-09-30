@@ -30,6 +30,8 @@ defined( '_JEXEC' ) or die;
  */
 class Check extends Observer
 {
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
+
   /**
    * Models that should require search-engine friendly page titles, e.g. sixty characters or less
    */

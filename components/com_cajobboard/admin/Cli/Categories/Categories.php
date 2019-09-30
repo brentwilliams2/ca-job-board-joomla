@@ -15,7 +15,10 @@ include realpath(__DIR__ . '/../CliApplication.php');
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\Exception\CliApplicationException;
 use \Calligraphic\Library\Platform\Language;
 use \FOF30\Container\Container;
+use \Joomla\CMS\Access\Rules;
+use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Table\Table;
 
 /**
  * Category CLI Manager
@@ -117,7 +120,7 @@ class Categories extends CliApplication
    */
   public function addCategory($fieldArray)
   {
-    $model = JTable::getInstance('category');
+    $model = Table::getInstance('category');
 
     // Specify where to insert the new node.
     $model->setLocation($fieldArray['parent_id'], 'last-child');
@@ -132,7 +135,7 @@ class Categories extends CliApplication
       'core.edit.own' => array(1 => true)
     );
 
-    $rules = new JAccessRules($rules);
+    $rules = new Rules($rules);
 
     $model->setRules($rules);
 
@@ -163,7 +166,7 @@ class Categories extends CliApplication
    */
   public function deleteCategory($category)
   {
-      $model = JTable::getInstance('category');
+      $model = Table::getInstance('category');
 
       $normalCategory = $this->container->inflector->hyphenate($category);
 
@@ -195,7 +198,7 @@ class Categories extends CliApplication
     $lang->load('qapages', JPATH_ADMINISTRATOR . '/components/com_cajobboard', 'en-GB', true);
 
     // Get the parent 'QAPages' category
-    $db = \JFactory::getDbo();
+    $db = Factory::getDbo();
 
     $query = $db->getQuery(true);
 
@@ -260,7 +263,7 @@ class Categories extends CliApplication
 
 // Execute this CLI application
 $app = CliApplication::getInstance('Categories');
-\JFactory::$application = $app;
+Factory::$application = $app;
 $app->execute();
 
 

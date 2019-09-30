@@ -33,10 +33,11 @@ class EmailMessages extends BaseController
 	{
     $this->modelName = 'EmailMessages';
 
-    // parent constructor will add default admin tasks, add custom tasks here e.g. 'download'
-    $this->addPredefinedTaskList( array(
+		// $this->resetPredefinedTaskList();
+
+    $this->addPredefinedTaskList(array(
       'addByPersonId'
-    ));
+		));
 
     parent::__construct($container, $config);
   }

@@ -160,7 +160,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	public function initInflectorVocab()
 	{
     $irregularWords = array(
-      'FCRA' => 'FCRA',
+      'FairCreditReportingAct' => 'FairCreditReportingAct',
       'PersonallyIdentifiableInformation' => 'PersonallyIdentifiableInformation',
       'Person' => 'Persons'
     );

@@ -18,6 +18,8 @@ namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Joomla\CMS\Factory;
+
 trait SeedJoinTable
 {
   /**
@@ -55,7 +57,7 @@ trait SeedJoinTable
       return;
     }
 
-    $db = \JFactory::getDbo();
+    $db = Factory::getDbo();
 
     $query = $db->getQuery(true);
 
@@ -85,7 +87,7 @@ trait SeedJoinTable
    */
   public function truncateJoinTable ($pivotTableName)
   {
-    $db = \JFactory::getDbo();
+    $db = Factory::getDbo();
 
     $query = $db->getQuery(true);
 

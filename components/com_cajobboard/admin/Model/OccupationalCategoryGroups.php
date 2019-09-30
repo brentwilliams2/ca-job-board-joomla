@@ -56,8 +56,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
   */
 class OccupationalCategoryGroups extends BaseDataModel
 {
-  use Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model

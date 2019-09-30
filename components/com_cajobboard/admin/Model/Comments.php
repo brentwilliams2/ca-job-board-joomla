@@ -79,8 +79,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
 
 class Comments extends BaseTreeModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model

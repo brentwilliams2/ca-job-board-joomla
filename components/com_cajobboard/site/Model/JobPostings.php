@@ -22,6 +22,7 @@ use FOF30\Container\Container;
  *
  * @property int      $job_posting_id             Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
+ *
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
  * @property int      $access                     The Joomla! view access level.
@@ -32,6 +33,7 @@ use FOF30\Container\Container;
  * @property int      $modified_by                User ID who modified the record, auto-filled by save(), touch().
  * @property string   $locked_on                  Timestamp of record locking, auto-filled by lock(), unlock().
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
+ *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
@@ -46,6 +48,7 @@ use FOF30\Container\Container;
  * @property int      $cat_id                     Category ID for this item.
  * @property int      $hits                       Number of hits the item has received on the site.
  * @property int      $featured                   Whether this item is featured or not.
+ *
  * SCHEMA: JobPosting
  * @property string   $title                      The title of the job posting.
  * @property string   $disambiguating_description Short description of the job, used in cajobboard on job posting list pages, etc.
@@ -59,10 +62,10 @@ use FOF30\Container\Container;
  * @property string   $skills                     Skills required to fulfill this role
  * @property string   $special_commitments        Any special commitments associated with this job posting. Valid entries include VeteranCommit, MilitarySpouseCommit, etc.
  * @property string   $work_hours                 The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).
- * @property Places   $jobLocation                A (typically single) geographic location associated with the job position.
- * @property Organizations  $hiringOrganization   Organization offering the job position. FK to #__cajobboard_organizations
+ *
  * SCHEMA: JobPosting (relevantOccupation) -> Occupation (name)
  * @property string   $relevant_occupation_name   The job title.
+ *
  * SCHEMA: JobPosting (baseSalary) -> MonetaryAmount
  * @property int      $base_salary__max_value     The maximum salary of the job or of an employee in an EmployeeRole.
  * @property int      $base_salary__value         The base salary of the job or of an employee in an EmployeeRole.
@@ -70,13 +73,10 @@ use FOF30\Container\Container;
  * @property string   $base_salary__currency      Use ISO 4217 currency format e.g. USD.
  * SCHEMA: JobPosting (baseSalary) -> MonetaryAmount (additionalType) -> Duration
  * @property string   $base_salary__duration      Period of time salary applies to, e.g. per hour, annual salary, etc. Use ISO 8601 duration format, e.g. P2W for bi-weekly.
+ *
  * SCHEMA: Thing
  * @property string   $identifier                  Internal identifier used by the employer for this job posting.
  * @property string   $sameAs                      URL of the job posting on the employer\s website.
- * SCHEMA: https://calligraphic.design/schema/EmploymentType
- * @property JobEmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
- * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
- * @property OccupationalCategories  $occupationalCategory  The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
  */
 class JobPostings extends \Calligraphic\Cajobboard\Admin\Model\JobPostings
 {

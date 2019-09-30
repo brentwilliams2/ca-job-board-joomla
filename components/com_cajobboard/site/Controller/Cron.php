@@ -1,8 +1,12 @@
 <?php
 /**
- * @package   AkeebaSubs
- * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
- * @license   GNU General Public License version 3, or later
+ * Controller for Cron tasks
+ * 
+ * @package   Calligraphic Job Board
+ * @version   September 12, 2019
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 namespace Calligraphic\Cajobboard\Site\Controller;
 
@@ -13,13 +17,15 @@ defined('_JEXEC') or die;
 // @TODO: Cron tasks to add:  Need to run Smart Search CLI Indexer from Cron:
 //          php -d memory_limit=256M finder_indexer.php
 
-use Akeeba\Subscriptions\Admin\Controller\Mixin;
-use FOF30\Container\Container;
-use FOF30\Controller\Controller;
+use \Akeeba\Subscriptions\Admin\Controller\Mixin;
+use \FOF30\Container\Container;
+use \FOF30\Controller\Controller;
+use \Joomla\CMS\Log\Log;
+use \Joomla\CMS\Filter\InputFilter;
 
 class Cron extends Controller
 {
-  use Mixin\PredefinedTaskList;
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;
 
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -29,19 +35,26 @@ class Cron extends Controller
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-		$config['modelName'] = 'Subscribe';
-		$config['csrfProtection'] = 0;
+		$this->modelName = 'Subscribe';
+
+		$this->csrfProtection = 0;
+
+		// $this->resetPredefinedTaskList();
+
+    $this->addPredefinedTaskList(array(
+			'cron'
+		));
+
 		parent::__construct($container, $config);
-		$this->predefinedTaskList = ['cron'];
-		$this->cacheableTasks = [];
   }
+
 
 	public function cron()
 	{
 		// Register a new generic Akeeba Subs CRON logger
-    \JLog::addLogger(['text_file' => 'akeebasubs_cron.php'], \JLog::ALL, ['akeebasubs.cron']);
+    Log::addLogger(['text_file' => 'akeebasubs_cron.php'], Log::ALL, ['akeebasubs.cron']);
 
-    \JLog::add("Starting CRON job", \JLog::DEBUG, "akeebasubs.cron");
+    Log::add("Starting CRON job", Log::DEBUG, "akeebasubs.cron");
 
 		// Makes sure SiteGround's SuperCache doesn't cache the CRON view
     $app = \JFactory::getApplication();
@@ -52,7 +65,7 @@ class Cron extends Controller
 
 		if (empty($configuredSecret))
 		{
-			\JLog::add("No secret key provided in URL", \JLog::ERROR, "akeebasubs.cron");
+			Log::add("No secret key provided in URL", Log::ERROR, "akeebasubs.cron");
 			header('HTTP/1.1 503 Service unavailable due to configuration');
 			$this->container->platform->closeApplication();
     }
@@ -61,7 +74,7 @@ class Cron extends Controller
 
 		if ($secret != $configuredSecret)
 		{
-      \JLog::add("Wrong secret key provided in URL", \JLog::ERROR, "akeebasubs.cron");
+      Log::add("Wrong secret key provided in URL", Log::ERROR, "akeebasubs.cron");
 
       header('HTTP/1.1 403 Forbidden');
 
@@ -72,11 +85,11 @@ class Cron extends Controller
 
     $command        = trim(strtolower($command));
 
-    $commandEscaped = \JFilterInput::getInstance()->clean($command, 'cmd');
+    $commandEscaped = InputFilter::getInstance()->clean($command, 'cmd');
 
 		if (empty($command))
 		{
-      \JLog::add("No command provided in URL", \JLog::ERROR, "akeebasubs.cron");
+      Log::add("No command provided in URL", Log::ERROR, "akeebasubs.cron");
 
       header('HTTP/1.1 501 Not implemented');
 
@@ -85,9 +98,9 @@ class Cron extends Controller
     }
 
 		// Register a new task-specific Akeeba Subs CRON logger
-    \JLog::addLogger(['text_file' => "akeebasubs_cron_$commandEscaped.php"], \JLog::ALL, ['akeebasubs.cron.' . $command]);
+    Log::addLogger(['text_file' => "akeebasubs_cron_$commandEscaped.php"], Log::ALL, ['akeebasubs.cron.' . $command]);
 
-    \JLog::add("Starting execution of command $commandEscaped", \JLog::DEBUG, "akeebasubs.cron");
+    Log::add("Starting execution of command $commandEscaped", Log::DEBUG, "akeebasubs.cron");
 
     $this->container->platform->importPlugin('system');
 
@@ -100,7 +113,7 @@ class Cron extends Controller
 			)
     ));
 
-    \JLog::add("Finished running command $commandEscaped", \JLog::DEBUG, "akeebasubs.cron");
+    Log::add("Finished running command $commandEscaped", Log::DEBUG, "akeebasubs.cron");
 
     echo "$command OK";
 

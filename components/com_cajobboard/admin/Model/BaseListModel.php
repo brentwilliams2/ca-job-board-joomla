@@ -29,9 +29,9 @@ use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 class BaseListModel extends DataModel
 {
   // Traits to include in the class
-  use Mixin\Assertions;
-  use Mixin\Constructor;
-  use Mixin\Validation;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;
 
  	/**
 	 * @param   Container $container The configuration variables to this model

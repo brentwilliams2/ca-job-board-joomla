@@ -42,8 +42,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_data_feed_templates` (
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
 
   /* SCHEMA: none (internal use only) */
-  subject TEXT COMMENT 'Text template with shortcodes for the subject field of the e-mail.',
-  body TEXT COMMENT 'HTML template with shortcodes for the body field of the e-mail.',
+  xml_template TEXT COMMENT 'XML template with shortcodes to generate from the data feed.',
 
   /* SQL DDL */
   PRIMARY KEY (data_feed_template_id)
@@ -53,26 +52,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_data_feed_templates` (
   DEFAULT COLLATE = utf8_unicode_ci;
 
 
-REPLACE INTO `#__cajobboard_data_feed_templates` (`data_feed_template_id`, `name`, `slug`, `description`, `subject`, `body`) VALUES
-	(1, 'analytics_report', 'analytics-report', 'Analytics reports template', 'Your [SITENAME] report for [TIMEPERIOD]', '<div style=\"background-color: #e0e0e0; padding: 10px 20px;\">\r\n<div style=\"background-color: #f9f9f9; border-radius: 10px; padding: 5px 10px;\">\r\n<p>Hello [FIRSTNAME],</p>\r\n<p>Attached is your <span style=\"line-height: 1.3em;\">[TIMEPERIOD] </span><span style=\"line-height: 1.3em;\">report</span></p>\r\n</div>\r\n<p style=\"font-size: x-small; color: #667;\">You are receiving this automatic email message because you have set up automatic report generation on <em>[SITENAME]</em>. <span style=\"line-height: 1.3em;\">Do not reply to this email, it is sent from an unmonitored email address.</span></p>\r\n</div>'),
-  (2, 'new_comment_posted_notification', 'new-comment-posted-notification', 'New comment posted notification template', 'subject', 'body'),
-  (3, 'new_question_posted_notification', 'new-question-posted-notification', 'New question posted notification template', 'subject', 'body'),
-  (4, 'new_answer_posted_notification', 'new-answer-posted-notification', 'New answer posted notification template', 'subject', 'body'),
-  (5, 'new_employer_review_received_notification', 'new-employer-review-received-notification', 'New employer review posted notification template', 'subject', 'body'),
-  (6, 'job_post_alert', 'job-post-alert', 'Job posting alert template', 'subject', 'body'),
-  (7, 'resume_alert', 'resume-alert', 'Resume alert template', 'subject', 'body'),
-  (8, 'new_message_received_notification', 'new-message-received-notification', 'New user message notification template', 'subject', 'body'),
-  (9, 'fair_credit_reporting_act_notice', 'fair-credit-reporting-act-notice', 'FCRA notice sent when credit check is done', 'subject', 'body'),
-  (10, 'new_application_received_notification', 'new-application-received-notification', 'New application received for a job posting template', 'subject', 'body'),
-  (11, 'gdpr_notice', 'gdpr-notice', 'GDPR user data removal notification template', 'subject', 'body'),
-  (12, 'complete_job_seeker_profile_request', 'complete-job-seeker-profile-request', 'Reminders to complete a job seeker profile', 'subject', 'body'),
-  (13, 'connectors_job_post_alert', 'connectors-job-post-alert', 'Connectors job posting alert template', 'subject', 'body'),
-  (14, 'recommendation_request', 'recommendation-request', 'Recommendation request template', 'subject', 'body'),
-  (15, 'recommendation_follow_up', 'recommendation-follow-up', 'Recommendation follow up template', 'subject', 'body'),
-  (16, 'reference_request', 'reference-request', 'Reference request template', 'subject', 'body'),
-  (17, 'reference_follow_up', 'reference-follow-up', 'Reference follow up template', 'subject', 'body'),
-  (18, 'ats_scheduling_reminder', 'ats-scheduling-reminder', 'ATS scheduling reminder template', 'subject', 'body'),
-  (19, 'ats_workflow_notice', 'ats-workflow-notice', 'ATS workflow notices template, e.g. when a scorecard is marked complete for a candidate, a background check completed, a reference received for a candidate', 'subject', 'body');
+REPLACE INTO `#__cajobboard_data_feed_templates` (`data_feed_template_id`, `name`, `slug`, `description`, `xml_template`) VALUES
+	(1, 'Indeed.com All Posts Daily', 'indeed-all-daily', 'Daily job feed for Indeed.com', '<?xml version="1.0" encoding="utf-8"?><source><publisher>[site-name]</publisher><publisherurl>[site-url]</publisherurl><lastBuildDate>[date_created]</lastBuildDate><job><title><![CDATA[title]]></title><date><![CDATA[CURRENT_TIMESTAMP]]></date><referencenumber><![CDATA[reference-id]]></referencenumber><url><![CDATA[url]]></url><company><![CDATA[company]]></company><city><![CDATA[city]]></city><state><![CDATA[state]]></state><country><![CDATA[country]]></country><postalcode><![CDATA[postal-code]]></postalcode><description><![CDATA[description]]></description><salary><![CDATA[salary]]></salary><education><![CDATA[education-level]]></education><jobtype><![CDATA[job-type]]></jobtype><category><![CDATA[keywords]]></category><experience><![CDATA[experience]]></experience></job></source>');
 
 
 /*
@@ -137,7 +118,7 @@ VALUES(
   /* type_id */
   null,
   /* type_title */
-  'DataFeedTemplates',
+  'Data Feed Templates',
   /* type_alias */
   'com_cajobboard.data_feed_templates',
   /* table NOTE: No spaces, Joomla! stupidly has this set as a VARCHAR(255) field, how do you add config in that space? */
@@ -181,11 +162,9 @@ VALUES(
       "core_version":"version"
     },
     "special":{
-      "body":"body",
       "description__intro":"description__intro",
-      "image":"image",
       "note":"note",
-      "subject":"subject"
+      "xml_template":"xml_template"
     }
   }',
   /* router */

@@ -5,9 +5,9 @@
  * This is a FOF30 DataModel that uses Joomla!'s default com_content table and schema
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -38,8 +38,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class DiversityPolicies extends BaseDataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -91,25 +89,5 @@ class DiversityPolicies extends BaseDataModel
 
     // one-to-one FK to  #__cajobboard_persons
     $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
-  }
-
-
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_DIVERSITY_POLICIES_ERR_TITLE');
-    $this->assertNotEmpty($this->introtext, 'COM_CAJOBBOARD_DIVERSITY_POLICIES_ERR_INTRO_TEXT');
-    $this->assertNotEmpty($this->fulltext, 'COM_CAJOBBOARD_DIVERSITY_POLICIES_ERR_FULL_TEXT');
-
-		parent::check();
-
-    return $this;
   }
 }

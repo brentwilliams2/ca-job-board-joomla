@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_application_letters` (
   name VARCHAR(255) COMMENT 'A name for this document.',
   description TEXT COMMENT 'Description of this document.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
-  image JSON COMMENT 'Image metadata for social share and page header images',
   about__organization_id BIGINT UNSIGNED COMMENT 'The organization model primary key that this application letter was created for.',
 
     /* SCHEMA: Thing(encoding) -> MediaObject */

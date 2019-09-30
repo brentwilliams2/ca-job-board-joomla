@@ -59,11 +59,21 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the data feed.
  * @property string         $description      A description of the data feed.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property string         $url              Relative URL of the data feed on this site, if the vendor pulls from this site.
+ *
+ * SCHEMA: https://calligraphic.design/schema/DataFeed
+ * @property string         $send_dates DATETIME DEFAULT NULL COMMENT 'The date/time at which this data feed should be pushed to the audience, as a  Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum value.',
+ *
+ * SCHEMA: DataFeed
+ * @property string         $data_feed_element  A JSON configuration describing Filter parameters to apply for the JobPostings included in the feed, e.g. {"state variable":"job_posting_id","method":"between","from":"1","to":"10"}.
+ *
+ * SCHEMA: DataFeed(dataFeedElement) -> DataFeedItem
+  * @property string         $date_created    The data and time this data feed was last pushed to the vendor.
+
  */
 class DataFeeds extends BaseDataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -98,6 +108,19 @@ class DataFeeds extends BaseDataModel
     parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
+
+    // table field for inverseSideOfHasOne relation is in this model's table
+
+    // one-to-one FK to #__cajobboard_data_feed_templates
+    $this->inverseSideOfHasOne('DataFeedTemplate', 'DataFeedTemplates@com_cajobboard', 'data_feed_template', 'data_feed_template_id');
+
+    // table field for belongsTo relation is in this model's table
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+    // many-to-one FK to  #__cajobboard_vendors
+    $this->belongsTo('AudienceVendor', 'Vendors@com_cajobboard', 'audience__vendor', 'vendor_id');
   }
 
   /*
@@ -108,4 +131,30 @@ class DataFeeds extends BaseDataModel
 
     @TODO: Use the same logic as EmailMessages to deliver XML updates
   */
+
+  // @TODO: Handle filtering on state variable when record loaded (e.g. 'data_feed_element' table property)
+
+
+  /**
+	 * Transform 'data_feed_element' field to a JRegistry object on bind
+	 *
+	 * @return  Registry
+	 */
+  protected function getDataFeedElementAttribute($value)
+  {
+    $dataFeedElement = $this->transformJsonToRegistry($value);
+
+    return $dataFeedElement;
+  }
+
+
+  /**
+	 * Transform 'data_feed_element' field's JRegistry object to a JSON string before save
+	 *
+	 * @return  string  JSON string
+	 */
+  protected function setDataFeedElementAttribute($value)
+  {
+    return $this->transformRegistryToJson($value);
+  }
 }

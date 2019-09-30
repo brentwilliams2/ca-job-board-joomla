@@ -12,21 +12,19 @@
 
 namespace Calligraphic\Cajobboard\Admin\Helper;
 
-use Akeeba\ReleaseSystem\Site\Helper\Filter as Filter;
-use Akeeba\Subscriptions\Admin\Model\Levels;
-use Akeeba\Subscriptions\Admin\Model\Subscriptions;
-use Akeeba\Subscriptions\Admin\Model\Users;
-use FOF30\Container\Container;
-use FOF30\Date\Date;
-use FOF30\Model\DataModel;
-use JFactory;
-use JLoader;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
-use Joomla\Registry\Registry as JRegistry;
-use JText;
-
 defined('_JEXEC') or die;
+
+use \Akeeba\ReleaseSystem\Site\Helper\Filter;
+use \Akeeba\Subscriptions\Admin\Model\Levels;
+use \Akeeba\Subscriptions\Admin\Model\Subscriptions;
+use \FOF30\Container\Container;
+use \FOF30\Date\Date;
+use \FOF30\Model\DataModel;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Router\Route;
+use \Joomla\CMS\Router\Route;
+use \Joomla\CMS\Uri\Uri;
 
 /**
  * A helper class for parsing short codes embedded in email template subject and body
@@ -330,8 +328,8 @@ class ShortCode
 		}
 		else
 		{
-			$baseURL    = \JURI::base();
-			$subpathURL = \JURI::base(true);
+			$baseURL    = Uri::base();
+			$subpathURL = Uri::base(true);
     }
 
     $baseURL    = str_replace('/administrator', '', $baseURL);
@@ -347,7 +345,7 @@ class ShortCode
 		}
 		else
 		{
-			$url = str_replace('&amp;', '&', \JRoute::_('index.php?option=com_akeebasubs&view=Subscriptions&layout=default'));
+			$url = str_replace('&amp;', '&', Route::_('index.php?option=com_akeebasubs&view=Subscriptions&layout=default'));
     }
 
     $url = ltrim($url, '/');
@@ -366,7 +364,7 @@ class ShortCode
 
 		if (!$isAdmin && !$isCli)
 		{
-			$url = str_replace('&amp;', '&', \JRoute::_($url));
+			$url = str_replace('&amp;', '&', Route::_($url));
     }
 
     $url = ltrim($url, '/');
@@ -442,14 +440,14 @@ class ShortCode
 			'[RENEWALURL]'             => $renewalURL,
 			'[RENEWALURL:]'            => $renewalURL, // Malformed tag without a coupon code...
 			'[MESSAGEURL]'             => $messageUrl,
-			'[ENABLED]'                => JText::_('COM_AKEEBASUBS_SUBSCRIPTION_COMMON_' . ($sub->enabled ? 'ENABLED' :
+			'[ENABLED]'                => Text::_('COM_AKEEBASUBS_SUBSCRIPTION_COMMON_' . ($sub->enabled ? 'ENABLED' :
 					'DISABLED')),
-			'[PAYSTATE]'               => JText::_('COM_AKEEBASUBS_SUBSCRIPTION_STATE_' . $sub->getFieldValue('state', 'N')),
-			'[PUBLISH_UP]'             => Format::date($jFrom,JText::_('DATE_FORMAT_LC2') . ' T', $sub->user_id),
+			'[PAYSTATE]'               => Text::_('COM_AKEEBASUBS_SUBSCRIPTION_STATE_' . $sub->getFieldValue('state', 'N')),
+			'[PUBLISH_UP]'             => Format::date($jFrom,Text::_('DATE_FORMAT_LC2') . ' T', $sub->user_id),
 			'[PUBLISH_UP_EU]'          => Format::date($jFrom,'d/m/Y H:i:s T', $sub->user_id),
 			'[PUBLISH_UP_USA]'         => Format::date($jFrom,'m/d/Y h:i:s a T', $sub->user_id),
 			'[PUBLISH_UP_JAPAN]'       => Format::date($jFrom,'Y/m/d H:i:s T', $sub->user_id),
-			'[PUBLISH_DOWN]'           => Format::date($jTo,JText::_('DATE_FORMAT_LC2'). ' T', $sub->user_id),
+			'[PUBLISH_DOWN]'           => Format::date($jTo,Text::_('DATE_FORMAT_LC2'). ' T', $sub->user_id),
 			'[PUBLISH_DOWN_EU]'        => Format::date($jTo,'d/m/Y H:i:s T', $sub->user_id),
 			'[PUBLISH_DOWN_USA]'       => Format::date($jTo,'m/d/Y h:i:s a T', $sub->user_id),
 			'[PUBLISH_DOWN_JAPAN]'     => Format::date($jTo,'Y/m/d H:i:s T', $sub->user_id),
@@ -461,9 +459,9 @@ class ShortCode
 			'[COUPONCODE]'             => $couponCode,
 			// Legacy keys
 			'[NAME]'                   => $firstname,
-			'[STATE]'                  => JText::_('COM_AKEEBASUBS_SUBSCRIPTION_STATE_' . $sub->getFieldValue('state', 'N')),
-			'[FROM]'                   => Format::date($jFrom,JText::_('DATE_FORMAT_LC2'). ' T', $sub->user_id),
-			'[TO]'                     => Format::date($jTo,JText::_('DATE_FORMAT_LC2'). ' T', $sub->user_id),
+			'[STATE]'                  => Text::_('COM_AKEEBASUBS_SUBSCRIPTION_STATE_' . $sub->getFieldValue('state', 'N')),
+			'[FROM]'                   => Format::date($jFrom,Text::_('DATE_FORMAT_LC2'). ' T', $sub->user_id),
+			'[TO]'                     => Format::date($jTo,Text::_('DATE_FORMAT_LC2'). ' T', $sub->user_id),
     ), $extras);
 
 		foreach ($extras as $key => $value)

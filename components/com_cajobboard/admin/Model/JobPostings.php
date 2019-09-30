@@ -64,8 +64,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string   $skills                     Skills required to fulfill this role
  * @property string   $special_commitments        Any special commitments associated with this job posting. Valid entries include VeteranCommit, MilitarySpouseCommit, etc.
  * @property string   $work_hours                 The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).
- * @property Places   $jobLocation                A (typically single) geographic location associated with the job position.
- * @property Organizations  $hiringOrganization   Organization offering the job position. FK to #__cajobboard_organizations.
  *
  * SCHEMA: JobPosting (relevantOccupation) -> Occupation (name)
  * @property string   $relevant_occupation_name   The job title.
@@ -83,20 +81,12 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string   $identifier                  Internal identifier used by the employer for this job posting.
  * @property string   $sameAs                      URL of the job posting on the employer\s website.
  *
- * SCHEMA: https://calligraphic.design/schema/EmploymentType
- * @property EmploymentTypes  $employmentType  Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship).
- *
- * SCHEMA: https://calligraphic.design/schema/OccupationalCategoryBLS
- * @property OccupationalCategories  $occupationalCategory  The occupation of the job posting. Uses BLS O*NET-SOC taxonomy.
- *
  * Filters / state:
  *
  * @method  $this  myField() typehint
  */
 class JobPostings extends BaseDataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model

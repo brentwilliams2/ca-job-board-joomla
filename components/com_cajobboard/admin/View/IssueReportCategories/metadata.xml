@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Issue Reports Categories menu items for sidebar menu in Admin views
+
+  @package Calligraphic Job boards
+  @copyright Copyright (c)2018 Calligraphic Design
+  @license GNU General Public License version 3, or later
+-->
+<metadata>
+  <foflib>
+    <ordering>240</ordering>
+  </foflib>
+  <view title="COM_CAJOBBOARD_ADMIN_MENU_ISSUE_REPORT_CATEGORIES_TITLE">
+		<message><![CDATA[COM_CAJOBBOARD_ADMIN_MENU_ISSUE_REPORT_CATEGORIES_DESC]]></message>
+  </view>
+</metadata>

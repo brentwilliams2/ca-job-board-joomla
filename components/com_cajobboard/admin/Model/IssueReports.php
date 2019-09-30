@@ -61,8 +61,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class IssueReports extends BaseDataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -107,7 +105,7 @@ class IssueReports extends BaseDataModel
     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
     // many-to-one FK to  #__cajobboard_categories
-    $this->belongsTo('Category', 'IssueReportCategories@com_cajobboard', 'category', 'issue_report_category_id');
+    $this->belongsTo('IssueReportCategory', 'IssueReportCategories@com_cajobboard', 'category', 'issue_report_category_id');
   }
 
 

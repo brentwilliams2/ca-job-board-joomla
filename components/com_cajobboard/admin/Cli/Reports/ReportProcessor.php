@@ -13,7 +13,7 @@
 include realpath(__DIR__ . '/../CliApplication.php');
 
 use \FOF30\Container\Container;
-use \Joomla\CMS\Input\Cli;
+use \Joomla\CMS\Factory;
 use \Joomla\Registry\Registry;
 
 // @TODO: Implement Reports CLI script for generating and sending PDF analytics reports asynchronously
@@ -80,5 +80,5 @@ class MailProcessor extends CliApplication
 
 // Execute this CLI application
 $app = CliApplication::getInstance('MediaProcesor');
-\JFactory::$application = $app;
+Factory::$application = $app;
 $app->execute();

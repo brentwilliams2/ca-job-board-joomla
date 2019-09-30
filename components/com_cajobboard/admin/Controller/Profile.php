@@ -30,8 +30,11 @@ class Profile extends BaseController
 	{
     $this->modelName = 'Profiles';
 
-    // parent constructor will add default admin tasks, add custom tasks here e.g. 'download'
-    // $this->addPredefinedTaskList();
+		// $this->resetPredefinedTaskList();
+
+		$this->addPredefinedTaskList(array(
+
+		));
 
     parent::__construct($container, $config);
   }

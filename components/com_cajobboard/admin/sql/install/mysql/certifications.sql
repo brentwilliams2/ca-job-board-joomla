@@ -1,15 +1,15 @@
 /**
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 28, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
 /**
  * Certifications data model SQL
  *
- * Uses schema https://schema.org/@TODO:
+ * Uses schema https://calligraphic.design/schema/Certifications
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_certifications` (
   certification_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
@@ -43,17 +43,19 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_certifications` (
   note TEXT COMMENT 'A note to save with this audio object in the back-end interface.',
 
   /* SCHEMA: Thing */
-  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
+  about__image_object BIGINT UNSIGNED COMMENT 'The image file for this badge or certification.', /* FK to #__cajobboard_image_objects */
+  additional_type JSON COMMENT 'Additional metadata about this certification: course taken for the badge, API secrets, etc.',
   description TEXT COMMENT 'Description of the Certification.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on social media via shares and search engine results.',
   image JSON COMMENT 'Image metadata for social share and page header images',
+  name VARCHAR(255) COMMENT 'Aliased by title property. Used as <h1> header text and page title. The latter can be overridden in params (page_title).',
+  url VARCHAR(2083) COMMENT 'The URL to access this certification.',
 
-  /* @TODO: copy to content history special */
+  /* SCHEMA: Thing(additionalType) -> Role(roleName) */
+  role_name VARCHAR(255) COMMENT 'The name of the certification.',
 
-  /* @TODO: do some cert services have more complex APIs? */
-  url 'The URL to access this certification'
-  about__image_object
-  about__digital_document
+  /* SCHEMA: CreativeWork */
+  provider BIGINT(20) UNSIGNED COMMENT 'The organization that provides this certification.', /* FK to #__cajobboard_vendors */
 
   /* SQL DDL */
   PRIMARY KEY (certification_id)
@@ -63,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_certifications` (
   DEFAULT COLLATE = utf8_unicode_ci;
 
 /*
- * Create content types for Audio Objects, mapping fields to the UCM standard fields for history feature
+ * Create content types for Certifications, mapping fields to the UCM standard fields for history feature
  *
  * type_id:     auto-increment id number.
  *
@@ -174,9 +176,14 @@ VALUES(
       "core_xreference":"xreference"
     },
     "special":{
-      "note":"note",
+      "about__image_object":"about__image_object",
+      "additional_type":"additional_type",
       "description__intro":"description__intro",
-
+      "image":"image",
+      "note":"note",
+      "provider":"provider",
+      "role_name":"role_name",
+      "url":"url"
     }
   }',
   /* router */

@@ -13,17 +13,13 @@
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
-
-// Component classes
-
+use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Application extends DataController
+class Application extends BaseController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -35,7 +31,11 @@ class Application extends DataController
 	{
     $this->modelName = 'Applications';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'save'];
+		// $this->resetPredefinedTaskList();
+
+    $this->addPredefinedTaskList(array(
+
+		));
 
     parent::__construct($container, $config);
   }

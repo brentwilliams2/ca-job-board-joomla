@@ -20,30 +20,55 @@ use Faker;
 // no direct access
 defined('_JEXEC') or die;
 
-class EmployerAggregateRatingsTemplate extends CommonTemplate
+class EmployerAggregateRatingsTemplate extends BaseTemplate
 {
-	/**
-	 * The person this page is from. FK to #__cajobboard_persons.
+  /**
+	 * Date the item was created
 	 *
-	 * @property    int
+	 * @var    \DateTime
    */
-  public $main_entity_of_page;
+  public $created_on;
 
 
   /**
-	 * The Question List to be cloned into this application. FK to #__cajobboard_question_lists.
+	 * Userid of the creator of this item.
 	 *
-	 * @property    int
+	 * @var    \Joomla\CMS\User\User
    */
-  public $about__question_list;
+  public $created_by;
 
 
 	/**
-	 * The workflow this application page is about. FK to #__cajobboard_workflows.
+	 * The employer whose reviews and ratings are being aggregated for, FK to #__cajobboard_organizations
 	 *
 	 * @property    int
    */
-  public $about__workflow;
+  public $item_reviewed;
+
+
+  /**
+	 * The count of total number of ratings.
+	 *
+	 * @property    int
+   */
+  public $rating_count;
+
+
+	/**
+	 * The count of total number of reviews.
+	 *
+	 * @property    int
+   */
+  public $review_count;
+
+
+	/**
+	 * The total rating sum for this employer. Get average by dividing with
+   * rating_count. Default worstRating 1 and bestRating 5 assumed.
+	 *
+	 * @property    int
+   */
+  public $rating_value;
 
 
   /**
@@ -51,31 +76,41 @@ class EmployerAggregateRatingsTemplate extends CommonTemplate
    */
 
 
-   // $this->hasOne('MainEntityOfPage', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
-  public function main_entity_of_page ($config, $faker)
+  public function created_by ($config, $faker)
   {
-    $this->seedInterviewsQuestionListsJoinTable($config, $faker);
+    $this->created_by = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
+  }
 
-    $this->main_entity_of_page = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Persons');
+  public function created_on ($config, $faker)
+  {
+    $dateTime = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
+
+    $this->created_on = $dateTime->format('Y-m-d H:i:s');
+    $this->publish_up = $dateTime->format('Y-m-d H:i:s');
   }
 
 
-  // $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
-  public function about__question_list ($config, $faker)
+  // $this->hasOne('ItemReviewed', 'Organizations@com_cajobboard', 'item_reviewed', 'organization_id');
+  public function item_reviewed ($config, $faker)
   {
-    $this->about__question_list = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'QuestionLists');
+    $this->item_reviewed = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Organizations');
   }
 
 
-  // $this->belongsTo('AboutWorkflow', 'Workflowss@com_cajobboard', 'about__workflow', 'workflow_id');
-  public function about__workflow ($config, $faker)
+  public function rating_count ($config, $faker)
   {
-    $this->about__workflow = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Workflows');
+    $this->rating_count = $faker->numberBetween(1, 5);
   }
 
 
-  public function seedInterviewsQuestionListsJoinTable ($config, $faker)
+  public function review_count ($config, $faker)
   {
-    $config->relationMapper->BelongsToMany($config, $faker, 'interview_id', 'Questions', 'question_id', '#__cajobboard_interviews_questions', $count = 2);
+    $this->review_count = $faker->numberBetween(1, 5);
+  }
+
+
+  public function rating_value ($config, $faker)
+  {
+    $this->rating_value = $faker->numberBetween(1, 5);
   }
 }

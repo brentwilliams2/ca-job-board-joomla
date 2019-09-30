@@ -12,12 +12,39 @@
 namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates;
 
 use \Faker;
+use \Joomla\CMS\Factory;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class BaseTemplate
+class BaseTemplate extends \ArrayObject
 {
+  /**
+   * Magic getter for  \ArrayObject implementation
+   *
+   * @param   mixed   $value
+   * @return  mixed
+   */
+  /*
+  public function __get($name)
+  {
+    return $this->$name;
+  }
+*/
+
+  /**
+   * Magic setter for  \ArrayObject implementation
+   *
+   * @param   mixed   $value
+   * @return  mixed
+   */
+  /*public function __set($name, $value)
+  {
+    $this->$name = $value;
+    die($name . ' and ' . $value);
+  }*/
+
+
   /**
 	 * Generate model property values to bind to model.
    *
@@ -58,7 +85,7 @@ class BaseTemplate
       $faker->seed($seed);
     }
 
-    foreach (array_keys(get_object_vars($this)) as $property)
+    foreach (array_keys( get_class_vars( get_class($this) ) ) as $property)
     {
       // skip 'hasRoot' property used in tree data models
       if ($property == 'hasRoot')
@@ -87,7 +114,7 @@ class BaseTemplate
    */
   public function getCategoryId ($category)
   {
-    $db = \JFactory::getDbo();
+    $db = Factory::getDbo();
 
     $query = $db->getQuery(true);
 

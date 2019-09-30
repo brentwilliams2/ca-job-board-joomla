@@ -10,12 +10,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.plugin.plugin' );
-jimport('joomla.filesystem.file');
 
 require_once(JPATH_ROOT.DS.'plugins'.DS.'phocapdf'.DS.'virtuemart'.DS.'virtuemartpdfoutput.php');
 
-class plgPhocaPDFCajobboard extends JPlugin
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Filesystem\File;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Plugin\PluginHelper;
+
+class plgPhocaPDFCajobboard extends \Joomla\CMS\Plugin\CMSPlugin
 {
 	public $pdfO;
 
@@ -27,8 +30,8 @@ class plgPhocaPDFCajobboard extends JPlugin
 
 		$content->content = '';
 		// load plugin params info
-	 	$plugin =& JPluginHelper::getPlugin('phocapdf', 'virtuemart');
-	 	$pluginP = new JParameter( $plugin->params );
+	 	$plugin =& PluginHelper::getPlugin('phocapdf', 'virtuemart');
+	 	$pluginP = new \JParameter( $plugin->params );
 
 		$content->margin_top		= $pluginP->get('margin_top', 108);
 		$content->margin_left		= $pluginP->get('margin_left', 15);
@@ -61,16 +64,16 @@ class plgPhocaPDFCajobboard extends JPlugin
 		} else {
 			$content->pdf_name			= $pluginP->get('pdf_name', '');
 			if ($content->pdf_name == ''){
-				$lang 			=& JFactory::getLanguage();
+				$lang 			=& Factory::getLanguage();
 				$lang->load('plg_phocapdf_virtuemart', JPATH_ADMINISTRATOR, null, true);
-				$d	= JRequest::get('request');
+				$d	= \JRequest::get('request');
 
 				if(isset($d['type']) && $d['type'] == 'invoice') {
-					$content->pdf_name = JText::_('PLG_PHOCAPDF_VM_DELIVERY_INVOICE');
+					$content->pdf_name = Text::_('PLG_PHOCAPDF_VM_DELIVERY_INVOICE');
 				} else if(isset($d['type']) && $d['type'] == 'receipt') {
-					$content->pdf_name = JText::_('PLG_PHOCAPDF_VM_DELIVERY_RECEIPT');
+					$content->pdf_name = Text::_('PLG_PHOCAPDF_VM_DELIVERY_RECEIPT');
 				} else {
-					$content->pdf_name = JText::_('PLG_PHOCAPDF_VM_DELIVERY_NOTE');
+					$content->pdf_name = Text::_('PLG_PHOCAPDF_VM_DELIVERY_NOTE');
 				}
 			}
 		}
@@ -135,7 +138,7 @@ class plgPhocaPDFCajobboard extends JPlugin
 
 		$pdf->setHeaderFont(array($content->header_font_type, $content->header_font_style, $content->header_font_size));
 
-		$lang = &JFactory::getLanguage();
+		$lang = &Factory::getLanguage();
 		$font = $content->font_type;
 		$pdf->setRTL($lang->isRTL());
 
@@ -194,12 +197,12 @@ class plgPhocaPDFCajobboard extends JPlugin
  * Phoca PDF - extended TCPDF Class
  */
 
- if (JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'helpers'.DS.'phocapdf.php')) {
+ if (File::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'helpers'.DS.'phocapdf.php')) {
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'helpers'.DS.'phocapdf.php');
 } else {
 	return JError::raiseError('PDF ERROR', 'Document cannot be created - Loading of Phoca PDF library (Phoca PDF) failed');
 }
-if (JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'assets'.DS.'tcpdf'.DS.'tcpdf.php')) {
+if (File::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'assets'.DS.'tcpdf'.DS.'tcpdf.php')) {
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'assets'.DS.'tcpdf'.DS.'tcpdf.php');
 } else {
 	return JError::raiseError('PDF ERROR', 'Document cannot be created - Loading of Phoca PDF library (TCPDF) failed');
@@ -213,8 +216,8 @@ class PhocaPDFVirtueMartTCPDF extends TCPDF
 
 	private function getPluginParameters() {
 		if (empty($this->pluginP)) {
-			$plugin 		= &JPluginHelper::getPlugin('phocapdf', 'virtuemart');
-			$this->pluginP 	= new JParameter( $plugin->params );
+			$plugin 		= &PluginHelper::getPlugin('phocapdf', 'virtuemart');
+			$this->pluginP 	= new \JParameter( $plugin->params );
 		}
 		return $this->pluginP;
 	}

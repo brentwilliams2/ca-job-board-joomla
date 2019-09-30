@@ -76,8 +76,6 @@ use \Joomla\Registry\Registry;
  */
 class ImageObjects extends BaseDataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
   /**
 	 * Whether xaccel.redirect (Nginx) or xsendfile (Apache) is available
 	 *

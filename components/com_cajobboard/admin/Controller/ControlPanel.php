@@ -13,17 +13,15 @@
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\Controller;
-use FOF30\View\Exception\AccessForbidden;
-use JFilterOutput;
+use \FOF30\Container\Container;
+use \FOF30\Controller\Controller;
 
 // no direct access
 defined('_JEXEC') or die;
 
 class ControlPanel extends Controller
 {
-  use Mixin\PredefinedTaskList;
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;
 
 	/*
 	 * Overridden. Limit the tasks that are allowed to execute.
@@ -35,8 +33,10 @@ class ControlPanel extends Controller
 	{
     $config['modelName'] = "ControlPanels";
 
-    parent::__construct($container, $config);
+    $this->addPredefinedTaskList(array(
+			'default'
+		));
 
-    $this->predefinedTaskList = ['default'];
+    parent::__construct($container, $config);
   }
 }

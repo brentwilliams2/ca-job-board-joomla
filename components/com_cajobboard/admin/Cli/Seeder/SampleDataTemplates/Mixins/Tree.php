@@ -21,6 +21,8 @@ namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Joomla\CMS\Factory;
+
 trait Tree
 {
  	/**
@@ -58,7 +60,7 @@ trait Tree
 	 */
   protected function hasRoot($tableName)
   {
-    $db = \JFactory::getDbo();
+    $db = Factory::getDbo();
 
     $query = $db->getQuery(true);
 
@@ -93,6 +95,6 @@ trait Tree
     $root->rgt = '2';
     $root->hash = sha1($root->slug);
 
-    return \JFactory::getDbo()->insertObject($tableName, $root);
+    return Factory::getDbo()->insertObject($tableName, $root);
   }
 }

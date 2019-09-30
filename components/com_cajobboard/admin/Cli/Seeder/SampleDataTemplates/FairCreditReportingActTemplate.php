@@ -21,8 +21,6 @@ defined('_JEXEC') or die;
 
 class FairCreditReportingActTemplate extends CommonTemplate
 {
-  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
-
 	/**
 	 * The person the FCRA notice is sent to.
 	 *

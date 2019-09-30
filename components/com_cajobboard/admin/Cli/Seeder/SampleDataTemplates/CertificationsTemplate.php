@@ -18,28 +18,46 @@ defined('_JEXEC') or die;
 
 class CertificationsTemplate extends CommonTemplate
 {
+  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
+
 	/**
-	 * The person this page is from. FK to #__cajobboard_persons.
+	 * he image file for this badge or certification, FK to #__cajobboard_image_objects
 	 *
 	 * @property    int
    */
-  public $main_entity_of_page;
+  public $about__image_object;
 
 
   /**
-	 * The Question List to be cloned into this application. FK to #__cajobboard_question_lists.
+	 * Additional metadata about this certifications: course taken for the badge, API secrets, etc.
 	 *
-	 * @property    int
+	 * @property    string
    */
-  public $about__question_list;
+  public $additional_type;
 
 
 	/**
-	 * The workflow this application page is about. FK to #__cajobboard_workflows.
+	 * The URL to access this certification.
+	 *
+	 * @property    string
+   */
+  public $url;
+
+
+	/**
+	 * The name of the certification.
+	 *
+	 * @property    string
+   */
+  public $role_name;
+
+
+	/**
+	 * The organization that provides this certification, FK to #__cajobboard_vendors
 	 *
 	 * @property    int
    */
-  public $about__workflow;
+  public $provider;
 
 
   /**
@@ -47,31 +65,34 @@ class CertificationsTemplate extends CommonTemplate
    */
 
 
-   // $this->hasOne('MainEntityOfPage', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
-  public function main_entity_of_page ($config, $faker)
+   // $this->belongsTo('AboutImageObject', 'ImageObjects@com_cajobboard', 'about__image_object', 'image_object_id');
+  public function about__image_object ($config, $faker)
   {
-    $this->seedInterviewsQuestionListsJoinTable($config, $faker);
-
-    $this->main_entity_of_page = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Persons');
+    $this->about__image_object = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'ImageObjects');
   }
 
 
-  // $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
-  public function about__question_list ($config, $faker)
+  public function additional_type ($config, $faker)
   {
-    $this->about__question_list = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'QuestionLists');
+    $this->additional_type = '{"api_key":"secret"}';
   }
 
 
-  // $this->belongsTo('AboutWorkflow', 'Workflowss@com_cajobboard', 'about__workflow', 'workflow_id');
-  public function about__workflow ($config, $faker)
+  public function url ($config, $faker)
   {
-    $this->about__workflow = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Workflows');
+    $this->url = $faker->url;
   }
 
 
-  public function seedInterviewsQuestionListsJoinTable ($config, $faker)
-  {
-    $config->relationMapper->BelongsToMany($config, $faker, 'interview_id', 'Questions', 'question_id', '#__cajobboard_interviews_questions', $count = 2);
-  }
+   public function role_name ($config, $faker)
+   {
+     $this->role_name = $faker->text(100);
+   }
+
+
+   // $this->belongsTo('Provider', 'Vendors@com_cajobboard', 'provider', 'vendor_id');
+   public function provider ($config, $faker)
+   {
+     $this->provider = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Vendors');
+   }
 }

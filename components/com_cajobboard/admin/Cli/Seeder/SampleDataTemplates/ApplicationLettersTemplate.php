@@ -21,8 +21,6 @@ defined('_JEXEC') or die;
 
 class ApplicationLettersTemplate extends CommonTemplate
 {
-  use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
-
 	/**
 	 * System filename of the document file referred to by the record. MD5 hash of original document file
 	 *

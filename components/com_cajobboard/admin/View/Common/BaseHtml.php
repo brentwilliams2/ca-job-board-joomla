@@ -122,7 +122,7 @@ class BaseHtml extends Html
 
     // Set the current pagination parameters from the state on the model and view
 		$this->setPaginationParams($model);
-		
+
 		return true;
 	}
 
@@ -142,7 +142,7 @@ class BaseHtml extends Html
 	 * Add a 'where' clause to the browse view item query. Override in View classes.
 	 *
 	 * @return string		The 'where' clause string to use
-	 * 
+	 *
 	 * Usage:
 	 *   $db = $model->getDbo();
    *   return $db->qn('price') . ' = ' . $db->q(12.34);

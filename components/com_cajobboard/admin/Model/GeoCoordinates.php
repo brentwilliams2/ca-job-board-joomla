@@ -31,8 +31,8 @@ class GeoCoordinates extends DataModel
 {
   /* Traits to include in the class */
 
-  use Mixin\Constructor;  // Refactored base-class constructor, called from __construct method
-  use Mixin\TableFields;  // Use an array of table fields instead of database reads on each table
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;  // Refactored base-class constructor, called from __construct method
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\TableFields;  // Use an array of table fields instead of database reads on each table
 
   /**
    * Latitude

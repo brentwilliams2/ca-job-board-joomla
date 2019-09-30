@@ -30,8 +30,11 @@ class Reference extends BaseController
 	{
     $this->modelName = 'References';
 
-    // parent constructor will add default admin tasks, add custom tasks here e.g. 'download'
-    // $this->addPredefinedTaskList();
+		// $this->resetPredefinedTaskList();
+
+		$this->addPredefinedTaskList(array(
+      'sendReferenceRequest'
+		));
 
     parent::__construct($container, $config);
   }

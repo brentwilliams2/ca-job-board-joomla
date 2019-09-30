@@ -174,6 +174,13 @@
 </div>
 
 <!--
+  This is a Schema.org external extension for data feeds
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/DataFeed">
+  <!-- @TODO: implement, data_feed_template and send_dates field -->
+</div>
+
+<!--
   This is a Schema.org external extension for image aspect ratios
 
   Used to enumerate image aspect ratios
@@ -182,4 +189,13 @@
   <span class="h" property="rdfs:label">AspectRatio</span>
   <span property="rdfs:comment">The aspect ratio of an image.</span>
   <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/Thing">Thing</a></span>
+</div>
+
+<!--
+  This is a Schema.org external extension for certifications
+-->
+<div typeof="rdfs:Class" resource="https://calligraphic.design/schema/Certifications">
+  <span class="h" property="rdfs:label">Certification</span>
+  <span property="rdfs:role_name">The name of the certification</span>
+  <span>Subclass of: <a property="rdfs:subClassOf" href="https://schema.org/Report">Report</a></span>
 </div>

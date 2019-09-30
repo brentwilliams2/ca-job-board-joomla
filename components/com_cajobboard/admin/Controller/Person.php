@@ -30,7 +30,7 @@ class Person extends BaseController
 	{
     $this->modelName = 'Persons';
 
-    parent::__construct($container, $config);
+		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
       'activate',
@@ -38,6 +38,8 @@ class Person extends BaseController
       'block',
       'unblock'
     ));
+
+    parent::__construct($container, $config);
   }
 
 

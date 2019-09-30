@@ -10,13 +10,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
+
 require_once(JPATH_ROOT.DS.'plugins'.DS.'phocapdf'.DS.'virtuemart'.DS.'virtuemarthelper.php');
 require_once(JPATH_ROOT.DS.'plugins'.DS.'phocapdf'.DS.'virtuemart'.DS.'tmpl.deliverynote.php');
 require_once(JPATH_ROOT.DS.'plugins'.DS.'phocapdf'.DS.'virtuemart'.DS.'tmpl.invoice.php');
 require_once(JPATH_ROOT.DS.'plugins'.DS.'phocapdf'.DS.'virtuemart'.DS.'tmpl.receipt.php');
 
-
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Plugin\PluginHelper;
 
 class PhocaPDFCajobboardPdfOutput {
 
@@ -26,10 +28,10 @@ class PhocaPDFCajobboardPdfOutput {
 	public function getOutput($staticData = array()) {
 
 
-		$d			= JRequest::get('request');
-		$plugin 	=&JPluginHelper::getPlugin('phocapdf', 'virtuemart');
-	 	$pluginP 	= new JParameter( $plugin->params );
-		$lang 		=& JFactory::getLanguage();
+		$d			= \JRequest::get('request');
+		$plugin 	=&PluginHelper::getPlugin('phocapdf', 'virtuemart');
+	 	$pluginP 	= new \JParameter( $plugin->params );
+		$lang 		=& Factory::getLanguage();
 		$lang->load('plg_phocapdf_virtuemart', JPATH_ADMINISTRATOR, null, true);
 
 		// Document is not rendered in browser, we need to get static data not set by request but by function
@@ -60,7 +62,7 @@ class PhocaPDFCajobboardPdfOutput {
 		if( !PhocaPDFVirtueMartPdfOutput::exists_and_is_numeric( $check_items, $d ) ) { return '<p>Error - Wrong delivery id or order id parameters</p>';}
 
 		// Protecting displaying of documents - only users owned the documents can see them or the admins
-		$userCurrent = &JFactory::getUser();
+		$userCurrent = &Factory::getUser();
 		$current_user_id 	= $userCurrent->get('id');
 		$current_user_aid 	= $userCurrent->get('aid');
 		if ($user_id == $current_user_id || (int)$current_user_aid >= 2) {
@@ -90,13 +92,13 @@ class PhocaPDFCajobboardPdfOutput {
 
 		if($dbb->is_invoice == '1' && $d['type'] == 'invoice') {
 			$type 		= 'invoice';
-			$typeLabel	= JText::_('PLG_PHOCAPDF_VM_INVOICE');
+			$typeLabel	= Text::_('PLG_PHOCAPDF_VM_INVOICE');
 		} else if($dbb->is_invoice == '0' && $d['type'] == 'receipt') {
 			$type 		= 'receipt';
-			$typeLabel	= JText::_('PLG_PHOCAPDF_VM_RECEIPT');
+			$typeLabel	= Text::_('PLG_PHOCAPDF_VM_RECEIPT');
 		} else {
 			$type 		= 'deliverynote';
-			$typeLabel	= JText::_('PLG_PHOCAPDF_VM_DELNOTE');
+			$typeLabel	= Text::_('PLG_PHOCAPDF_VM_DELNOTE');
 		}
 
 
@@ -297,10 +299,10 @@ class PhocaPDFCajobboardPdfOutput {
 
 	public function getOutputHeader($pluginParams, $staticData = array()) {
 
-		$lang 	=& JFactory::getLanguage();
+		$lang 	=& J=Factory::getLanguage();
 		$lang->load('plg_phocapdf_virtuemart', JPATH_ADMINISTRATOR, null, true);
 
-		$d		= JRequest::get('request');
+		$d		= \JRequest::get('request');
 		//Document is not rendered in browser, we need to get static data not set by request but by function
 		if(isset($staticData['order_id']) && (int)$staticData['order_id'] > 0) {
 			$d['order_id']	= (int)$staticData['order_id'];
@@ -365,13 +367,13 @@ class PhocaPDFCajobboardPdfOutput {
 
 		if($dbb->is_invoice == '1' && $d['type'] == 'invoice') {
 			$type 		= 'invoice';
-			$a['title']	= JText::_('PLG_PHOCAPDF_VM_INVOICE');
+			$a['title']	= Text::_('PLG_PHOCAPDF_VM_INVOICE');
 		} else if($dbb->is_invoice == '0' && $d['type'] == 'receipt') {
 			$type 		= 'receipt';
-			$a['title']	= JText::_('PLG_PHOCAPDF_VM_RECEIPT');
+			$a['title']	= Text::_('PLG_PHOCAPDF_VM_RECEIPT');
 		} else {
 			$type 		= 'deliverynote';
-			$a['title']	= JText::_('PLG_PHOCAPDF_VM_DELNOTE');
+			$a['title']	= Text::_('PLG_PHOCAPDF_VM_DELNOTE');
 		}
 
 		// - - - - - - - - - - -
@@ -431,14 +433,14 @@ class PhocaPDFCajobboardPdfOutput {
 		$a['extra_field_2']		= $dbbt->extra_field_2;
 
 		if ($a['l_extra_field_1'] == '') {
-			$a['l_extra_field_1'] = JText::_('PLG_PHOCAPDF_VM_FORM_EXTRA_FIELD_1');
+			$a['l_extra_field_1'] = Text::_('PLG_PHOCAPDF_VM_FORM_EXTRA_FIELD_1');
 		} else {
-			$a['l_extra_field_1'] = JText::_($a['l_extra_field_1']);
+			$a['l_extra_field_1'] = Text::_($a['l_extra_field_1']);
 		}
 		if ($a['l_extra_field_2'] == '') {
-			$a['l_extra_field_2'] = JText::_('PLG_PHOCAPDF_VM_FORM_EXTRA_FIELD_2');
+			$a['l_extra_field_2'] = Text::_('PLG_PHOCAPDF_VM_FORM_EXTRA_FIELD_2');
 		} else {
-			$a['l_extra_field_2'] = JText::_($a['l_extra_field_2']);
+			$a['l_extra_field_2'] = Text::_($a['l_extra_field_2']);
 		}
 
 		$a['details_1'] = '';
@@ -485,10 +487,10 @@ class PhocaPDFCajobboardPdfOutput {
 
 	public function getOutputFooter($pluginParams, $staticData = array()) {
 
-		$lang 	=& JFactory::getLanguage();
+		$lang 	=& Factory::getLanguage();
 		$lang->load('plg_phocapdf_virtuemart', JPATH_ADMINISTRATOR, null, true);
 
-		$d		= JRequest::get('request');
+		$d		= \JRequest::get('request');
 		//Document is not rendered in browser, we need to get static data not set by request but by function
 		if(isset($staticData['order_id']) && (int)$staticData['order_id'] > 0) {
 			$d['order_id']	= (int)$staticData['order_id'];
@@ -505,13 +507,13 @@ class PhocaPDFCajobboardPdfOutput {
 
 		if($dbb->is_invoice == '1' && $d['type'] == 'invoice') {
 			$type 		= 'invoice';
-			$typeLabel	= JText::_('PLG_PHOCAPDF_VM_INVOICE');
+			$typeLabel	= Text::_('PLG_PHOCAPDF_VM_INVOICE');
 		} else if($dbb->is_invoice == '0' && $d['type'] == 'receipt') {
 			$type 		= 'receipt';
-			$typeLabel	= JText::_('PLG_PHOCAPDF_VM_RECEIPT');
+			$typeLabel	= Text::_('PLG_PHOCAPDF_VM_RECEIPT');
 		} else {
 			$type 		= 'deliverynote';
-			$typeLabel	= JText::_('PLG_PHOCAPDF_VM_DELNOTE');
+			$typeLabel	= Text::_('PLG_PHOCAPDF_VM_DELNOTE');
 		}
 
 		$dbv	= PhocaPDFVirtueMartHelper::dbQ('dbv');

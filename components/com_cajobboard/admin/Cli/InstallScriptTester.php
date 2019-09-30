@@ -15,8 +15,12 @@
 
 include __DIR__ . '/CliApplication.php';
 
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Table\Table;
+
 // Load .sys language file for component
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $base_dir = JPATH_ADMINISTRATOR . '/components/com_cajobboard';
 $lang->load('com_cajobboard.sys', $base_dir);
 
@@ -158,11 +162,11 @@ class InstallScriptTester extends CliApplication
 
       // Set the category description from the translation key in en-GB.com_cajobboard.sys.ini
       // remove any spaces from the category title when building the translation key
-      $data['title'] = JText::_('COM_CAJOBBOARD_CATEGORY_TITLE_' . strtoupper(str_replace(' ', '', $category)));
+      $data['title'] = Text::_('COM_CAJOBBOARD_CATEGORY_TITLE_' . strtoupper(str_replace(' ', '', $category)));
       $data['description'] = $data['title'];
 
       // Initialize a new category
-      $category = \JTable::getInstance('Category');
+      $category = Table::getInstance('Category');
 
       // Bind passed category parameters to Category model
       $category->bind($data);
@@ -190,7 +194,7 @@ class InstallScriptTester extends CliApplication
       $category->rebuildPath($category->id);
     }
 
-    \JTable::getInstance('Category')->rebuild();
+    Table::getInstance('Category')->rebuild();
   }
 
 
@@ -202,7 +206,7 @@ class InstallScriptTester extends CliApplication
   function loadCategories()
   {
     // Get a db connection so we can find the installed version from #__extensions
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     $query = $db->getQuery(true);
 
     $query
@@ -224,7 +228,7 @@ class InstallScriptTester extends CliApplication
   function createAssets()
   {/*
     // Get the Joomla! asset model
-    $assetModel = \JTable::getInstance('Asset');
+    $assetModel = Table::getInstance('Asset');
 
     // @TODO: need a data structure for assets: name, title, parent_id, rules
     foreach ($data as $property => $value) {
@@ -265,7 +269,7 @@ class InstallScriptTester extends CliApplication
    */
   function removeComponentAssets()
   {/*
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 
     // get a list of all of the primary keys for this component's assets that need removed
     $query = $db->getQuery(true);
@@ -281,7 +285,7 @@ class InstallScriptTester extends CliApplication
     $componentAssetIds = $db->loadColumn();
 
     // Get a Joomla table instance to handle the removal
-    $assetModel = \JTable::getInstance('Asset');
+    $assetModel = Table::getInstance('Asset');
 
     foreach ($componentAssetIds as $assetId)
     {
@@ -299,7 +303,7 @@ class InstallScriptTester extends CliApplication
    */
   function addUserGroups()
   {
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 
     // Get the PK of the "Registered" user group
     $query = $db->getQuery(true);
@@ -331,7 +335,7 @@ class InstallScriptTester extends CliApplication
     {
       if (!in_array($userGroup, $existingUserGroups))
       {
-        $groupModel = \JTable::getInstance('Usergroup');
+        $groupModel = Table::getInstance('Usergroup');
 
         $groupModel->save(array(
           'title' => $userGroup,
@@ -340,12 +344,12 @@ class InstallScriptTester extends CliApplication
       }
     }
 
-    \JTable::getInstance('Usergroup')->rebuild();
+    Table::getInstance('Usergroup')->rebuild();
   }
 }
 
 // Execute this CLI application
 $app = CliApplication::getInstance('InstallScriptTester');
-\JFactory::$application = $app;
+\Factory::$application = $app;
 $app->execute();
 

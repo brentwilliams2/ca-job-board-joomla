@@ -1,19 +1,18 @@
 <?php
 /**
- * Applications HTML View
+ * Applications Sit HTML View
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 29, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2018 Calligraphic
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
  */
 
-namespace Calligraphic\Cajobboard\Site\View\Applications;
+namespace Calligraphic\Cajobboard\Sit\View\Applications;
 
-use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
 use \FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Sit\View\Common\BaseHtml;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -21,21 +20,7 @@ defined('_JEXEC') or die;
 class Html extends BaseHtml
 {
 	/**
-	 * Overridden. Load view-specific language file.
-	 *
-	 * @param   Container $container
-	 * @param   array     $config
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-    parent::__construct($container, $config);
-	}
-
-
-	/**
-	 * Overridden. Relations to eager load in the browse view models.
-	 *
-	 * @return array	The names of the relations to eager load, e.g. the $name parameter that sets up the relation in constructor.
+	 * Overridden. Executes before rendering the page for the Browse task.
 	 */
 	protected function getBrowseViewEagerRelations()
 	{
@@ -45,11 +30,5 @@ class Html extends BaseHtml
 			'MainEntityOfPage',
 			'Questions'
 		);
-	}
+  }
 }
-
-
-
-
-
-

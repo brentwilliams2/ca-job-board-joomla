@@ -8,7 +8,7 @@
 -->
 <metadata>
   <foflib>
-    <ordering>2</ordering>
+    <ordering>350</ordering>
   </foflib>
   <view title="COM_CAJOBBOARD_ADMIN_MENU_PERSONS_TITLE">
 		<message><![CDATA[COM_CAJOBBOARD_ADMIN_MENU_PERSONS_DESC]]></message>

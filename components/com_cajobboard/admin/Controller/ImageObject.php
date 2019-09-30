@@ -13,17 +13,17 @@
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
+use \FOF30\Container\Container;
+use \FOF30\View\Exception\AccessForbidden;
 
 // Component classes
-use Calligraphic\Cajobboard\Admin\Controller\Mixin;
+use \Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class ImageObject extends DataController
+class ImageObject extends BaseController
 {
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -33,11 +33,15 @@ class ImageObject extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    parent::__construct($container, $config);
-
     $this->modelName = 'ImageObjects';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save'];
+		// $this->resetPredefinedTaskList();
+
+    $this->addPredefinedTaskList(array(
+
+		));
+
+		parent::__construct($container, $config);
   }
 
   // category params of interest:  enforce_aspect_ratio, thumbnail_aspect_ratio, image_aspect_ratio

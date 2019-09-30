@@ -13,18 +13,16 @@
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
-use JLog;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
+use \FOF30\Container\Container;
 
 // Component classes
-use Calligraphic\Cajobboard\Admin\Controller\Mixin;
+use \Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class JobPosting extends DataController
+class JobPosting extends BaseController
 {
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -34,6 +32,14 @@ class JobPosting extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+		$this->modelName = 'JobPostings';
+
+		// $this->resetPredefinedTaskList();
+
+		$this->addPredefinedTaskList(array(
+
+		));
+
     parent::__construct($container, $config);
   }
 }

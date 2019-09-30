@@ -47,10 +47,10 @@ use \FOF30\Model\DataModel;
  * SCHEMA: Thing
  * @property string         $name             Machine name for this e-mail template. Aliased by title property.
  * @property string         $description      Description of this e-mail template.
+ * @property string         $description__intro   Short description of the item.
  *
  * SCHEMA: none (internal use only)
- * @property string         $subject          Text template with shortcodes for the subject field of the e-mail.',
- * @property string         $body             HTML template with shortcodes for the body field of the e-mail.',
+ * @property string         $xml_template     XML template with shortcodes to generate from the data feed.
  */
 class DataFeedTemplates extends DataModel
 {
@@ -90,4 +90,6 @@ class DataFeedTemplates extends DataModel
 
 		parent::__construct($container, $config);
   }
+
+  // @TODO: Parser needs to handle XML CDATA tag around the shortcode, e.g. [CDATA[company]]
 }

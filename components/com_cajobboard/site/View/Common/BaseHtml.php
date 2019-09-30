@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Base Class for HTML View
+ * Site Base Class HTML View
  *
  * @package   Calligraphic Job Board
  * @version   September 12, 2019
@@ -11,33 +11,32 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
+use \Joomla\CMS\Factory;
+use \Joomla\Registry\Registry;
+use \Joomla\CMS\Pagination\Pagination;
+use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\HTML\HTMLHelper;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel\Collection;
-use \FOF30\Model\Model\DataModel;
-use \Calligraphic\Cajobboard\Admin\View\Common\BaseHtml as AdminBaseHtml;
-use \Joomla\CMS\Helper\TagsHelper;
-use \Joomla\CMS\Language\Text;
+use FOF30\Model\DataModel;
+use FOF30\Model\DataModel\Collection;
+use \FOF30\View\DataView\Html;
+use Calligraphic\Cajobboard\Site\View\Exception\InvalidArgument;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class BaseHtml extends AdminBaseHtml
+if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
+HTMLHelper::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Html');
+
+class BaseHtml extends Html
 {
-  /**
-   * Whether a combo box to choose the number of results per page should
-   * be shown on browse views
-   *
-   * @property  boolean
-   */
-  public $showLimitBox;
-
-
-  /**
-   * Whether the pagination links should be shown at the bottom of browse views
-   *
-   * @property  boolean
-   */
-   public $showPagesLinks;
+	/**
+	 * The component-level parameters stored in #__extensions by com_config
+	 *
+	 * @var  Registry
+	 */
+  protected $componentParams;
 
 
 	/**
@@ -50,26 +49,14 @@ class BaseHtml extends AdminBaseHtml
 	{
     parent::__construct($container, $config);
 
-    // Load CSS for site view
-    $this->addCssFile('media://com_cajobboard/css/frontend.css');
-  }
+    // Get component parameters
+    $this->componentParams = ComponentHelper::getParams('com_cajobboard');
 
-
-  /**
-   * Override parent display method to add semantic headers. Parent method has
-   * onAfter{task} methods, but no generic event to catch for this.
-   *
-   * @param string  $tpl   The name of the template file to parse
-   *
-   * @return void
-   */
-  public function display($tpl = null)
-	{
-    $status = parent::display($tpl);
-
-    $this->container->Semantic->setSemanticHeaders($this);
-
-    return $status;
+		// Load CSS for admin view
+		if ( $this->container->platform->isBackend() )
+		{
+			$this->addCssFile('media://com_cajobboard/css/backend.css');
+		}
   }
 
 
@@ -107,14 +94,37 @@ class BaseHtml extends AdminBaseHtml
 
 
 	/**
-	 *  View code to execute before rendering the page for the 'browse' task.
+	 * View code to execute before rendering the page for the 'browse' task. Modified to eager
+   * load Author relation to Persons model and push the models to the view templates.
 	 */
 	protected function onBeforeBrowse()
 	{
-    $status = parent::onBeforeBrowse();
+		/** @var DataModel $model */
+    $model = $this->getModel();
 
-		return $status;
-  }
+		// Persist the state in the session
+    $model->savestate(1);
+
+		// Set eager-loaded relations if any
+		if ( $withModels = $this->getBrowseViewEagerRelations() )
+		{
+			$model->with($withModels);
+		}
+
+		// Set a where clause on the model query
+		if ( $whereClause = $this->getBrowseViewWhereClause() )
+		{
+			$model->whereRaw($whereClause);
+		}
+
+		// Assign items to the view
+  	$this->items = $model->get();
+
+    // Set the current pagination parameters from the state on the model and view
+		$this->setPaginationParams($model);
+
+		return true;
+	}
 
 
 	/**
@@ -132,7 +142,7 @@ class BaseHtml extends AdminBaseHtml
 	 * Add a 'where' clause to the browse view item query. Override in View classes.
 	 *
 	 * @return string		The 'where' clause string to use
-	 * 
+	 *
 	 * Usage:
 	 *   $db = $model->getDbo();
    *   return $db->qn('price') . ' = ' . $db->q(12.34);
@@ -143,110 +153,45 @@ class BaseHtml extends AdminBaseHtml
   }
 
 
-  /**
-   * Returns true if the item property is set to a DataModel
+	/**
+	 * Set the pagination object for this view
    *
-   * @return boolean
-   */
-  public function isItem()
+   * @param  DataModel  $model    The model object for this view
+	 *
+	 * @return void
+	 */
+	public function setPaginationParams(DataModel $model)
 	{
-    return $this->item instanceof DataModel;
-  }
+    // Display limits
+		$defaultLimit = 20;
 
+		$this->itemCount = $model->count();
 
-  /**
-   * Returns true if the items property is a Collection of DataModels
-   *
-   * @return boolean
-   */
-  public function isCollection()
-	{
-    return $this->items instanceof Collections;
-  }
+  	// Create the lists object
+    $this->lists = new \stdClass();
 
-
-  /**
-   * Indicate whether the user is registered and logged in
-   *
-   * @return  boolean   Returns true if the user is registered and logged in
-   */
-  public function isUserLoggedIn()
-  {
-    // current user ID
-    $userId = $this->container->platform->getUser()->id;
-
-    return $userId != 0;
-  }
-
-
-  /**
-   * Test whether the current task matches a parameter
-   *
-   * @param   string    $task   The name of the task to compare to the current task
-   *
-   * @return  boolean   Returns true if the current task matches the parameter
-   */
-   public function isTask($task)
-   {
-     return $this->getTask() == $task;
-   }
-
-
-  /**
-   * Returns the title for the model item if it's set, or placeholder text for new records
-   *
-   * @param   string    $item
-   *
-   * @return  boolean
-   */
-  public function getTitle($item)
-  {
-    if ( isset($item->title) )
+    if (!$this->container->platform->isCli())
     {
-      return $item->title;
+      $app = $this->container->platform->getApplication();
+      $defaultLimit = $app->get('list_limit', 20);
     }
 
-    // e.g. JobPostings
-    $viewName = $this->getName();
+    $this->lists->limitStart = $model->getState('limitstart', 0, 'int');
+    $this->lists->limit = $model->getState('limit', $defaultLimit, 'int');
 
-    // e.g. COM_CAJOBBOARD_JOB_POSTINGS_TITLE_EDIT_PLACEHOLDER
-    $translationKey = 'COM_CAJOBBOARD_' . strtoupper( $this->container->inflector->underscore($viewName) ) . '_TITLE_EDIT_PLACEHOLDER';
+    $model->limitstart = $this->lists->limitStart;
+    $model->limit = $this->lists->limit;
 
-    return Text::_($translationKey);
-  }
+		// Ordering information
+		$this->lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
+    $this->lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
 
-
-  /**
-   *
-   *
-   * @param   string    $item
-   *
-   * @return  boolean
-   */
-  public function getTags($item)
-  {
-    // Get Joomla! tags
-    // \Site\Model\JobPostings: protected '_has_tags' => boolean false
-    $tags = new TagsHelper;
-
-    return $tags->getItemTags('com_cajobboard.jobpostings', $item->id);
-  }
-
-
-  /**
-   * Build the URL to for the form's action attribute
-   *
-   * @return  string   Returns the fully-qualified path to submit the form to
-   */
-  public function getFormActionUrl()
-  {
-    $url = 'index.php?option=' . $this->getContainer()->componentName . '&view=' . $this->getName();
-
-    if ( $this->isTask('edit') )
-    {
-      $url .= '&id=' . $this->getItem()->getId();
+		if ($this->lists->order_Dir)
+		{
+			$this->lists->order_Dir = strtolower($this->lists->order_Dir);
     }
 
-    return $url;
+		// Pagination
+    $this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
   }
 }

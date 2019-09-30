@@ -10,12 +10,12 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Site\Model;
+namespace Calligraphic\Cajobboard\Admin\Model;
 
 // no direct access
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
+use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
@@ -55,8 +55,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class OccupationalCategories extends BaseDataModel
 {
-  use Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -92,22 +90,4 @@ class OccupationalCategories extends BaseDataModel
     // many-to-one FK to #__cajobboard_occupational_category_group
     $this->belongsTo('OccupationalCategoryGroup', 'OccupationalCategoryGroups@com_cajobboard', 'group', 'occupational_category_group_id');
   }
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_ERR_TITLE');
-    $this->assertNotEmpty($this->code, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_ERR_CODE');
-    $this->assertNotEmpty($this->JobCategory, 'COM_CAJOBBOARD_OCCUPATIONAL_CATEGORY_ERR_GROUP');
-
-		parent::check();
-
-    return $this;
-	}
 }

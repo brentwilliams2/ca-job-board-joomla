@@ -22,6 +22,7 @@ include realpath(__DIR__ . '/IncomingMail.php');
 include realpath(__DIR__ . '/OutgoingMail.php');
 
 use \FOF30\Container\Container;
+use \Joomla\CMS\Factory;
 use \Joomla\CMS\Input\Cli;
 use \Joomla\Registry\Registry;
 
@@ -89,5 +90,5 @@ class MailProcessor extends CliApplication
 
 // Execute this CLI application
 $app = CliApplication::getInstance('MediaProcesor');
-\JFactory::$application = $app;
+Factory::$application = $app;
 $app->execute();

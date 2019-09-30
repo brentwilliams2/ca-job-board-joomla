@@ -16,13 +16,15 @@ use Faker;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Joomla\CMS\Factory;
+
 class QAPagesTemplate extends CommonTemplate
 {
   use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins\Image;
 
 	/**
 	 * The question this page is about. FK to #__cajobboard_questions.
-	 *
+	 *use \Joomla\CMS\Factory;
 	 * @property    int
    */
   public $main_entity_of_page;
@@ -40,6 +42,7 @@ class QAPagesTemplate extends CommonTemplate
 	 * Setters for QAPage fields
    */
 
+
   public function cat_id ($config, $faker)
   {
     if ( !property_exists($config, 'qapage_categories') )
@@ -56,7 +59,7 @@ class QAPagesTemplate extends CommonTemplate
       }
 
       // Get the 'QAPages' categories
-      $db = \JFactory::getDbo();
+      $db = Factory::getDbo();
 
       $query = $db->getQuery(true);
 

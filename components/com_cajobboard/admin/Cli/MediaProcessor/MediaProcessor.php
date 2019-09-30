@@ -12,9 +12,7 @@
 include realpath(__DIR__ . '/../CliApplication.php');
 
 use \FOF30\Container\Container;
-use \Joomla\CMS\Input\Cli;
-use \Joomla\Registry\Registry;
-
+use \Joomla\CMS\Factory;
 
 /**
  * Calligraphic Job Board Sample Data Seeder CLI Application
@@ -99,7 +97,7 @@ class MediaProcessor extends CliApplication
 
 // Execute this CLI application
 $app = CliApplication::getInstance('MediaProcesor');
-\JFactory::$application = $app;
+Factory::$application = $app;
 $app->execute();
 ?>
 

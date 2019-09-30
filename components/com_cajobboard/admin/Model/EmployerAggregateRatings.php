@@ -1,11 +1,11 @@
 <?php
 /**
- * Admin Reviews Model
+ * Admin Employer Aggregate Ratings Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -57,8 +57,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseListModel;
  */
 class EmployerAggregateRatings extends BaseListModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -74,9 +72,25 @@ class EmployerAggregateRatings extends BaseListModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.employer_aggregate_ratings';
 
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
+      'Category',   // Set category in new records
+      'Check',      // Validation checks for model, over-rideable per model
+      //'ContentHistory', // Add Joomla! content history support
+      'Enabled',    // Filter access to items based on enabled status
+      'Language',   // Filter front-end access to items based on language
+      'Metadata',   // Set the 'metadata' JSON field on record save
+      'Ordering',   // Order items owned by featured status and then descending by date
+      //'Own',        // Filter access to items owned by the currently logged in user only
+      //'PII',        // Filter access for items that have Personally Identifiable Information
+      'Publish',    // Set the publish_on field for new records
+      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'        // Add Joomla! Tags support
+    );
+
     parent::__construct($container, $config);
-
-
 
    /* Set up relations after parent constructor */
 
@@ -84,20 +98,6 @@ class EmployerAggregateRatings extends BaseListModel
     $this->hasOne('ItemReviewed', 'Organizations@com_cajobboard', 'item_reviewed', 'organization_id');
   }
 
-  /**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    // @TODO: Finish validation checks
-    $this->assertNotEmpty($this->title, 'COM_CAJOBBOARD_EMPLOYER_AGGREGATE_RATINGS_ERR_TITLE');
-
-		parent::check();
-
-    return $this;
-  }
+  // @TODO: Should run a DB query to get updated rating_value total sum when aggregates are updated, instead
+  //        of just adding the new event's sum to it
 }

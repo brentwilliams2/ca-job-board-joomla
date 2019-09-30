@@ -1,25 +1,23 @@
 <?php
 /**
- * Site Profile Controller
+ * Site Profiles Controller
  *
  * @package   Calligraphic Job Board
- * @version   July 14, 2019
+ * @version   September 12, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
  */
 
 namespace Calligraphic\Cajobboard\Site\Controller;
 
 use \FOF30\Container\Container;
-use \FOF30\Controller\DataController;
-use \FOF30\View\Exception\AccessForbidden;
+use \Calligraphic\Cajobboard\Site\Controller\BaseController;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Profile extends Controller
+class Profile extends BaseController
 {
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -31,7 +29,11 @@ class Profile extends Controller
 	{
     $this->modelName = 'Profiles';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'add', 'save', 'remove'];
+		// $this->resetPredefinedTaskList();
+
+    $this->addPredefinedTaskList(array(
+
+		));
 
     parent::__construct($container, $config);
   }

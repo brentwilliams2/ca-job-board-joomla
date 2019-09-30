@@ -21,7 +21,10 @@ use \Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\UsersTemplate;
 use \Calligraphic\Cajobboard\Admin\Helper\Category;
 use \Calligraphic\Cajobboard\Admin\Helper\Json;
 use \FOF30\Container\Container;
+use \Joomla\CMS\Factory;
 use \Joomla\CMS\Input\Cli;
+use \Joomla\CMS\Table\Table;
+use \Joomla\CMS\User\UserHelper;
 use \Joomla\Registry\Registry;
 
 
@@ -352,7 +355,7 @@ class PopulateSampleData extends CliApplication
 	 */
   public function addJoinRecordUserToGroup()
   {
-    $db = \JFactory::getDbo();
+    $db = $this->container->db;
 
     // #1 Get all maps from `#__user_usergroup_map`
     $query = $db->getQuery(true);
@@ -404,7 +407,7 @@ class PopulateSampleData extends CliApplication
         // Make sure the user doesn't already have a join table record saved
         if (!in_array($userId, $mappedUsers))
         {
-          JUserHelper::addUserToGroup($userId, $userGroupId);
+          UserHelper::addUserToGroup($userId, $userGroupId);
         }
       }
     }
@@ -563,7 +566,7 @@ class PopulateSampleData extends CliApplication
     // Remove any assets
     if ($assetIdsToRemove)
     {
-      $assetModel = \JTable::getInstance('Asset');
+      $assetModel = Table::getInstance('Asset');
 
       foreach ($assetIdsToRemove as $assetId)
       {
@@ -572,7 +575,7 @@ class PopulateSampleData extends CliApplication
     }
 
     // Rebuild the nesting on the `#__assets` table
-    \JTable::getInstance('Asset')->rebuild();
+    Table::getInstance('Asset')->rebuild();
   }
 
 
@@ -603,5 +606,5 @@ class PopulateSampleData extends CliApplication
 
 // Execute this CLI application
 $app = CliApplication::getInstance('PopulateSampleData');
-\JFactory::$application = $app;
+Factory::$application = $app;
 $app->execute();

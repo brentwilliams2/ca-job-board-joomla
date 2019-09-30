@@ -12,11 +12,12 @@
 
 include realpath(__DIR__ . '/../CliApplication.php');
 
+use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
 use \FOF30\Container\Container;
+use \Joomla\CMS\Factory;
 use \Joomla\CMS\Input\Cli;
 use \Joomla\Registry\Registry;
 use \Malas\BounceHandler\BounceHandler;
-use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
 
 // @TODO: need to include the lib_cajobboard autoloader for access to Malas\BounceHandler
 
@@ -209,5 +210,5 @@ class BouncedMailHandler extends CliApplication
 
 // Execute this CLI application
 $app = CliApplication::getInstance('MediaProcesor');
-\JFactory::$application = $app;
+Factory::$application = $app;
 $app->execute();

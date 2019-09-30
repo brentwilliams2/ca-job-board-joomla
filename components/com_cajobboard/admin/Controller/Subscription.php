@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Employer Controller
+ * Administrator Subscriptions Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -13,17 +13,13 @@
 namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\View\Exception\AccessForbidden;
-
-// Component classes
-
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
+use \FOF30\Container\Container;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Subscription extends DataController
+class Subscription extends BaseController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -35,7 +31,11 @@ class Subscription extends DataController
 	{
     $this->modelName = 'Subscriptions';
 
-    $this->predefinedTaskList = ['browse', 'read', 'edit', 'save'];
+		// $this->resetPredefinedTaskList();
+
+		$this->addPredefinedTaskList(array(
+
+		));
 
     parent::__construct($container, $config);
   }

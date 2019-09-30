@@ -19,27 +19,53 @@ defined('_JEXEC') or die;
 class DataFeedsTemplate extends CommonTemplate
 {
 	/**
-	 * The person this page is from. FK to #__cajobboard_persons.
+	 * Relative URL of the data feed on this site, if the vendor pulls from this site.
 	 *
-	 * @property    int
+	 * @property    string
    */
-  public $main_entity_of_page;
+  public $url;
 
 
   /**
-	 * The Question List to be cloned into this application. FK to #__cajobboard_question_lists.
+	 * The XML template to apply when generating this data feed, FK to #__cajobboard_data_feed_templates
 	 *
 	 * @property    int
    */
-  public $about__question_list;
+  public $data_feed_template;
 
 
 	/**
-	 * The workflow this application page is about. FK to #__cajobboard_workflows.
+	 * The date/time at which this data feed should be pushed to the audience,
+   * as a  Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum value.
+	 *
+	 * @property    \Calligraphic\Cajobboard\Admin\Helper\Enum\DaysOfWeekEnum
+   */
+  public $send_dates;
+
+
+	/**
+	 * The Vendor that this data feed is for, e.g. Indeed.com, FK to #__cajobboard_vendors
 	 *
 	 * @property    int
    */
-  public $about__workflow;
+  public $audience__vendor;
+
+
+  /**
+	 * A JSON configuration describing Filter parameters to apply for the JobPostings included
+   * in the feed, e.g. {"state variable":"job_posting_id","method":"between","from":"1","to":"10"}
+	 *
+	 * @property    string
+   */
+  public $data_feed_element;
+
+
+	/**
+	 * The data and time this data feed was last pushed to the vendor.
+	 *
+	 * @property    \DateTime
+   */
+  public $date_created;
 
 
   /**
@@ -47,31 +73,42 @@ class DataFeedsTemplate extends CommonTemplate
    */
 
 
-   // $this->hasOne('MainEntityOfPage', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
-  public function main_entity_of_page ($config, $faker)
+  public function url ($config, $faker)
   {
-    $this->seedInterviewsQuestionListsJoinTable($config, $faker);
-
-    $this->main_entity_of_page = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Persons');
+    $this->url = $faker->url;
   }
 
 
-  // $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
-  public function about__question_list ($config, $faker)
+  // $this->inverseSideOfHasOne('DataFeedTemplate', 'DataFeedTemplates@com_cajobboard', 'data_feed_template', 'data_feed_template_id');
+  public function data_feed_template ($config, $faker)
   {
-    $this->about__question_list = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'QuestionLists');
+    $this->data_feed_template = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'DataFeedTemplates');
   }
 
 
-  // $this->belongsTo('AboutWorkflow', 'Workflowss@com_cajobboard', 'about__workflow', 'workflow_id');
-  public function about__workflow ($config, $faker)
+  public function send_dates ($config, $faker)
   {
-    $this->about__workflow = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Workflows');
+    $this->send_dates = 62;
   }
 
 
-  public function seedInterviewsQuestionListsJoinTable ($config, $faker)
+  // $this->belongsTo('AudienceVendor', 'Vendors@com_cajobboard', 'audience__vendor', 'vendor_id');
+  public function audience__vendor ($config, $faker)
   {
-    $config->relationMapper->BelongsToMany($config, $faker, 'interview_id', 'Questions', 'question_id', '#__cajobboard_interviews_questions', $count = 2);
+    $this->audience__vendor = $config->relationMapper->getFKValue('InverseSideOfHasOne', $config, true, $faker, 'Vendors');
+  }
+
+
+  public function data_feed_element ($config, $faker)
+  {
+    $this->data_feed_element = '{"state variable":"job_posting_id","method":"between","from":"1","to":"10"}';
+  }
+
+
+  public function date_created ($config, $faker)
+  {
+    $dateTime = $faker->dateTimeBetween('-30 hourss', '-1 hour');
+
+    $this->date_created = $dateTime->format('Y-m-d H:i:s');
   }
 }

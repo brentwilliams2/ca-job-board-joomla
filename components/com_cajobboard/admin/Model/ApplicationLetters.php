@@ -66,8 +66,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class ApplicationLetters extends BaseDataModel
 {
-  use \FOF30\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model

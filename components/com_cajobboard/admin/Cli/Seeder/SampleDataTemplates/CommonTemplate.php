@@ -281,7 +281,7 @@ class CommonTemplate extends BaseTemplate
 
   public function created_on ($config, $faker)
   {
-    $dateTime = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
+    $dateTime = $faker->dateTimeBetween('-5 years', 'now', null);
 
     $this->created_on = $dateTime->format('Y-m-d H:i:s');
     $this->publish_up = $dateTime->format('Y-m-d H:i:s');

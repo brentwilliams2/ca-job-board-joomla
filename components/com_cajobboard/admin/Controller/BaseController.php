@@ -14,16 +14,16 @@ namespace Calligraphic\Cajobboard\Admin\Controller;
 
 // Framework classes
 use \FOF30\Container\Container;
-use \Calligraphic\Library\Platform\DataController;
+use \FOF30\Controller\DataController;
 
 // no direct access
 defined('_JEXEC') or die;
 
 class BaseController extends DataController
 {
-  use Mixin\ToggleField;          // Method to toggle boolean state fields
-  use Mixin\Redirect;             // Utilities for handling redirects in controller classes
-  use Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\ToggleField;          // Method to toggle boolean state fields
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect;             // Utilities for handling redirects in controller classes
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
 
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -33,15 +33,25 @@ class BaseController extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    parent::__construct($container, $config);
-
     $this->addPredefinedTaskList( array(
-      'browse',  'read',  'edit', 'add',
-      'apply',   'save',  'cancel', 'savenew',
-      'archive', 'trash', 'remove',
-      'feature', 'unfeature',
-      'publish', 'unpublish'
+      'add',
+      'apply',
+      'archive',
+      'browse',
+      'cancel',
+      'edit',
+      'feature',
+      'publish',
+      'read',
+      'remove',
+      'save',
+      'savenew',
+      'trash',
+      'unfeature',
+      'unpublish'
     ));
+
+    parent::__construct($container, $config);
   }
 
 
