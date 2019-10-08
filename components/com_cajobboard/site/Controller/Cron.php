@@ -35,7 +35,9 @@ class Cron extends Controller
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-		$this->modelName = 'Subscribe';
+		parent::__construct($container, $config);
+
+		$this->setModelName('Subscribe');
 
 		$this->csrfProtection = 0;
 
@@ -44,8 +46,6 @@ class Cron extends Controller
     $this->addPredefinedTaskList(array(
 			'cron'
 		));
-
-		parent::__construct($container, $config);
   }
 
 

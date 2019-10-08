@@ -8,6 +8,11 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
+// sass-lint:disable force-element-nesting
+// sass-lint:disable no-empty-rulesets
+// sass-lint:disable no-qualifying-elements
+
+
 //-----------------------------------------------------------------------------
 // Core variables and mixins
 //-----------------------------------------------------------------------------
@@ -62,4 +67,251 @@
 // Set larger font size for SVG output from rater.js star rating module
 .rating {
   font-size: 1.5em; /* 30px/20=1.5em */
+}
+
+
+//-----------------------------------------------------------------------------
+// Classes for /Site/Helper/Html/Modal/report_item_modal.blade.php
+//-----------------------------------------------------------------------------
+
+// outline of report-item-modal classes
+#report-item-modal { // sass-lint:disable-line no-ids
+  .modal-header {
+    button.close {}
+    h4.modal-title {}
+  }
+
+  .modal-body {
+    .form-group {
+      label.control-label {}
+      textarea.form-control#report-item-text-box {} // sass-lint:disable-line no-ids
+      input#report-item-id {} // sass-lint:disable-line no-ids
+    }
+  }
+
+  .modal-footer {
+    div.report-submit {}
+
+    div.report-footer-button-row {
+      button#submit-item-report-btn { // sass-lint:disable-line no-ids
+        margin-left: 5px !important; // sass-lint:disable-line no-important
+      }
+
+      button.report-close {}
+    }
+  }
+}
+
+
+//-----------------------------------------------------------------------------
+// Common Browse View Classes
+//
+//  - list view                                              default.blade.php
+//  - list view item                                    default_item.blade.php
+//-----------------------------------------------------------------------------
+
+// default.blade.php section
+.browse.common-header {
+  background-color: $body-bg-light;
+  margin: 10px 0;
+  padding: 10px;
+
+  .h4 {}
+
+  // Select combo box to select count of items shown per page
+  .pagination-select {}
+
+  // anchor around "New" button
+  .browse.common-add-new {
+    .browse.common-add-new-btn {}
+  }
+}
+
+// default.blade.php section
+.browse.common-list {
+  // Wrapper for common item in browse view
+  .browse.common-list-item {
+    background-color: $body-bg-light;
+    margin-top: 12px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+  }
+
+  // Wrapper when the common item is "featured"
+  .browse.common-list-item.featured { // sass-lint:disable-line force-element-nesting
+    background-attachment: scroll;
+    background-image: url('../images/featured-label-72.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+  }
+
+  // Answer title (link to item view of common)
+  .browse.common-title {
+    color: $brand-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+
+    &:hover,
+    &:focus {
+      color: $brand-info;
+      text-decoration: none;
+    }
+  }
+
+  // common body text
+  .browse.common-text {
+    color: $text-color;
+  }
+
+  .author-name {
+    color: $brand-primary;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+      text-decoration: none;
+    }
+  }
+
+  // anchor <a> element
+  .author-avatar {
+    // <img> element
+    .img-thumbnail {}
+  }
+
+  // "Last seen ..." text
+  .author-last-seen {
+    color: $text-color-lighter;
+  }
+
+  // "Posted on ..." text
+  .browse.common-created-on {
+    color: $text-color-lighter;
+  }
+
+  // <button> elements
+  .browse.common-upvote-count {}
+  .browse.common-downvote-count {}
+
+  .browse.common-report-btn {}
+
+  // Link <a> anchor around the "Edit" button (edit-common-button)
+  .browse.common-edit-link {}
+  .browse.common-edit-btn {}
+
+  // Link <a> anchor around the "Remove" button (delete-common-button)
+  .browse.common-delete-link {}
+  .browse.common-delete-btn {}
+}
+
+// default.blade.php section
+.browse.common-footer {}
+
+
+//-----------------------------------------------------------------------------
+// Common Item View Templates                                   item.blade.php
+//-----------------------------------------------------------------------------
+
+.item.common-item {
+  background-color: $body-bg-light;
+  margin-top: 12px !important; // sass-lint:disable-line no-important
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+
+  .item.common-title {
+    color: $brand-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+  }
+
+  .item.common-text {
+    color: $text-color;
+  }
+
+  .author-name {
+    color: $brand-primary;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+      text-decoration: none;
+    }
+  }
+
+  // anchor <a> element
+  .author-avatar {
+    // <img> element
+    .img-thumbnail {}
+  }
+
+  // "Last seen ..." text
+  .author-last-seen {
+    color: $text-color-lighter;
+  }
+
+  // "Posted on ..." text
+  .item.common-created-on {
+    color: $text-color-lighter;
+  }
+
+  .item.common-upvote-count {}
+  .item.common-downvote-count {}
+
+  .item.common-report-btn {}
+
+  .item.common-edit-btn {}
+  .item.common-edit-link {}
+
+  // Link <a> anchor around the "Remove" button (delete-answer-button)
+  .item.common-delete-link {}
+}
+
+
+//-----------------------------------------------------------------------------
+// Common Form View Templates - edit and add view               form.blade.php
+//-----------------------------------------------------------------------------
+
+.edit.common-edit-container {
+
+  // Edit form header text
+  .form-header {
+    text-align: center;
+
+    h3 {
+      color: $brand-primary;
+    }
+  }
+
+  .edit.common-title {
+    h4 {}
+
+    input {}
+  }
+
+  .edit.common-text {
+    h4 {}
+    textarea {}
+  }
+
+  .edit.common-created-on-date {}
+
+  .edit.common-modified-date {}
+
+  .edit.common-cancel-link {
+    &:hover,
+    &:focus {
+
+    }
+
+    .edit.common-cancel-btn {}
+  }
+
+  .edit.common-submit {}
+
 }

@@ -20,6 +20,23 @@ defined('_JEXEC') or die;
 class Html extends BaseHtml
 {
 	/**
+	 * Overridden. Load view-specific Javascript files.
+	 *
+	 * @param   Container $container
+	 * @param   array     $config
+	 */
+	public function __construct(Container $container, array $config = array())
+	{
+		parent::__construct($container, $config);
+
+		// Load Javascript modules for Answers site view
+		$this->addJavascriptFile('media://com_cajobboard/js/Site/Component/report_item.js');
+		$this->addJavascriptFile('media://com_cajobboard/js/Site/Component/star_rating.js');
+		$this->addJavascriptFile('media://com_cajobboard/js/Site/Component/toggle_login_register.js');
+	}
+
+
+	/**
 	 * Overridden. Executes before rendering the page for the Browse task.
 	 */
 	protected function getBrowseViewEagerRelations()

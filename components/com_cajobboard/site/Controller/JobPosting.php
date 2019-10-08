@@ -28,15 +28,15 @@ class JobPosting extends BaseController
 	*/
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'JobPostings';
+		parent::__construct($container, $config);
+
+    $this->setModelName('JobPostings');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -44,7 +44,7 @@ class JobPosting extends BaseController
 	 *
 	 * @return  bool
 	 */
-	public function onBeforeAdd()
+	protected function onBeforeAdd()
 	{
     // @TODO: redirect guest users before they see an add form
 
@@ -57,7 +57,7 @@ class JobPosting extends BaseController
 	*
 	* @return  bool
 	*/
-	public function sendJobToEmail()
+	protected function sendJobToEmail()
 	{
     // @TODO: send the job to email
 

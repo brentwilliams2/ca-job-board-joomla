@@ -28,14 +28,14 @@ class Vendor extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Vendors';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Vendors');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -28,5 +28,23 @@ class Html extends BaseHtml
 			'Author',
 			'Image'
 		);
+	}
+
+
+	/**
+	 * Add a 'where' clause to the browse view item query to
+	 * exclude the root node in queries for a nested class.
+	 *
+	 * @return string		The 'where' clause string to use
+	 */
+	protected function getBrowseViewWhereClause()
+	{
+		// @TODO: Move this to a filter so it's reusable
+
+		$model = $this->getModel();
+
+		$db = $model->getDbo();
+
+    return $db->quoteName( $model->getIdFieldName() ) . ' > 1';
   }
 }

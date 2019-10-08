@@ -28,14 +28,14 @@ class IssueReportCategory extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'IssueReportCategories';
+		parent::__construct($container, $config);
+
+    $this->setModelName('IssueReportCategories');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

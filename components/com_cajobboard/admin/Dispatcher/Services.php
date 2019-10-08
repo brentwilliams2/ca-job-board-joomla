@@ -144,9 +144,10 @@ class Services
       return new JobPosting();
     };
 
-    $this->container->Pagination = function ($container) {
+    // Factory method, return new instance with every call
+    $this->container->Pagination = $this->container->factory(function ($container) {
       return new Pagination($container);
-    };
+    });
 
     $this->container->Registration = function ($container) {
       return new Registration($container);

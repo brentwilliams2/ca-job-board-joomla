@@ -7,31 +7,18 @@
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ *
+ * see /Calligraphic/Cajobboard/Helper/Html/browsewidget.php for Helper widgets
  */
 
-use Joomla\CMS\HTML\HTMLHelper;
-use \Calligraphic\Cajobboard\Site\Model\Answers;
-use \FOF30\View\DataView\Form;
 use \FOF30\Utils\FEFHelper\BrowseView;
 use \FOF30\Utils\SelectOptions;
 
 // no direct access
 defined('_JEXEC') or die;
 
-// Javascript libraries to include
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('formbehavior.chosen', 'select');
-
-// Add component JS and CSS in view templates so that they're properly handled if HMVC in use
-$this->container->AssetFiles->addComponentCss($this);
-$this->container->AssetFiles->addViewJavascript($this);
-
-/**
- * @var  Form       $this
- * @var  Answers    $item
- */
-
-$modelName = strtolower($this->getContainer()->inflector->pluralize($this->getName()));
+/** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+/** @var  FOF30\View\DataView\Html                    $this */
 
 // The width of each of the table columns as a percentage
 $widthPct = array
@@ -51,103 +38,38 @@ $widthPct = array
 @extends('admin:com_cajobboard/Common/browse')
 
 {{-------------------------------------------------------------------------------------}}
-{{-- SECTION: Toolbar shown at top of admin page, with search, filters, and ordering --}}
-{{-------------------------------------------------------------------------------------}}
-
-@section('browse-filters')
-  <span class="filter-search btn-group pull-left">
-    {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
-    {{-- @TODO: modal is empty, no drop-down of author list: need to write helper to do join and get author names --}}
-    @searchfilter('created-by', null, \JText::_('COM_CAJOBBOARD_ANSWERS_FILTER_BY_AUTHOR'))
-  </span>
-
-  {{-- @TODO: Expand search options --}}
-
-  {{-- @TODO: Clear filters --}}
-
-  {{-- @TODO: Choose sort order (lists different options - by date, name, etc.) --}}
-
-  {{-- @TODO: Number of results to show per page --}}
-
-  <span class="filter-search btn-group pull-left">
-    {{ BrowseView::publishedFilter('enabled', 'JSTATUS') }}
-  </span>
-
-  <span class="filter-search btn-group pull-left">
-    {{ BrowseView::accessFilter('access', 'JFIELD_ACCESS_LABEL') }}
-  </span>
-
-  <span class="pagination-select btn-group pull-right">
-    {{ $this->pagination->getLimitBox() }}
-  </span>
-
-  {{-- @TODO: Filter by category --}}
-
-  {{-- @TODO: Filter by language, need to helper to handle '*'  --}}
-
-  {{-- @TODO: Filter by  tags --}}
-@stop
-
-
-{{-------------------------------------------------------------------------------------}}
 {{-- SECTION: Table column headers and filters displayed above the data columns -------}}
 {{-------------------------------------------------------------------------------------}}
 
 @section('browse-table-header')
-    <tr>
-      {{-- COLUMN #1: Drag-and-drop icons in record fields for ordering browse records. DB Table must have `ordering` field to support. --}}
-      <th width="{{ $widthPct['#1'] }}%" class="nowrap center header-reorder hidden-phone">
-        {{-- \FOF30\Utils\FEFHelper\FEFHelperBrowse::orderfield --}}
-        @jhtml('FEFHelper.browse.orderfield', 'ordering', 'icon-menu-2')
-      </th>
+  <tr>
+    {{-- COLUMN #1: Drag-and-drop icons in record fields for ordering browse records. DB Table must have `ordering` field to support. --}}
+    @jhtml('helper.browseWidgets.orderingHeader', $widthPct['#1'])
 
-      {{-- COLUMN #2: "select all" checkbox to apply Toolbar actions to all records. --}}
-      <th width="{{ $widthPct['#2'] }}%" class="center header-select">
-        {{-- \FOF30\Utils\FEFHelper\FEFHelperBrowse::checkall --}}
-        @jhtml('FEFHelper.browse.checkall', 'Select')
-      </th>
+    {{-- COLUMN #2: "select all" checkbox to apply Toolbar actions to all records. --}}
+    @jhtml('helper.browseWidgets.selectAllHeader', $widthPct['#2'])
 
-      {{-- COLUMN #3: Filter on whether records are published, unpublished, or both. --}}
-      <th width="{{ $widthPct['#3'] }}%" class="center header-published">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @sortgrid('enabled', 'JSTATUS')
-      </th>
+    {{-- COLUMN #3: Filter on whether records are published, unpublished, or both. --}}
+    @jhtml('helper.browseWidgets.publishedHeader', $widthPct['#3'])
 
-      {{-- COLUMN #4: Answer title, allows sorting ASC / DESC by clicking the field name in the column header. --}}
-      <th width="{{ $widthPct['#4'] }}%" class="header-title">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @sortgrid('name', 'COM_CAJOBBOARD_ANSWER_NAME')
-      </th>
+    {{-- COLUMN #4: Answer title, allows sorting ASC / DESC by clicking the field name in the column header. --}}
+    @jhtml('helper.browseWidgets.titleHeader', $widthPct['#4'], $this->getName() )
 
-      {{-- COLUMN #5: Access, e.g. "public" --}}
-      <th width="{{ $widthPct['#5'] }}%" class="center header-access">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @sortgrid('access', 'JFIELD_ACCESS_LABEL')
-      </th>
+    {{-- COLUMN #5: Access, e.g. "public" --}}
+    @jhtml('helper.browseWidgets.accessHeader', $widthPct['#5'])
 
-      {{-- COLUMN #6: Author name, allows sorting ASC / DESC by clicking the field name in the column header. --}}
-      <th width="{{ $widthPct['#6'] }}%" class="center header-author">
-        @sortgrid('created_by', 'COM_CAJOBBOARD_ANSWER_AUTHOR')
-      </th>
+    {{-- COLUMN #6: Author name, allows sorting ASC / DESC by clicking the field name in the column header. --}}
+    @jhtml('helper.browseWidgets.authorNameHeader', $widthPct['#6'])
 
-      {{-- COLUMN #7: Language --}}
-      <th width="{{ $widthPct['#7'] }}%" class="center header-language">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @sortgrid('language', 'JFIELD_LANGUAGE_LABEL')
-      </th>
+    {{-- COLUMN #7: Language --}}
+    @jhtml('helper.browseWidgets.languageHeader', $widthPct['#7'])
 
-      {{-- COLUMN #8: Date Created --}}
-      <th width="{{ $widthPct['#8'] }}%" class="center header-created">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @sortgrid('created_on', 'JGLOBAL_FIELD_CREATED_LABEL')
-      </th>
+    {{-- COLUMN #8: Date Created --}}
+    @jhtml('helper.browseWidgets.createdOnHeader', $widthPct['#8'])
 
-      {{-- COLUMN #9: Hits counter --}}
-      <th width="{{ $widthPct['#9'] }}%" class="center header-hits">
-        {{-- \FOF30\Utils\FEFHelper\BrowseView::sortGrid --}}
-        @sortgrid('hits', 'JGLOBAL_HITS')
-      </th>
-    </tr>
+    {{-- COLUMN #9: Hits counter --}}
+     @jhtml('helper.browseWidgets.hitsHeader', $widthPct['#9'])
+  </tr>
 @stop
 
 
@@ -163,65 +85,31 @@ $widthPct = array
     <?php ++$i; ?>
     <tr>
       {{-- COLUMN #1: Drag-and-drop icon in record field for ordering browse records. --}}
-      <td width="{{ $widthPct['#1'] }}%" class="center row-reorder">
-        {{-- \FOF30\Utils\FEFHelper\FEFHelperBrowse::order --}}
-        @jhtml('FEFHelper.browse.order', 'ordering', $item->ordering, 'sortable-handler tip-top hasTooltip', 'icon-menu', 'icon-menu')
-      </td>
+      @jhtml('helper.browseWidgets.orderingField', $widthPct['#1'], $item)
 
       {{-- COLUMN #2: "select" checkbox to apply Toolbar actions to this record. --}}
-      <td width="{{ $widthPct['#2'] }}%" class="center row-select">
-        {{-- \FOF30\Utils\FEFHelper\FEFHelperBrowse::id --}}
-        @jhtml('FEFHelper.browse.id', $i, $item->getId())
-      </td>
+      @jhtml('helper.browseWidgets.selectAllField', $widthPct['#2'], $item, $i)
 
       {{-- COLUMN #3: Icon (checkmark or "X") to show whether record is in published or unpublished state. --}}
-      <td width="{{ $widthPct['#3'] }}%" class="center row-published">
-        <div class="btn-group">
-          @jhtml('helper.browseWidgets.published', $item->enabled, $i)
-          @jhtml('helper.browseWidgets.featured', $item->featured, $i)
-          @jhtml('helper.browseWidgets.publishedDropdown', $item->enabled, $item->name, $i)
-        </div>
-      </td>
+      @jhtml('helper.browseWidgets.publishedField', $widthPct['#3'], $item, $i)
 
       {{-- COLUMN #4: Answer title and category --}}
-      <td width="{{ $widthPct['#4'] }}%" class="row-title">
-        <div>
-          <a href="@route(\FOF30\Utils\FEFHelper\BrowseView::parseFieldTags('index.php?option=com_cajobboard&view=Answers&task=edit&id=[ITEM:ID]', $item))">
-            @jhtml('helper.browseWidgets.title', $item->name, $item->text)
-          </a>
-
-          @jhtml('helper.browseWidgets.alias', $item->slug)
-        </div>
-
-        @jhtml('helper.browseWidgets.category', $item->cat_id)
-      </td>
+      @jhtml('helper.browseWidgets.titleField', $widthPct['#4'], $item)
 
       {{-- COLUMN #5: Access, e.g. 'Published' --}}
-      <td width="{{ $widthPct['#5'] }}%" class="center row-access">
-        @jhtml('helper.commonWidgets.access', $item->access)
-      </td>
+      @jhtml('helper.browseWidgets.accessField', $widthPct['#5'], $item)
 
       {{-- COLUMN #6: Author name --}}
-      <td width="{{ $widthPct['#6'] }}%" class="row-author">
-        @if( is_subclass_of($item->Author, '\FOF30\Model\DataModel') )
-          {{{ $item->Author->name }}}
-        @endif
-      </td>
+      @jhtml('helper.browseWidgets.authorNameField', $widthPct['#6'], $item)
 
       {{-- COLUMN #7: Language --}}
-      <td width="{{ $widthPct['#7'] }}%" class="center row-language">
-          @jhtml('helper.browseWidgets.language', $item->language)
-      </td>
+      @jhtml('helper.browseWidgets.languageField', $widthPct['#7'], $item)
 
       {{-- COLUMN #8: Date Created --}}
-      <td width="{{ $widthPct['#8'] }}%" class="center row-created">
-        {{ $this->container->Format->date($item->created_on) }}
-      </td>
+      @jhtml('helper.browseWidgets.createdOnField', $widthPct['#8'], $item)
 
       {{-- COLUMN #9: Hits Counter --}}
-      <td width="{{ $widthPct['#9'] }}%" class="center row-hits">
-        @jhtml('helper.commonWidgets.hits', $item->hits)
-      </td>
+      @jhtml('helper.browseWidgets.hitsField', $widthPct['#9'], $item)
     </tr>
   @endforeach
 @stop

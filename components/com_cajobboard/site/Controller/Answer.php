@@ -29,14 +29,13 @@ class Answer extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Answers';
+		parent::__construct($container, $config);
 
-		// $this->resetPredefinedTaskList();
+		$this->setModelName('Answers');
 
-    $this->addPredefinedTaskList(array(
-
+		$this->addPredefinedTaskList(array(
+			'downvote',
+			'upvote'
 		));
-
-    parent::__construct($container, $config);
   }
 }

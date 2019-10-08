@@ -28,14 +28,14 @@ class Report extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Reports';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Reports');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

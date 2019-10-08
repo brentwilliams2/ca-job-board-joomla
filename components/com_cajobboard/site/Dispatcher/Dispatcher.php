@@ -18,9 +18,6 @@ if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 use \Calligraphic\Cajobboard\Admin\Dispatcher\Dispatcher as AdminDispatcher;
 use \FOF30\Container\Container;
 
-// Classes injected into Container
-
-
 // no direct access
 defined('_JEXEC') or die;
 

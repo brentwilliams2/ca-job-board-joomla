@@ -28,15 +28,15 @@ class Reference extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'References';
+    parent::__construct($container, $config);
+
+    $this->setModelName('References');
 
 		// $this->resetPredefinedTaskList();
 
 		$this->addPredefinedTaskList(array(
       'sendReferenceRequest'
 		));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -55,7 +55,7 @@ class Reference extends BaseController
   /**
 	 *
 	 */
-  public function buildUrlQuery($object)
+  protected function buildUrlQuery($object)
   {
     /*
       @TODO: Use a URL that has the username embedded as a query string to give to former employers as a link

@@ -28,14 +28,14 @@ class Review extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Reviews';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Reviews');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

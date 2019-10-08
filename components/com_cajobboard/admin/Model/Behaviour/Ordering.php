@@ -47,7 +47,7 @@ class Ordering extends Observer
     $sessionOrderDir = $model->getContainer()->input->get('filter_order_Dir');
 
     $sessionOrderBy  ? $orderBy = $sessionOrderBy : $orderBy;
-    $sessionOrderDir ? $orderDiry = $sessionOrderDiry : $orderDir;
+    $sessionOrderDir ? $orderDir = $sessionOrderDir : $orderDir;
 
     // if filter_order is set to primary key field (probably
     // set by default), change it to order by default value.

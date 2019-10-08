@@ -28,15 +28,15 @@ class ImageObject extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-		$this->modelName = 'ImageObjects';
+		parent::__construct($container, $config);
+
+		$this->setModelName('ImageObjects');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -49,5 +49,41 @@ class ImageObject extends BaseController
     Component parameters related to images:
 
         thumbnail-width, small-width, medium-width, large-width
-  */
+
+
+		SEE https://docs.joomla.org/Retrieving_request_data_using_JInput for input object files method
+				to provide a nicer array output from uploaded files in an HTML form:
+
+		<form action="<?php echo JRoute::_('index.php?option=com_example&task=file.submit'); ?>" enctype="multipart/form-data" method="post">
+			<input type="file" name="jform1[test][]" />
+			<input type="file" name="jform1[test][]" />
+			<input type="submit" value="submit" />
+		</form>
+
+		$files = $input->files->get('jform1');
+
+		Array
+		(
+			[test] => Array
+			(
+				[0] => Array
+					(
+						[name] => youtube_icon.png
+						[type] => image/png
+						[tmp_name] => /tmp/phpXoIpSD
+						[error] => 0
+						[size] => 34409
+					)
+
+				[1] => Array
+					(
+						[name] => Younger_Son_2.jpg
+						[type] => image/jpeg
+						[tmp_name] => /tmp/phpWDE7ye
+						[error] => 0
+						[size] => 99529
+					)
+			)
+		)
+	*/
 }

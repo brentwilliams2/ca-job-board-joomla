@@ -3,9 +3,9 @@
   * Job Postings Item for Site Browse View Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version   October 5, 2019
   * @author    Calligraphic, LLC http://www.calligraphic.design
-  * @copyright Copyright (C) 2018 Calligraphic, LLC
+  * @copyright Copyright (C) 2019 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
   *
   */
@@ -13,49 +13,22 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  use \Calligraphic\Cajobboard\Site\Helper\Format;
-  use \Joomla\CMS\Language\Text;
-  use \Joomla\CMS\Helper\TagsHelper;
+  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                    $this */
 
-  // current user ID
-  $userId = $this->container->platform->getUser()->id;
+  // Using an include so that local vars in the included file are in scope here also
+  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
+  include(JPATH_COMPONENT . '/ViewTemplates/JobPostings/local_vars.blade.php');
 
-  // model data fields
-
-  $logoSource           = $this->container->template->parsePath($item->jobLocation->Logo->thumbnail);
-  $logoCaption          = $item->jobLocation->Logo->caption;
-  $employerID           = $item->hiringOrganization->organization_id;
-
-  // Setup Tags
-  $tags = new TagsHelper;
-  $tags->getItemTags('com_cajobboard.jobpostings', $item->job_posting_id);
-
-  // @TODO: "Share this" social media button on job
-
-  $aggregateReview = new stdClass();
-
-  foreach ( $this->aggregateReviews as $aggregateReviewIteratee )
-  {
-    if ($aggregateReviewIteratee->job_posting_id == $item->job_posting_id)
-    {
-      $aggregateReview = $aggregateReviewIteratee;
-      break;
-    }
-  }
-
-  $formattedPay = $this->container->JobPosting->formatPayToValueOrRange(
-    $item->base_salary__value,
-    $item->base_salary__min_value,
-    $item->base_salary__max_value,
-    $item->base_salary__duration
-  );
+  // The name of the crud view
+  $crud = 'browse';
 ?>
 
 {{--
   #1 - Employer Logo, link to Employer Profile
 --}}
 @section('employer_logo')
-  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employerID)">
+  <a class="media-object employer-logo" href="@route('index.php?option=com_cajobboard&view=Organizations&task=read&id='. (int) $employerID)">
     <img src="{{{ $logoSource }}}" alt="{{{ $logoCaption }}}">
   </a>
 @overwrite
@@ -65,7 +38,7 @@
   #2 - Job Title
 --}}
 @section('job_title')
-  <a class="job-title" href="@route('index.php?option=com_cajobboard&view=JobPosting&task=read&id='. (int) $item->job_posting_id)">
+  <a class="job-title" href="@route('index.php?option=com_cajobboard&view=JobPostings&task=read&id='. (int) $item->job_posting_id)">
     <span>{{{ $jobTitle }}}</span>
   </a>
 @overwrite
@@ -90,7 +63,7 @@
   #4 - Name of Employer
 --}}
 @section('employer_name')
-  <a class="employer-name" href="@route('index.php?option=com_cajobboard&view=Employer&task=read&id='. (int) $employerID)">
+  <a class="employer-name" href="@route('index.php?option=com_cajobboard&view=Organizations&task=read&id='. (int) $employerID)">
     <span>{{{ $item->hiringOrganization->legal_name }}}</span>
   </a>
 @overwrite

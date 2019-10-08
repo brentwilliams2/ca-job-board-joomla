@@ -28,14 +28,14 @@ class OrganizationRole extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'OrganizationRoles';
+		parent::__construct($container, $config);
+
+    $this->setModelName('OrganizationRoles');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

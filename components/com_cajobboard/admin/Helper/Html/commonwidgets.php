@@ -14,7 +14,8 @@
  * These are based on the Akeeba FEF (front-end framework) helpers included in FOF with revised HTML output
  */
 
-// Can't namespace since this class is used through Joomla's autoloader and JHtml system
+// Can't namespace since this class is used through Joomla's autoloader and JHtml system, and class
+// names have to be lower-cased and follow a naming convention for the JLoader scheme to work.
 
 // no direct access
 defined('_JEXEC') or die;

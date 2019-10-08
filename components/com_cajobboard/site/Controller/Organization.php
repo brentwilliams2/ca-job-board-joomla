@@ -28,14 +28,14 @@ class Organization extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-		$this->modelName = 'Organizations';
+		parent::__construct($container, $config);
+
+		$this->setModelName('Organizations');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

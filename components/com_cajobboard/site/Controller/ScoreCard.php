@@ -28,14 +28,14 @@ class ScoreCard extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'ScoreCards';
+		parent::__construct($container, $config);
+
+    $this->setModelName('ScoreCards');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -56,12 +56,9 @@ use \FOF30\Container\Container;
  * @property string         $description      A description of the answer.
  *
  * SCHEMA: CreativeWork
- * @property QAPage         $isPartOf         This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id).
  * @property string         $text             The actual text of the answer itself.
- * @property Person         $Author           The author of this comment.  FK to #__cajobboard_persons.
  *
  * SCHEMA: Answer
- * @property Question       $parentItem       The question this answer is intended for. FK to #__cajobboard_questions(question_id).
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
@@ -75,6 +72,6 @@ class Answers extends \Calligraphic\Cajobboard\Admin\Model\Answers
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    parent::__construct($container, $config);
+		parent::__construct($container, $config);
   }
 }

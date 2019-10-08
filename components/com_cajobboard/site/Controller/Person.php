@@ -27,14 +27,14 @@ class Person extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Persons';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Persons');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-		parent::__construct($container, $config);
 	}
 }

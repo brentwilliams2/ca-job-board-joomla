@@ -28,14 +28,14 @@ class Comment extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Comments';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Comments');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

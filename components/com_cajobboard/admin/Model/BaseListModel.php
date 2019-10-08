@@ -64,4 +64,26 @@ class BaseListModel extends DataModel
     /* Parent constructor */
     parent::__construct($container, $config);
   }
+
+
+
+	/**
+   * @TODO: Overridden to fix logic error. Submit PR. See BaseDataModel and BaseTreeModel.
+	 * Method to compute the default name of the asset item (in table #__assets).
+	 *
+	 * @throws  NoAssetKey
+	 *
+	 * @return  string
+	 */
+	public function getAssetName()
+	{
+		// If there is no assetKey defined, stop here, or we'll get a wrong name
+		if (!$this->_assetKey)
+		{
+			throw new NoAssetKey;
+		}
+
+		// e.g. com_cajobboard.answer.2
+		return $this->_assetKey . '.' . $this->getId();
+	}
 }

@@ -31,15 +31,15 @@ class EmailMessages extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'EmailMessages';
+    parent::__construct($container, $config);
+
+    $this->setModelName('EmailMessages');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
       'addByPersonId'
 		));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -48,7 +48,7 @@ class EmailMessages extends BaseController
 	 *
 	 * @return  void
 	 */
-  public function addByPersonId()
+  protected function addByPersonId()
   {
     $recipientId = $this->input->get('recipient_id', '0');
 

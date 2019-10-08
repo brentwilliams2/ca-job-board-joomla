@@ -21,9 +21,9 @@ defined('_JEXEC') or die;
 
 class BaseController extends DataController
 {
-  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\ToggleField;          // Method to toggle boolean state fields
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect;             // Utilities for handling redirects in controller classes
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\SetFieldOnModels;     // Method to handle XHR or Joomla! admin button bulk updates to a model property, e.g. 'upvote_count'
 
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -33,6 +33,8 @@ class BaseController extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+    parent::__construct($container, $config);
+
     $this->addPredefinedTaskList( array(
       'add',
       'apply',
@@ -50,29 +52,5 @@ class BaseController extends DataController
       'unfeature',
       'unpublish'
     ));
-
-    parent::__construct($container, $config);
-  }
-
-
-  /**
-	 * Set featured status to
-	 *
-	 * @return  void
-	 */
-  public function feature()
-  {
-    $this->toggleField('featured', true);
-  }
-
-
-  /**
-   * Unactivate the selected user(s)
-   *
-   * @return  void
-   */
-  public function unfeature()
-  {
-    $this->toggleField('featured', false);
   }
 }

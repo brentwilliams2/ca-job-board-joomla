@@ -39,4 +39,79 @@
 .rating {
   font-size: 1.5em;
   /* 30px/20=1.5em */ }
+
+#report-item-modal .modal-footer div.report-footer-button-row button#submit-item-report-btn {
+  margin-left: 5px !important; }
+
+.browse.common-header {
+  background-color: #eee;
+  margin: 10px 0;
+  padding: 10px; }
+
+.browse.common-list .browse.common-list-item {
+  background-color: #eee;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
+
+.browse.common-list .browse.common-list-item.featured {
+  background-attachment: scroll;
+  background-image: url("../images/featured-label-72.png");
+  background-position: right top;
+  background-repeat: no-repeat; }
+
+.browse.common-list .browse.common-title {
+  color: #00a0d6;
+  font-size: 18px;
+  font-weight: bold; }
+  .browse.common-list .browse.common-title:hover, .browse.common-list .browse.common-title:focus {
+    color: #5bc0de;
+    text-decoration: none; }
+
+.browse.common-list .browse.common-text {
+  color: #777777; }
+
+.browse.common-list .author-name {
+  color: #00a0d6;
+  text-decoration: none; }
+  .browse.common-list .author-name:hover, .browse.common-list .author-name:focus {
+    color: #777777;
+    text-decoration: none; }
+
+.browse.common-list .author-last-seen {
+  color: #777777; }
+
+.browse.common-list .browse.common-created-on {
+  color: #777777; }
+
+.item.common-item {
+  background-color: #eee;
+  margin-top: 12px !important;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px; }
+  .item.common-item .item.common-title {
+    color: #00a0d6;
+    font-size: 18px;
+    font-weight: bold; }
+  .item.common-item .item.common-text {
+    color: #777777; }
+  .item.common-item .author-name {
+    color: #00a0d6;
+    text-decoration: none; }
+    .item.common-item .author-name:hover, .item.common-item .author-name:focus {
+      color: #777777;
+      text-decoration: none; }
+  .item.common-item .author-last-seen {
+    color: #777777; }
+  .item.common-item .item.common-created-on {
+    color: #777777; }
+
+.edit.common-edit-container .form-header {
+  text-align: center; }
+  .edit.common-edit-container .form-header h3 {
+    color: #00a0d6; }
 /*# sourceMappingURL=frontend.css.map */

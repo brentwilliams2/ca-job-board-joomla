@@ -28,13 +28,7 @@ class Answer extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Answers';
-
-		// $this->resetPredefinedTaskList();
-
-    $this->addPredefinedTaskList(array(
-
-		));
+    $this->setModelName('Answers');
 
     parent::__construct($container, $config);
   }

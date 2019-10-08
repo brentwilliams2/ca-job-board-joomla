@@ -134,6 +134,44 @@ abstract class HelperEditWidgets
 
 
   /**
+	 * Generic number input widget
+   *
+   * @param   string                  $fieldName  The name of the model field this textbox should be generated for
+   * @param   \FOF30\Model\DataModel  $item       The instance item model
+	 *
+	 * @return  string
+	 */
+	public static function inputNumber($fieldName, $item)
+	{
+    $uppercaseFieldName = strtoupper($fieldName);
+    $fieldValue = $item->$fieldName;
+
+    $tooltipTitle = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_TOOLTIP_TITLE');
+    $tooltipText = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_TOOLTIP_TEXT');
+    $labelText = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_LABEL');
+
+    $html = <<<EOT
+<fieldset
+  name="$fieldName"
+  class="control-group hasTip"
+  title="$tooltipTitle::$tooltipText"
+>
+  <div class="control-label">
+    <label for="$fieldName">
+      $labelText
+    </label>
+  </div>
+  <div class="controls">
+    <input type="number" step="1" name="$fieldName" id="$fieldName" value="$fieldValue"/>
+  </div>
+</fieldset>
+EOT;
+
+		return $html;
+  }
+
+
+  /**
 	 * "Language" control for edit sidebar
 	 *
 	 * @return  string
@@ -197,6 +235,7 @@ EOT;
 
     return $html;
   }
+
 
   /**
 	 * "Parent" widget for models that have an ownership hierarchy
@@ -315,6 +354,44 @@ EOT;
 </script>
 EOT;
     }
+		return $html;
+  }
+
+
+  /**
+	 * Generic textbox widget
+   *
+   * @param   string                  $fieldName  The name of the model field this textbox should be generated for
+   * @param   \FOF30\Model\DataModel  $item       The instance item model
+	 *
+	 * @return  string
+	 */
+	public static function textbox($fieldName, $item)
+	{
+    $uppercaseFieldName = strtoupper($fieldName);
+    $fieldValue = $item->$fieldName;
+
+    $tooltipTitle = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_TOOLTIP_TITLE');
+    $tooltipText = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_TOOLTIP_TEXT');
+    $labelText = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_LABEL');
+
+    $html = <<<EOT
+<fieldset
+  name="$fieldName"
+  class="control-group hasTip"
+  title="$tooltipTitle::$tooltipText"
+>
+  <div class="control-label">
+    <label for="$fieldName">
+      $labelText
+    </label>
+  </div>
+  <div class="controls">
+    <textarea name="$fieldName" id="$fieldName" rows="5">$fieldValue</textarea>
+  </div>
+</fieldset>
+EOT;
+
 		return $html;
   }
 

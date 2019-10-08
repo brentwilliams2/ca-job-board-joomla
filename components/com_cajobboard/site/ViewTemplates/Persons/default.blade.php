@@ -25,7 +25,7 @@
 
     @if ($this->showLimitBox)
       <span class="pagination-select pull-right">
-        @include('site:com_cajobboard/Common/PaginationSelectResultsLimit')
+        @include('site:com_cajobboard/Common/pagination_results_limit')
       </span>
     @endif
 

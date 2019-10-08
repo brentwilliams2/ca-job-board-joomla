@@ -28,6 +28,8 @@ class BackgroundCheck extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
+		parent::__construct($container, $config);
+
     $this->modelName = 'BackgroundChecks';
 
 		// $this->resetPredefinedTaskList();
@@ -35,7 +37,5 @@ class BackgroundCheck extends BaseController
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -3,9 +3,9 @@
   * Admin Common Browse View Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version  September 12, 2019
   * @author    Calligraphic, LLC http://www.calligraphic.design
-  * @copyright Copyright (C) 2018 Calligraphic, LLC
+  * @copyright Copyright (C) 2019 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
   *
   * Use this by extending it, using -at- instead of the at-sign
@@ -48,6 +48,12 @@
   defined('_JEXEC') or die;
 
   use \Calligraphic\Cajobboard\Admin\Helper\LinkBar;
+  use \FOF30\Utils\FEFHelper\BrowseView;
+  use \Joomla\CMS\HTML\HTMLHelper;
+
+  // Javascript libraries to include
+  HTMLHelper::_('behavior.tooltip');
+  HTMLHelper::_('formbehavior.chosen', 'select');
 
   /** @var  FOF30\View\DataView\Html  $this */
 ?>
@@ -57,14 +63,37 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('browse-filters')
-@stop
+  <span class="filter-search btn-group pull-left">
+    {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
+    {{-- @TODO: modal is empty, no drop-down of author list: need to write helper to do join and get author names --}}
+    @searchfilter('created-by', null, \JText::_('COM_CAJOBBOARD_FILTER_BY_AUTHOR'))
+  </span>
 
+  {{-- @TODO: Expand search options --}}
 
-{{-----------------------------------------------------------------------------}}
-{{-- SECTION: Table column headers and filters --------------------------------}}
-{{-----------------------------------------------------------------------------}}
+  {{-- @TODO: Clear filters --}}
 
-@section('browse-table-header')
+  {{-- @TODO: Choose sort order (lists different options - by date, name, etc.) --}}
+
+  {{-- @TODO: Number of results to show per page --}}
+
+  <span class="filter-search btn-group pull-left">
+    {{ BrowseView::publishedFilter('enabled', 'JSTATUS') }}
+  </span>
+
+  <span class="filter-search btn-group pull-left">
+    {{ BrowseView::accessFilter('access', 'JFIELD_ACCESS_LABEL') }}
+  </span>
+
+  <span class="pagination-select btn-group pull-right">
+    {{ $this->pagination->getLimitBox() }}
+  </span>
+
+  {{-- @TODO: Filter by category --}}
+
+  {{-- @TODO: Filter by language, need to helper to handle '*'  --}}
+
+  {{-- @TODO: Filter by  tags --}}
 @stop
 
 
@@ -78,21 +107,6 @@
       @lang('COM_CAJOBBOARD_COMMON_NORECORDS')
     </td>
   </tr>
-@stop
-
-
-{{-----------------------------------------------------------------------------}}
-{{-- SECTION: Table body shown when records are present. ----------------------}}
-{{-----------------------------------------------------------------------------}}
-
-@section('browse-table-body-withrecords')
-  <?php $i = 0; ?>
-
-  @foreach($this->items as $row)
-    <tr>
-      {{-- IMPLEMENT IN CHILD CLASSES --}}
-    </tr>
-  @endforeach
 @stop
 
 
@@ -114,6 +128,7 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('browse-hidden-fields')
+  {{-- IMPLEMENT IN CHILD CLASSES IF ADD'L HIDDEN FIELDS REQUIRED --}}
 @stop
 
 

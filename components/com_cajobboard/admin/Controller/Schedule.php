@@ -28,14 +28,14 @@ class Schedule extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Schedules';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Schedules');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -28,14 +28,14 @@ class EmploymentType extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'EmploymentTypes';
+		parent::__construct($container, $config);
+
+    $this->setModelName('EmploymentTypes');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

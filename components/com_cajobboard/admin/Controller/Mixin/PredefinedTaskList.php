@@ -59,13 +59,19 @@ trait PredefinedTaskList
    *
 	 * @param   array  $taskList  The task list to register
 	 */
-	public function addPredefinedTaskList(array $taskList)
+	protected function addPredefinedTaskList(array $taskList)
 	{
+		if (empty($taskList))
+		{
+			return;
+		}
+
     // merge existing tasks with new tasks
     $tasks = array_merge($this->predefinedTaskList, $taskList);
 
-		// First, unregister all known tasks which are not in the taskList
-    $allTasks = $this->getTasks();
+		// First, unregister all known tasks which are not in the taskList. The taskList is
+		// built using reflection of all public methods in the Controller constructor.
+		$allTasks = $this->getTasks();
 
 		foreach ($allTasks as $task)
 		{
@@ -88,7 +94,7 @@ trait PredefinedTaskList
 	/**
 	 * Reset the predefined task list
 	 */
-	public function resetPredefinedTaskList()
+	protected function resetPredefinedTaskList()
 	{
     $this->predefinedTaskList = array();
   }

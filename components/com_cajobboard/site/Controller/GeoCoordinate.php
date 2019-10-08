@@ -28,14 +28,14 @@ class GeoCoordinate extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'GeoCoordinates';
+		parent::__construct($container, $config);
+
+    $this->setModelName('GeoCoordinates');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

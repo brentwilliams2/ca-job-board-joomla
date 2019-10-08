@@ -2,9 +2,9 @@
  * Styles for Site Job Posting Views
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   October 3, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -85,8 +85,7 @@
 .job-saved-button,
 .guest-email-job-button,
 .registered-email-job-button,
-.guest-report-job-button,
-.report-job-button {
+.job-posting-report-btn {
   margin-left: 15px !important; // sass-lint:disable-line no-important
 }
 
@@ -99,18 +98,6 @@
 //#email-a-job-modal {}
 
 #submit-job-to-email-button { // sass-lint:disable-line no-ids
-  margin-left: 5px !important; // sass-lint:disable-line no-important
-}
-
-
-//-----------------------------------------------------------------------------
-// JobPostings ViewTemplate - Report Job modal               default.blade.php
-//-----------------------------------------------------------------------------
-
-// Modal dialog shown when "Report Job" button pushed
-//#report-job-modal {}
-
-#submit-job-report-button { // sass-lint:disable-line no-ids
   margin-left: 5px !important; // sass-lint:disable-line no-important
 }
 
@@ -147,5 +134,5 @@
 //-----------------------------------------------------------------------------
 
 .employer-name {
-  
+
 }

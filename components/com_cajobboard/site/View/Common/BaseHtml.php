@@ -11,23 +11,24 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
-use \Joomla\CMS\Factory;
-use \Joomla\Registry\Registry;
-use \Joomla\CMS\Pagination\Pagination;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\HTML\HTMLHelper;
-use \FOF30\Container\Container;
+use Calligraphic\Cajobboard\Site\View\Exception\InvalidArgument;
 use FOF30\Model\DataModel;
 use FOF30\Model\DataModel\Collection;
+use \FOF30\Container\Container;
 use \FOF30\View\DataView\Html;
-use Calligraphic\Cajobboard\Site\View\Exception\InvalidArgument;
+use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Pagination\Pagination;
+use \Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
 
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
-HTMLHelper::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Html');
+// Add a path to the front-end JHTML widget directory
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/Helper/Html');
 
 class BaseHtml extends Html
 {
@@ -36,7 +37,15 @@ class BaseHtml extends Html
 	 *
 	 * @var  Registry
 	 */
-  protected $componentParams;
+	protected $componentParams;
+
+
+	/**
+	 * A pagination helper object, set for browse views by onBeforeBrowse method
+	 *
+	 * @var  \Calligraphic\Cajobboard\Site\Helper\Pagination
+	 */
+  protected $paginationHelper;
 
 
 	/**
@@ -47,17 +56,17 @@ class BaseHtml extends Html
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    parent::__construct($container, $config);
+		parent::__construct($container, $config);
+
+		// Create the lists object
+    $this->lists = new \stdClass();
 
     // Get component parameters
     $this->componentParams = ComponentHelper::getParams('com_cajobboard');
 
-		// Load CSS for admin view
-		if ( $this->container->platform->isBackend() )
-		{
-			$this->addCssFile('media://com_cajobboard/css/backend.css');
-		}
-  }
+		// Load CSS for site view
+		$this->addCssFile('media://com_cajobboard/css/frontend.css');
+	}
 
 
   /**
@@ -118,10 +127,13 @@ class BaseHtml extends Html
 		}
 
 		// Assign items to the view
-  	$this->items = $model->get();
+		$this->items = $model->get();
+
+		// Create a factory Pagination helper object and assign it to an object property
+		$this->paginationHelper = $this->getContainer()->Pagination;
 
     // Set the current pagination parameters from the state on the model and view
-		$this->setPaginationParams($model);
+		$this->paginationHelper->setPaginationObject($this, $model);
 
 		return true;
 	}
@@ -144,7 +156,7 @@ class BaseHtml extends Html
 	 * @return string		The 'where' clause string to use
 	 *
 	 * Usage:
-	 *   $db = $model->getDbo();
+	 *   $db = $this->getModel()->getDbo();
    *   return $db->qn('price') . ' = ' . $db->q(12.34);
 	 */
 	protected function getBrowseViewWhereClause()
@@ -154,44 +166,58 @@ class BaseHtml extends Html
 
 
 	/**
-	 * Set the pagination object for this view
-   *
-   * @param  DataModel  $model    The model object for this view
+	 * Set the item count object property
+	 *
+	 * @param 	int 	$value
+	 *
+	 * @return 	void
+	 */
+	public function setItemCount($value)
+	{
+		return $this->itemCount = $value;
+	}
+
+
+	/**
+	 * Set the pagination object of this view
+	 *
+	 * @param 	Pagination 	$object		A Joomla! Pagination object to set on the property.
 	 *
 	 * @return void
 	 */
-	public function setPaginationParams(DataModel $model)
+	public function setPagination(Pagination $object)
 	{
-    // Display limits
-		$defaultLimit = 20;
+		return $this->pagination = $object;
+	}
 
-		$this->itemCount = $model->count();
 
-  	// Create the lists object
-    $this->lists = new \stdClass();
-
-    if (!$this->container->platform->isCli())
-    {
-      $app = $this->container->platform->getApplication();
-      $defaultLimit = $app->get('list_limit', 20);
-    }
-
-    $this->lists->limitStart = $model->getState('limitstart', 0, 'int');
-    $this->lists->limit = $model->getState('limit', $defaultLimit, 'int');
-
-    $model->limitstart = $this->lists->limitStart;
-    $model->limit = $this->lists->limit;
-
-		// Ordering information
-		$this->lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
-    $this->lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
-
-		if ($this->lists->order_Dir)
+	/**
+	 * Magic get method. Handles magic properties:
+	 * $this->input  mapped to $this->container->input
+	 *
+	 * @param   string  $name  The property to fetch
+	 *
+	 * @return  mixed|null
+	 */
+	public function __set($property, $value)
+	{
+		if (property_exists($this, $property))
 		{
-			$this->lists->order_Dir = strtolower($this->lists->order_Dir);
+      $this->$property = $value;
     }
 
-		// Pagination
-    $this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
-  }
+    return $this;
+	}
+
+
+	/**
+	 * Magic get method. Handles magic properties:
+	 * $this->input  mapped to $this->container->input
+	 *
+	 * @return  boolean
+	 */
+	public function isUserLoggedIn()
+	{
+		return (bool) $this->getContainer()->platform->getUser()->id;
+	}
 }

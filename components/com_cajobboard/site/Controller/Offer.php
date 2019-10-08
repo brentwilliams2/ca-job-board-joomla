@@ -28,14 +28,14 @@ class Offer extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Offers';
+		parent::__construct($container, $config);
+		
+    $this->setModelName('Offers');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

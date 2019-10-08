@@ -12,11 +12,14 @@
 
 namespace Calligraphic\Cajobboard\Admin\Controller\Mixin;
 
-use \Joomla\CMS\Language\Text;
-use \Calligraphic\Cajobboard\Admin\Controller\Exception\FeatureToggleFailure;
-
 // no direct access
 defined('_JEXEC') or die;
+
+use \Calligraphic\Cajobboard\Admin\Controller\Exception\FeatureToggleFailure;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+
+// NOTE: Depends on Trait \Calligraphic\Cajobboard\Admin\Controller\Mixin\SetFieldOnModels
 
 trait Feature
 {
@@ -27,18 +30,7 @@ trait Feature
 	 */
 	public function feature()
 	{
-    $this->csrfProtection();
-
-    try
-    {
-      $this->toggleFeatured(true);
-    }
-    catch (\Exception $error)
-    {
-      throw new FeatureToggleFailure( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_FEATURE_TOGGLE_FAILURE'), 500 );
-    }
-
-    $this->setRedirect($this->getRedirectUrl(), $this->getRedirectFlashMsg('feature'), 'message');
+    $this->setFieldOnModels('featured', true);
   }
 
 
@@ -49,46 +41,6 @@ trait Feature
 	 */
 	public function unfeature()
 	{
-    $this->csrfProtection();
-
-    try
-    {
-      $this->toggleFeatured(false);
-    }
-    catch (\Exception $error)
-    {
-      throw new FeatureToggleFailure( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_FEATURE_TOGGLE_FAILURE') );
-    }
-
-    $this->setRedirect($this->getRedirectUrl(), $this->getRedirectFlashMsg('unfeature'), 'message');
-  }
-
-
-  /**
-	 * Toggle the 'feature' field value for the selected item(s)
-   *
-   * @param  bool $isFeatured   Whether this item should be set to featured, or unfeatured
-	 *
-	 * @return  void|string   Returns error message on exception
-	 */
-	public function toggleFeatured($isFeatured = false)
-	{
-    $model = $this->getModel()->savestate(false);
-    $ids   = $this->getIDsFromRequest($model, false);
-
-		try
-		{
-      $status = true;
-
-			foreach ($ids as $id)
-			{
-				$model->find($id);
-				$model->setFeaturedState($isFeatured);
-			}
-		}
-		catch (\Exception $e)
-		{
-			throw new FeatureToggleFailure( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_FEATURE_TOGGLE_FAILURE') );
-    }
+    $this->setFieldOnModels('featured', false);
   }
 }

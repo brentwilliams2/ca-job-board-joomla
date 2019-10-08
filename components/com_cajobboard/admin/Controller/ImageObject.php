@@ -33,15 +33,15 @@ class ImageObject extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'ImageObjects';
+		parent::__construct($container, $config);
+
+    $this->setModelName('ImageObjects');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-		parent::__construct($container, $config);
   }
 
   // category params of interest:  enforce_aspect_ratio, thumbnail_aspect_ratio, image_aspect_ratio

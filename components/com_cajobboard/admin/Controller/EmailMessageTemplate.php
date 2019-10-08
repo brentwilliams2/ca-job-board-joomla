@@ -30,8 +30,28 @@ use \Joomla\CMS\Language\Text;
 
 class EmailTemplate extends DataController
 {
+	/*
+	 * Overridden. Limit the tasks we're allowed to execute.
+	 *
+	 * @param   Container $container
+	 * @param   array     $config
+	 */
+	public function __construct(Container $container, array $config = array())
+	{
+    $this->setModelName('EmailTemplates');
+
+		// $this->resetPredefinedTaskList();
+
+    $this->addPredefinedTaskList(array(
+
+		));
+
+    parent::__construct($container, $config);
+	}
+
+
   // Added to toolbar in admin, sends test email
-	public function testTemplate()
+	protected function testTemplate()
 	{
 		$id = $this->input->getInt('akeebasubs_emailtemplate_id', 0);
 

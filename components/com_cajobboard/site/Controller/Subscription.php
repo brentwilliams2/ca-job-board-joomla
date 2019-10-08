@@ -29,14 +29,14 @@ class Subscription extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Subscriptions';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Subscriptions');
 
 		// $this->resetPredefinedTaskList();
 
 		$this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -28,14 +28,14 @@ class DataFeedTemplate extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'DataFeedTemplates';
+		parent::__construct($container, $config);
+
+    $this->setModelName('DataFeedTemplates');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

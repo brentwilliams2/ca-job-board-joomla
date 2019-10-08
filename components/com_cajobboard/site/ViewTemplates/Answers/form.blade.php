@@ -3,11 +3,10 @@
   * Answers Site Edit View Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version   September 12, 2019
   * @author    Calligraphic, LLC http://www.calligraphic.design
-  * @copyright Copyright (C) 2018 Calligraphic, LLC
+  * @copyright Copyright (C) 2019 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
-  *
   */
 
   use \Joomla\CMS\Language\Text;
@@ -15,179 +14,65 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
-  $this->container->AssetFiles->addComponentCss($this);
-  $this->container->AssetFiles->addViewJavascript($this);
-
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers $item */
+  /** @var  FOF30\View\DataView\Html                    $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
   $item = $this->getItem();
 
-  // model data fields
-  $answerId       = $item->answer_id;
-  //$created_by     = $item->created_by;      // userid of the creator of this answer.
-  $createdOn      = $this->container->Format->getCreatedOnText($item->created_on);
-  //$description    = $item->description;     // Text of the answer.
-  //$downvoteCount  = $item->downvote_count;  // Downvote count for this item.
-  //$featured       = $item->featured;        // bool whether this answer is featured or not
-  //$hits           = $item->hits;            // Number of hits this answer has received
-  //$isPartOf       = $item->isPartOf;        // This property points to a QAPage entity associated with this answer. FK to #__cajobboard_qapage(qapage_id)
-  //$modifiedBy     = $item->modified_by;     // userid of person that modified this answer.
-  $modifiedOn     = $this->container->Format->getCreatedOnText($item->modified_on);
-  $title          = $item->name;            // A title to use for the answer.
-  //$parentItem     = $item->parentItem;      // The question this answer is intended for. FK to #__cajobboard_questions(question_id)
-  //$Publisher      = $item->Publisher;       // The company that wrote this answer. FK to #__organizations(organization)id).
-  //$slug           = $item->slug;            // Alias for SEF URL
-  $text           = $item->text;            // The actual text of the answer itself.
-  //$upvoteCount    = $item->upvote_count;    // Upvote count for this item.
+  // Using an include so that local vars in the included file are in scope here also
+  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
 
-  // current user ID
-  $userId = $this->container->platform->getUser()->id;
+  // The name of the crud view
+  $crud = 'edit';
 
-  // URL to post the form to
-  $task = $this->getTask();
-  $componentName = $this->getContainer()->componentName;
-  $view = $this->getName();
-
-  $action  = 'index.php?option=' . $componentName . '&view=' . $view;
-
-  if ('edit' == $task)
-  {
-    $action = '&task=save&id=' . $answerId;
-  }
-  elseif ('add' == $task)
-  {
-    $action .= '&task=save';
-  }
-
-  $removeAction = 'index.php?option=' . $componentName . '&view=' . $view . '&task=remove&id=' . $answerId;
-
-  /*
-    Limit access to personally identifiable information:
-
-    @if ($this->getContainer()->platform->getUser()->authorise('com_cajobboard.pii', 'com_cajobboard'))
-      protected content
-    @endif
-   */
+  $isEditView = ('edit' == $task);
 ?>
-
-{{--
-#1 - Answer Title
---}}
-@section('answer_title')
-  <div class="answer_title">
-    {{-- link to individual answer --}}
-    <h4>
-      <label for="name">
-        @lang('COM_CAJOBBOARD_ANSWERS_TITLE_EDIT_LABEL')
-      </label>
-    </h4>
-
-    <input
-      type="text"
-      class="form-control"
-      name="name"
-      id="answer-title-input"
-      value="{{{ $title }}}"
-      placeholder="<?php echo $this->escape(isset($title) ? $title : null); ?>"
-    />
-  </div>
-@overwrite
-
-{{--
-#2 - Answer Text
---}}
-@section('answer_text')
-  <div class="answer_text">
-    <h4>
-      <label for="text">
-        @lang('COM_CAJOBBOARD_ANSWERS_EDIT_TEXT_LABEL')
-      </label>
-    </h4>
-
-    <textarea name="text" id="answer-text" class="form-control" rows="8"><?php echo $text ?></textarea>{{-- no whitespace in textarea --}}
-  </div>
-@overwrite
-
-{{--
-#3 - Answer Posted Date
---}}
-@section('answer_posted_date')
-  <span class="answer-posted-date">
-    @lang('COM_CAJOBBOARD_ANSWERS_POSTED_ON_BUTTON_LABEL')
-    {{ $createdOn }}
-  </span>
-@overwrite
-
-{{--
-#4 - Answer Last Modified Date
---}}
-@section('answer_modified_date')
-  @if ($modifiedOn)
-    <span class="answer-modified-date">
-      @lang('COM_CAJOBBOARD_ANSWERS_MODIFIED_ON_BUTTON_LABEL')
-      {{ $modifiedOn }}
-    </span>
-  @endif
-@overwrite
 
 {{--
   Responsive component
 --}}
 @section('answer-edit-container')
-  <form action="@route($action)" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
-    <div class="answer-edit-container">
+  <form action="{{ $postAction }}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
+    <div class="@jhtml('helper.editwidgets.getAttributeClass', 'edit-container', $prefix, $crud)">
 
-      <header class="form-header">
-        <h3>
-          @if($task === 'edit')
-            @lang('COM_CAJOBBOARD_ANSWERS_EDIT_HEADER')
-          @else
-            @lang('COM_CAJOBBOARD_ANSWERS_ADD_HEADER')
-          @endif
-        </h3>
+      <header class="form-header well">
+        @jhtml('helper.editwidgets.header', $isEditView, $humanViewNameSingular, $prefix, $crud)
       </header>
 
       <div class="form-group">
-        <h4>@yield('answer_title')</h4>
+        @jhtml('helper.editwidgets.title', $title, $titlePlaceholder, $humanViewNameSingular, $prefix, $crud)
       </div>
 
       <div class="form-group">
-        <p>@yield('answer_text')</p>
+        @jhtml('helper.editwidgets.text', $text, $textPlaceholder, $humanViewNameSingular, $prefix, $crud)
       </div>
 
-      @if ('edit' == $task)
-
+      @if ($isEditView)
         <div class="form-group">
-          @yield('answer_posted_date')
+          @jhtml('helper.editwidgets.createdOn', $createdOn, $prefix, $crud)
         </div>
 
-        <div class="form-group">
-          @yield('answer_modified_date')
-        </div>
-
-      <a class="delete-answer-link" onClick="removeSubmit( {{ $answerId }} )">
-          <button type="button" class="btn btn-danger btn-primary btn-answer delete-answer-button pull-right">
-            @lang('COM_CAJOBBOARD_DELETE_ANSWERS_BUTTON_LABEL')
-          </button>
-        </a>
-
+        @if ( isset($modifiedOn) )
+          <div class="form-group">
+            @jhtml('helper.editwidgets.modifiedOn', $modifiedOn, $prefix, $crud)
+          </div>
+        @endif
       @endif
 
-      <button class="btn btn-primary answer-submit pull-right" type="submit">
-        @lang('JAPPLY')
-      </button>
+      @jhtml('helper.editwidgets.submit', $prefix, $crud)
 
+      @if ($isEditView)
+        @jhtml('helper.editwidgets.delete', $canUserEdit, $itemId, $humanViewNameSingular, $prefix, $crud)
+      @endif
+
+      @jhtml('helper.editwidgets.cancel', $itemViewLink, $prefix, $crud)
     </div>
 
-    {{-- Hidden form fields --}}
-    <div class="cajobboard-form-hidden-fields">
-      <input type="hidden" name="@token()" value="1"/>
-    </div>
+    {{-- Hidden CSRF form field --}}
+    @jhtml('helper.editwidgets.hiddenCsrfField')
   </form>
 
-   {{-- Form with CSRF field for remove action --}}
-  <form action="@route($removeAction)" method="post" name="removeForm" id="removeForm-{{ $answerId }}">
-    <input type="hidden" name="@token()" value="1"/>
-  </form>
-
+  {{-- Form with CSRF field for remove action --}}
+  @if ($isEditView)
+    @jhtml('helper.commonwidgets.removeActionCsrfField', $removeAction, $itemId)
+  @endif
 @show

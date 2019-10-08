@@ -1,6 +1,6 @@
 <?php
 /**
- * Application Letters Sit HTML View
+ * Application Letters Site HTML View
  *
  * @package   Calligraphic Job Board
  * @version   September 29, 2019
@@ -9,10 +9,10 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
-namespace Calligraphic\Cajobboard\Sit\View\ApplicationLetters;
+namespace Calligraphic\Cajobboard\Site\View\ApplicationLetters;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Sit\View\Common\BaseHtml;
+use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
 
 // no direct access
 defined('_JEXEC') or die;

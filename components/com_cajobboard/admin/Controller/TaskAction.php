@@ -28,14 +28,14 @@ class TaskAction extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'TaskActions';
+		parent::__construct($container, $config);
+
+    $this->setModelName('TaskActions');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -59,7 +59,7 @@ class User
 	 */
 	public function lastSeen($date)
 	{
-    return Text::_('COM_CAJOBBOARD_ANSWERS_AUTHOR_LAST_SEEN_BUTTON_LABEL') . ' ' . $this->container->Format->convertToTimeAgoString($date);
+    return Text::_('COM_CAJOBBOARD_AUTHOR_LAST_SEEN_BUTTON_LABEL') . ' ' . $this->container->Format->convertToTimeAgoString($date);
   }
 
 

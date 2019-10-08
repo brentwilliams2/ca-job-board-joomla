@@ -28,14 +28,14 @@ class FairCreditReportingAct extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'FairCreditReportingAct';
+		parent::__construct($container, $config);
+
+    $this->setModelName('FairCreditReportingAct');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

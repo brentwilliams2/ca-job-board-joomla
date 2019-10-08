@@ -27,14 +27,14 @@ class Profile extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Profiles';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Profiles');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 }

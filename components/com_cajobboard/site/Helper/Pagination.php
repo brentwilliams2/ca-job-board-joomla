@@ -1,18 +1,18 @@
 <?php
 /**
- * Extended Pagination object for use in site views
+ * Pagination Helper class for use in site views
  *
  * @package   Calligraphic Job Board
  * @version   July 13, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
  */
 
 namespace Calligraphic\Cajobboard\Site\Helper;
 
 use \FOF30\Model\DataModel;
+use \FOF30\View\DataView\DataViewInterface;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Pagination\Pagination as JoomlaPagination;
@@ -20,9 +20,6 @@ use \Joomla\CMS\Pagination\Pagination as JoomlaPagination;
 // no direct access
 defined('_JEXEC') or die;
 
-/**
- * Pagination Class. Provides a common interface for content pagination using Joomla! CMS classes.
- */
 class Pagination
 {
   /**
@@ -31,6 +28,15 @@ class Pagination
    * @property Container
    */
   protected $container = null;
+
+
+  /**
+   * Whether the combo select box to limit the number of records shown on a page
+   * should be displayed, based on config and the number of records from the query
+   *
+   * @property boolean
+   */
+  protected $showLimitBox = false;
 
 
   /**
@@ -43,112 +49,84 @@ class Pagination
 
 
   /**
-	 * Return a Joomla! Pagination instance.
-	 *
-	 * @param   integer         $total       The total number of items.
-	 * @param   integer         $limitstart  The offset of the item to start at.
-	 * @param   integer         $limit       The number of items to display per page.
-	 * @param   string          $prefix      The prefix used for request variables.
-	 * @param   CMSApplication  $app         The application object
+   * Whether the combo select box to limit the number of records shown on a page should be displayed
+   *
+	 * @return   boolean
 	 */
-  public function getJoomlaPaginator($total, $limitstart, $limit, $prefix = '', CMSApplication $app = null)
-  {
-    return new JoomlaPagination($total, $limitstart, $limit, $prefix, $app);
+	public function shouldDisplayLimitBox ()
+	{
+    return $this->showLimitBox;
   }
 
 
-  /**
-	 * Create the pagination options for this view. This logic is refactored
-   * out of the base Raw view's onBeforeBrowse() method.
+	/**
+	 * Set the pagination object for this view
    *
-   * @param  DataModel  $model    The model object for this view
+   * @param  DataViewInterface  $view     The view object
+   * @param  DataModel          $model    The model object for this view
 	 *
 	 * @return void
 	 */
-	public function getPaginationParams(DataModel $model)
+	public function setPaginationObject(DataViewInterface $view, DataModel $model)
 	{
     // Display limits
-    $defaultLimit = 20;
+		$defaultLimit = 20;
 
-  	// Create the lists object
-    $paginationOptions = new \stdClass();
+		$view->setItemCount( $model->count() );
 
-    $defaultLimit = $this->container->platform->getConfigOption('list_limit', 20);
-
-    $model->limitstart = $paginationOptions->limitStart = $model->getState('limitstart', 0, 'int');
-
-    $model->limit = $paginationOptions->limit = $model->getState('limit', $defaultLimit, 'int');
-
-    // Ordering information
-    // @TODO: display by "featured" at top and by date or other criteria like in admin section for Answers
-    $paginationOptions->order = $model->getState('filter_order', 'created_on', 'cmd');
-
-    $paginationOptions->order_Dir = $model->getState('filter_order_Dir', 'ASC', 'cmd');
-
-		if ($paginationOptions->order_Dir)
-		{
-			$paginationOptions->order_Dir = strtolower($paginationOptions->order_Dir);
+    if (!$view->getContainer()->platform->isCli())
+    {
+      $app = $view->getContainer()->platform->getApplication();
+      $defaultLimit = $app->get('list_limit', 20);
     }
 
-    // $paginationOptions->order      The field name to order by
-    // $paginationOptions->order_Dir  The direction to order by (ASC for ascending or DESC for descending)
-    // Alias of $this->setState('filter_order', $paginationOptions->order) and $this->setState('filter_order_Dir', $paginationOptions->order_Dir)
-    $model->orderBy($paginationOptions->order, $paginationOptions->order_Dir);
+    $lists = $view->getLists();
 
-    return $paginationOptions;
+    $lists->limitStart = $model->getState('limitstart', 0, 'int');
+    $lists->limit = $model->getState('limit', $defaultLimit, 'int');
+
+    $model->limitstart = $lists->limitStart;
+    $model->limit = $lists->limit;
+
+		// Ordering information
+		$lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
+    $lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
+
+		if ($lists->order_Dir)
+		{
+			$lists->order_Dir = strtolower($lists->order_Dir);
+    }
+
+    // Pagination
+    $Pagination = new JoomlaPagination($view->getItemCount(), $lists->limitStart, $lists->limit);
+
+    $view->setPagination($Pagination);
+
+    $this->initShowLimitBox( $model, $view->getItemCount() );
   }
 
 
   /**
-   * Create a Pagination object by querying the DB for a count of total items,
-   * based on the previous query filters used to actually fetch the data.
-   *
-   * @param  DataModel  $model    The model object for this view
-   * @param  \StdClass  $options  An object with properties
-	 *
-	 * @return void
-   */
-  public function getPaginator(DataModel $model, $paginationOptions)
-	{
-    // Run a "count all" query on the DB (or get the cached count)
-    $itemCount = $model->count();
-
-    $this->initShowLimitBox($model, $itemCount);
-
-    // Create the view's pagination object with results from the model
-    return $this->getJoomlaPaginator($itemCount, $paginationOptions->limitStart, $paginationOptions->limit);
-  }
-
-
-  /**
-   * Sets state variable to control whether a combo box to control results per page
-   * should be shown. Override state variable 'showLimitBox' in View if desired. This 
-   * logic is handled in the Joomla! Pagination class for the pagination buttons, but
+   * Sets state variable to control whether a combo box to control results per page should
+   * be shown. Override state variable 'showLimitBox' in View if desired. This logic is
+   * handled in the Joomla! Pagination class for the pagination buttons it creates, but
    * the Job Board uses a Blade template instead of a JHtml template to show the limit box.
-   * 
+   *
    * @param   DataModel   $model    The model attached to this view
    * @param   int         $count    The number of records to be paginated for this view
    *
    * @return void
    */
-  public function initShowLimitBox(DataModel $model, $count)
+  private function initShowLimitBox(DataModel $model, $count)
   {
-    // Don't show the limit box if there's less than a single page of results
-    if ($count <= $model->limit)
+    if ( false == $model->getState('showLimitBox') )
     {
-      $model->setState('showLimitBox', false);
-      
       return;
     }
 
-    $showLimitBox = false;
-    
-    // Whether to show option to set number of results per page. Override in View if desired.
-    if ( null === $model->getState('showLimitBox') )
+    if ($count >= $model->limit)
     {
-      $showLimitBox = $this->container->platform->getConfigOption('showLimitBox', true, $model);
+      $this->showLimitBox = $this->container->platform->getConfigOption('showLimitBox', true, $model);
     }
-
-    $model->setState('showLimitBox', false);
   }
 }

@@ -28,7 +28,9 @@ class Person extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Persons';
+    parent::__construct($container, $config);
+
+    $this->setModelName('Persons');
 
 		// $this->resetPredefinedTaskList();
 
@@ -38,8 +40,6 @@ class Person extends BaseController
       'block',
       'unblock'
     ));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -50,7 +50,7 @@ class Person extends BaseController
 	 */
   public function activate()
   {
-    $this->toggleField('activation', true);
+    $this->setFieldOnModels('activation', true);
   }
 
 
@@ -61,7 +61,7 @@ class Person extends BaseController
    */
   public function unactivate()
   {
-    $this->toggleField('activation', false);
+    $this->setFieldOnModels('activation', false);
   }
 
 
@@ -72,7 +72,7 @@ class Person extends BaseController
 	 */
   public function block()
   {
-    $this->toggleField('block', true);
+    $this->setFieldOnModels('block', true);
   }
 
 
@@ -83,6 +83,6 @@ class Person extends BaseController
    */
   public function unblock()
   {
-    $this->toggleField('block', false);
+    $this->setFieldOnModels('block', false);
   }
 }

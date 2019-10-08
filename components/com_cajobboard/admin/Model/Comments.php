@@ -1,7 +1,7 @@
 <?php
 /**
  * Admin Comments Model
- * 
+ *
  * TreeModel to handle nesting of comments efficiently
  *
  * @package   Calligraphic Job Board

@@ -14,10 +14,6 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  // Add component JS and CSS in view templates so that they're properly handled if HMVC in use
-  $this->container->AssetFiles->addComponentCss($this);
-  $this->container->AssetFiles->addViewJavascript($this);
-
   /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
   $item = $this->getItem();
 ?>
@@ -30,17 +26,8 @@
 
 @section('basic-options')
   <fieldset name="text" class="control-group">
-      <div class="control-label">
-        <label
-          for="text"
-          class="hasTip"
-          title="@lang('COM_CAJOBBOARD_ANSWERS_TEXT_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_TEXT_FIELD_TOOLTIP_TEXT')"
-        >
-          @lang('COM_CAJOBBOARD_ANSWERS_TEXT_FIELD_LABEL')
-        </label>
-      </div>
       <div class="controls">
-        @jhtml('FEFHelper.edit.editor', 'text', $item->text)
+        @jhtml('helper.editorWidgets.editor', 'text', $item->text)
       </div>
   </fieldset>
 @stop
@@ -52,51 +39,12 @@
 
 @section('advanced-options')
   {{-- Answer Description textbox --}}
-  <fieldset
-    name="description"
-    class="control-group hasTip"
-    title="@lang('COM_CAJOBBOARD_ANSWERS_DESCRIPTION_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_DESCRIPTION_FIELD_TOOLTIP_TEXT')"
-  >
-    <div class="control-label">
-      <label for="description">
-        @lang('COM_CAJOBBOARD_ANSWERS_DESCRIPTION_FIELD_LABEL')
-      </label>
-    </div>
-    <div class="controls">
-      <textarea name="description" id="description" rows="5">{{ $item->description }}</textarea>
-    </div>
-  </fieldset>
+  @jhtml('helper.editWidgets.textbox', 'description', $item)
+
 
   {{-- Answer Upvote count input box --}}
-  <fieldset
-    name="upvote_count"
-    class="control-group hasTip"
-    title="@lang('COM_CAJOBBOARD_ANSWERS_UPVOTE_COUNT_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_UPVOTE_COUNT_FIELD_TOOLTIP_TEXT')"
-  >
-    <div class="control-label">
-      <label for="upvote_count">
-        @lang('COM_CAJOBBOARD_ANSWERS_UPVOTES_BUTTON_LABEL')
-      </label>
-    </div>
-    <div class="controls">
-      <input type="number" step="1" name="upvote_count" id="upvote_count"" value="{{{ $item->upvote_count }}}"/>
-    </div>
-  </fieldset>
+  @jhtml('helper.editWidgets.inputNumber', 'upvote_count', $item)
 
   {{-- Answer Downvote count input box --}}
-  <fieldset
-    name="downvote_count"
-    class="control-group hasTip"
-    title="@lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTE_COUNT_FIELD_TOOLTIP_TITLE')::@lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTE_COUNT_FIELD_TOOLTIP_TEXT')"
-  >
-    <div class="control-label">
-      <label for="downvote_count">
-        @lang('COM_CAJOBBOARD_ANSWERS_DOWNVOTES_BUTTON_LABEL')
-      </label>
-    </div>
-    <div class="controls">
-      <input type="number" step="1" name="downvote_count" id="downvote_count" value="{{{ $item->downvote_count }}}"/>
-    </div>
-  </fieldset>
-
+  @jhtml('helper.editWidgets.inputNumber', 'downvote_count', $item)
 @stop

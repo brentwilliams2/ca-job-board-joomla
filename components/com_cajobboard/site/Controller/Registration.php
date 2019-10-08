@@ -29,15 +29,16 @@ class Registration extends Controller
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Registrations';
+    parent::__construct($container, $config);
+
+    $this->setModelName('Registrations');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
-
+      'registerWithEmailAddress',
+      'registerWithSocialAccount'
 		));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -48,7 +49,7 @@ class Registration extends Controller
 	 *
 	 * @return  bool
 	 */
-	public function Register()
+	public function registerWithEmailAddress()
 	{
     /* @TODO: Check captcha validity
 
@@ -94,7 +95,7 @@ class Registration extends Controller
 	 *
 	 * @return  bool
 	 */
-	public function RegisterWithSocialAccount()
+	public function registerWithSocialAccount()
 	{
     // @TODO: Implement register with social account in Registration helper
 

@@ -22,12 +22,10 @@ trait Redirect
 {
   /**
 	 * Get a redirect URL for the current view
-   *
-   * Used currently in Controller Feature mixin
 	 *
 	 * @return  string    The URL for use as a redirect
 	 */
-	public function getRedirectUrl()
+	protected function getRedirectUrl()
 	{
     if ($customURL = $this->input->getBase64('returnurl', ''))
     {
@@ -38,7 +36,7 @@ trait Redirect
       . $this->container->componentName
       . '&view='
       . $this->container->inflector->pluralize($this->view)
-      . $this->getItemidURLSuffix();
+      . $this->getItemidURLSuffix(); // e.g. '&Itemid=123' or an empty string if no Itemid
 
     return $url;
   }
@@ -47,20 +45,20 @@ trait Redirect
   /**
 	 * Get a message for the flash message box on redirect for this task
    *
-   * Used currently in Controller Feature mixin
-   *
    * @param   string    $task   The name of the task to generate a message for
 	 *
 	 * @return  string    The message to use in the flash message box after redirect
 	 */
-	public function getRedirectFlashMsg($task)
+	protected function getRedirectFlashMsg($task)
 	{
-    $viewName = $this->container->inflector->singularize($this->view);
+    $singularViewName = $this->container->inflector->singularize($this->view);
+    $humanViewName = $this->container->inflector->humanize($singularViewName);
 
-    return Text::_(strtoupper(
+    // e.g. COM_CAJOBBOARD_REDIRECT_MSG_TASK_UNPUBLISH, in administrator en-GB.com_cajobboard_common.ini
+    return Text::sprintf(strtoupper(
       $this->container->componentName
       . '_REDIRECT_MSG_TASK_'
       . $task
-    ), $viewName);
+    ), $humanViewName);
   }
 }

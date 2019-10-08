@@ -26,7 +26,7 @@ class Html extends BaseHtml
 	{
     return array(
 			'Author',
-			'Publisher'
+			'IsPartOf'
 		);
   }
 }

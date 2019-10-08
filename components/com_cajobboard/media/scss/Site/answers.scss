@@ -23,7 +23,8 @@
 
 // Common class applied to "Upvotes", "Downvotes", "Report Answer",
 // and (for users with permission) the "Edit" buttons
-.btn-answer {
+// @TODO: .common-btn in frontend.scss
+.answer-btn {
   border-radius: 5px;
   margin-left: 5px;
 }
@@ -33,67 +34,43 @@
 //                      - list view item            default_item.blade.php
 //-----------------------------------------------------------------------------
 
+// default.blade.php section
 .answers-header {
-  background-color: $body-bg-light;
-  margin: 10px 0;
-  padding: 10px;
 
-  h4 {
-    display: inline;
-  }
+  .h4 {}
+
+  // Select combo box to select count of items shown per page
+  .pagination-select {}
 
   // anchor around "New" button
-  .answer-new {
-
+  .answer-add-new {
+    .answer-add-new-btn {}
   }
 }
 
+// default.blade.php section
 .answers-list {
-
   // Wrapper for answer item in browse view
   .answer-list-item {
-    background-color: $body-bg-light;
-    margin-top: 12px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-  }
-
-  // Wrapper when the answer item is "featured"
-  .answer-list-item.featured { // sass-lint:disable-line force-element-nesting
-    background-attachment: scroll;
-    background-image: url('../images/featured-label-72.png');
-    background-position: right top;
-    background-repeat: no-repeat;
+    // Wrapper when the answer item is "featured"
+    .featured {}
   }
 
   // Answer title (link to item view of answer)
   .answer-title {
-    color: $brand-primary;
-    font-size: $font-size-large;
-    font-weight: bold;
-
     &:hover,
     &:focus {
-      color: $brand-info;
-      text-decoration: none;
+
     }
   }
 
   // answer body text
-  .answer-text {
-    color: $text-color;
-  }
+  .answer-text {}
 
   .author-name {
-    color: $brand-primary;
-    text-decoration: none;
-
     &:hover,
     &:focus {
-      color: $text-color;
-      text-decoration: none;
+
     }
   }
 
@@ -104,28 +81,27 @@
   }
 
   // "Last seen ..." text
-  .author-last-seen {
-    color: $text-color-lighter;
-  }
+  .author-last-seen {}
 
   // "Posted on ..." text
-  .answer-posted-date {
-    color: $text-color-lighter;
-  }
+  .answer-created-on {}
 
   // <button> elements
-  .answer-upvotes {}
-  .answer-downvotes {}
-  .report-answer {}
-  .edit-answer-button {}
+  .answer-upvote-count {}
+  .answer-downvote-count {}
+
+  .answer-report-btn {}
 
   // Link <a> anchor around the "Edit" button (edit-answer-button)
-  .edit-answer-link {}
+  .answer-edit-link {}
+  .answer-edit-btn {}
 
   // Link <a> anchor around the "Remove" button (delete-answer-button)
-  .delete-answer-link {}
+  .answer-delete-link {}
+  .answer-delete-btn {}
 }
 
+// default.blade.php section
 .answers-footer {}
 
 
@@ -134,31 +110,13 @@
 //-----------------------------------------------------------------------------
 
 .answer-item {
-  background-color: $body-bg-light;
-  margin-top: 12px !important; // sass-lint:disable-line no-important
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
+  .answer-title {}
 
-  .answer-title {
-    color: $brand-primary;
-    font-size: $font-size-large;
-    font-weight: bold;
-  }
-
-  .answer-text {
-    color: $text-color;
-  }
+  .answer-text {}
 
   .author-name {
-    color: $brand-primary;
-    text-decoration: none;
-
     &:hover,
     &:focus {
-      color: $text-color;
-      text-decoration: none;
     }
   }
 
@@ -169,26 +127,21 @@
   }
 
   // "Last seen ..." text
-  .author-last-seen {
-    color: $text-color-lighter;
-  }
+  .author-last-seen {}
 
   // "Posted on ..." text
-  .answer-posted-date {
-    color: $text-color-lighter;
-  }
+  .answer-created-on {}
 
-  // <button> elements
-  .answer-upvotes {}
-  .answer-downvotes {}
-  .report-answer {}
-  .edit-answer-button {}
+  .answer-upvote-count {}
+  .answer-downvote-count {}
 
-  // Link <a> anchor around the "Edit" button (edit-answer-button)
-  .edit-answer-link {}
+  .answer-report-btn {}
+
+  .answer-edit-btn {}
+  .answer-edit-link {}
 
   // Link <a> anchor around the "Remove" button (delete-answer-button)
-  .delete-answer-link {}
+  .answer-delete-link {}
 }
 
 //-----------------------------------------------------------------------------
@@ -199,11 +152,7 @@
 
   // Edit form header text
   .form-header {
-    text-align: center;
-
-    h3 {
-      color: $brand-primary;
-    }
+    h3 {}
   }
 
   .answer-title {
@@ -217,9 +166,18 @@
     textarea {}
   }
 
-  .answer-posted-date {}
+  .answer-created-on-date {}
 
   .answer-modified-date {}
+
+  .answer-cancel-link {
+    &:hover,
+    &:focus {
+
+    }
+
+    .answer-cancel-btn {}
+  }
 
   .answer-submit {}
 

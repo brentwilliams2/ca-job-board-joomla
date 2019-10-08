@@ -28,15 +28,15 @@ class Review extends BaseController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->modelName = 'Reviews';
+		parent::__construct($container, $config);
+
+    $this->setModelName('Reviews');
 
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
 
 		));
-
-    parent::__construct($container, $config);
   }
 
 
@@ -46,7 +46,7 @@ class Review extends BaseController
 	 * @param   Container $container
 	 * @param   array     $config
 	 */
-	public function onBeforeAdd()
+	protected function onBeforeAdd()
 	{
     // @TODO: code for pulling employer list. Should this be here or in view class?
     // @TODO: check if user is a guest. Better place to do this to always catch it for all views?

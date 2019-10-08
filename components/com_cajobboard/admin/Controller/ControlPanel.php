@@ -31,12 +31,12 @@ class ControlPanel extends Controller
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $config['modelName'] = "ControlPanels";
+		parent::__construct($container, $config);
+
+    $this->setModelName('ControlPanels');
 
     $this->addPredefinedTaskList(array(
 			'default'
 		));
-
-    parent::__construct($container, $config);
   }
 }

@@ -27,6 +27,7 @@ defined('_JEXEC') or die;
 
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
+// Add a path to the admin JHTML widget directory
 HTMLHelper::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Html');
 
 class BaseHtml extends Html
@@ -53,10 +54,7 @@ class BaseHtml extends Html
     $this->componentParams = ComponentHelper::getParams('com_cajobboard');
 
 		// Load CSS for admin view
-		if ( $this->container->platform->isBackend() )
-		{
-			$this->addCssFile('media://com_cajobboard/css/backend.css');
-		}
+		$this->addCssFile('media://com_cajobboard/css/backend.css');
   }
 
 
