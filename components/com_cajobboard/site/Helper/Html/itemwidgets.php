@@ -20,6 +20,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
+use \Calligraphic\Cajobboard\Site\Helper\Html\Utility;
 use \Joomla\CMS\Language\Text;
 
 abstract class helperItemwidgets
@@ -36,7 +37,7 @@ abstract class helperItemwidgets
 	 */
 	public static function title($title, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('title', $prefix, $crud);
+    $class  = Utility::getAttributeClass('title', $prefix, $crud);
 
     $html  = '<h4 class="' . $class . '">';
 		$html .= $title;
@@ -46,21 +47,23 @@ abstract class helperItemwidgets
   }
 
 
-  /**
-	 * Method to create an HTML element tag for an item's Author relation's 'name' model field.
+	/**
+	 * Method to create an HTML element tag for an item's 'text' model field.
 	 *
-   * @param 	string    $suffix   The element's suffix to use for a class attribute name, e.g. 'author-avatar' (same as field name)
-   * @param 	string    $prefix   A prefix to prepend to a class attribute, e.g. a 'prefix-created-on-date' class
+   * @param   string    $text     The text of the item, already sanitized.
+   * @param 	string 		$prefix   A prefix to prepend to a class attribute, e.g. 'prefix-edit-link' and 'prefix-edit-btn' classes
    * @param 	string    $crud     The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
 	 *
 	 * @return  string
 	 */
-	public static function getAttributeClass($suffix, $prefix = null, $crud = null)
+	public static function text($text, $prefix = null, $crud = null)
 	{
-    $class  = $crud ? $crud . ' ' : '';
-    $class .= 'common-' . $suffix;
-    $class .= $prefix ? ' ' . $prefix . '-' . $suffix : '';
+    $class  = Utility::getAttributeClass('text', $prefix, $crud);
 
-    return $class;
+		$html  = '<p class="' . $class . '">';
+		$html .= $text;
+    $html .= '</p>';
+
+    return $html;
   }
 }

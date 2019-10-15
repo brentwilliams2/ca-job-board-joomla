@@ -50,6 +50,7 @@
   use \Calligraphic\Cajobboard\Admin\Helper\LinkBar;
   use \FOF30\Utils\FEFHelper\BrowseView;
   use \Joomla\CMS\HTML\HTMLHelper;
+  use \Joomla\CMS\Language\Text;
 
   // Javascript libraries to include
   HTMLHelper::_('behavior.tooltip');
@@ -66,7 +67,7 @@
   <span class="filter-search btn-group pull-left">
     {{-- \FOF30\Utils\FEFHelper\BrowseView::searchFilter --}}
     {{-- @TODO: modal is empty, no drop-down of author list: need to write helper to do join and get author names --}}
-    @searchfilter('created-by', null, \JText::_('COM_CAJOBBOARD_FILTER_BY_AUTHOR'))
+    @searchfilter('created-by', null, Text::_('COM_CAJOBBOARD_FILTER_BY_AUTHOR'))
   </span>
 
   {{-- @TODO: Expand search options --}}

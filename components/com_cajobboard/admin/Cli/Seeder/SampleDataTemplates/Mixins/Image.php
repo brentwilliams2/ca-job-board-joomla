@@ -46,7 +46,7 @@ trait Image
 
       foreach ($imageArray as $path => $value)
       {
-      $this->image->set($path, $value);
+        $this->image->set($path, $value);
       }
   }
 }

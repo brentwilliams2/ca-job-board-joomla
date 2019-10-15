@@ -47,7 +47,7 @@ class Html extends BaseHtml
       $menu = $app->getMenu();
       $active = $menu->getActive();
       $itemId = $active->id;
-      $menuparams = $menu->getParams($itemId);
+      $menuparams = $menu->getParams($itemId);  // NOTE: Params library may have this cached
       $Itemid = $activeMenu->query['Itemid'];
 
       onBeforeBrowse() overriden to provide a filter on the discriminator (user group) selected

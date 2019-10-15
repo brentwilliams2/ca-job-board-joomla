@@ -644,6 +644,7 @@ abstract class HelperBrowseWidgets
 	 */
 	public static function titleField($widthPct, $item)
 	{
+  
     $route = 'index.php?option=com_cajobboard&view=' . $item->getName() . '&task=edit&id=[ITEM:ID]';
     $parsedRoute = BrowseView::parseFieldTags($route, $item);
     $sefURL = $item->getContainer()->template->route($parsedRoute);

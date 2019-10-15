@@ -12,8 +12,8 @@
 
 namespace Calligraphic\Cajobboard\Admin\View\ControlPanel;
 
-use FOF30\Container\Container;
-use FOF30\View\View;
+use \FOF30\Container\Container;
+use \FOF30\View\View;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Component\ComponentHelper;
@@ -37,9 +37,10 @@ class Html extends View
 	/**
 	 * The component-level parameters stored in #__extensions by com_config
 	 *
-	 * @var  \JRegistry
+	 * @var  \Calligraphic\Library\Platform\Registry
 	 */
   protected $componentParams;
+
 
 	/**
 	 * Overridden. Load view-specific language file.
@@ -75,6 +76,7 @@ EOT;
 
     HTMLHelper::_('behavior.tooltip');
   }
+
 
 	/**
 	 * Runs before rendering the view template, echoing HTML to put before the
@@ -121,6 +123,7 @@ EOT;
 			$renderer->postRender($view, $task);
 		}
   }
+
 
 	/**
 	 * Set the page title and metadata

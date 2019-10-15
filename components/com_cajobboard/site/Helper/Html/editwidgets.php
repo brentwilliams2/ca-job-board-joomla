@@ -17,37 +17,12 @@
 // Can't namespace since this class is used through Joomla's autoloader and JHtml system, and class
 // names have to be lower-cased and follow a naming convention for the JLoader scheme to work.
 
+use \Calligraphic\Cajobboard\Site\Helper\Html\Utility;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 
 abstract class HelperEditwidgets
 {
-  /**
-	 * Method to create an HTML element tag for a cancel button to use on edit views,
-	 * wrapped in an anchor tag to that item's item view
-	 *
-   * @param   boolean   $itemViewLink   A link to the item view of this item.
-   * @param 	string    $prefix         A prefix to prepend to a class attribute, e.g. 'prefix-delete-link' and 'prefix-delete-btn' classes
-   * @param 	string    $crud           The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
-	 *
-	 * @return  string
-	 */
-	public static function cancel($itemViewLink, $prefix = null, $crud = null)
-	{
-    $anchorClass  = self::getAttributeClass('cancel-link', $prefix, $crud);
-    $baseBtnClass = self::getAttributeClass('btn', $prefix);
-    $btnClass  = self::getAttributeClass('cancel-btn', $prefix, $crud);
-
-    $html  = '<a class=" ' . $anchorClass . '" href="' . $itemViewLink . '">';
-    $html .= '<button type="button" class="btn btn-danger btn-primary ' . $baseBtnClass . ' ' . $btnClass . ' pull-right">';
-    $html .= Text::_('JCANCEL');
-    $html .= '</button>';
-    $html .= '</a>';
-
-    return $html;
-  }
-
-
   /**
    * Method to create an HTML element tag for an item's 'title' model field,
 	 * wrapped in an anchor tag to that item's item view.
@@ -60,7 +35,7 @@ abstract class HelperEditwidgets
 	 */
 	public static function createdOn($createdOn, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('created-on', $prefix, $crud);
+    $class  = Utility::getAttributeClass('created-on', $prefix, $crud);
 
     $html  = '<span class="' . $class . '">';
 		$html .= Text::_('COM_CAJOBBOARD_CREATED_ON_BUTTON_LABEL');
@@ -83,7 +58,7 @@ abstract class HelperEditwidgets
 	 */
 	public static function description($description, $descriptionPlaceholder, $humanViewNameSingular, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('description', $prefix, $crud);
+    $class  = Utility::getAttributeClass('description', $prefix, $crud);
 
     $html  = '<div class="' . $class . '">';
     $html .= '<h4>';
@@ -113,7 +88,7 @@ abstract class HelperEditwidgets
 	 */
 	public static function description_intro($descriptionIntro, $descriptionIntroPlaceholder, $humanViewNameSingular, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('description-intro', $prefix, $crud);
+    $class  = Utility::getAttributeClass('description-intro', $prefix, $crud);
 
     $html  = '<div class="' . $class . '">';
     $html .= '<h4>';
@@ -131,37 +106,6 @@ abstract class HelperEditwidgets
 
 
   /**
-	 * Method to create an HTML element tag for an item's 'title' model field,
-	 * wrapped in an anchor tag to that item's item view
-	 *
-   * @param   boolean   $canUserEdit            Whether the user has canEdit ACL privileges
-   * @param   int       $itemId                 The primary key value (id) for the item
-   * @param   string    $humanViewNameSingular  A human-readable singularlized view name, e.g. 'Job Posting'
-   * @param 	string    $prefix                 A prefix to prepend to a class attribute, e.g. 'prefix-delete-link' and 'prefix-delete-btn' classes
-   * @param 	string    $crud                   The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
-	 *
-	 * @return  string
-	 */
-	public static function delete($canUserEdit, $itemId, $humanViewNameSingular, $prefix = null, $crud = null)
-	{
-		if ($canUserEdit)
-		{
-      $anchorClass  = self::getAttributeClass('delete-link', $prefix, $crud);
-      $baseBtnClass = self::getAttributeClass('btn', $prefix);
-      $btnClass  = self::getAttributeClass('delete-btn', $prefix, $crud);
-
-      $html  = '<a class=" ' . $anchorClass . '" onClick="removeSubmit(' . $itemId . ')">';
-      $html .= '<button type="button" class="btn btn-danger btn-primary ' . $baseBtnClass . ' ' . $btnClass . ' pull-right">';
-      $html .= Text::sprintf('COM_CAJOBBOARD_DELETE_BUTTON_LABEL', $humanViewNameSingular);
-      $html .= '</button>';
-      $html .= '</a>';
-    }
-
-    return $canUserEdit ? $html : '';
-  }
-
-
-  /**
    * Method to create an HTML element tag for the edit view page title (header).
 	 * Builds translation keys in the 
 	 *
@@ -174,27 +118,12 @@ abstract class HelperEditwidgets
 	 */
 	public static function header($isEditView, $humanViewNameSingular, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('header', $prefix, $crud);
+    $class  = Utility::getAttributeClass('header', $prefix, $crud);
     $viewTransKey = $isEditView ? 'EDIT' : 'ADD';
 
     $html  = '<h3 class="' . $class . '">';
     $html .= Text::sprintf('COM_CAJOBBOARD_' . $viewTransKey . '_HEADER', $humanViewNameSingular);
     $html .= '</h3>';
-
-    return $html;
-  }
-
-
-  /**
-	 * Method to create an HTML element tag for a hidden CSRF field to be embedded in a form
-	 *
-	 * @return  string
-	 */
-	public static function hiddenCsrfField()
-	{
-    $html  = '<div class="cajobboard-form-hidden-fields">';
-    $html .= '<input type="hidden" name="' . Factory::getSession()->getFormToken() . '" value="1"/>';
-    $html .= '</div>';
 
     return $html;
   }
@@ -212,33 +141,12 @@ abstract class HelperEditwidgets
 	 */
 	public static function modifiedOn($modifiedOn, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('modified-on', $prefix, $crud);
+    $class  = Utility::getAttributeClass('modified-on', $prefix, $crud);
 
     $html  = '<span class="' . $class . '">';
     $html .= Text::_('COM_CAJOBBOARD_MODIFIED_ON_BUTTON_LABEL');
     $html .= $modifiedOn;
     $html .= '</span>';
-
-    return $html;
-  }
-
-
-  /**
-   * Method to create an HTML element tag for an item's 'title' model field,
-	 * wrapped in an anchor tag to that item's item view.
-	 *
-   * @param 	string 		$prefix   A prefix to prepend to a class attribute, e.g. 'prefix-edit-link' and 'prefix-edit-btn' classes
-   * @param 	string    $crud     The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
-	 *
-	 * @return  string
-	 */
-	public static function submit($prefix = null, $crud = null)
-	{
-    $class  = self::getAttributeClass('submit', $prefix, $crud);
-
-    $html  = '<button class="btn btn-primary ' . $class . ' pull-right" type="submit">';
-		$html .= Text::_('JAPPLY');
-    $html .= '</button>';
 
     return $html;
   }
@@ -257,7 +165,7 @@ abstract class HelperEditwidgets
 	 */
 	public static function text($text, $textPlaceholder, $humanViewNameSingular, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass('text', $prefix, $crud);
+    $class  = Utility::getAttributeClass('text', $prefix, $crud);
 
     $html  = '<div class="' . $class . '">';
     $html .= '<h4>';
@@ -287,7 +195,7 @@ abstract class HelperEditwidgets
 	 */
 	public static function title($title, $titlePlaceholder, $humanViewNameSingular, $prefix = null, $crud = null)
 	{
-    $class  = self::getAttributeClass($title, $prefix, $crud);
+    $class  = Utility::getAttributeClass($title, $prefix, $crud);
 
     $html  = '<div class="' . $class . '">';
     $html .= '<h4>';
@@ -299,24 +207,5 @@ abstract class HelperEditwidgets
     $html .= '</div>';
 
     return $html;
-  }
-
-
-  /**
-	 * Method to create an HTML element tag for an item's Author relation's 'name' model field.
-	 *
-   * @param 	string                  $suffix   The element's suffix to use for a class attribute name, e.g. 'author-avatar' (same as field name)
-   * @param 	string                  $prefix   A prefix to prepend to a class attribute, e.g. a 'prefix-created-on-date' class
-   * @param 	string                  $crud     The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
-	 *
-	 * @return  string
-	 */
-	public static function getAttributeClass($suffix, $prefix = null, $crud = null)
-	{
-    $class  = $crud ? $crud . ' ' : '';
-    $class .= 'common-' . $suffix;
-    $class .= $prefix ? ' ' . $prefix . '-' . $suffix : '';
-
-    return $class;
   }
 }

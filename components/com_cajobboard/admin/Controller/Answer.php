@@ -20,6 +20,8 @@ use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
 
 class Answer extends BaseController
 {
+	use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Feature;
+
 	/*
 	 * Overridden. Limit the tasks that are allowed to execute.
 	 *
@@ -30,6 +32,12 @@ class Answer extends BaseController
 	{
     $this->setModelName('Answers');
 
-    parent::__construct($container, $config);
+		parent::__construct($container, $config);
+
+    $this->addPredefinedTaskList( array(
+
+      'feature',
+      'unfeature'
+    ));
   }
 }

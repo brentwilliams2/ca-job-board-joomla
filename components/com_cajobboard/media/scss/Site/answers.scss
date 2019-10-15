@@ -23,11 +23,7 @@
 
 // Common class applied to "Upvotes", "Downvotes", "Report Answer",
 // and (for users with permission) the "Edit" buttons
-// @TODO: .common-btn in frontend.scss
-.answer-btn {
-  border-radius: 5px;
-  margin-left: 5px;
-}
+.answer-btn {}
 
 //-----------------------------------------------------------------------------
 // Answers ViewTemplate - list view                      default.blade.php

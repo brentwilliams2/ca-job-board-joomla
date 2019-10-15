@@ -40,13 +40,24 @@
   font-size: 1.5em;
   /* 30px/20=1.5em */ }
 
-#report-item-modal .modal-footer div.report-footer-button-row button#submit-item-report-btn {
-  margin-left: 5px !important; }
+.common-btn {
+  border-radius: 5px;
+  margin-left: 5px; }
+
+.common-upvote-count .badge {
+  margin-left: 5px; }
+
+.common-downvote-count .badge {
+  margin-left: 5px; }
 
 .browse.common-header {
   background-color: #eee;
   margin: 10px 0;
   padding: 10px; }
+  .browse.common-header span.h4 {
+    color: #00a0d6;
+    font-size: 18px;
+    font-weight: bold; }
 
 .browse.common-list .browse.common-list-item {
   background-color: #eee;
@@ -110,8 +121,19 @@
   .item.common-item .item.common-created-on {
     color: #777777; }
 
-.edit.common-edit-container .form-header {
-  text-align: center; }
-  .edit.common-edit-container .form-header h3 {
+.edit.common-container {
+  margin-top: 12px !important; }
+  .edit.common-container .edit.common-header h3 {
     color: #00a0d6; }
+
+.report-item-modal .modal-footer div.report-submit {
+  /* webkit solution */
+  /* mozilla solution */ }
+  .report-item-modal .modal-footer div.report-submit ::-webkit-input-placeholder {
+    text-align: center; }
+  .report-item-modal .modal-footer div.report-submit input:-moz-placeholder {
+    text-align: center; }
+
+.report-item-modal .modal-footer div.report-footer-button-row button#submit-item-report-btn {
+  margin-left: 5px !important; }
 /*# sourceMappingURL=frontend.css.map */

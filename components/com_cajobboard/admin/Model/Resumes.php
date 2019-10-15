@@ -15,9 +15,8 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
-use \Joomla\Registry\Registry;
+use \FOF30\Container\Container;
 
 /**
  * Fields:
@@ -66,7 +65,7 @@ use \Joomla\Registry\Registry;
  * @property string         $encoding_format  MIME format of the document, e.g. application/pdf.
  * 
  * SCHEMA: https://calligraphic.design/schema/Resume
- * @property Registry       $resume           JSON-formatted resume data.
+ * @property \Calligraphic\Library\Platform\Registry  $resume  JSON-formatted resume data.
  *
  */
 class Resumes extends BaseDataModel
@@ -121,7 +120,7 @@ class Resumes extends BaseDataModel
   /**
 	 * Transform 'resume' field to a JRegistry object on bind
 	 *
-	 * @return  Registry
+	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
   protected function getResumeAttribute($value)
   {

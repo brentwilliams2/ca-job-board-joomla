@@ -13,8 +13,6 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  $params = JComponentHelper::getParams('com_cajobboard');
-
   // Padding to add to width of image, for comparing against bootstrap media query setpoints
   $imagePadding = $params->get('image-padding-for-setpoints');
 

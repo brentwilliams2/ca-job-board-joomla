@@ -13,15 +13,17 @@
   // no direct access
   defined('_JEXEC') or die;
 
+  use \Joomla\CMS\Router\Route;
+
   // get component configuration
   $params = $this->container->params;
 
   // parameters for email input box placeholder from component
-  $emailPlaceholder = $params->get('registration_email_placeholder');
+  $emailPlaceholder = $params->getComponentConfigOption('registration_email_placeholder');
 
   // admin parameters for links
-  $terms_of_service = JRoute::_('index.php?Itemid=' . $params->get('terms_of_use'));
-  $privacy_policy = JRoute::_('index.php?Itemid=' . $params->get('privacy_policy'));
+  $terms_of_service = Route::_('index.php?Itemid=' . $params->getComponentConfigOption('terms_of_use'));
+  $privacy_policy = Route::_('index.php?Itemid=' . $params->getComponentConfigOption('privacy_policy'));
 ?>
 
 {{--

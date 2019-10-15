@@ -12,10 +12,11 @@
 
 namespace Calligraphic\Cajobboard\Site\Helper;
 
-use \Joomla\CMS\Language\Text;
-
 // no direct access
 defined('_JEXEC') or die;
+
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Uri\Uri;
 
 class User
 {
@@ -100,7 +101,8 @@ class User
 	 */
 	public function getLinkToUserProfile($userId)
 	{
-    // @TODO: implement real link to user's profile
-    return '#';
+    return $this->container->template->route(
+      Uri::base() . 'index.php?option=com_cajobboard&view=Persons&task=read&id=' . $userId
+    );
   }
 }

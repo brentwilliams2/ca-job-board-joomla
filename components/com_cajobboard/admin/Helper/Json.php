@@ -21,6 +21,7 @@ defined('_JEXEC') or die;
  */
 abstract class Json
 {
+  // @TODO: used in Cli/Seeder/PopulateSampleData.php, but not \Admin\Model\Mixin\JsonData, where else are we handling JSON?
   /**
    * Since PHP has poor handling for JSON errors on decode, this utility gives a more human-readable description of the error
    *

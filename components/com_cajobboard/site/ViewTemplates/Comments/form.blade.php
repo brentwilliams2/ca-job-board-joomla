@@ -32,9 +32,9 @@
 --}}
 @section('answer-edit-container')
   <form action="{{ $postAction }}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
-    <div class="@jhtml('helper.editwidgets.getAttributeClass', 'edit-container', $prefix, $crud)">
+    <div class="row media {{ $featured }} @jhtml('helper.commonwidgets.getAttributeClass', 'container', $prefix, $crud)">
 
-      <header class="form-header well">
+      <header class="form-header well @jhtml('helper.commonwidgets.getAttributeClass', 'header', $prefix, $crud)">
         @jhtml('helper.editwidgets.header', $isEditView, $humanViewNameSingular, $prefix, $crud)
       </header>
 
@@ -58,21 +58,21 @@
         @endif
       @endif
 
-      @jhtml('helper.editwidgets.submit', $prefix, $crud)
+      @jhtml('helper.buttonwidgets.submit', $prefix, $crud)
 
       @if ($isEditView)
-        @jhtml('helper.editwidgets.delete', $canUserEdit, $itemId, $humanViewNameSingular, $prefix, $crud)
+        @jhtml('helper.buttonwidgets.delete', $humanViewNameSingular, $canUserEdit, $itemId, $prefix, $crud, false)
       @endif
 
-      @jhtml('helper.editwidgets.cancel', $itemViewLink, $prefix, $crud)
+      @jhtml('helper.buttonwidgets.cancel', $itemViewLink, $prefix, $crud)
     </div>
 
     {{-- Hidden CSRF form field --}}
-    @jhtml('helper.editwidgets.hiddenCsrfField')
+    @jhtml('helper.buttonwidgets.hiddenCsrfField')
   </form>
 
-  {{-- Form with CSRF field for remove action --}}
+  {{-- Form with CSRF field for delete action --}}
   @if ($isEditView)
-    @jhtml('helper.commonwidgets.removeActionCsrfField', $removeAction, $itemId)
+    @jhtml('helper.buttonwidgets.deleteActionCsrfField', $deleteAction, $itemId)
   @endif
 @show

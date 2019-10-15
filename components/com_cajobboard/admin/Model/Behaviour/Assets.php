@@ -36,20 +36,20 @@ namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Calligraphic\Cajobboard\Admin\Helper\Category;
+use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
 use \Joomla\CMS\Access\Rules;
 use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Log\Log;
 use \Joomla\CMS\Table\Asset;
-use \Joomla\Registry\Registry;
 
 
 /**
  * To override validation behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('Assets.php'). The model file cannot go in this
- * directory, it must stay in the root Model folder.
+ * named named after the model in the 'Behaviour' directory and use the same file
+ * name as this behaviour ('Check.php'). The model file cannot go in this directory,
+ * it must stay in the root Model folder.
  */
 class Assets extends Observer
 {
@@ -57,15 +57,15 @@ class Assets extends Observer
 	 * Add the asset id field to the fieldsSkipChecks list of the model. It
 	 * should be empty so that we can fill it in through this behaviour.
 	 *
-	 * @param   DataModel  $model
+	 * @param   DataModel  $item
 	 */
-	public function onBeforeCheck(DataModel $model)
+	public function onBeforeCheck(DataModel $item)
 	{
-    $assetIdField = $model->getFieldAlias('asset_id');
+    $assetIdField = $item->getFieldAlias('asset_id');
 
-    if ( $model->hasField($assetIdField) )
+    if ( $item->hasField($assetIdField) )
     {
-      $model->addSkipCheckField($assetIdField);
+      $item->addSkipCheckField($assetIdField);
     }
   }
 
@@ -75,11 +75,11 @@ class Assets extends Observer
    *
    * @throws    \Exception  Throws if unable to delete asset record or the asset_id field was blank for the model
    */
-  public function onAfterDelete(DataModel $model, $id)
+  public function onAfterDelete(DataModel $item, $id)
   {
-    if ( $this->isAssetAclEnabled($model) )
+    if ( $this->isAssetAclEnabled($item) )
     {
-      $this->removeAssetRecord($model);
+      $this->removeAssetRecord($item);
     }
   }
 
@@ -87,25 +87,26 @@ class Assets extends Observer
   /*
    * Bind rules from state to the current model item's $_rules property
    */
-  public function onAfterBind(DataModel $model, &$data)
+  public function onAfterBind(DataModel $item, &$data)
   {
-    if ( $this->isAssetAclEnabled($model) )
+    // @TODO: Add ACL control for setting ACL rules from user input
+    if ( $this->isAssetAclEnabled($item) )
     {
-      $this->setModelRules($model, $data);
+      $this->setModelRules($item, $data);
     }
   }
 
   /*
    * Handle updating ACL record rules if it changed
    */
-  public function onAfterUpdate(DataModel $model)
+  public function onAfterUpdate(DataModel $item)
   {
-    $assetName = $model->getAssetName();
+    $assetName = $item->getAssetName();
 
     $asset = $this->loadAssetByName($assetName);
 
     // Model's $_rules property should be set at this point by Model's bind() method
-    $this->setAssetRules($model, $asset);
+    $this->setAssetRules($item, $asset);
 
     $this->checkAssetRecord($asset);
 
@@ -116,18 +117,18 @@ class Assets extends Observer
   /*
    * Handle creating ACL record after creating a new record
    */
-  public function onAfterCreate(DataModel $model)
+  public function onAfterCreate(DataModel $item)
   {
-    if ( $this->isAssetAclEnabled($model) )
+    if ( $this->isAssetAclEnabled($item) )
     {
       $asset = $this->loadAssetTable();
 
       $this
-        ->setAssetLevel($model, $asset)
-        ->setAssetName($model, $asset)
-        ->setAssetParentId($model, $asset)
-        ->setAssetRules($model, $asset)
-        ->setAssetTitle($model, $asset);
+        ->setAssetLevel($item, $asset)
+        ->setAssetName($item, $asset)
+        ->setAssetParentId($item, $asset)
+        ->setAssetRules($item, $asset)
+        ->setAssetTitle($item, $asset);
 
       $asset->setLocation($asset->parent_id, 'last-child');
 
@@ -135,7 +136,7 @@ class Assets extends Observer
 
       $assetId = $this->saveAssetRecord($asset);
 
-      $this->saveItemAssetId($model, $assetId);
+      $this->saveItemAssetId($item, $assetId);
     }
   }
 
@@ -143,11 +144,11 @@ class Assets extends Observer
   /*
    * Check if assets ACL is enabled for this model
    */
-  protected function isAssetAclEnabled(DataModel $model)
+  protected function isAssetAclEnabled(DataModel $item)
   {
-    $assetFieldAlias = $model->getFieldAlias('asset_id');
+    $assetFieldAlias = $item->getFieldAlias('asset_id');
 
-    if ( $model->hasField($assetFieldAlias) && $model->isAssetsTracked() )
+    if ( $item->hasField($assetFieldAlias) && $item->isAssetsTracked() )
     {
       return true;
     }
@@ -182,7 +183,7 @@ class Assets extends Observer
 
 		if (!$isAssetRecordLoaded)
 		{
-      throw new \Exception( Text::_('COM_CAJOBBOARD_BEHAVIOUR_ASSETS_EXCEPTION_RECORD_NOT_LOADED', $assetName) );
+      throw new \Exception( Text::sprintf('COM_CAJOBBOARD_BEHAVIOUR_ASSETS_EXCEPTION_RECORD_NOT_LOADED', $assetName) );
     }
 
     return $assetTable;
@@ -220,7 +221,7 @@ class Assets extends Observer
   /**
    * Sets the level property on the current item's asset record
    */
-  protected function setAssetLevel(DataModel $model, Asset $asset)
+  protected function setAssetLevel(DataModel $item, Asset $asset)
   {
     $asset->level = 3;
 
@@ -232,9 +233,9 @@ class Assets extends Observer
   /**
    * Sets the name property on the current item's asset record
    */
-  protected function setAssetName(DataModel $model, Asset $asset)
+  protected function setAssetName(DataModel $item, Asset $asset)
   {
-    $asset->name = $model->getAssetName();
+    $asset->name = $item->getAssetName();
 
     // Return $this for chaining
     return $this;
@@ -246,13 +247,18 @@ class Assets extends Observer
    *
    * @throws    \Exception  Throws if category doesn't have an asset record created for it
    */
-  protected function setAssetParentId(DataModel $model, Asset $asset)
+  protected function setAssetParentId(DataModel $item, Asset $asset)
   {
+    $itemCategoryId = $item->getFieldValue( $item->getFieldAlias('cat_id') );
+
+    $assetCategoryId = $itemCategoryId ? $itemCategoryId : Category::getItemRootCategoryId($item);
+
     // should look like: com_cajobboard.category.n where n is the number of the category
-    $categoryAssetName = $model->getContainer()->componentName . '.category.' . $model->getFieldValue('cat_id');
+    $categoryAssetName = $item->getContainer()->componentName . '.category.' . $assetCategoryId;
 
     $categoryAsset = $this->loadAssetByName($categoryAssetName);
 
+    // getPrimaryKey() has unusual API, returns an array of primary key names and values
     $asset->parent_id = $categoryAsset->getPrimaryKey()['id'];
 
     // Return $this for chaining
@@ -263,9 +269,9 @@ class Assets extends Observer
   /**
    * Sets the title property on the current item's asset record
    */
-  protected function setAssetTitle(DataModel $model, Asset $asset)
+  protected function setAssetTitle(DataModel $item, Asset $asset)
   {
-    $asset->title = $model->getAssetTitle(); // getAssetTitle() is an alias to getAssetName()
+    $asset->title = $item->getAssetTitle(); // getAssetTitle() is an alias to getAssetName()
 
     // Return $this for chaining
     return $this;
@@ -275,13 +281,13 @@ class Assets extends Observer
   /**
    * Sets rules property on the current item's asset record
    *
-   * @param  Registry   $rules
+   * @param  \Calligraphic\Library\Platform\Registry   $rules
    */
-  protected function setAssetRules(DataModel $model, Asset $asset)
+  protected function setAssetRules(DataModel $item, Asset $asset)
   {
-		if ($model->getRules() instanceof \JAccessRules)
+		if ($item->getRules() instanceof \JAccessRules)
 		{
-      $rules = $model->getRules();
+      $rules = $item->getRules();
     }
     else
     {
@@ -300,14 +306,14 @@ class Assets extends Observer
   /**
    * Binds rules from state to the current model item's $_rules property
    *
-   * @param  Registry   $rules
+   * @param  \Calligraphic\Library\Platform\Registry   $rules
    *
    * Set the ACL rules for Custom Usergroup 123, when manipulating the Asset rules as an array:
    *
    * $rule_array['core.delete'][123] = 0;    // My custom usergroup cannot delete Content
    * $rule_array['core.edit'][123] = 1;      // My custom usergroup can edit Content
    */
-  protected function setModelRules(DataModel $model, $data)
+  protected function setModelRules(DataModel $item, $data)
   {
    	// Bind the rules.
 		if (is_array($data) && isset($data['rules']) && is_array($data['rules']))
@@ -332,7 +338,7 @@ class Assets extends Observer
     }
     else
     {
-      $model->setRules( array() );
+      $item->setRules( array() );
     }
   }
 
@@ -408,19 +414,19 @@ class Assets extends Observer
    *
    * @throws  \Exception
    */
-  protected function saveItemAssetId(Datamodel $model, $assetId)
+  protected function saveItemAssetId(Datamodel $item, $assetId)
   {
-    $assetFieldAlias = $model->getFieldAlias('asset_id');
+    $assetFieldAlias = $item->getFieldAlias('asset_id');
 
     // Get the \JDatabaseQuery object
-    $db = $model->getContainer()->db;
+    $db = $item->getContainer()->db;
 
     $query = $db->getQuery(true);
 
     $query
-      ->update($db->quoteName( $model->getTableName() ))
+      ->update($db->quoteName( $item->getTableName() ))
       ->set   ($db->quoteName( $assetFieldAlias) . ' = ' . (int) $assetId )
-      ->where ($db->quoteName( $model->getIdFieldName() ) . ' = ' . $db->quote( $model->getId() ));
+      ->where ($db->quoteName( $item->getIdFieldName() ) . ' = ' . $db->quote( $item->getId() ));
 
     $db->setQuery($query);
 
@@ -441,7 +447,7 @@ class Assets extends Observer
     }
 
     // Update our in-memory model representation with the asset_id property value
-    $model->setFieldValue($assetFieldAlias, $assetId);
+    $item->setFieldValue($assetFieldAlias, $assetId);
   }
 
 
@@ -450,14 +456,14 @@ class Assets extends Observer
    *
    * @throws    \Exception  Throws if unable to delete asset record or the asset_id field was blank for the model
    */
-  protected function removeAssetRecord(DataModel $model)
+  protected function removeAssetRecord(DataModel $item)
   {
     // Get an instance of JAssetsTable
     $assetTable = $this->loadAssetTable();
 
-    $assetFieldAlias = $model->getFieldAlias('asset_id');
+    $assetFieldAlias = $item->getFieldAlias('asset_id');
 
-    $assetId = $model->getFieldValue($assetFieldAlias);
+    $assetId = $item->getFieldValue($assetFieldAlias);
 
     if ($assetId)
     {
@@ -472,12 +478,12 @@ class Assets extends Observer
     }
     else
     {
-      throw new \Exception( Text::_( 'COM_CAJOBBOARD_BEHAVIOUR_ASSETS_EXCEPTION_DELETE_EMPTY_FIELD_ERROR', $model->getId() ) );
+      throw new \Exception( Text::sprintf( 'COM_CAJOBBOARD_BEHAVIOUR_ASSETS_EXCEPTION_DELETE_EMPTY_FIELD_ERROR', $item->getId() ) );
     }
 
     if (!$isAssetRemoved)
     {
-      throw new \Exception( Text::_( 'COM_CAJOBBOARD_BEHAVIOUR_ASSETS_EXCEPTION_DELETE_ERROR', $model->getId() ) );
+      throw new \Exception( Text::sprintf( 'COM_CAJOBBOARD_BEHAVIOUR_ASSETS_EXCEPTION_DELETE_ERROR', $item->getId() ) );
     }
   }
 }

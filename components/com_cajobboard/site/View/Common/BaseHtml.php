@@ -11,16 +11,16 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
-use Calligraphic\Cajobboard\Site\View\Exception\InvalidArgument;
-use FOF30\Model\DataModel;
-use FOF30\Model\DataModel\Collection;
+use \Calligraphic\Cajobboard\Site\View\Exception\InvalidArgument;
+use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
+use \FOF30\Model\DataModel;
+use \FOF30\Model\DataModel\Collection;
 use \FOF30\View\DataView\Html;
 use \Joomla\CMS\Component\ComponentHelper;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Pagination\Pagination;
-use \Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -35,7 +35,7 @@ class BaseHtml extends Html
 	/**
 	 * The component-level parameters stored in #__extensions by com_config
 	 *
-	 * @var  Registry
+	 * @var  \Calligraphic\Library\Platform\Registry
 	 */
 	protected $componentParams;
 

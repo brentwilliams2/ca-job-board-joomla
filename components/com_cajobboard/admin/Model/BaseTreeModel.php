@@ -26,7 +26,6 @@ class BaseTreeModel extends TreeModel
 {
   /* Traits to include in the class */
 
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Archive;              // Over-ridden 'archive' method
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;           // Convenient assertions, e.g. for use in validation / check methods
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\Asset;                // Joomla! role-based access control handling
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\Comments;             // 'saveComment' method
@@ -35,6 +34,7 @@ class BaseTreeModel extends TreeModel
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\Count;                // Overridden count() method to cache value
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\FieldStateMachine;    // Toggle method for boolean fields
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Patches;              // Over-ridden FOF30 DataModel methods (some with PRs)
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;           // Provides over-ridden 'check' method
 
@@ -68,18 +68,22 @@ class BaseTreeModel extends TreeModel
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $behaviours = array(
       'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
       'Enabled',    // Filter access to items based on enabled status
       'Language',   // Filter front-end access to items based on language
       'Ordering',   // Order items owned by featured status and then descending by date
       'Publish',    // Set the publish_on field for new records
       'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
 
-      /* Model property (attribute) Behaviours for validation and setting value from state */
-      'Image',              // Set the 'image' JSON field on record save
+      /* Validation checks */
+
+      'Check',      // Validation checks for model, over-rideable per model
+      'Check/Image',              // Set the 'image' JSON field on record save
+      'Check/Metadata',           // Set the 'metadata' JSON field on record save
+      'Check/Title',              // Check length and titlecase the 'metadata' JSON field on record save
+
+      /* Model property (attribute) Behaviours for setting value from state */
+
       'DescriptionIntro',   // Check the length of the 'description__intro' field
-      'Metadata',           // Set the 'metadata' JSON field on record save
-      'Title',              // Check length and titlecase the 'metadata' JSON field on record save
     );
 
     // Merge any behaviours passed from the child model into our base class default behaviours
@@ -94,28 +98,12 @@ class BaseTreeModel extends TreeModel
 
     /* Overridden constructor */
     $this->constructor($container, $config);
+
+    // Add the nested table fields to the list of fields to skip checking so the model can handle setting these on save
+    $this->addSkipCheckField('lft');
+    $this->addSkipCheckField('rgt');
+    $this->addSkipCheckField('hash');
   }
-
-
-	/**
-   * @TODO: Overridden to fix logic error. Submit PR. See BaseListModel and BaseDataModel.
-	 * Method to compute the default name of the asset item (in table #__assets).
-	 *
-	 * @throws  NoAssetKey
-	 *
-	 * @return  string
-	 */
-	public function getAssetName()
-	{
-		// If there is no assetKey defined, stop here, or we'll get a wrong name
-		if (!$this->_assetKey)
-		{
-			throw new NoAssetKey;
-		}
-
-		// e.g. com_cajobboard.answer.2
-		return $this->_assetKey . '.' . $this->getId();
-	}
 }
 
 

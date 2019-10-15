@@ -15,10 +15,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\ImageObjectSizeEnum;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \FOF30\Container\Container;
-use \Joomla\Registry\Registry;
 
 /*
  * Fields:
@@ -262,7 +261,7 @@ class ImageObjects extends BaseDataModel
   /**
 	 * Transform 'exif_data' field to a JRegistry object on bind
 	 *
-	 * @return  \Joomla\Registry\Registry
+	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
   protected function getExifDataAttribute($value)
   {

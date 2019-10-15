@@ -18,6 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Helper;
 defined('_JEXEC') or die;
 
 use \Calligraphic\Cajobboard\Admin\Model\EmailMessages;
+use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
 use \Joomla\CMS\Factory;
@@ -27,7 +28,6 @@ use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Mail\Mail;
 use \Joomla\CMS\Plugin\PluginHelper;
 use \Joomla\CMS\User\User;
-use \Joomla\Registry\Registry;
 
 /*
   E-mails should use tables and in-line CSS. Outlook has problems with <ol> tags.

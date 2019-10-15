@@ -23,7 +23,7 @@ class BaseController extends DataController
 {
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect;             // Utilities for handling redirects in controller classes
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
-  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\SetFieldOnModels;     // Method to handle XHR or Joomla! admin button bulk updates to a model property, e.g. 'upvote_count'
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\XhrSetField;          // Method to handle XHR or Joomla! admin button bulk updates to a model property, e.g. 'upvote_count'
 
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -42,14 +42,12 @@ class BaseController extends DataController
       'browse',
       'cancel',
       'edit',
-      'feature',
       'publish',
       'read',
       'remove',
       'save',
       'savenew',
       'trash',
-      'unfeature',
       'unpublish'
     ));
   }

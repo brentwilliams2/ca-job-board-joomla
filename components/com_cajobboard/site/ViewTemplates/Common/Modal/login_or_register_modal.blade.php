@@ -13,11 +13,8 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  // get global site configuration
-  $config = $this->container->platform->getConfig();
-
   // get sitename from global configuration
-  $siteName = $config->get('sitename', 'Job Board');
+  $siteName = $this->container->params->getConfigOption('sitename', 'Job Board');
 ?>
 
 {{--

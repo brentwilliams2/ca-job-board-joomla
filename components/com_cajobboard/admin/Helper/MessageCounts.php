@@ -16,7 +16,6 @@ use \Calligraphic\Cajobboard\Admin\Model\Persons;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
 use \Joomla\CMS\Language\Text;
-use \Joomla\Registry\Registry;
 
 // no direct access
 defined('_JEXEC') or die;

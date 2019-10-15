@@ -37,7 +37,7 @@
       </span>
     @endif
 
-    @jhtml('helper.commonwidgets.addNew', $this, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)
 
     <div class="clearfix"></div>
   </div>
@@ -63,6 +63,6 @@
   Modal templates used in common for all default_item views, only
   take bandwidth hit of including modal HTML if user is logged in
 --}}
-@if ( $this->isUserLoggedIn() )
+@if (!$isGuestUser)
   @yield('report-item-modal')
 @endif

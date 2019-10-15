@@ -15,7 +15,6 @@
 namespace Calligraphic\Cajobboard\Admin\Model\Exception;
 
 use \Joomla\CMS\Language\Text;
-use \Calligraphic\Cajobboard\Admin\Model\Exception\InvalidField;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -23,7 +22,7 @@ defined('_JEXEC') or die;
 /**
  * Exception thrown when attempting to save a NOT NULL field without a default value
  */
-class UserBlocked extends InvalidField
+class UserBlocked extends \RuntimeException
 {
 	public function __construct($message = "", $code = 500, Exception $previous = null)
 	{

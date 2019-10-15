@@ -1,6 +1,6 @@
 <?php
  /**
-  * Answers Site List View Template
+  * Site Answers List View Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019
@@ -14,7 +14,7 @@
 
   use \Joomla\CMS\Language\Text;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
+  /** @var  FOF30\View\DataView\Html  $this */
 
   // Using an include so that local vars in the included file are in scope here also
   include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
@@ -37,7 +37,7 @@
       </span>
     @endif
 
-    @jhtml('helper.commonwidgets.addNew', $this, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)
 
     <div class="clearfix"></div>
   </div>
@@ -63,6 +63,6 @@
   Modal templates used in common for all default_item views, only
   take bandwidth hit of including modal HTML if user is logged in
 --}}
-@if ( $this->isUserLoggedIn() )
+@if ( !$isGuestUser )
   @yield('report-item-modal')
 @endif

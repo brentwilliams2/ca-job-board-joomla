@@ -14,12 +14,13 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Exception;
 
-use \Joomla\CMS\Language\Text;
-
 // no direct access
 defined('_JEXEC') or die;
 
-class LengthExceeded extends \RuntimeException
+use \Calligraphic\Cajobboard\Admin\Model\Exception\InvalidField;
+use \Joomla\CMS\Language\Text;
+
+class LengthExceeded extends InvalidField
 {
 	public function __construct($message = "", $code = 500, Exception $previous = null)
 	{

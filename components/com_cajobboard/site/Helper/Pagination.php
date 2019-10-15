@@ -126,7 +126,7 @@ class Pagination
 
     if ($count >= $model->limit)
     {
-      $this->showLimitBox = $this->container->platform->getConfigOption('showLimitBox', true, $model);
+      $this->showLimitBox = $this->container->params->getConfigOption('showLimitBox', true, $model);
     }
   }
 }

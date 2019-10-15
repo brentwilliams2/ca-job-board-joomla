@@ -1,6 +1,6 @@
 <?php
  /**
-  * Job Postings Site Browse View Template
+  * Site Job Postings Browse View Template
   *
   * @package   Calligraphic Job Board
   * @version   October 5, 2019

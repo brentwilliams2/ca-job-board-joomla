@@ -34,6 +34,7 @@
   defined('_JEXEC') or die;
 
   use \FOF30\Utils\FEFHelper\Html as FEFHtml;
+  use \Joomla\CMS\Language\Text;
 
   /** @var  FOF30\View\DataView\Html  $this */
   $item = $this->item;
@@ -195,7 +196,7 @@
       --}}
 
       {{-- "Basic" tab --}}
-      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'basic-options', \JText::_('COM_CAJOBBOARD_ADMIN_EDIT_MAIN_TAB')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'basic-options', Text::_('COM_CAJOBBOARD_ADMIN_EDIT_MAIN_TAB')); ?>
         <div class="row-fluid">
           <div class="span9">
             <div class="form-vertical">
@@ -209,17 +210,17 @@
       <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
       {{-- "Advanced" tab --}}
-      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'advanced-options', \JText::_('JOPTIONS')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'advanced-options', Text::_('JOPTIONS')); ?>
         @yield('advanced-options')
       <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
       {{-- "Publish" tab --}}
-      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'publishing-options', \JText::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'publishing-options', Text::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
         @include('admin:com_cajobboard/Common/PublishTab', [ 'item' => $item ])
       <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
       {{-- "Permissions" tab --}}
-      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'permissions-options', \JText::_('JCONFIG_PERMISSIONS_LABEL')); ?>
+      <?php echo \JHtml::_('bootstrap.addTab', 'edit-form-tabs', 'permissions-options', Text::_('JCONFIG_PERMISSIONS_LABEL')); ?>
         @yield('permissions-options')
       <?php echo \JHtml::_('bootstrap.endTab'); ?>
 
@@ -262,9 +263,9 @@
  *  Drop-down combo box with preset values:
  *
  *    $typeOptions = [
- *      'value'       => \JText::_('COM_CAJOBBOARD_COUPON_TYPE_VALUE'),
- *      'percent'     => \JText::_('COM_CAJOBBOARD_COUPON_TYPE_PERCENT'),
- *      'lastpercent' => \JText::_('COM_CAJOBBOARD_COUPON_TYPE_LASTPERCENT'),
+ *      'value'       => Text::_('COM_CAJOBBOARD_COUPON_TYPE_VALUE'),
+ *      'percent'     => Text::_('COM_CAJOBBOARD_COUPON_TYPE_PERCENT'),
+ *      'lastpercent' => Text::_('COM_CAJOBBOARD_COUPON_TYPE_LASTPERCENT'),
  *    ];
  *
  *    @jhtml('FEFHelper.select.genericlist', $typeOptions, 'type', ['list.select' => $item->type])

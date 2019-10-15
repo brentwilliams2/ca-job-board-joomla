@@ -1,5 +1,5 @@
 <?php
-/**
+ /**
   * Class to generate the OpenGraph header meta tags for social
   * networks and set the page title in one consistent place
   *
@@ -10,6 +10,7 @@
   * @copyright   Copyright (C) 2018 Calligraphic, LLC
   * @license     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
   *
+  * Model must have an 'image' property set to allow adding semantic headers
   */
 
 namespace Calligraphic\Cajobboard\Site\Helper;
@@ -47,7 +48,7 @@ class Semantic
     *
     * @property array
     */
-  protected $shareableModels = array(
+  protected $socialShareModels = array(
     'Answers' => 'content',
     'AudioObjects' => 'media',
     'Certifications' => 'content',
@@ -140,17 +141,26 @@ class Semantic
       return;
     }
 
+    // Sanity check
+    if ( !$view->hasField('image') )
+    {
+      throw new \Exception('Calling Semantic model helper to add social metadata headers, but the calling model lacks an image property');
+    }
+
     /** @var \FOF30\Model\DataModel */
-    $model = $view->item;
+    $item = $view->getItem();
 
-    $modelName = $model->getName();
+    $itemName = $item->getName();
 
-    /** @var \FOF30\Platform\PlatformInterface  */
-    $platform = $this->container->platform;
+    /** @var \FOF30\Container\Container $container */
+    $container = $item->getContainer();
+
+    /** @var \FOF30\Platform\PlatformInterface $platform */
+    $platform = $container->platform;
 
     // Return if the open graph tag has already been set for a page, the view calling this isn't
     // top-level (e.g. it's HMVC), or the model attached to this view isn't intended for social sharing
-    if (self::$isOpengraphTagSet || !$this->isRequestedView($view) || !array_key_exists($modelName, $this->shareableModels) )
+    if (self::$isOpengraphTagSet || !$this->isRequestedView($view) || !array_key_exists($itemName, $this->socialShareModels) )
     {
       return;
     }
@@ -159,31 +169,33 @@ class Semantic
 
     $language = $platform->getLanguage()->getTag();
 
-    $titleFieldName  = $model->getFieldAlias('title');
-    $title = $platform->filterText( $model->$titleFieldName );
+    // Item-level field values
 
-    $introFieldName  = $model->getFieldAlias('description__intro');
-    $description     = $platform->filterText( $model->$introFieldName );
+    $title = $container->Text->filterText( $item->getFieldValue( $item->getFieldAlias('title') ) );
 
-    $facebookAppId   = $platform->getConfigOption('facebook_app_id', null, $model);
-    $twitterHandle   = $platform->getConfigOption('twitter_handle', null, $model);
+    $description     = $container->Text->filterText( $item->getFieldValue( $item->getFieldAlias('description__intro') ) );
 
-    $imageFieldName  = $model->getFieldAlias('image');
-    $cardImage       = $model->$imageFieldName->get('image_intro');
-    $imageAltText    = $model->$imageFieldName->get('image_intro_alt');
+    /** @var \Calligraphic\Library\Platform\Registry */
+    $imageRegistry   = $item->getFieldValue( $item->getFieldAlias('image') );
+    $cardImage       = $imageRegistry->get('image_intro');
+    $imageAltText    = $imageRegistry>get('image_intro_alt');
+    unset($imageRegistry);
 
-    $modelType = $this->shareableModels[$modelName];
+    $facebookAppId   = $this->container->params->getConfigOption('facebook_app_id', null, $item);
+    $twitterHandle   = $this->container->params->getConfigOption('twitter_handle', null, $item);
 
-    $contentType     = $this->openGraphType[$modelType]['facebook'];
-    $twitterCardType = $this->openGraphType[$modelType]['twitter'];
+    $itemType = $this->socialShareModels[$itemName];
 
-    if ( $model instanceof VideoObjects || $model instanceof AudioObjects )
+    $contentType     = $this->openGraphType[$itemType]['facebook'];
+    $twitterCardType = $this->openGraphType[$itemType]['twitter'];
+
+    if ( $item instanceof VideoObjects || $item instanceof AudioObjects )
     {
-      $audioVideoUrl = $model->content_url;
+      $audioVideoUrl = $item->content_url;
     }
 
     // The site name from global configuration (configuration.php)
-    $tag  = '<meta property="og:site_name" content="' . $platform->getConfigOption('sitename') . '"/>';
+    $tag  = '<meta property="og:site_name" content="' . $this->container->params->getConfigOption('sitename') . '"/>';
     // Language the content for this page is encoded in, e.g. en-GB
     $tag .= '<meta property="og:locale" content="' . $language . '"/>';
     // The title of the article without any branding such as the site name.
@@ -238,11 +250,11 @@ class Semantic
     // Test if this is an item or edit view. Use the model 'title' field if so.
     if ( $view->isItem() )
     {
-      $model = $view->item;
+      $item = $view->item;
 
-      $titleField = $model->getFieldAlias('title');
+      $titleField = $item->getFieldAlias('title');
 
-      if ( property_exists($model, $titleField) && $title = $model->$titleField )
+      if ( property_exists($item, $titleField) && $title = $item->getFieldValue($titleField) )
       {
         $document->setTitle($title);
 
@@ -286,20 +298,25 @@ class Semantic
 
     if ( $view->isItem() )
     {
-      /** @var DataModel $model */
-      $model = $view->getModel();
+      /** @var DataModel $item */
+      $item = $view->getItem();
 
-      // Set the 'robots' metadata tags on the document so they are generated automatically in the template jdoc:head call
-      $document->setMetaData( 'robots', $platform->getConfigOption('robots', 'index, follow', $model) );
+      // Set metadata tags on the document so they are generated automatically in the template jdoc:head call
+
+      // Automatically cascades fetching config option if missing from item -> component -> menu item -> global
+      $document->setMetaData( 'robots', $this->container->params->getConfigOption('robots', 'index, follow', $item) );
+
+      /** @var \Calligraphic\Library\Platform\Registry $itemParams  */
+      $itemParams = $item->getFieldValue( $item->getFieldAlias('params') );
 
       // Set the 'author' metadata tags on the document so they are generated automatically if it is set in parameters
-      if ( $author = $model->params->get('author') )
+      if ( $author = $itemParams->get('author') )
       {
         $document->setMetaData($author);
       }
 
       // Set the 'keywords' metadata tags on the document so they are generated automatically if it is set in parameters
-      if ( $keywords = $model->params->metakey )
+      if ( $keywords = $itemParams->metakey )
       {
         $document->setMetaData('keywords', $keywords);
       }
@@ -307,8 +324,8 @@ class Semantic
     // use component, menu, or global parameters to set
     else
     {
-      // 'params' field not set on model, so set a default
-      $document->setMetaData( 'robots', $platform->getConfigOption('robots', 'index, follow') );
+      // 'params' field not set on model, so set a default using cascade if missing from item -> component -> menu item -> global
+      $document->setMetaData( 'robots', $this->container->params->getConfigOption('robots', 'index, follow') );
     }
   }
 
@@ -329,3 +346,101 @@ class Semantic
     return $viewName == $requestedView;
   }
 }
+
+
+/*
+{
+  "Query string":
+  {
+    "option":"com_content"
+    "layout":"edit"
+    "id":"9"
+  }
+  "Form data":
+  {
+    "jform[title]":"Fair+Credit+Reporting+Act"
+    "jform[alias]":"fair-credit-reporting-act"
+    "jform[articletext]":"<p>cut<p>"
+    "jform[state]":"1"
+    "jform[catid]":"76"
+    "jform[featured]":"0"
+    "jform[access]":"1"
+    "jform[id]:["9"]
+    "jform[language]":"*"
+    "jform[note]":""
+    "jform[version_note]":""
+    "jform[com_fields][content-field-test]":""
+    "jform[publish_up]":"2019-05-10+12:34:15"
+    "jform[publish_down]":""
+    "jform[created]":"2019-05-10+12:34:15"
+    "jform[created_by]":"753"
+    "jform[created_by_alias]":""
+    "jform[modified]":"2019-09-22+14:48:46"
+    "jform[version]":"2"
+    "jform[hits]":"0"
+    "jform[metadesc]":"some+meta+descripting"
+    "jform[metakey]":"some+meta+keyworking"
+    "jform[xreference]":""
+    
+    "jform[images][image_intro]":""
+    "jform[images][float_intro]":""
+    "jform[images][image_intro_alt]":""
+    "jform[images][image_intro_caption]":""
+    "jform[images][image_fulltext]":""
+    "jform[images][float_fulltext]":""
+    "jform[images][image_fulltext_alt]":""
+    "jform[images][image_fulltext_caption]":""
+
+    "jform[urls][urla]":""
+    "jform[urls][urlatext]":""
+    "jform[urls][targeta]":""
+    "jform[urls][urlb]":""
+    "jform[urls][urlbtext]":""
+    "jform[urls][targetb]":""
+    "jform[urls][urlc]":""
+    "jform[urls][urlctext]":""
+    "jform[urls][targetc]":""
+
+    "jform[attribs][article_layout]":""
+    "jform[attribs][show_title]":""
+    "jform[attribs][link_titles]":"1"
+    "jform[attribs][show_tags]":""
+    "jform[attribs][show_intro]":""
+    "jform[attribs][info_block_position]":""
+    "jform[attribs][info_block_show_title]":""
+    "jform[attribs][show_category]":""
+    "jform[attribs][link_category]":""
+    "jform[attribs][show_parent_category]":"0"
+    "jform[attribs][link_parent_category]":""
+    "jform[attribs][show_associations]":""
+    "jform[attribs][show_author]":""
+    "jform[attribs][link_author]":""
+    "jform[attribs][show_create_date]":""
+    "jform[attribs][show_modify_date]":""
+    "jform[attribs][show_publish_date]":""
+    "jform[attribs][show_item_navigation]":""
+    "jform[attribs][show_icons]":""
+    "jform[attribs][show_print_icon]":""
+    "jform[attribs][show_email_icon]":""
+    "jform[attribs][show_vote]":""
+    "jform[attribs][show_hits]":""
+    "jform[attribs][show_noauth]":""
+    "jform[attribs][urls_position]":""
+    "jform[attribs][alternative_readmore]":""
+    "jform[attribs][article_page_title]":""
+    "jform[attribs][show_publishing_options]":""
+    "jform[attribs][show_article_options]":""
+    "jform[attribs][show_urls_images_backend]":""
+    "jform[attribs][show_urls_images_frontend]":""
+
+    "jform[metadata][robots]":"index+follow"
+    "jform[metadata][author]":"a+great+author"
+    "jform[metadata][rights]":""
+    "jform[metadata][xreference]":""
+
+    "task":"article.apply"
+    "return":""
+    "forcedLanguage":""
+    "34db9432ce2511b239bf263031ec51af":"1"
+}}
+*/

@@ -1,37 +1,35 @@
 <?php
 /**
- * FOF model behavior class for model validation
- *
- * Checks for empty fields that are set to NOT NULL in the database table,
- * and if the field is empty and has a default value, set it.
+ * FOF model behavior class for model validation. Called from Model/Mixin/Validation.php,
+ * which adds an over-ridden check() method that provides onBeforeCheck, onCheck, and
+ * onAfterCheck events. 
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   October 9, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC, (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
- *
  */
+
 namespace Calligraphic\Cajobboard\Admin\Model\Behaviour;
 
-use \FOF30\Event\Observer;
-use \FOF30\Model\DataModel;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\EmptyField;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\SearchEngineUnfriendlyTitleField;
+use \FOF30\Event\Observer;
+use \FOF30\Model\DataModel;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined( '_JEXEC' ) or die;
 
 /**
  * To override validation behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
+ * named named after the model in the 'Behaviour' directory and use the same file
  * name as this behaviour ('Check.php'). The model file cannot go in this directory,
  * it must stay in the root Model folder.
  */
 class Check extends Observer
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
-
   /**
    * Models that should require search-engine friendly page titles, e.g. sixty characters or less
    */
@@ -45,11 +43,11 @@ class Check extends Observer
 	 * Add the category id field to the fieldsSkipChecks list of the model.
 	 * it should be empty so that we can fill it in through this behaviour.
 	 *
-	 * @param   DataModel  $model
+	 * @param   DataModel  $model  The data model associated with this call, with the input $data already bound to it
 	 */
 	public function onCheck(DataModel $model)
 	{
-    $this->checkForEmpty($model);
+    $this->checkForEmptyRequiredFields($model);
 
     $this->checkForSearchEngineFriendlyTitle($model);
   }
@@ -58,47 +56,41 @@ class Check extends Observer
   /**
    * Checks for empty fields that are declared as NOT NULL and don't have a default value
    *
-   * @param   DataModel  $model
+   * @param   DataModel  $model  The data model associated with this call, with the input $data already bound to it
 	 */
-	protected function checkForEmpty(DataModel $model)
+	protected function checkForEmptyRequiredFields(DataModel $model)
 	{
 		foreach ($model->getKnownFields() as $fieldName => $field)
 		{
-			// Never check the key if it's empty; an empty key is normal for new records
-			if ($fieldName == $model->idFieldName)
-			{
-				continue;
+			if (
+        // Never check the if the primary key is empty, an empty key is normal for new records
+        $fieldName == $model->getIdFieldName() ||
+
+        $model->hasSkipCheckField($fieldName) ||
+
+        null !== $model->getFieldValue($fieldName)
+      )
+      {
+        continue;
       }
 
-      // Get the value of the field, accounting for field aliases
-      $value = $model->getFieldValue( $model->getFieldAlias($fieldName) );
+      // Set a default value if the table SQL metadata has one set
+      if (!is_null($field->Default))
+      {
+        $data[$fieldName] = $field->Default;
 
+        continue;
+      }
 
-
-			if (
-        // Check if the table SQL is set to NOT NULL
-        isset($field->Null) && ($field->Null == 'NO') &&
-
-        // Check if the field is null
-        empty($value) && !is_numeric($value) &&
-
-        // Make sure the model's not set to skip checking for this field. Assumes real field
-        // names (and not aliases) are used in the skip_checks configuration parameter.
-        is_array($model->fieldsSkipChecks) && !in_array($fieldName, $model->fieldsSkipChecks)
-      )
-			{
-        // Set a default value if the table SQL has one set
-				if (!is_null($field->Default))
-				{
-					$model->setFieldValue($fieldName, $field->Default);
-
-					continue;
-				}
-
+      // Throw an exception if the field is required, null, and doesn't have a default
+      if ( isset($field->Null) && ($field->Null == 'NO') )
+      {
         $modelItemName = $model->getContainer()->inflector->singularize( $model->getName() );
 
-				throw new EmptyField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_NOT_NULL_MODEL_FIELD_EMPTY'), $modelItemName, $fieldName );
-			}
+        $humanFieldName = strtolower( $model->getContainer()->inflector->humanize($fieldName) );
+
+        throw new EmptyField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_NOT_NULL_MODEL_FIELD_EMPTY', strtolower($modelItemName), $humanFieldName));
+      }
 		}
   }
 
@@ -106,7 +98,7 @@ class Check extends Observer
   /**
    * Checks that the title field or it's aliased field is search-engine friendly (e.g. length-limited to 60 characters)
    *
-   * @param   DataModel  $model
+   * @param   DataModel  $model  The data model associated with this call, with the input $data already bound to it
 	 */
 	protected function checkForSearchEngineFriendlyTitle(DataModel $model)
 	{
@@ -128,11 +120,9 @@ class Check extends Observer
 
     if ( $length > 60 )
     {
-      throw new SearchEngineUnfriendlyTitleField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_MODEL_FIELD_TITLE_IS_SEARCH_ENGINE_UNFRIENDLY'), $length );
+      throw new SearchEngineUnfriendlyTitleField( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_MODEL_FIELD_TITLE_IS_SEARCH_ENGINE_UNFRIENDLY', $length) );
     }
 
     $model->setFieldValue($fieldName, $sanitizedValue);
   }
 }
-
-

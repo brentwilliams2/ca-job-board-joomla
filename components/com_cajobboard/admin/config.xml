@@ -252,20 +252,41 @@
       type="radio"
       class="btn-group btn-group-yesno"
       default="1"
-      label="COM_CAJOBBOARD_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_LABEL"
-      description="COM_CAJOBBOARD_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_DESC"
+      label="COM_CAJOBBOARD_DESCRIPTION_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_DESCRIPTION_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_DESC"
     >
       <option value="0">COM_CAJOBBOARD_LENGTH_NOT_ENFORCED</option>
       <option value="1">COM_CAJOBBOARD_LENGTH_TRUNCATE_ON_EXCEEDED</option>
-      <option value="1">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
+      <option value="2">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
     </field>
 
     <field
       name="description__intro_length"
       type="number"
       default="280"
-      label="COM_CAJOBBOARD_INTRO_LENGTH_FOR_SOCIAL_SHARES_LABEL"
-      description="COM_CAJOBBOARD_INTRO_LENGTH_FOR_SOCIAL_SHARES_DESC"
+      label="COM_CAJOBBOARD_DESCRIPTION_INTRO_LENGTH_FOR_SOCIAL_SHARES_LABEL"
+      description="COM_CAJOBBOARD_DESCRIPTION_INTRO_LENGTH_FOR_SOCIAL_SHARES_DESC"
+    />
+
+    <field
+      name="metadata_author__intro_length_required"
+      type="radio"
+      class="btn-group btn-group-yesno"
+      default="1"
+      label="COM_CAJOBBOARD_METADATA_AUTHOR_LENGTH_REQUIRED_FOR_META_HEADERS_LABEL"
+      description="COM_CAJOBBOARD_METADATA_AUTHOR_LENGTH_REQUIRED_FOR_META_HEADERS_DESC"
+    >
+      <option value="0">COM_CAJOBBOARD_LENGTH_NOT_ENFORCED</option>
+      <option value="1">COM_CAJOBBOARD_LENGTH_TRUNCATE_ON_EXCEEDED</option>
+      <option value="2">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
+    </field>
+
+    <field
+      name="metadata_author__intro_length"
+      type="number"
+      default="280"
+      label="COM_CAJOBBOARD_METADATA_AUTHOR_LENGTH_FOR_META_HEADERS_LABEL"
+      description="COM_CAJOBBOARD_METADATA_AUTHOR_LENGTH_FOR_META_HEADERS_DESC"
     />
 
     <field
@@ -278,7 +299,7 @@
     >
       <option value="0">COM_CAJOBBOARD_LENGTH_NOT_ENFORCED</option>
       <option value="1">COM_CAJOBBOARD_LENGTH_TRUNCATE_ON_EXCEEDED</option>
-      <option value="1">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
+      <option value="2">COM_CAJOBBOARD_LENGTH_REJECT_ON_EXCEEDED</option>
     </field>
 
     <field

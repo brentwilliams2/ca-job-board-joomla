@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
-namespace Calligraphic\Cajobboard\Admin\Model\Behaviour\CreditReports;
+namespace Calligraphic\Cajobboard\Admin\Model\Behaviour\IssueReports;
 
 use \Calligraphic\Cajobboard\Admin\Helper\Enum\ActionStatusEnum;
 use \Calligraphic\Cajobboard\Admin\Helper\Exception\EnumException;

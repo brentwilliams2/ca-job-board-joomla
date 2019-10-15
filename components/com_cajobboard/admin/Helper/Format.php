@@ -68,14 +68,14 @@ class Format
 	{
     $this->container = $container;
 
-    $this->currencyPosition = $this->container->platform->getConfigOption('currencypos', 'before');
+    $this->currencyPosition = $this->container->params->getConfigOption('currencypos', 'before');
 
-    $this->currencySymbol = $this->container->platform->getConfigOption('currencysymbol', '$');
+    $this->currencySymbol = $this->container->params->getConfigOption('currencysymbol', '$');
 
 
 		if (empty($format))
 		{
-			$this->dateFormat = $this->container->platform->getConfigOption('dateformat', 'm-d-Y');
+			$this->dateFormat = $this->container->params->getConfigOption('dateformat', 'm-d-Y');
     }
   }
 
@@ -115,7 +115,7 @@ class Format
         $user = $this->container->platform->getUser($tzAware);
       }
 
-  		$tzDefault = $this->container->platform->getConfigOption('offset', 'GMT');
+  		$tzDefault = $this->container->params->getConfigOption('offset', 'GMT');
 
 			$tz = $user->getParam('timezone', $tzDefault);
     }

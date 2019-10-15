@@ -25,7 +25,7 @@ class InvalidField extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = Text::_('COM_CAJOBBOARD_EXCEPTION_MODEL_FIELD_INVALID');
+			$message = Text::_('COM_CAJOBBOARD_EXCEPTION_MODEL_INVALID_FIELD_DEFAULT_MSSG');
     }
 
 		parent::__construct($message, $code, $previous);

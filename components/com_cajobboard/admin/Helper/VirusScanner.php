@@ -48,7 +48,7 @@ class VirusScanner
       // @TODO: How is EXIF data handled in the rewritten file?
       $image->writeImage($outFile);
     }
-    catch (ImagickException)
+    catch (ImagickException $e)
     {
       //invalid image or something
     }
@@ -161,7 +161,7 @@ class VirusScanner
 
     $finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type ala mimetype extension
 
-    $type = echo finfo_file($finfo, $filename); // e.g. text/html, image/gif, application/vnd.ms-excel, etc.
+    $type = finfo_file($finfo, $filename); // e.g. text/html, image/gif, application/vnd.ms-excel, etc.
 
     finfo_close($finfo);
   }

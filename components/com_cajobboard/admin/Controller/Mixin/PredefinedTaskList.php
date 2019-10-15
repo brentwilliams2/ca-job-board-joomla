@@ -36,19 +36,19 @@ trait PredefinedTaskList
 	/**
 	 * Overrides the execute method to implement the predefined task list feature
 	 *
-	 * @param   string  $task  The task to execute
+	 * @param   string  $method  The task to execute
 	 *
 	 * @return  mixed  The controller task result
 	 */
-	public function execute($task)
+	public function execute($method)
 	{
     // Make sure the task is in the predefined list set on the controller
-		if (!in_array($task, $this->predefinedTaskList) && $task != 'default')
+		if (!in_array($method, $this->predefinedTaskList) && $method != 'default')
 		{
-      throw new TaskNotAllowed( Text::sprintf( 'COM_CAJOBBOARD_EXCEPTION_TASK_NOT_IN_LIST', $task ) );
+      throw new TaskNotAllowed( Text::sprintf( 'COM_CAJOBBOARD_EXCEPTION_TASK_NOT_IN_LIST', $method ) );
     }
 
-		return parent::execute($task);
+		return parent::execute($method);
   }
 
 
@@ -57,37 +57,35 @@ trait PredefinedTaskList
    * default task. Merges tasks from each call so that child Controller classes can simply add
    * tasks to a default set, call resetPredefinedTaskList() to start fresh in child classes
    *
-	 * @param   array  $taskList  The task list to register
+	 * @param   array  $methodList  The task list to register.
 	 */
-	protected function addPredefinedTaskList(array $taskList)
+	protected function addPredefinedTaskList(array $predefinedTaskList)
 	{
-		if (empty($taskList))
+		// Sanity check
+		if ( empty($predefinedTaskList) )
 		{
 			return;
 		}
 
-    // merge existing tasks with new tasks
-    $tasks = array_merge($this->predefinedTaskList, $taskList);
+		/** @var 	array 	$publicMethodList 	The taskList is built using reflection of all public methods in the Controller constructor, with the method name as the array values. */
+		$publicMethodList = $this->getTasks();
 
-		// First, unregister all known tasks which are not in the taskList. The taskList is
-		// built using reflection of all public methods in the Controller constructor.
-		$allTasks = $this->getTasks();
-
-		foreach ($allTasks as $task)
+		foreach ($predefinedTaskList as $predefinedTask)
 		{
-			if (in_array($task, $tasks))
+			if ( !in_array($predefinedTask, $publicMethodList) )
 			{
-				continue;
-      }
+				throw new \Exception(
+					Text::sprintf(
+						'Logic error in PredefinedTaskList: the %s task is in the predefined task list, but has no associated controller public method. For site controller class %s.',
+						$predefinedTask,
+						$this->getName()
+					)
+				);
+			}
+		}
 
-			$this->unregisterTask($task);
-    }
-
-		// Set the predefined task list
-    $this->predefinedTaskList = $tasks;
-
-		// Set the default task
-		$this->registerDefaultTask(reset($this->predefinedTaskList));
+		// merge existing tasks with new tasks
+		$this->predefinedTaskList = array_merge($this->predefinedTaskList, $predefinedTaskList);
   }
 
 
@@ -97,6 +95,5 @@ trait PredefinedTaskList
 	protected function resetPredefinedTaskList()
 	{
     $this->predefinedTaskList = array();
-  }
+	}
 }
-

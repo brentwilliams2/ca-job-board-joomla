@@ -16,78 +16,53 @@ use \Calligraphic\Cajobboard\Admin\Helper\Category as CategoryHelper;
 use \FOF30\Event\Observer;
 use \FOF30\Model\DataModel;
 use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Log\Log;
 
 // no direct access
 defined( '_JEXEC' ) or die;
 
-
-/**
- * To override validation behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('Category.php'). The model file cannot go in this
- * directory, it must stay in the root Model folder.
- */
 class Category extends Observer
 {
   /**
 	 * Add the category id field to the fieldsSkipChecks list of the model.
 	 * it should be empty so that we can fill it in through this behaviour.
 	 *
-	 * @param   DataModel  $model
+	 * @param   DataModel  $item   The data model associated with this call
 	 */
-	public function onBeforeCheck(DataModel $model)
+	public function onBeforeCheck(DataModel $item)
 	{
-    $categoryIdField = $model->getFieldAlias('cat_id');
+    $categoryIdField = $item->getFieldAlias('cat_id');
 
-    if ( $model->hasField($categoryIdField) )
+    if ( $item->hasField($categoryIdField) )
     {
-      $model->addSkipCheckField($categoryIdField);
+      $item->addSkipCheckField($categoryIdField);
     }
   }
 
 
 	/**
-	 * This event runs before the query used to create a new record is ran.
+	 * This event runs before the query used to create a new record is ran, and after $data
+   * is bound to the model. The reference $data object is passed to Joomla!'s JDatabase
+   * insertObject() method, so changes made to the model with setFieldValue() aren't seen
+   * in the database record data.
 	 *
-	 * @param   DataModel           $model  The model which called this event
-	 * @param   JDatabaseQuery      &$data  The query we are manipulating
+	 * @param   DataModel           $item   The model which called this event
+	 * @param   \stdClass           $data   A reference to the data object, consisting of model properties as property names
+   *                                      and the values already transformed via attribute setters
 	 *
 	 * @return  void
 	 */
-  public function onBeforeCreate(DataModel $model, &$data)
+  public function onBeforeCreate(DataModel $item, \stdClass &$data)
   {
-    $categoryIdField = $model->getFieldAlias('cat_id');
+    $categoryIdFieldAlias = $item->getFieldAlias('cat_id');
 
-    if ( !$model->hasField($categoryIdField) )
+    // Sanity check, and return if the category ID field is already set from user input
+    if ( !$item->hasField($categoryIdFieldAlias) || $data->$categoryIdFieldAlias )
 		{
 			return;
     }
 
-    if ($data->$categoryIdField)
-    {
-      $model->setFieldValue($categoryIdField, $data->$categoryIdField);
-    }
-    else // logic to give a default category if not specified by input
-    {
-      $modelName = trim( implode(" ", preg_split( '/(?=[A-Z])/', $model->getName() )));
+    $categoryId = CategoryHelper::getItemRootCategoryId($item);
 
-      $categoryId = CategoryHelper::getCategoryIdByTitle($modelName);
-
-      if ( !$categoryId )
-      {
-        $categoryId = CategoryHelper::getCategoryIdByTitle('Uncategorised');
-      }
-
-      if ( !$categoryId )
-      {
-        throw new \Exception( Text::_('COM_CAJOBBOARD_BEHAVIOUR_CATEGORY_NOT_FOUND_EXCEPTION', $modelName) );
-      }
-
-      // onBeforeCreate is called after data is bound to the model, so need to set on both
-      $model->setFieldValue($categoryIdField, $categoryId);
-
-      $data->$categoryIdField = $model->getFieldValue($categoryIdField);
-    }
+    $data->$categoryIdFieldAlias = $categoryId;
   }
 }

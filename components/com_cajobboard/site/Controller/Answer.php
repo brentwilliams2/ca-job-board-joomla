@@ -21,6 +21,8 @@ defined('_JEXEC') or die;
 
 class Answer extends BaseController
 {
+	use \Calligraphic\Cajobboard\Site\Controller\Mixin\Votes;
+
 	/**
 	 * Overridden. Limit the tasks we're allowed to execute.
 	 *
@@ -34,8 +36,8 @@ class Answer extends BaseController
 		$this->setModelName('Answers');
 
 		$this->addPredefinedTaskList(array(
-			'downvote',
-			'upvote'
+			'downvote_count',
+			'upvote_count'
 		));
-  }
+	}
 }

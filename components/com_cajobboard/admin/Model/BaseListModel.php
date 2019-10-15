@@ -29,9 +29,10 @@ use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 class BaseListModel extends DataModel
 {
   // Traits to include in the class
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;    // Convenient assertions, e.g. for use in validation / check methods
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;   // Refactored base-class constructor, called from __construct method
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Patches;       // Over-ridden FOF30 DataModel methods (some with PRs)
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;    // Provides over-ridden 'check' method
 
  	/**
 	 * @param   Container $container The configuration variables to this model
@@ -64,26 +65,4 @@ class BaseListModel extends DataModel
     /* Parent constructor */
     parent::__construct($container, $config);
   }
-
-
-
-	/**
-   * @TODO: Overridden to fix logic error. Submit PR. See BaseDataModel and BaseTreeModel.
-	 * Method to compute the default name of the asset item (in table #__assets).
-	 *
-	 * @throws  NoAssetKey
-	 *
-	 * @return  string
-	 */
-	public function getAssetName()
-	{
-		// If there is no assetKey defined, stop here, or we'll get a wrong name
-		if (!$this->_assetKey)
-		{
-			throw new NoAssetKey;
-		}
-
-		// e.g. com_cajobboard.answer.2
-		return $this->_assetKey . '.' . $this->getId();
-	}
 }

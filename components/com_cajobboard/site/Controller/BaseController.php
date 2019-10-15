@@ -15,6 +15,7 @@ namespace Calligraphic\Cajobboard\Site\Controller;
 // Framework classes
 use \FOF30\Container\Container;
 use \FOF30\Controller\DataController;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -24,7 +25,7 @@ class BaseController extends DataController
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Permissions;					// Overridden checkACL() method and utility methods
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect;							// Utilities for handling redirects in controller classes
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
-  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\SetFieldOnModels;     // Method to handle XHR or Joomla! admin button bulk updates to a model property, e.g. 'upvote_count'
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\XhrSetField;     			// Method to handle XHR or Joomla! admin button bulk updates to a model property, e.g. 'upvote_count'
 
 	/*
 	 * @param   Container $container
@@ -91,8 +92,6 @@ class BaseController extends DataController
 
     $humanViewNameSingular = $this->container->inflector->humanize( $this->container->inflector->singularize($this->view) );
 
-    $textKey = strtoupper($this->container->componentName . '_LBL_SAVED');
-
 		if ($customURL = $this->input->getBase64('returnurl', ''))
 		{
 			$customURL = base64_decode($customURL);
@@ -100,7 +99,7 @@ class BaseController extends DataController
 
     $url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=edit&id=' . $id . $this->getItemidURLSuffix();
 
-		$this->setRedirect($url, \JText::sprintf($textKey, $humanViewNameSingular));
+		$this->setRedirect($url, Text::sprintf('COM_CAJOBBOARD_LBL_SAVED', $humanViewNameSingular));
   }
 
 
@@ -156,9 +155,7 @@ class BaseController extends DataController
 		{
       $humanViewNameSingular = $this->container->inflector->humanize( $this->container->inflector->singularize($this->view) );
 
-      $textKey = strtoupper($this->container->componentName . '_LBL_COPIED');
-
-			$this->setRedirect($url, \JText::sprintf($textKey, $humanViewNameSingular));
+			$this->setRedirect($url, Text::sprintf('COM_CAJOBBOARD_LBL_COPIED', $humanViewNameSingular));
 		}
   }
 
@@ -231,9 +228,7 @@ class BaseController extends DataController
 		{
       $humanViewNameSingular = $this->container->inflector->humanize( $this->container->inflector->singularize($this->view) );
 
-      $textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_DELETED');
-
-			$this->setRedirect($url, \JText::sprintf($textKey, $humanViewNameSingular));
+			$this->setRedirect($url, Text::sprintf('COM_CAJOBBOARD_LBL_DELETED', $humanViewNameSingular));
 		}
   }
 
@@ -257,8 +252,6 @@ class BaseController extends DataController
 
     $humanViewNameSingular = $this->container->inflector->humanize( $this->container->inflector->singularize($this->view) );
 
-		$textKey = strtoupper($this->container->componentName . '_LBL_SAVED');
-
 		if ($customURL = $this->input->getBase64('returnurl', ''))
 		{
 			$customURL = base64_decode($customURL);
@@ -266,6 +259,6 @@ class BaseController extends DataController
 
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 
-    $this->setRedirect($url, \JText::sprintf($textKey, $humanViewNameSingular));
+    $this->setRedirect($url, \JText::sprintf('COM_CAJOBBOARD_LBL_SAVED', $humanViewNameSingular));
 	}
 }

@@ -16,7 +16,7 @@ use \Calligraphic\Cajobboard\Admin\Helper\EmailIncoming;
 use \FOF30\Container\Container;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Input\Cli;
-use \Joomla\Registry\Registry;
+use \Calligraphic\Library\Platform\Registry;
 use \Malas\BounceHandler\BounceHandler;
 
 // @TODO: need to include the lib_cajobboard autoloader for access to Malas\BounceHandler
@@ -27,8 +27,8 @@ use \Malas\BounceHandler\BounceHandler;
 /**
  * Calligraphic Job Board Sample Data Seeder CLI Application
  *
- * @var    \JInput                       $input
- * @var    \Joomla\Registry\Registry    $config
+ * @var    \Joomla\CMS\Input\Input                    $input
+ * @var    \Calligraphic\Library\Platform\Registry    $config
  */
 class BouncedMailHandler extends CliApplication
 {

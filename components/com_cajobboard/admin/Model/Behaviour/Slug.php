@@ -21,16 +21,9 @@ defined( '_JEXEC' ) or die;
 
 
 /**
- * To override validation behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('Slug.php'). The model file cannot go in this directory,
- * it must stay in the root Model folder.
- */
-
- /**
  * @TODO: Submit a PR, there is code for this in DataModel's check()
  *        method but it isn't handling field aliases correctly. See
- *        how $model->$slugfield is set below for solution.
+ *        how $item->$slugfield is set below for solution.
  */
 class Slug extends Observer
 {
@@ -38,33 +31,55 @@ class Slug extends Observer
 	 * Add the slug field to the fieldsSkipChecks list of the model. It
 	 * should be empty so that we can fill them in through this behaviour.
 	 *
-	 * @param   DataModel  $model
+	 * @param   DataModel  $item
 	 */
-	public function onBeforeCheck(DataModel $model)
+	public function onBeforeCheck(DataModel $item)
 	{
-    $slugField = $model->getFieldAlias('slug');
+    $slugField = $item->getFieldAlias('slug');
 
-    if ( $model->hasField($slugField) )
+    if ( $item->hasField($slugField) )
     {
-      $model->addSkipCheckField($slugField);
+      $item->addSkipCheckField($slugField);
     }
 	}
 
-	/**
-	 * @param   DataModel  $model
-	 * @param   \stdClass  $data
-	 */
-	public function onBeforeCreate(DataModel $model, &$data)
-	{
-		// Create a slug if there is a title and an empty slug
-    $slugField  = $model->getFieldAlias('slug');
-    $titleField = $model->getFieldAlias('title');
 
-    if ($model->hasField($slugField) && $model->hasField($titleField) && !$model->$slugField)
+	/**
+	 * Transform the 'title' model field to a valid 'slug' SEF-friendly URL
+	 * field and set it in $data, e.g. lower-cased text and hyphenated
+	 *
+	 * Slug validation set to 'onBeforeSave' event so that it is set when
+	 * the check() method is ran during the 'save' task's method. The TreeModel
+	 * uses the slug field during check() to generate a hash for fast indexing.
+	 *
+	 * @param   DataModel  $item
+	 * @param   array  $data
+	 */
+	public function onBeforeSave(DataModel $item, &$data)
+	{
+		// The $data parameter can be null if there is no user input to save
+		if ( empty($data) )
+		{
+			return;
+		}
+
+		// Create a slug if there is a title and an empty slug
+    $slugField  = $item->getFieldAlias('slug');
+    $titleField = $item->getFieldAlias('title');
+
+    if (
+			// sanity check
+			$item->hasField($slugField) &&
+			$item->hasField($titleField) &&
+			(
+				// scenario for saving an item where the slug field has already been set, and is not in user input
+				!$item->getFieldValue($slugField) ||
+				// scenario where slug field is set in user input
+				empty( $data[$slugField] )
+			)
+		)
     {
-      // onBeforeCreate is called after data is bound to the model, so need to set on both
-      $model->setFieldValue($slugField, ApplicationHelper::stringURLSafe( $model->getFieldValue($titleField) ));
-      $data->$slugField = $model->getFieldValue($slugField);
+      $data[$slugField] = ApplicationHelper::stringURLSafe( $item->getFieldValue($titleField) );
     }
 	}
 }

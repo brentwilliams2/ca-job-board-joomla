@@ -11,16 +11,16 @@
 
 namespace Calligraphic\Cajobboard\Admin\View\Common;
 
-use \Joomla\CMS\Factory;
-use \Joomla\Registry\Registry;
-use \Joomla\CMS\Pagination\Pagination;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\HTML\HTMLHelper;
+use \Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
+use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use FOF30\Model\DataModel\Collection;
+use \FOF30\Model\DataModel;
+use \FOF30\Model\DataModel\Collection;
 use \FOF30\View\DataView\Html;
-use Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
+use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\HTML\HTMLHelper;
+use \Joomla\CMS\Pagination\Pagination;
 
 // no direct access
 defined('_JEXEC') or die;

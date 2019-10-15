@@ -20,9 +20,9 @@ use \FOF30\Model\DataModel;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 
-// NOTE: Depends on Trait \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect
+// NOTE: Depends on Trait \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect, in default BaseController
 
-trait SetFieldOnModels
+trait XhrSetField
 {
   /**
 	 * Method for controller task methods (e.g. 'upvote') to call to update a model field in one of two scenarios:
@@ -37,22 +37,13 @@ trait SetFieldOnModels
    * @param   mixed       $fieldName    The name of the model field or alias to be updated. Should be the same as the Controller task name, so it can be used as a 'task' name.
    * @param   mixed       $value        The value to update the model collection's field to.
    * @param   bool        $oneTime      Whether the user should only perform this action a single time (like upvotes), or 
-   * @param   \Closure    $callback     An anonymous function that is given the current value of the field, and should return the updated value
+   * @param   \Closure    $callback     An anonymous function that is given the model and the current value of the field, and should return the updated value
 	 *
 	 * @return  void|string   Returns error message on exception
 	 */
-	public function setFieldOnModels($fieldName, $value, $oneTime = false, \Closure $callback = null)
+	public function setField($fieldName, $value, $oneTime = false, \Closure $callback = null)
 	{
-    /*
-     * @TODO: ToggleField Mixin had this text, but can't figure out where it's doing this. From Javascript? Or __call()?
-     *
-     * Toggle a field value for the selected item(s). Provide a method
-     * in the model to toggle the field's state with a name in the format:
-     * 
-     *   setTasknameState(boolean $state)
-     */
-
-    $this->csrfProtection();
+     $this->csrfProtection();
 
     $model = $this->getModel()->savestate(false);
 
@@ -102,7 +93,7 @@ trait SetFieldOnModels
         // Run the callback if one is given
         if ($callback)
         {
-          $value = $callback($oldValue);
+          $value = $callback($model, $oldValue);
         }
 
         // Set and save the new field value
@@ -156,7 +147,7 @@ trait SetFieldOnModels
 
     $alisedFieldName = $modelInstance->getFieldAlias($fieldName);
 
-    /** @var \Joomla\Registry\Registry */
+    /** @var \Calligraphic\Library\Platform\Registry */
     $params = $modelInstance->getFieldValue();
 
     $idsArray = $params->get($fieldName);

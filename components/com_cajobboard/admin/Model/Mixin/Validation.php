@@ -19,11 +19,6 @@ trait Validation
   /**
    * The onCheck and onAfterCheck event is not implemented in FOF30 DataModel as of May 2019.
    *
-   * To override validation behaviour for a particular model, create a directory
-   * named 'Behaviour' in a directory named after the model and use the same file
-   * name as the behaviour ('Check.php'). The model file cannot go in this
-   * directory, it must stay in the root Model folder.
-   *
 	 * @return  static  Self, for chaining
 	 *
 	 * @throws \RuntimeException  When the data bound to this record is invalid
@@ -35,10 +30,24 @@ trait Validation
 			return $this;
     }
 
+    // handle TreeModel logic in it's over-ridden check() method
+    if ($this->hasField('lft') && $this->hasField('rgt'))
+		{
+			// Create the SHA-1 hash of the slug for faster searching (make sure the hash column is CHAR(64) to take
+      // advantage of MySQL's optimised searching for fixed size CHAR columns)
+      if ($this->hasField('hash') && $this->hasField('slug'))
+      {
+        $this->hash = sha1($this->slug);
+      }
+
+      // Reset cached values
+      $this->resetTreeCache();
+		}
+
     // Runs before the Check behaviour, use to add fields to the 'skip check field' list
     $this->triggerEvent('onBeforeCheck');
 
-    // Runs the Check behaviour
+    // Runs the Check behaviour, throw exception in observer classes if validation check fails
     $this->triggerEvent('onCheck');
 
     // Runs field-specific validation behaviours performed after the base checks

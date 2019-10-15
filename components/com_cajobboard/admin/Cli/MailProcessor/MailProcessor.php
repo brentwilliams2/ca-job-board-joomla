@@ -24,7 +24,7 @@ include realpath(__DIR__ . '/OutgoingMail.php');
 use \FOF30\Container\Container;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Input\Cli;
-use \Joomla\Registry\Registry;
+use \Calligraphic\Library\Platform\Registry;
 
 
 // @TODO: implement MailProcessor
@@ -32,8 +32,8 @@ use \Joomla\Registry\Registry;
 /**
  * Calligraphic Job Board Sample Data Seeder CLI Application
  *
- * @var    \JInput                       $input
- * @var    \Joomla\Registry\Registry    $config
+ * @var    \Joomla\CMS\Input\Input                    $input
+ * @var    \Calligraphic\Library\Platform\Registry    $config
  */
 class MailProcessor extends CliApplication
 {

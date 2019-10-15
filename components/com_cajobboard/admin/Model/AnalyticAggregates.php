@@ -18,7 +18,6 @@ defined('_JEXEC') or die;
 use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
-use \Joomla\Registry\Registry;
 
 /**
  * Fields:
@@ -118,7 +117,7 @@ class AnalyticAggregates extends DataModel
   /**
 	 * Transform 'structured_value' field to a JRegistry object on bind
 	 *
-	 * @return  Registry
+	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
   protected function getStructuredValueAttribute($value)
   {

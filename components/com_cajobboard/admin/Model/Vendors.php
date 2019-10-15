@@ -127,7 +127,7 @@ class Vendors extends BaseDataModel
   /**
 	 * Transform 'additional_type' field to a JRegistry object on bind
 	 *
-	 * @return  Registry
+	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
   protected function getAdditionalTypeAttribute($value)
   {

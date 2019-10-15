@@ -148,7 +148,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	protected function loadTranslations()
 	{
     // load the current view translation file based on whether backend or frontend
-    $this->container->platform->loadViewTranslations($this->view);
+    $this->container->Language->loadViewTranslations($this->view);
   }
 
 

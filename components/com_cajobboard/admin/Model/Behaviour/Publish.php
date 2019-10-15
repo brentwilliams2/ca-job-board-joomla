@@ -21,9 +21,9 @@ defined( '_JEXEC' ) or die;
 
 /**
  * To override validation behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('Publish.php'). The model file cannot go in this
- * directory, it must stay in the root Model folder.
+ * named named after the model in the 'Behaviour' directory and use the same file
+ * name as this behaviour ('Check.php'). The model file cannot go in this directory,
+ * it must stay in the root Model folder.
  */
 class Publish extends Observer
 {
@@ -31,38 +31,44 @@ class Publish extends Observer
 	 * Add the publish_up field to the fieldsSkipChecks list of the model. It
 	 * should be empty so that we can fill them in through this behaviour.
 	 *
-	 * @param   DataModel  $model
+	 * @param   DataModel  $item
 	 */
-	public function onBeforeCheck(DataModel $model)
+	public function onBeforeCheck(DataModel $item)
 	{
-    $publishUpField = $model->getFieldAlias('publish_up');
+    $publishUpField = $item->getFieldAlias('publish_up');
 
-    if ( $model->hasField($publishUpField) )
+    if ( $item->hasField($publishUpField) )
     {
-      $model->addSkipCheckField($publishUpField);
+      $item->addSkipCheckField($publishUpField);
     }
 	}
 
 
 	/**
-	 * @param   DataModel  $model
+	 * Set the 'publish_up' field to the current date for 'add' tasks
+	 *
+	 * This event runs before the query used to create a new record is ran, and after $data
+   * is bound to the model. The reference $data object is passed to Joomla!'s JDatabase
+   * insertObject() method, so changes made to the model with setFieldValue() aren't seen
+   * in the database record data.
+	 *
+	 * @param   DataModel  $item
 	 * @param   \stdClass  $data
 	 */
-	public function onBeforeCreate(DataModel $model, &$data)
+	public function onBeforeCreate(DataModel $item, &$data)
 	{
-    $publishUpField  = $model->getFieldAlias('publish_up');
+    $publishUpField  = $item->getFieldAlias('publish_up');
 
-		if ($model->hasField($publishUpField))
+		if ($item->hasField($publishUpField))
 		{
-      $nullDate = $model->getDbo()->getNullDate();
+      $nullDate = $item->getDbo()->getNullDate();
 
-      $publishUp = $model->getFieldValue($publishUpField);
+      $publishUp = $item->getFieldValue($publishUpField);
 
 			if (empty($publishUp) || ($publishUp == $nullDate))
 			{
-        // onBeforeCreate is called after data is bound to the model, so need to set on both
-        $model->setFieldValue($publishUpField, $model->getContainer()->platform->getDate()->toSql( false, $model->getDbo() ));
-				$data->$publishUpField = $model->getFieldValue($publishUpField);
+        // Set an initial value in $data's 'publish_up' field
+				$data->$publishUpField = $item->getContainer()->platform->getDate()->toSql( false, $item->getDbo() );
       }
 		}
 	}

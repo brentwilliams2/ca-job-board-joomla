@@ -138,7 +138,7 @@ class DataFeeds extends BaseDataModel
   /**
 	 * Transform 'data_feed_element' field to a JRegistry object on bind
 	 *
-	 * @return  Registry
+	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
   protected function getDataFeedElementAttribute($value)
   {

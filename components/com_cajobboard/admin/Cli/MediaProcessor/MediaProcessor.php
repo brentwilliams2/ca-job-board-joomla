@@ -17,8 +17,8 @@ use \Joomla\CMS\Factory;
 /**
  * Calligraphic Job Board Sample Data Seeder CLI Application
  *
- * @var    \JInput                       $input
- * @var    \Joomla\Registry\Registry    $config
+ * @var    \Joomla\CMS\Input\Input                    $input
+ * @var    \Calligraphic\Library\Platform\Registry    $config
  */
 class MediaProcessor extends CliApplication
 {

@@ -5,7 +5,7 @@ Getting access to category parameters:
   use \Joomla\CMS\Categories\Categories;
 
   // get a categories object
-  $categories = Categories::getInstance('com_cajobboard');
+  $categories = Categories::getInstance('Cajobboard');
 
   // loads a specific category and all its children in a CategoryNode object
   $category   = $categories->get('answers');

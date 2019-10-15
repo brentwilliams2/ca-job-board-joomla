@@ -196,118 +196,121 @@ class Uploader
   }
 
 
-  // @TODO: Is array?
-
-  if ( !isset($file) )
+  public function implementMe()
   {
-    throw new \Exception('file not set');
-  }
+    // @TODO: Is array?
 
-  if ($file['error'] != UPLOAD_ERR_OK)
-  {
-    throw new UploadException($file['error']);
-  }
+    if ( !isset($file) )
+    {
+      throw new \Exception('file not set');
+    }
 
-  //check for filesize
-  $fileSize = $file['size'];
+    if ($file['error'] != UPLOAD_ERR_OK)
+    {
+      throw new UploadException($file['error']);
+    }
 
-  if($fileSize > 2000000)
-  {
-    throw new \Exception( JText::_('FILE BIGGER THAN 2MB') );
-  }
+    //check for filesize
+    $fileSize = $file['size'];
 
-  // Clean up filename to get rid of strange characters like spaces etc
-  $fileName =JFile::makeSafe($file['name']);
+    if($fileSize > 2000000)
+    {
+      throw new \Exception( JText::_('FILE BIGGER THAN 2MB') );
+    }
 
-  $extension = strtolower(JFile::getExt($filename));
+    // Clean up filename to get rid of strange characters like spaces etc
+    $fileName =JFile::makeSafe($file['name']);
 
-  if( !array_key_exists($extension, $allowed) )
-  {
-    throw new \Exception( JText::_('INVALID EXTENSION') );
-  }
+    $extension = strtolower(JFile::getExt($filename));
 
-  //the name of the file in PHP's temp directory that we are going to move to our folder
-  $fileTemp = $file['tmp_name'];
+    if( !array_key_exists($extension, $allowed) )
+    {
+      throw new \Exception( JText::_('INVALID EXTENSION') );
+    }
 
-  // for security purposes, we will also do a getimagesize on the temp file (before we have moved it
-  // to the folder) to check the MIME type of the file, and whether it has a width and height
-  // Returns false on failure, E_WARNING if it can't access the filename, and E_NOTICE on read error.
-  // Downloads the entire image before it checks for the requested information.
-  $imageinfo = getimagesize($fileTemp);
+    //the name of the file in PHP's temp directory that we are going to move to our folder
+    $fileTemp = $file['tmp_name'];
 
-  //if the temp file does not have a width or a height
-  if( !is_int($imageinfo[0]) || !is_int($imageinfo[1]) )
-  {
-    throw new \Exception( JText::_( 'MISSING WIDTH OR HEIGHT DIMENSION' ) );
-  }
+    // for security purposes, we will also do a getimagesize on the temp file (before we have moved it
+    // to the folder) to check the MIME type of the file, and whether it has a width and height
+    // Returns false on failure, E_WARNING if it can't access the filename, and E_NOTICE on read error.
+    // Downloads the entire image before it checks for the requested information.
+    $imageinfo = getimagesize($fileTemp);
 
-  // $imageinfo[2] is a text string with the correct height="yyy" width="xxx" string that can be used directly in an IMG tag
+    //if the temp file does not have a width or a height
+    if( !is_int($imageinfo[0]) || !is_int($imageinfo[1]) )
+    {
+      throw new \Exception( JText::_( 'MISSING WIDTH OR HEIGHT DIMENSION' ) );
+    }
 
-  // if the temp file has a non-allowed MIME type
+    // $imageinfo[2] is a text string with the correct height="yyy" width="xxx" string that can be used directly in an IMG tag
 
-  // also mime_content_type($filename) returns the mime type, e.g.  text/plain and false on failure, instead of relying on what the client says
+    // if the temp file has a non-allowed MIME type
 
-  // Convert extension to MIME type:
-  // composer require ralouphie/mimey
-  // $mimes = new \Mimey\MimeTypes;
-  // $mimes->getMimeType('json'); // application/json
+    // also mime_content_type($filename) returns the mime type, e.g.  text/plain and false on failure, instead of relying on what the client says
 
-  // Convert MIME type to extension:
-  // $mimes->getExtension('application/json'); // json
-  if( !in_array( $imageinfo['mime'], array_values($allowed) ) )
-  {
-    throw new \Exception( JText::_( 'INVALID  MIME TYPE' ) );
-  }
+    // Convert extension to MIME type:
+    // composer require ralouphie/mimey
+    // $mimes = new \Mimey\MimeTypes;
+    // $mimes->getMimeType('json'); // application/json
 
-  // also, for linux:
-  function detectFileMimeType($filename='')
-  {
-      $filename = escapeshellcmd($filename);
-      $command = "file -b --mime-type -m /usr/share/misc/magic {$filename}";
+    // Convert MIME type to extension:
+    // $mimes->getExtension('application/json'); // json
+    if( !in_array( $imageinfo['mime'], array_values($allowed) ) )
+    {
+      throw new \Exception( JText::_( 'INVALID  MIME TYPE' ) );
+    }
 
-      $mimeType = shell_exec($command);
+    // also, for linux:
+    function detectFileMimeType($filename='')
+    {
+        $filename = escapeshellcmd($filename);
+        $command = "file -b --mime-type -m /usr/share/misc/magic {$filename}";
 
-      return trim($mimeType);
-  }
+        $mimeType = shell_exec($command);
 
-  if(in_array($filetype, $allowed))
-  {
-      // Check whether file exists before uploading it
-      if(file_exists($destDir . $filename))
-      {
-        throw new \Exception( JText::printf("File %s already exists.", $filename));
-      }
-      else
-      {
-        // Set up the source and destination of the file
-        $src = $file['tmp_name'];
+        return trim($mimeType);
+    }
 
-        JFile::upload($src, $destDir)
+    if(in_array($filetype, $allowed))
+    {
+        // Check whether file exists before uploading it
+        if(file_exists($destDir . $filename))
+        {
+          throw new \Exception( JText::printf("File %s already exists.", $filename));
+        }
+        else
+        {
+          // Set up the source and destination of the file
+          $src = $file['tmp_name'];
 
-        echo "Your file was uploaded successfully.";
-      }
-  }
-  else
-  {
-    throw new \Exception(JText::_("Error: There was a problem uploading your file. Please try again."));
-  }
+          JFile::upload($src, $destDir);
 
-  //lose any special characters in the filename
-  $fileName = preg_replace("/[^A-Za-z0-9]/i", "-", $fileName);
+          echo "Your file was uploaded successfully.";
+        }
+    }
+    else
+    {
+      throw new \Exception(JText::_("Error: There was a problem uploading your file. Please try again."));
+    }
 
-  //always use constants when making file paths, to avoid the possibilty of remote file inclusion
-  $uploadPath = JPATH_SITE.DS.'images'.DS.'stories'.DS.$fileName;
+    //lose any special characters in the filename
+    $fileName = preg_replace("/[^A-Za-z0-9]/i", "-", $fileName);
 
-  if(!JFile::upload($fileTemp, $uploadPath))
-  {
-    echo JText::_( 'ERROR MOVING FILE' );
+    //always use constants when making file paths, to avoid the possibilty of remote file inclusion
+    $uploadPath = JPATH_SITE.DS.'images'.DS.'stories'.DS.$fileName;
 
-    return;
-  }
-  else
-  {
-     // success, exit with code 0 for Mac users, otherwise they receive an IO Error
-     exit(0);
+    if(!JFile::upload($fileTemp, $uploadPath))
+    {
+      echo JText::_( 'ERROR MOVING FILE' );
+
+      return;
+    }
+    else
+    {
+      // success, exit with code 0 for Mac users, otherwise they receive an IO Error
+      exit(0);
+    }
   }
 
 
@@ -340,11 +343,11 @@ class Uploader
     }
   }
 
-
+  /*
+    $_FILES["file_upload"]["name"]      // This array value specifies the original name of the file, including the file extension. It doesn't include the file path.
+    $_FILES["file_upload"]["type"]      // This array value specifies the MIME type of the file.
+    $_FILES["file_upload"]["size"]      // This array value specifies the file size, in bytes.
+    $_FILES["file_upload"]["tmp_name"]  // This array value specifies the temporary name including full path that is assigned to the file once it has been uploaded to the server.
+    $_FILES["file_upload"]["error"]     // This array value specifies error or status code associated with the file upload, e.g. it will be 0, if there is no error.
+  */
 }
-
-* $_FILES["file_upload"]["name"]      // This array value specifies the original name of the file, including the file extension. It doesn't include the file path.
-* $_FILES["file_upload"]["type"]      // This array value specifies the MIME type of the file.
-* $_FILES["file_upload"]["size"]      // This array value specifies the file size, in bytes.
-* $_FILES["file_upload"]["tmp_name"]  // This array value specifies the temporary name including full path that is assigned to the file once it has been uploaded to the server.
-* $_FILES["file_upload"]["error"]     // This array value specifies error or status code associated with the file upload, e.g. it will be 0, if there is no error.

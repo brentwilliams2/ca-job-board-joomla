@@ -12,6 +12,7 @@
  * General local variables
  * @param  \FOF30\Container\Container   $container        An instance of the View container
  * @param  \Joomla\CMS\User\User  $user                   The Joomla! User object
+ * @param  bool                   $isGuestUser            Whether the user is logged in or a guest user
  * @param  string                 $componentName          The component name (e.g. 'com_cajobboard')
  * @param  string                 $sitename               The name of the site
  * @param  string                 $siteUrl                The base URL of the site
@@ -30,11 +31,16 @@
  * @param  string                 $modifiedOn             A formatted string built from the 'modified_on' model field
  * @param  string                 $featured               A string ('featured' or an empty string) to append to HTML element class attributes
  * @param  string                 $title                  Sanitized string from 'title' model property alias
- * @param  string                 $text                   Sanitized string from 'text' model property alias
+ * @param  string                 $description            Sanitized description of the item
+ * @param  string                 $description_intro      Sanitized short introductory text, often used for social share descriptions
+ * @param  string                 $text                   Sanitized string from 'text' model property alias (used in few models)
+ * @param  string                 $hits                   The number of hits the item has received
  *
  * Job Board fields, only set when field present on model
  * @param  int                    $downvoteCount          The downvote count for the item
+ * @param  int                    $downvoteAction         A URL to downvote this item using XHR
  * @param  int                    $upvoteCount            The downvote count for the item
+ * @param  int                    $upvoteAction           A URL to upvote this item using XHR
  *
  * Form and anchor URL local variables
  * @param  string                 $itemViewLink           A URL to the individual (item) view of this item
@@ -72,6 +78,8 @@
   $container = $this->getContainer();
 
   $user = $container->platform->getUser();
+  $isGuestUser = ($user->id == 0);
+
   $componentName = $container->componentName;
   $sitename = $container->platform->getConfig()->get('sitename');
   $siteUrl = Uri::base();
@@ -146,6 +154,7 @@
 
     // @TODO: Implement $tags field local variable
 
+
     /**
      * Job Board fields, only set when field present on model
      */
@@ -154,8 +163,8 @@
     {
       $downvoteCount = $item->getFieldValue( $item->getFieldAlias('downvote_count') );
 
-      $downvoteLink = $container->template->route(
-        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=downvote_count&id='. $itemId
+      $downvoteAction = $container->template->route(
+        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=downvote_count&tmpl=json&id='. $itemId
       );
     }
 
@@ -163,8 +172,8 @@
     {
       $upvoteCount = $item->getFieldValue( $item->getFieldAlias('upvote_count') );
 
-      $upvoteLink = $container->template->route(
-        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=upvote_count&id='. $itemId
+      $upvoteAction = $container->template->route(
+        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=upvote_count&tmpl=json&id='. $itemId
       );
     }
 
@@ -202,9 +211,10 @@
     $postAction = $container->template->route($rawPostAction);
     unset($rawPostAction);
 
-    $removeAction = $container->template->route(
+    $deleteAction = $container->template->route(
       $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=remove&id=' . $itemId
     );
+
 
     /**
      * 'Author' "magic" variable for relation to Persons, used in many models

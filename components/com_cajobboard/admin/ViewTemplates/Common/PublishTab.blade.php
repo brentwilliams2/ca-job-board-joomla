@@ -18,8 +18,10 @@
   // no direct access
   defined('_JEXEC') or die;
 
+  use \Calligraphic\Library\Platform\Registry;
+
   // Check if 'metadata' field is JRegistry object, will be null if this is a new record (add task)
-  if (is_object($item->metadata) && ($item->metadata instanceof \JRegistry))
+  if (is_object($item->metadata) && ($item->metadata instanceof Registry))
   {
     $robot_value  = $item->metadata->get('robots');
     $author_value = $item->metadata->get('author');
@@ -137,10 +139,10 @@
     class="control-group hasTip"
     title="@lang('JFIELD_METADATA_AUTHOR_DESC')::@lang('COM_CAJOBBOARD_FIELD_METADATA_AUTHOR_DESC')"
   >
-    <label for="metadata_author">
+    <label for="metadata[author]">
       @lang('JAUTHOR')
     </label>
-    <input type="text" name="metadata_author" id="metadata_author" value="{{{ $author_value }}}"/>
+    <input type="text" name="metadata[author]" id="metadata_author" value="{{{ $author_value }}}"/>
   </fieldset>
 
   {{-- Metadata Robots field --}}
@@ -149,10 +151,10 @@
     class="control-group hasTip"
     title="@lang('JFIELD_METADATA_ROBOTS_LABEL')::@lang('JFIELD_METADATA_ROBOTS_DESC')"
   >
-    <label for="metadata_robots">
+    <label for="metadata[robots]">
       @lang('JFIELD_METADATA_ROBOTS_LABEL')
     </label>
-    <select id="metadata_robots" name="metadata_robots" style="display: none;">
+    <select id="metadata_robots" name="metadata[robots]" style="display: none;">
       @foreach ($robot_values as $translation_string => $value)
         <option value={{{ $value }}}
           @if($value === $robot_value)

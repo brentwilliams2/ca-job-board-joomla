@@ -14,9 +14,10 @@ namespace Calligraphic\Cajobboard\Admin\Helper;
 // no direct access
 defined('_JEXEC') or die;
 
+use \Calligraphic\Cajobboard\Admin\Model\Exception\NoDefaultCategory;
 use \Joomla\CMS\Factory;
-use Joomla\Utilities\ArrayHelper;
-use TheSeer\Tokenizer\Exception;
+use \Joomla\Utilities\ArrayHelper;
+use \TheSeer\Tokenizer\Exception;
 
 abstract class Category
 {
@@ -24,7 +25,6 @@ abstract class Category
    * Cached array of the category item objects.
    *
    * @var    array
-   * @since  0.0.1
    */
   protected static $categories = array();
 
@@ -33,9 +33,35 @@ abstract class Category
    * Cached array mapping category id's to names
    *
    * @var    array
-   * @since  0.0.1
    */
   protected static $categoryMapIdToName = array();
+
+
+  /**
+   * Returns a category title, formatted with dashes to show level in category hierarchy
+   *
+   * @param   string   $modelName   The model name to get a root category ID for
+   *
+   * @return  string   The category title indented with hyphens if it is lower level than root categories
+   */
+  public static function getItemRootCategoryId($model)
+  {
+    $modelName = trim( implode(" ", preg_split( '/(?=[A-Z])/', $model->getName() )));
+
+    $categoryId = self::getCategoryIdByTitle($modelName);
+
+    if ( !$categoryId )
+    {
+      $categoryId = self::getCategoryIdByTitle('Uncategorised');
+    }
+
+    if ( !$categoryId )
+    {
+      throw new NoDefaultCategory( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_NO_DEFAULT_CATEGORY_MSSG', $modelName) );
+    }
+
+    return $categoryId;
+  }
 
 
   /**
@@ -44,8 +70,6 @@ abstract class Category
    * @param   Object   $category  A POPO object with the properties 'id', 'title', 'level', and 'language' for the category
    *
    * @return  string              The category title indented with hyphens if it is lower level than root categories
-   *
-   * @since   0.0.1
    */
   public static function getIndentedCategoryTitle($category)
   {
@@ -122,8 +146,6 @@ abstract class Category
    * @param   string   $view        The name of the view, for setting a category on new records. Should be plural e.g. 'Answers'
    *
    * @return  int      The category id that should have the 'selected' flag added to its HTML: <option value="" selected>
-   *
-   * @since   0.0.1
    */
   public static function selectedHelper(&$categories, $cat_id, $view='uncategorised')
   {
@@ -159,8 +181,6 @@ abstract class Category
    *                              filter.access => 1, for filtering based on "Public" view level permission
    *
    * @return  array               $category->id, $category->title, $category->language, $category->level
-   *
-   * @since   0.0.1
    */
   public static function getCategories($config = array('filter.published' => array(0, 1)))
   {

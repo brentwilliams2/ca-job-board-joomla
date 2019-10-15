@@ -32,6 +32,11 @@ use \Calligraphic\Cajobboard\Site\Helper\Registration;
 use \Calligraphic\Cajobboard\Site\Helper\Semantic;
 use \Calligraphic\Cajobboard\Site\Helper\User;
 use \Calligraphic\Library\Platform\Inflector;
+use \Calligraphic\Library\Platform\Language;
+use \Calligraphic\Library\Platform\Params as JobBoardParams;
+use \Calligraphic\Library\Platform\Registry;
+use \Calligraphic\Library\Platform\Text;
+use \FOF30\Params\Params as FrameworkParams;
 use \Identicon\Identicon;
 
 class Services
@@ -61,6 +66,8 @@ class Services
    */
   public function addContainerServices()
   {
+    $this->replaceParamsObject();
+
     $this->addCommonServices();
 
     if ( $this->container->platform->isBackend() )
@@ -71,6 +78,40 @@ class Services
     {
       $this->addSiteServices();
     }
+  }
+
+
+  /**
+   * This effort is necessary because the \FOF30\Params\Params object is
+   * set to $container['params] in the Container constructor, so there's
+   * no way to catch it early enough to use the Job Board's custom Params
+   * class, which also uses the Job Board's custom Registry class.
+   *
+   * @return  void
+   */
+  public function replaceParamsObject()
+  {
+    // Additional code that will run immediately after the service is created
+    $this->container->extend('params', function (FrameworkParams $frameworkParamsObject, $container) {
+
+      // Extract the framework Params class instance's registry object
+      $reflectionClass = new \ReflectionClass($frameworkParamsObject);
+
+      /** @var   \ReflectionProperty  $params */
+      $paramsReflector = $reflectionClass->getProperty('params');
+
+      // 'params' property of framework Params class has private visibility
+      $paramsReflector->setAccessible(true);
+      $frameworkRegistry = $paramsReflector->getValue($frameworkParamsObject);
+
+      $jobBoardRegistry = new Registry($container);
+      $jobBoardRegistry->merge($frameworkRegistry);
+
+      $jobBoardParams = new JobBoardParams($container);
+      $jobBoardParams->setParamsObject($jobBoardRegistry);
+
+      return $jobBoardParams;
+    });
   }
 
 
@@ -110,12 +151,20 @@ class Services
       return new Inflector();
     };
 
+    $this->container->Language = function ($container) {
+      return new Language($container);
+    };
+
     $this->container->MessageCounts = function ($container) {
       return new MessageCounts($container);
     };
 
     $this->container->TableFields = function ($container) {
       return new TableFields($container);
+    };
+
+    $this->container->Text = function ($container) {
+      return new Text();
     };
   }
 
@@ -144,7 +193,6 @@ class Services
       return new JobPosting();
     };
 
-    // Factory method, return new instance with every call
     $this->container->Pagination = $this->container->factory(function ($container) {
       return new Pagination($container);
     });

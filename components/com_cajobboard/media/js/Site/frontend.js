@@ -10,9 +10,8 @@
 
 /* eslint-disable no-undef */
 
-// @TODO: Title and text boxes for front-end edit screens are having the placeholder text set in them, use javascript to move it to placeholder text on click into the box
 
-/*
+/**
  * Register modules in this file with global onload handler
  */
 jQuery(document).ready(function() {
@@ -20,16 +19,37 @@ jQuery(document).ready(function() {
 });
 
 
-/*
- * Trigger a hidden form on clicking buttons for 'remove' tasks to send CSRF token
+/**
+ * Trigger a hidden form on clicking buttons for 'delete' tasks to send CSRF token
  */
-removeSubmit = function(id) {
-  const form = jQuery('#removeForm-' + id);
+deleteSubmit = function(id) {
+  const form = jQuery('#deleteForm-' + id);
   form.submit();
 };
 
 
-/*
+/**
+ * Read a hidden form on clicking buttons for 'downvote_count' tasks to send CSRF token
+ */
+downvoteAction = function(id) {
+  const form = jQuery('#downvoteForm-' + id);
+
+  // @TODO:
+  // 1. Read the CSRF key from the form's input element
+  // 2. Send an XHR request with the CSRF key for a downvote
+  // 3. Update the value in the box or show a flash message based on the response
+};
+
+
+/**
+ * Read a hidden form on clicking buttons for 'upvote_count' tasks to send CSRF token
+ */
+upvoteAction = function(id) {
+  // @TODO: same as downvoteAction
+};
+
+
+/**
  * Change pagination limit for page (number of items to show from select box)
  */
 paginationLimitSubmit = function() {
@@ -47,7 +67,7 @@ paginationLimitSubmit = function() {
 };
 
 
-/*
+/**
 * Methods to handle setting proper Bootstrap UI validation state, appends
 * or removes jQuery DOM element with error message below input box
 */
@@ -114,7 +134,8 @@ const validationUI = {
   }
 };
 
-/*
+
+/**
 * Methods to handle form input validation
 */
 /* eslint-disable no-unused-vars */

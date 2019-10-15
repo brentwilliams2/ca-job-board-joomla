@@ -51,15 +51,17 @@
   <div class="clearfix"></div>
 
   <div>
-    @jhtml('helper.commonwidgets.delete', $canUserEdit, $itemId, $prefix, $crud)
-    @jhtml('helper.commonwidgets.edit', $canUserEdit, $editViewLink, $prefix, $crud)
-    @jhtml('helper.commonwidgets.report', $prefix, $crud)
-    @jhtml('helper.commonwidgets.downvotes', $downvoteCount, $prefix, $crud)
-    @jhtml('helper.commonwidgets.upvotes', $upvoteCount, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.delete', $humanViewNameSingular, $canUserEdit, $itemId, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.edit', $humanViewNameSingular, $canUserEdit, $editViewLink, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.report', $humanViewNameSingular, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.downvote_count', $downvoteCount, $isGuestUser, $itemId, $prefix, $crud)
+    @jhtml('helper.buttonwidgets.upvote_count', $upvoteCount, $isGuestUser, $itemId, $prefix, $crud)
   </div>
 </div>{{-- End responsive container --}}
 
 {{-- Form with CSRF field for remove action --}}
-@jhtml('helper.commonwidgets.removeActionCsrfField', $removeAction, $itemId)
+@jhtml('helper.buttonwidgets.deleteActionCsrfField', $deleteAction, $itemId)
+@jhtml('helper.buttonwidgets.downvoteActionCsrfField', $downvoteAction, $itemId)
+@jhtml('helper.buttonwidgets.upvoteActionCsrfField', $upvoteAction, $itemId)
 
 <div class="clearfix"></div>

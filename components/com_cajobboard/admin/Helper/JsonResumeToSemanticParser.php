@@ -2,103 +2,101 @@
 
 // Translation strings built out of the key name, e.g. COM_CAJOBBOARD_RESUMES_BASICS_NAME
 
-  {
-    "basics" => {
-      "name" => function($value) {},
+  $keys = array(
+    "basics" => array(
+      "name" => null,
       "label" => null,
       "picture" => null,
       "email" => null,
       "phone" => null,
       "website" => null,
       "summary" => null,
-      "location" => {
+      "location" => array(
         "address" => null,
         "postalCode" => null,
         "city" => null,
         "countryCode" => null,
         "region" => null
-      },
-      "profiles" => [{
+      ),
+      "profiles" => array(
         "network" => null,
         "username" => null,
         "url" => null
-      }]
-    },
-  
-    "work" => [{
+      )
+    ),
+
+    "work" => array(
       "company" => null,
       "position" => null,
       "website" => null,
       "startDate" => null,
       "endDate" => null,
       "summary" => null,
-      "highlights" => [
+      "highlights" => array(
         null
-      ]
-    }],
-  
-    "volunteer" => [{
+      )
+    ),
+
+    "volunteer" => array(
       "organization" => null,
       "position" => null,
       "website" => null,
       "startDate" => null,
       "endDate" => null,
       "summary" => null,
-      "highlights" => [
+      "highlights" => array(
         null
-      ]
-    }],
-  
-    "education" => [{
+      )
+    ),
+    "education" => array(
       "institution" => null,
       "area" => null,
       "studyType" => null,
       "startDate" => null,
       "endDate" => null,
       "gpa" => null,
-      "courses" => [
+      "courses" => array(
         null
-      ]
-    }],
-  
-    "awards" => [{
+      )
+    ),
+
+    "awards" => array(
       "title" => null,
       "date" => null,
       "awarder" => null,
       "summary" => null
-    }],
-  
-    "publications" => [{
+    ),
+
+    "publications" => array(
       "name" => null,
       "publisher" => null,
       "releaseDate" => null,
       "website" => null,
       "summary" => null
-    }],
-  
-    "skills" => [{
+    ),
+
+    "skills" => array(
       "name" => null,
       "level" => null,
-      "keywords" => [
+      "keywords" => array(
         null
-      ]
-    }],
-  
-    "languages" => [{
+      )
+    ),
+
+    "languages" => array(
       "name" => null,
       "level" => null
-    }],
-  
-    "interests" => [{
+    ),
+
+    "interests" => array(
       "name" => null,
-      "keywords" => [
+      "keywords" => array(
         null
-      ]
-    }],
-  
-    "references" => [{
+      )
+    ),
+
+    "references" => array(
       "name" => null,
       "reference" => null
-    }]
-  
-  }
+    )
+  );

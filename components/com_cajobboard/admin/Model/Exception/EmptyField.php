@@ -14,8 +14,8 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Exception;
 
-use \Joomla\CMS\Language\Text;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\InvalidField;
+use \Joomla\CMS\Language\Text;
 
 // no direct access
 defined('_JEXEC') or die;

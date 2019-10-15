@@ -147,7 +147,7 @@ class Messages extends BaseTreeModel
   /**
 	 * Transform attachment_counts' field to a JRegistry object on bind
 	 *
-	 * @return  Registry
+	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
   protected function getAttachmentCountsAttribute($value)
   {

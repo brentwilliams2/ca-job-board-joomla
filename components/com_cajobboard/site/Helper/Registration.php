@@ -3,7 +3,7 @@
  * Registration Helpers
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  *            Copyright (c) 2011-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
@@ -12,8 +12,8 @@
 
 namespace Calligraphic\Cajobboard\Site\Helper;
 
+use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
-use \FOF30\Params\Params;
 use \JEventDispatcher;
 use \Joomla\CMS\Application\ApplicationHelper;
 use \Joomla\CMS\Date\Date;
@@ -444,6 +444,7 @@ class Registration
 			// Send mail to all Super Users
 			foreach ($rows as $row)
 			{
+				// @TODO: move Mailer to container
 				$return = Factory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin);
 
 				// Check for an error.

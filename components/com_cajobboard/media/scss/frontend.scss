@@ -69,36 +69,22 @@
   font-size: 1.5em; /* 30px/20=1.5em */
 }
 
+// Common class applied to "Upvotes", "Downvotes", "Report Answer",
+// and (for users with permission) the "Edit" buttons
+.common-btn {
+  border-radius: 5px;
+  margin-left: 5px;
+}
 
-//-----------------------------------------------------------------------------
-// Classes for /Site/Helper/Html/Modal/report_item_modal.blade.php
-//-----------------------------------------------------------------------------
-
-// outline of report-item-modal classes
-#report-item-modal { // sass-lint:disable-line no-ids
-  .modal-header {
-    button.close {}
-    h4.modal-title {}
+.common-upvote-count {
+  .badge {
+    margin-left: 5px;
   }
+}
 
-  .modal-body {
-    .form-group {
-      label.control-label {}
-      textarea.form-control#report-item-text-box {} // sass-lint:disable-line no-ids
-      input#report-item-id {} // sass-lint:disable-line no-ids
-    }
-  }
-
-  .modal-footer {
-    div.report-submit {}
-
-    div.report-footer-button-row {
-      button#submit-item-report-btn { // sass-lint:disable-line no-ids
-        margin-left: 5px !important; // sass-lint:disable-line no-important
-      }
-
-      button.report-close {}
-    }
+.common-downvote-count {
+  .badge {
+    margin-left: 5px;
   }
 }
 
@@ -116,7 +102,11 @@
   margin: 10px 0;
   padding: 10px;
 
-  .h4 {}
+  span.h4 {
+    color: $brand-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+  }
 
   // Select combo box to select count of items shown per page
   .pagination-select {}
@@ -194,6 +184,7 @@
 
   // <button> elements
   .browse.common-upvote-count {}
+
   .browse.common-downvote-count {}
 
   .browse.common-report-btn {}
@@ -277,12 +268,11 @@
 // Common Form View Templates - edit and add view               form.blade.php
 //-----------------------------------------------------------------------------
 
-.edit.common-edit-container {
+.edit.common-container {
+  margin-top: 12px !important; // sass-lint:disable-line no-important
 
   // Edit form header text
-  .form-header {
-    text-align: center;
-
+  .edit.common-header {
     h3 {
       color: $brand-primary;
     }
@@ -314,4 +304,46 @@
 
   .edit.common-submit {}
 
+}
+
+
+//-----------------------------------------------------------------------------
+// Classes for /Site/Helper/Html/Modal/report_item_modal.blade.php
+//-----------------------------------------------------------------------------
+
+// outline of report-item-modal classes
+.report-item-modal {
+  .modal-header {
+    button.close {}
+    h4.modal-title {}
+  }
+
+  .modal-body {
+    .form-group {
+      label.control-label {}
+      textarea.form-control#report-item-text-box {} // sass-lint:disable-line no-ids
+      input#report-item-id {} // sass-lint:disable-line no-ids
+    }
+  }
+
+  .modal-footer {
+    div.report-submit {
+      /* webkit solution */
+      ::-webkit-input-placeholder { // sass-lint:disable-line no-vendor-prefixes
+        text-align: center;
+      }
+      /* mozilla solution */
+      input:-moz-placeholder {  // sass-lint:disable-line no-vendor-prefixes
+        text-align: center;
+      }
+    }
+
+    div.report-footer-button-row {
+      button#submit-item-report-btn { // sass-lint:disable-line no-ids
+        margin-left: 5px !important; // sass-lint:disable-line no-important
+      }
+
+      button.report-close {}
+    }
+  }
 }

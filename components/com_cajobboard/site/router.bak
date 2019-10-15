@@ -296,7 +296,7 @@ class CajobboardRouter extends RouterBase {
         }
 
 				$menuCatid = $mId;
-				$categories = JCategories::getInstance('Weblinks');
+				$categories = JCategories::getInstance('Cajobboard');
         $category = $categories->get($catid);
 
 				if ($category)

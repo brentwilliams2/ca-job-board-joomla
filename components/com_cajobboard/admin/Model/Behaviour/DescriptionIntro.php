@@ -24,9 +24,9 @@ defined( '_JEXEC' ) or die;
 
 /**
  * To override validation behaviour for a particular model, create a directory
- * named 'Behaviour' in a directory named after the model and use the same file
- * name as this behaviour ('DescriptionIntro.php'). The model file cannot go in this
- * directory, it must stay in the root Model folder.
+ * named named after the model in the 'Behaviour' directory and use the same file
+ * name as this behaviour ('Check.php'). The model file cannot go in this directory,
+ * it must stay in the root Model folder.
  */
 class DescriptionIntro extends Observer
 {
@@ -34,15 +34,15 @@ class DescriptionIntro extends Observer
 	 * Add the 'description__intro' field to the fieldsSkipChecks list of the model. It
 	 * should be empty so that we can fill it in through this behaviour.
 	 *
-	 * @param   DataModel  $model
+	 * @param   DataModel  $item
 	 */
-	public function onBeforeCheck(DataModel $model)
+	public function onBeforeCheck(DataModel $item)
 	{
-    $descriptionIntroField= $model->getFieldAlias('description__intro');
+    $descriptionIntroField= $item->getFieldAlias('description__intro');
 
-    if ( $model->hasField($descriptionIntroField) )
+    if ( $item->hasField($descriptionIntroField) )
     {
-      $model->addSkipCheckField($descriptionIntroField);
+      $item->addSkipCheckField($descriptionIntroField);
     }
   }
 
@@ -53,52 +53,56 @@ class DescriptionIntro extends Observer
    * data object that will be bound to the model in the applySave method to the
    * input state, and update the state with any transformed values of 'description__intro'.
    *
-   * @param DataModel $model  The data model associated with this call
+   * @param DataModel $item  The data model associated with this call
    * @param array     $data   An associative array populated by \Joomla\Input\Input from the $_REQUEST global variable
    *
    * @return void
    */
-  public function onBeforeSave(DataModel $model, &$data)
+  public function onBeforeSave(DataModel $item, &$data)
   {
-    /** @var PlatformInterface $platform */
-    $platform = $model->getContainer()->platform;
+    // $data is a nullable parameter to save(), this method is only concerned
+    // with user input so return if there is none (e.g. no $data)
+    if ( !is_array($data) )
+    {
+      return;
+    }
 
-    $descriptionIntroField = $model->getFieldAlias('description__intro');
+    /** @var \FOF30\Container\Container $container */
+    $container = $item->getContainer();
+
+    $descriptionIntroFieldAlias = $item->getFieldAlias('description__intro');
 
     // Return if the $data param isn't set or is empty, or the model doesn't have a 'description__intro' field
-    if
-    (
-      !is_array($data) ||
-      !isset($data['description__intro']) ||
-      !$description = $data['description__intro'] ||
-      !$model->hasField($descriptionIntroField)
-    )
+    if (
+      !$item->hasField($descriptionIntroFieldAlias) ||
+      !array_key_exists($descriptionIntroFieldAlias, $data) ||
+      empty( $data[$descriptionIntroFieldAlias] )
+      )
 		{
 			return;
     }
 
-    $requiredFlag = $platform->getConfigOption('description__intro_length_required', true, $model);
+    $descriptionIntro = $data[$descriptionIntroFieldAlias];
+
+    $requiredFlag = $container->params->getConfigOption('description__intro_length_required', true, $item);
 
     // Subtract three from the maximum length to account for the ellipse (...)
-    $maxLength = $platform->getConfigOption('description__intro_length', 280, $model) -3;
+    $maxLength = $container->params->getConfigOption('description__intro_length', 280, $item) -3;
 
-    $exceedsMaxLength = strlen($description) > $maxLength;
+    $exceedsMaxLength = strlen($descriptionIntro) > $maxLength;
 
     if ( $exceedsMaxLength && $requiredFlag == LENGTH_TRUNCATE_ON_EXCEEDED )
     {
-      $result = $platform->truncateText($description, $maxLength) . '...';
+      $descriptionIntroTruncated = $container->Text->truncateText($descriptionIntro, $maxLength) . '...';
     }
     elseif ( $exceedsMaxLength && $requiredFlag == LENGTH_REJECT_ON_EXCEEDED )
     {
-      throw new LengthExceeded( Text::_('COM_CAJOBBOARD_UCM_FIELD_NAME_DESCRIPTION_INTRO', strtolower( Text::_('COM_CAJOBBOARD_UCM_FIELD_NAME_TITLE') )));
+      throw new LengthExceeded( Text::_('COM_CAJOBBOARD_DESCRIPTION_INTRO_LENGTH_REQUIRED_FOR_SOCIAL_SHARES_LABEL') );
     }
 
     // Remove HTML
-    $result = $platform->filterText($result);
+    $descriptionIntroFiltered = $container->Text->filterText($descriptionIntroTruncated);
 
-    $data['description__intro'] = $result;
-
-    // Set the state to the (possibly) modified description text string
-    $model->setState('description__intro', $result);
+    $data[$descriptionIntroFieldAlias] = $descriptionIntroFiltered;
   }
 }
