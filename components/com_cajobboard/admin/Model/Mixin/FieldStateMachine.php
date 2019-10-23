@@ -45,7 +45,7 @@ trait FieldStateMachine
 			throw new RecordNotLoaded( Text::_('COM_CAJOBBOARD_EXCEPTION_SET_STATE_RECORD_NOT_LOADED') );
     }
 
-    if ( !$this->isEditAuthorised() )
+    if ( !$this->container->User->canEdit($this) )
     {
       throw new NoPermissions();
     }

@@ -65,36 +65,46 @@ class BaseTreeModel extends TreeModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically from Constructor.php
+    // NOTE: Behaviours added in admin need to be extended to a front-end Behaviour class also.
     $behaviours = array(
-      'Category',   // Set category in new records
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Ordering',   // Order items owned by featured status and then descending by date
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      'Category',         // Set category in new records
+      'Enabled',          // Filter access to items based on enabled status
+      'Language',         // Filter front-end access to items based on language
+      'Ordering',         // Order items owned by featured status and then descending by date
+      'Publish',          // Set the publish_on field for new records
+      'Slug',             // Backfill the slug field with the 'title' property or its fieldAlias if empty
 
       /* Validation checks */
 
-      'Check',      // Validation checks for model, over-rideable per model
-      'Check/Image',              // Set the 'image' JSON field on record save
-      'Check/Metadata',           // Set the 'metadata' JSON field on record save
-      'Check/Title',              // Check length and titlecase the 'metadata' JSON field on record save
+      'Check',            // Validation checks for model, over-rideable per model
+      'Check/Image',      // Set the 'image' JSON field on record save
+      'Check/Metadata',   // Set the 'metadata' JSON field on record save
+      'Check/Title',      // Check length and titlecase the 'metadata' JSON field on record save
 
       /* Model property (attribute) Behaviours for setting value from state */
 
-      'DescriptionIntro',   // Check the length of the 'description__intro' field
+      'DescriptionIntro',   // Filter and check the length of the 'description__intro' field
     );
 
     // Merge any behaviours passed from the child model into our base class default behaviours
     if ( array_key_exists('behaviours', $config) )
     {
-      $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
+      $config['behaviours'] = array_unique( array_merge($config['behaviours'], $behaviours) );
     }
     else
     {
       $config['behaviours'] = $behaviours;
     }
+
+    // Do not populate the model from the request
+    // @TODO: this is set because otherwise all fields set from model input in the last save are
+    //        set on the state, and the Filter behaviour will automatically filter against them
+    //        e.g. setting a WHERE clause on the 'description' field string value (so no items
+    //        will return in browse view). Not sure why this is happening, and why it doesn't in
+    //        in normal DataModel BaseHtml class with similar onBeforeBrowse() methods. This
+    //        will probably cause pagination to fail.
+    $config['ignore_request'] = true;
 
     /* Overridden constructor */
     $this->constructor($container, $config);
@@ -105,6 +115,3 @@ class BaseTreeModel extends TreeModel
     $this->addSkipCheckField('hash');
   }
 }
-
-
-

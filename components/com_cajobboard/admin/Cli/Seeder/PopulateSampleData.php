@@ -462,14 +462,15 @@ class PopulateSampleData extends CliApplication
           if ( property_exists($template, 'hasRoot') )
           {
             // TreeModel
+            $db = $model->getDbo();
+
+            $idFieldName = $model->getIdFieldName();
+
+            $query = $db->quoteName($idFieldName) . ' = ' . $db->quote(1);
+
+            $rootNode = $model->getClone()->reset()->where($query)->firstOrFail();
+
             $model->bind($data);
-
-            $model->setFieldValue( 'hash', sha1($model->slug) );
-
-            // Can't use getRoot() method before a record is saved initially
-            $rootNode = $this->container->factory->model($modelName, array('factoryClass' => 'FOF30\\Factory\\MagicFactory'));
-
-            $rootNode->load(1);
 
             $recordId = $model->insertAsLastChildOf($rootNode)->getId();
           }

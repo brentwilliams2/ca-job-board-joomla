@@ -58,7 +58,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $name             A title to use for the comment.
  * @property string         $description      The text of the comment.
  * @property string         $description__intro   		Short description of the item, used for the text shown on social media via shares and search engine results.
- * 
+ *
  * SCHEMA: MediaObject
  * @property  string	      $content_url      Filename of the digital document
  * @property  int			      $content_size     File size in bytes

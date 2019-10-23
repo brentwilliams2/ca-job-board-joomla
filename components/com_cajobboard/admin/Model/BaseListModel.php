@@ -55,7 +55,7 @@ class BaseListModel extends DataModel
     // Merge any behaviours passed from the child model into our base class default behaviours
     if ( array_key_exists('behaviours', $config) )
     {
-      $config['behaviours'] = array_merge($config['behaviours'], $behaviours);
+      $config['behaviours'] = array_unique( array_merge($config['behaviours'], $behaviours) );
     }
     else
     {

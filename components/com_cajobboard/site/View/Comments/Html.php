@@ -12,15 +12,17 @@
 namespace Calligraphic\Cajobboard\Site\View\Comments;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Site\View\Common\BaseHtml;
+use \Calligraphic\Cajobboard\Site\View\Common\BaseTreeHtml;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Html extends BaseHtml
+class Html extends BaseTreeHtml
 {
 	/**
 	 * Overridden. Executes before rendering the page for the Browse task.
+	 *
+	 * IsPartOf not eager loaded, need to handle it as a 'browse' task instead with filters
 	 */
 	protected function getBrowseViewEagerRelations()
 	{
@@ -29,22 +31,4 @@ class Html extends BaseHtml
 			'Image'
 		);
 	}
-
-
-	/**
-	 * Add a 'where' clause to the browse view item query to
-	 * exclude the root node in queries for a nested class.
-	 *
-	 * @return string		The 'where' clause string to use
-	 */
-	protected function getBrowseViewWhereClause()
-	{
-		// @TODO: Move this to a filter so it's reusable
-
-		$model = $this->getModel();
-
-		$db = $model->getDbo();
-
-    return $db->quoteName( $model->getIdFieldName() ) . ' > 1';
-  }
 }

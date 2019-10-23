@@ -31,13 +31,15 @@
   <div class="well @jhtml('helper.commonwidgets.getAttributeClass', 'header', $prefix, $crud)">
     <span class="h4 pull-left">@lang('COM_CAJOBBOARD_' . $transKey . '_PAGE_TITLE')</span>
 
-    @if ($this->paginationHelper->shouldDisplayLimitBox())
+    @if ( $this->paginationHelper->shouldDisplayLimitBox() )
       <span class="pagination-select pull-right">
         @include('site:com_cajobboard/Common/pagination_results_limit')
       </span>
     @endif
 
-    @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)
+    @if ($canUserAdd)
+      @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)
+    @endif
 
     <div class="clearfix"></div>
   </div>

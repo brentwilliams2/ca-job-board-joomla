@@ -11,35 +11,20 @@
 
 namespace Calligraphic\Cajobboard\Admin\View\Common;
 
-use \Calligraphic\Cajobboard\Admin\View\Exception\InvalidArgument;
-use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
-use \FOF30\Model\DataModel\Collection;
 use \FOF30\View\DataView\Html;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\Factory;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Pagination\Pagination;
 
 // no direct access
 defined('_JEXEC') or die;
 
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
-
 // Add a path to the admin JHTML widget directory
 HTMLHelper::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/Helper/Html');
 
 class BaseHtml extends Html
 {
-	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  Registry
-	 */
-  protected $componentParams;
-
-
 	/**
 	 * Overridden. Load view-specific language file.
 	 *
@@ -50,11 +35,16 @@ class BaseHtml extends Html
 	{
     parent::__construct($container, $config);
 
-    // Get component parameters
-    $this->componentParams = ComponentHelper::getParams('com_cajobboard');
+		$this->addDefaultCss();
+	}
 
-		// Load CSS for admin view
-		$this->addCssFile('media://com_cajobboard/css/backend.css');
+
+  /**
+	 * Load CSS for admin view.
+	 */
+	protected function addDefaultCss()
+	{
+    $this->addCssFile('media://com_cajobboard/css/backend.css');
   }
 
 

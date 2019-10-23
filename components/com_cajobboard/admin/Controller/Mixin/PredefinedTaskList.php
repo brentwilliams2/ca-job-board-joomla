@@ -70,9 +70,11 @@ trait PredefinedTaskList
 		/** @var 	array 	$publicMethodList 	The taskList is built using reflection of all public methods in the Controller constructor, with the method name as the array values. */
 		$publicMethodList = $this->getTasks();
 
+		// Ensure each predefined task name has a similar controller method available.
+		// Skip for 'default' as Controller has special handling for default case.
 		foreach ($predefinedTaskList as $predefinedTask)
 		{
-			if ( !in_array($predefinedTask, $publicMethodList) )
+			if ( !in_array($predefinedTask, $publicMethodList) && $predefinedTask != 'default' )
 			{
 				throw new \Exception(
 					Text::sprintf(

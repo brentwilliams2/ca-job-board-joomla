@@ -46,15 +46,15 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages` (
   name VARCHAR(255) COMMENT 'Aliased by title property. Used as subject field text and page title. The latter can be overridden in params (page_title).',
   description TEXT COMMENT 'Body text of this item.',
   description__intro VARCHAR(280) COMMENT 'Short description of the item, used for the text shown on browse views.',
-  about__foreign_model_id BIGINT UNSIGNED COMMENT 'The foreign ATS model primary key that this message belongs to',
+  about__foreign_model_id BIGINT UNSIGNED COMMENT 'The foreign ATS or Comment model primary key that this message belongs to',
   about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign ATS model this message belongs to, discriminator field for single-table inheritance',
+
+/* SCHEMA: CreativeWork */
+  is_part_of BIGINT UNSIGNED COMMENT 'The primary key value of the parent message for this message, or the root node primary key value if this is a top-level message for the foreign model item it is about',   /* FK to #__cajobboard_messages */
 
   /* SCHEMA: Message */
   date_read DATETIME DEFAULT NULL COMMENT 'The date/time at which the message was opened by the recipient.',
   recipient INT UNSIGNED  COMMENT 'The recipient of this message.', /* FK to #__cajobboard_persons */
-
-  /* SCHEMA: CreativeWork */
-  is_part_of BIGINT UNSIGNED COMMENT 'Optional Comment that this message should anchor to.',  /* FK to #__cajobboard_comments */
 
   /* Custom UCM */
   attachment_counts JSON COMMENT 'JSON encoded state field to indicate attachment counts for this message, keyed by media object name: {"audio_objects":0,"digital_documents":0,"image_objects":0,"video_objects":0}',

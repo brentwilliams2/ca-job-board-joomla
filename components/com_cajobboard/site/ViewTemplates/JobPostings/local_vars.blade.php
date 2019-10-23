@@ -21,9 +21,6 @@
  * @param  string                 $prefix                 A prefix to prepend to a class attribute, the singular lowercase hyphenated name of the view
  * @param  string                 $transKey               A capitalized, underscored variant of the plural view name for use in translation keys
  *
- * Authorisation local variables
- * @param  boolean                $canUserEdit            Whether the user has canEdit ACL privileges
- *
  * Joomla! UCM field local variables
  * @param  int                    $itemId                 The primary key value (id) for the item
  *
@@ -100,6 +97,7 @@ die(var_dump($item->JobLocation));
   );
   */
 
+// @TODO: $canUserEdit or something?
 
   /**
    * General local variables

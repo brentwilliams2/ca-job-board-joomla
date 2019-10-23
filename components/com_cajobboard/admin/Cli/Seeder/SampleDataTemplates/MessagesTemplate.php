@@ -54,14 +54,6 @@ class MessagesTemplate extends CommonTemplate
 
 
 	/**
-	 *  Optional Comment that this message should anchor to, FK to #__cajobboard_comments
-	 *
-	 * @property    int
-   */
-  public $is_part_of;
-
-
-	/**
 	 *  JSON encoded state field to indicate attachment counts for this message
 	 *
 	 * @property    int
@@ -99,6 +91,14 @@ class MessagesTemplate extends CommonTemplate
 	 * @property    int
    */
   public $message_attachment__video;
+
+
+	/**
+	 * The parent item for this comment, defaults to the root node for the seeder
+	 *
+	 * @property    int
+   */
+  public $is_part_of;
 
 
 	/**
@@ -187,13 +187,6 @@ class MessagesTemplate extends CommonTemplate
   }
 
 
-  // $this->belongsTo('IsPartOf', 'Comments@com_cajobboard', 'is_part_of', 'comment_id');
-  public function is_part_of ($config, $faker)
-  {
-    $this->is_part_of = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'Comments');
-  }
-
-
   public function attachment_counts ($config, $faker)
   {
     $attachmentCounts = new \stdClass();
@@ -204,6 +197,12 @@ class MessagesTemplate extends CommonTemplate
     $attachmentCounts->video_objects = $faker->numberBetween(1, 10);
 
     $this->attachment_counts = json_encode($attachmentCounts);
+  }
+
+
+  public function is_part_of ($config, $faker)
+  {
+    $this->is_part_of = 1;
   }
 }
 

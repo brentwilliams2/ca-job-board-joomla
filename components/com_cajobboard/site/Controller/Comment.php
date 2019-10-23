@@ -20,6 +20,8 @@ use \Calligraphic\Cajobboard\Site\Controller\BaseController;
 
 class Comment extends BaseController
 {
+	use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Tree;
+
 	/*
 	 * Overridden. Limit the tasks that are allowed to execute.
 	 *
@@ -35,7 +37,7 @@ class Comment extends BaseController
 		// $this->resetPredefinedTaskList();
 
     $this->addPredefinedTaskList(array(
-
+			'create'
 		));
-  }
+	}
 }

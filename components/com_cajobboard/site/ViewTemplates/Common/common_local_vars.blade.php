@@ -91,20 +91,25 @@
   $prefix = strtolower( $container->inflector->hyphenate( $container->inflector->singularize($viewName) ));
   $transKey = strtoupper( $container->inflector->underscore( $container->inflector->pluralize($viewName) ));
 
-  // Ignore if called from a browse template (e.g. 'default.blade.php') or a helper template (e.g. 'rss.blade.php')
+  $canUserAdd = $container->User->canAdd( $this->getModel() );
+
+  // Ignore setting these local variables if called from a browse template (e.g. 'default.blade.php') or a helper template (e.g. 'rss.blade.php')
   if ( isset($item) )
   {
+    $itemId = $item->getId();
+
     /**
      * Authorisation local variables
      */
 
-    $canUserEdit = $container->User->canEdit($user, $item);
+    if ($itemId)
+    {
+      $canUserEdit = $container->User->canEdit($item);
+    }
 
     /**
      * Joomla! UCM field local variables
      */
-
-    $itemId = $item->getId();
 
     if ( $item->hasField( $item->getFieldAlias('created_on') ))
     {
@@ -182,34 +187,31 @@
      * Form and anchor URL local variables
      */
 
-    if ('add' == $task)
+    if ('add' == $task && $item instanceof \FOF30\Model\TreeModel)
     {
-      // Used for a 'cancel' button's link in 'add' forms
-      $itemViewLink = $container->template->route(
-        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=browse'
-      );
+      $postAction = $container->template->route( $siteUrl . 'index.php?option=' . $componentName . '&view=' . $viewName . '&task=create' );
     }
-    else
+    elseif ('add' == $task)
     {
-      $itemViewLink = $container->template->route(
+      $postAction = $container->template->route( $siteUrl . 'index.php?option=' . $componentName . '&view=' . $viewName . '&task=save' );
+    }
+    elseif ('edit' == $task)
+    {
+      $postAction = $container->template->route( $siteUrl . 'index.php?option=' . $componentName . '&view=' . $viewName . '&task=save&id=' . $itemId );
+    }
+
+    // Used for a 'cancel' button's link in 'add' forms
+    $browseViewLink = $container->template->route(
+      $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=browse'
+    );
+
+    $itemViewLink = $container->template->route(
         $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=read&id='. $itemId
-      );
-    }
+    );
 
     $editViewLink = $container->template->route(
       $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=edit&id='. $itemId
     );
-
-    // $postAction handles both 'edit' and 'add' tasks
-    $rawPostAction = $siteUrl . 'index.php?option=' . $componentName . '&view=' . $viewName . '&task=save';
-
-    if ('edit' == $task)
-    {
-      $rawPostAction .= '&id=' . $itemId;
-    }
-
-    $postAction = $container->template->route($rawPostAction);
-    unset($rawPostAction);
 
     $deleteAction = $container->template->route(
       $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=remove&id=' . $itemId

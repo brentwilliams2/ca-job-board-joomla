@@ -20,10 +20,19 @@ use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
 use \Joomla\CMS\Categories\Categories;
+use \Joomla\CMS\Component\ComponentHelper;
 use \Joomla\CMS\Factory;
 
 class Params extends \FOF30\Params\Params
 {
+	/**
+	 * The component-level parameters stored in #__extensions by com_config
+	 *
+	 * @var  \Calligraphic\Library\Platform\Registry
+	 */
+  protected $componentParams;
+
+
 	/**
 	 * Over-ridden public constructor for the params object
 	 *
@@ -212,7 +221,12 @@ class Params extends \FOF30\Params\Params
 	 */
   public function getComponentConfigOption($option, $default = null)
   {
-    return $this->params->get($option, $default);
+    if ( empty($this->componentParams) )
+    {
+      $this->componentParams = ComponentHelper::getParams('com_cajobboard');
+    }
+
+    return $this->componentParams->get($option, $default);
   }
 
 
@@ -229,6 +243,25 @@ class Params extends \FOF30\Params\Params
   {
     $params = $model->getFieldValue( $model->getFieldAlias('params') );
 
-    return $params->get($option, $default);
+    // Happy path - 'params' field has already been transformed to a Registry object by the attribute getter
+    if ( is_object($params) && ($params instanceof Registry) )
+    {
+      return $params->get($option, $default);
+    }
+
+    // Handle if the 'params' field hasn't been transformed from JSON yet by attribute getter, e.g. when called as CLI
+    if
+    (
+      is_string($params) &&
+      $jsonObject = json_decode($params) &&
+      property_exists($option, $jsonObject) &&
+      !empty($jsonObject->$option)
+    )
+    {
+      return $jsonObject->$option;
+    }
+
+    // Default value
+    return $default;
   }
 }

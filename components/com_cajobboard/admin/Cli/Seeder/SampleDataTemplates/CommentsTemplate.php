@@ -54,6 +54,14 @@ class CommentsTemplate extends CommonTemplate
 
 
 	/**
+	 * The parent item for this comment, defaults to the root node for the seeder
+	 *
+	 * @property    int
+   */
+  public $is_part_of;
+
+
+	/**
 	 * Class constructor
    *
    * @throws \Exception
@@ -98,5 +106,11 @@ class CommentsTemplate extends CommonTemplate
   public function downvote_count ($config, $faker)
   {
     $this->downvote_count = $faker->numberBetween(1, 10);
+  }
+
+
+  public function is_part_of ($config, $faker)
+  {
+    $this->is_part_of = 1;
   }
 }

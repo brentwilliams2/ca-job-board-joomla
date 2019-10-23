@@ -122,6 +122,9 @@ class Comments extends BaseTreeModel
     // many-to-one FK to  #__cajobboard_image_objects
     $this->hasOne('Image', 'ImageObjects@com_cajobboard', 'image', 'image_object_id');
 
+    // many-to-one FK to  #__cajobboard_comments
+    $this->hasOne('IsPartOf', 'Comments@com_cajobboard', 'is_part_of', 'comment_id');
+
     // @TODO: STI many-to-one with discriminator field: see RFC at https://github.com/akeeba/fof/issues/675
     // @TODO: handle foreign_model_id and foreign_model_name. Seeder template has enum for valid foreign models:
     /*

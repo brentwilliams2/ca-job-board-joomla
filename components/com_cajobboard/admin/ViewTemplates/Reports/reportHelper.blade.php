@@ -14,7 +14,7 @@ use \Calligraphic\Cajobboard\Admin\Helper\Graph;
 
 defined('JPATH_BASE') or die;
 
-$canEdit = $displayData['params']->get('access-edit');
+// import common local vars for $canEdit
 
 $phocaPDF = false;
 

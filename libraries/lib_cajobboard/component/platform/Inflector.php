@@ -81,4 +81,21 @@ class Inflector extends \FOF30\Inflector\Inflector
 
 		return $word;
 	}
+
+
+	/**
+	 * Returns a human-readable string from $word.
+	 *
+	 * Returns a human-readable string from $word, by replacing
+	 * underscores with a space, and by upper-casing the initial
+	 * character by default.
+	 *
+	 * @param   string $word String to "humanize"
+	 *
+	 * @return string Human-readable word
+	 */
+	public function humanize($word)
+	{
+		return ucwords( strtolower( str_replace( "_", " ", $this->underscore($word) ) ) );
+	}
 }

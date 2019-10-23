@@ -64,7 +64,7 @@
         @jhtml('helper.buttonwidgets.delete', $humanViewNameSingular, $canUserEdit, $itemId, $prefix, $crud, false)
       @endif
 
-      @jhtml('helper.buttonwidgets.cancel', $itemViewLink, $prefix, $crud)
+      @jhtml('helper.buttonwidgets.cancel', $browseViewLink, $prefix, $crud)
     </div>
 
     {{-- Hidden CSRF form field --}}

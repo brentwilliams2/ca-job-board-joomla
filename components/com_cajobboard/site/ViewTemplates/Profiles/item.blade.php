@@ -26,15 +26,12 @@
   // model data fields
   $answerId       = $item->getFieldValue('answer_id');
 
-  // authorisation
-  $user = $this->container->platform->getUser();
-
-  $userId = $user->id;
+  $userId = $this->container->platform->getUser()->id;
   $authorId = $item->Author->getId();
 
   $authorAvatarUri = $this->container->User::getAvatar($authorId);
   $authorProfileLink = $this->container->User->getLinkToUserProfile($authorId);
-  $canUserEdit = $this->container->User->canEdit($user, $item);
+  $canUserEdit = $this->container->User->canEdit($item);
   $lastSeen = $this->container->User->lastSeen($item->Author->lastvisitDate);
   $name = $item->Author->getFieldValue('name');
   $postedOn = Format::getCreatedOnText($createdOn);

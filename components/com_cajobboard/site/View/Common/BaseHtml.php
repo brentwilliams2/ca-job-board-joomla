@@ -11,35 +11,20 @@
 
 namespace Calligraphic\Cajobboard\Site\View\Common;
 
-use \Calligraphic\Cajobboard\Site\View\Exception\InvalidArgument;
-use \Calligraphic\Library\Platform\Registry;
 use \FOF30\Container\Container;
 use \FOF30\Model\DataModel;
-use \FOF30\Model\DataModel\Collection;
 use \FOF30\View\DataView\Html;
-use \Joomla\CMS\Component\ComponentHelper;
-use \Joomla\CMS\Factory;
 use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Pagination\Pagination;
 
 // no direct access
 defined('_JEXEC') or die;
 
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
-
 // Add a path to the front-end JHTML widget directory
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/Helper/Html');
 
 class BaseHtml extends Html
 {
-	/**
-	 * The component-level parameters stored in #__extensions by com_config
-	 *
-	 * @var  \Calligraphic\Library\Platform\Registry
-	 */
-	protected $componentParams;
-
-
 	/**
 	 * A pagination helper object, set for browse views by onBeforeBrowse method
 	 *
@@ -61,12 +46,17 @@ class BaseHtml extends Html
 		// Create the lists object
     $this->lists = new \stdClass();
 
-    // Get component parameters
-    $this->componentParams = ComponentHelper::getParams('com_cajobboard');
-
-		// Load CSS for site view
-		$this->addCssFile('media://com_cajobboard/css/frontend.css');
+		$this->addDefaultCss();
 	}
+
+
+  /**
+	 * Load CSS for site view.
+	 */
+	protected function addDefaultCss()
+	{
+    $this->addCssFile('media://com_cajobboard/css/frontend.css');
+  }
 
 
   /**
@@ -123,7 +113,7 @@ class BaseHtml extends Html
 		// Set a where clause on the model query
 		if ( $whereClause = $this->getBrowseViewWhereClause() )
 		{
-			$model->whereRaw($whereClause);
+			$model->where($whereClause);
 		}
 
 		// Assign items to the view

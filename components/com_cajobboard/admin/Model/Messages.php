@@ -36,18 +36,31 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
  * @property string         $publish_down     Date and time to change the state to unpublished.
+ * @property int            $version          Version of this item.
  * @property int            $ordering         Order this record should appear in for sorting.
+ * @property object         $metadata         JSON encoded metadata field for this item.
+ * @property string         $metakey          Meta keywords for this item.
+ * @property string         $metadesc         Meta description for this item.
+ * @property string         $xreference       A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.
  * @property string         $params           JSON encoded parameters for this item.
  * @property string         $language         The language code for the article or * for all languages.
  * @property int            $cat_id           Category ID for this item.
+ * @property int            $featured         Whether this item is featured or not.
  * @property string         $note             A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: Thing
- * @property string         $name             A title to use for the message.
- * @property string         $description      A description of the message.
+ * @property string         $name             A title to use for the comment.
+ * @property string         $description      The text of the comment.
+ * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
+ * @property Registry       $image            Image metadata for social share and page header images.
+ * @property int            $about__foreign_model_id    The foreign model primary key that this comment belongs to
+ * @property string         $about__foreign_model_name  The name of the foreign model this comment belongs to, discriminator field for single-table inheritance
  *
  * SCHEMA: Message
  * @property string         $date_read        The date/time at which the message was read by the recipient.
+ *
+ * SCHEMA: Custom UCM
+ * @property Json           $attachment_counts    JSON encoded state field to indicate attachment counts for this message, keyed by media object name: {"audio_objects":0,"digital_documents":0,"image_objects":0,"video_objects":0}',
  */
 class Messages extends BaseTreeModel
 {
@@ -90,11 +103,11 @@ class Messages extends BaseTreeModel
     // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
-    // many-to-one FK to  #__cajobboard_organizations
+    // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('Recipient', 'Persons@com_cajobboard', 'recipient', 'id');
 
-    // many-to-one FK to  #__cajobboard_organizations
-    $this->belongsTo('IsPartOf', 'Comments@com_cajobboard', 'is_part_of', 'comment_id');
+    // many-to-one FK to  #__cajobboard_messages
+    $this->belongsTo('IsPartOf', 'Messages@com_cajobboard', 'is_part_of', 'message_id');
 
     /*
      * Relation field for belongsToMany is in a JOIN TABLE

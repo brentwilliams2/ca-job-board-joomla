@@ -73,7 +73,6 @@ class AnswersTemplate extends CommonTemplate
    */
 
 
-  // $this->hasOne('ParentItem', 'Comments@com_cajobboard', 'parent_item', 'comment_id');
   public function about__foreign_model_id ($config, $faker)
   {
     $foreignModels = array(

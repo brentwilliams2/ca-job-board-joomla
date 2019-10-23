@@ -82,17 +82,17 @@ trait ToolbarBase
 	public function renderSubmenu()
 	{
     $views = $this->getSubmenuViews();
-     
+
     $activeView = $this->container->input->getCmd('view', 'cpanel');
-    
+
 		foreach ($views as $view)
-		{   
+		{
 			$name = Text::_( strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($view) );
-      
+
       $link = 'index.php?option=' . $this->container->componentName . '&view=' . $view;
-      
+
       $active = $view == $activeView;
-      
+
 			$this->appendLink($name, $link, $active);
 		}
   }

@@ -44,20 +44,16 @@ trait Utility
 
     $registry = $model->getFieldValue($fieldAlias);
 
+    // Set default values
+    $paths = $this->getFieldArray();
+
     // Set 'metadata' field to new JRegistry object when task is 'add' (bind not called yet)
     if (!is_object($registry) && (!$registry instanceof Registry))
     {
-      if ( !empty($registry) )
-      {
-        // something's wrong, we got a value in that should have been transformed to a Registry object already so we're not in an 'add' task
-        throw new \RuntimeException( Text::sprintf('COM_CAJOBBOARD_EXCEPTION_REGISTRY_CHECK_GENERIC_MSSG', $fieldName) );
-      }
+      $registry = new Registry($paths);
 
-      $registry = new Registry();
+      $model->setFieldValue($fieldAlias, $registry);
     }
-
-    // Set default values
-    $paths = $this->getFieldArray();
 
     foreach ($paths as $path)
     {
@@ -72,7 +68,6 @@ trait Utility
       $this->$callbackMethodName($model);
     }
 
-    // Set the state to the (possibly) modified metadata registry object
-    $model->setState($fieldAlias, $registry);
+
   }
 }

@@ -129,9 +129,13 @@ class Title extends Observer
 
     $titleValue = $model->getFieldValue($titleField);
 
+    if (!$titleValue)
+    {
+      return;
+    }
+
     // Remove HTML
     $filteredTitle = $model->getContainer()->Text->filterText($titleValue);
-
 
     $model->setFieldValue($titleField, $filteredTitle);
   }

@@ -45,6 +45,7 @@
     "VideoObjects": 5
   },
   "models": [
+    "AnalyticAggregates",
     "Answers",
     "ApplicationLetters",
     "Applications",

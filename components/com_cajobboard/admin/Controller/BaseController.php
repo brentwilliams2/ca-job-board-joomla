@@ -23,6 +23,7 @@ class BaseController extends DataController
 {
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Redirect;             // Utilities for handling redirects in controller classes
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\PredefinedTaskList;   // Overrides execute() to provide predefined tasks
+  use \Calligraphic\Cajobboard\Admin\Controller\Mixin\Sprintf;              // Overrides core CRUD tasks to avoid using a translation key per view on flash messages
   use \Calligraphic\Cajobboard\Admin\Controller\Mixin\XhrSetField;          // Method to handle XHR or Joomla! admin button bulk updates to a model property, e.g. 'upvote_count'
 
 	/*

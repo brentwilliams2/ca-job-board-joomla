@@ -13,6 +13,7 @@
 namespace Calligraphic\Cajobboard\Admin\Model\Helper;
 
 use \Calligraphic\Cajobboard\Admin\Model\AddressRegions;
+use \Calligraphic\Cajobboard\Admin\Model\AnalyticAggregates;
 use \Calligraphic\Cajobboard\Admin\Model\BaseListModel;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
@@ -94,6 +95,7 @@ class TableFields
     // Don't use common fields for models that don't implement all Joomla! UCM fields *AND* don't use content history
     if (
       $model instanceof AddressRegions ||
+      $model instanceof AnalyticAggregates ||
       $model instanceof Categories ||
       $model instanceof EmailMessages ||
       $model instanceof GeoCoordinates ||
@@ -136,7 +138,7 @@ class TableFields
       );
     }
 
-    throw new \Exception('Could not match the table type in admin\Helper\TableFields, type: ' . $modelMetadata);
+    throw new \Exception('Could not match the table type in admin\Model\Helper\TableFields, type: ' . $modelMetadata);
   }
 
   /**
@@ -308,7 +310,7 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'NO',   'Default' => NULL],
+        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'name'                         => (object) ['Field' => 'name',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -547,6 +549,8 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'about__foreign_model_name' => (object) ['Field' => 'about__foreign_model_name',    'Type' => 'varchar(255)',   'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'is_part_of'                => (object) ['Field' => 'is_part_of',                   'Type' => 'bigint(20)',     'Null' => 'YES',    'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'upvote_count'              => (object) ['Field' => 'upvote_count',                 'Type' => 'int(11)',        'Null' => 'YES',    'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'downvote_count'            => (object) ['Field' => 'downvote_count',               'Type' => 'int(11)',        'Null' => 'YES',    'Default' => '0'],
@@ -685,7 +689,7 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'NO',   'Default' => NULL],
+        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'name'                         => (object) ['Field' => 'name',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -967,7 +971,7 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'recipient'                 => (object) ['Field' => 'recipient',                    'Null' => 'YES',  'Type' => 'int(11)',               'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'is_part_of'                => (object) ['Field' => 'is_part_of',                   'Null' => 'YES',  'Type' => 'int(11)',               'Default' => NULL],
+        'is_part_of'                => (object) ['Field' => 'is_part_of',                   'Null' => 'YES',  'Type' => 'bigint(20)',            'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'attachment_counts'         => (object) ['Field' => 'attachment_counts',            'Null' => 'YES',  'Type' => 'json',                  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------

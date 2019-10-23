@@ -12,12 +12,12 @@
 namespace Calligraphic\Cajobboard\Admin\View\Comments;
 
 use \FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\View\Common\BaseHtml;
+use \Calligraphic\Cajobboard\Admin\View\Common\BaseTreeHtml;
 
 // no direct access
 defined('_JEXEC') or die;
 
-class Html extends BaseHtml
+class Html extends BaseTreeHtml
 {
 	/**
 	 * Overridden. Executes before rendering the page for the Browse task.

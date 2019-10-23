@@ -33,13 +33,6 @@ trait Validation
     // handle TreeModel logic in it's over-ridden check() method
     if ($this->hasField('lft') && $this->hasField('rgt'))
 		{
-			// Create the SHA-1 hash of the slug for faster searching (make sure the hash column is CHAR(64) to take
-      // advantage of MySQL's optimised searching for fixed size CHAR columns)
-      if ($this->hasField('hash') && $this->hasField('slug'))
-      {
-        $this->hash = sha1($this->slug);
-      }
-
       // Reset cached values
       $this->resetTreeCache();
 		}

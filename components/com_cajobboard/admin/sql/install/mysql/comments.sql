@@ -50,6 +50,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_comments` (
   about__foreign_model_id BIGINT UNSIGNED COMMENT 'The primary key of the foreign model item that this comment belongs to.',
   about__foreign_model_name VARCHAR(255) COMMENT 'The name of the foreign model this comment belongs to, discriminator field for single-table inheritance',
 
+  /* SCHEMA: CreativeWork */
+  is_part_of BIGINT UNSIGNED COMMENT 'The primary key value of the parent comment for this comment, or the root node primary key value if this is a top-level comment for the foreign model item it is about',   /* FK to #__cajobboard_comments */
+
   /* SCHEMA: Comment */
   upvote_count INT DEFAULT '0' COMMENT 'Upvote count for this item.',
   downvote_count INT DEFAULT '0' COMMENT 'Downvote count for this item.',
