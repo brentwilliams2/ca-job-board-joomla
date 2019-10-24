@@ -17,27 +17,63 @@
 
 @import './variables';
 
-//-----------------------------------------------------------------------------
-// Control Panels ViewTemplate - Common Classes
-//-----------------------------------------------------------------------------
-
+$header-border-left: #adb2b5;
 
 //-----------------------------------------------------------------------------
-// Control Panels ViewTemplate - list view                   default.blade.php
+// ControlPanel ViewTemplate - default view                  default.blade.php
 //-----------------------------------------------------------------------------
 
+//.control-panel-header
+//.control-panel-body
 
 //-----------------------------------------------------------------------------
-// Control Panels ViewTemplate - list view item         default_item.blade.php
+// ControlPanel ViewTemplate - header view                    header.blade.php
 //-----------------------------------------------------------------------------
 
+.tile-count {
+  margin-bottom: 20px;
+  margin-top: 5px;
 
-//-----------------------------------------------------------------------------
-// Control Panels ViewTemplate - item view                      item.blade.php
-//-----------------------------------------------------------------------------
+  .tile-stats-count {
+    overflow: hidden;
+    padding: 0 10px 0 20px;
+    position: relative;
 
+    .count-top {
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+    }
 
-//-----------------------------------------------------------------------------
-// Control Panels ViewTemplate - edit and add view              form.blade.php
-//-----------------------------------------------------------------------------
+    &::before {
+      border-left: 2px solid $header-border-left;
+      content: '';
+      height: 65px;
+      left: 0;
+      margin-top: 10px;
+      position: absolute;
+    }
 
+    &:first-child {
+      &::before {
+        border-left: 0;
+      }
+    }
+
+    .count {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 47px;
+      text-align: center;
+    }
+
+    .count-bottom {
+      font-size: 10px;
+      text-align: center;
+
+      i {
+        width: 12px;
+      }
+    }
+  }
+}

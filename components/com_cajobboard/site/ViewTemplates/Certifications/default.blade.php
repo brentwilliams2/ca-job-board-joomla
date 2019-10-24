@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers List View Template
+ * Site Certifications List View Template
  *
  * @package   Calligraphic Job Board
  * @version   October 21, 2019

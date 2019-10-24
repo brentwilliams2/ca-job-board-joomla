@@ -152,28 +152,6 @@ abstract class VideoObjectAspectRatioEnum extends BasicEnum
 
 
   /**
-   * Get human-readable available aspect ratios as an array
-   *
-   * @return array  Returns an associative array of human-readable aspect ratio names
-   */
-  public static function getHumanReadableAspectRatioNamesAndValues()
-  {
-    $aspectRatiosArray = self::getConstants();
-
-    $newAspectRatiosArray = array();
-
-    foreach ($aspectRatiosArray as $name)
-    {
-      $humanReadableName = Text::_('COM_CAJOBBOARD_ENUM_VIDEO_OBJECT_ASPECT_RATIOS_' . $name);
-
-      array_push($newAspectRatiosArray, $humanReadableName);
-    }
-
-    return $newAspectRatiosArray;
-  }
-
-
-  /**
    * Get a meta-property value based on the aspect ratio name
    *
    * Twitter:   60 fps or less; dimensions between 32 x 32 and 1280 x 1024; file size <= 512 MB;

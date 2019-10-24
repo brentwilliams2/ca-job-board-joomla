@@ -18,7 +18,7 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
+use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /*

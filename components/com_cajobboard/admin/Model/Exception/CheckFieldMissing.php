@@ -20,7 +20,7 @@ use \Joomla\CMS\Language\Text;
 // no direct access
 defined('_JEXEC') or die;
 
-class CheckFieldMissing extends \InvalidField
+class CheckFieldMissing extends InvalidField
 {
 	public function __construct($message = "", $code = 500, Exception $previous = null)
 	{

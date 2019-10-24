@@ -47,7 +47,7 @@ trait Utility
     // Set default values
     $paths = $this->getFieldArray();
 
-    // Set 'metadata' field to new JRegistry object when task is 'add' (bind not called yet)
+    // Set field to new JRegistry object when task is 'add' (bind not called yet)
     if (!is_object($registry) && (!$registry instanceof Registry))
     {
       $registry = new Registry($paths);

@@ -94,8 +94,11 @@ class Applications extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
-    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
-    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'application_id', 'question_id', '#__cajobboard_applications_questions');
+    // Many-to-one FK to  #__cajobboard_question_lists
+    $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
     // one-to-many FK to #__cajobboard_answers, key in foreign table
     // Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'Applicationss' in View/Html file. Note we've stuffed an 'is_required' field into the join table.
@@ -104,8 +107,8 @@ class Applications extends BaseDataModel
     // Many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('MainEntityOfPage', 'Persons@com_cajobboard', 'main_entity_of_page', 'id');
 
-    // Many-to-one FK to  #__cajobboard_question_lists
-    $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
+    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
+    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'application_id', 'question_id', '#__cajobboard_applications_questions');
   }
 
   // @TODO: Need ability to mark questions as "must-have", so candidates can be rejected if they don't have it e.g. "has visa"

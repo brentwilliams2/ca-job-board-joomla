@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers Edit View Template
+ * Site Background Checks Edit View Template
  *
  * @package   Calligraphic Job Board
  * @version   October 21, 2019
@@ -14,12 +14,13 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                              $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\BackgroundChecks   $item */
   $item = $this->getItem();
 
   // Using an include so that local vars in the included file are in scope here also
   include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
+  include(JPATH_COMPONENT . '/ViewTemplates/BackgroundChecks/local_vars.php');
 
   // The name of the crud view
   $crud = 'edit';
@@ -43,7 +44,11 @@
       </div>
 
       <div class="form-group">
-        @jhtml('helper.editwidgets.text', $text, $textPlaceholder, $humanViewNameSingular, $prefix, $crud)
+        @jhtml('helper.editwidgets.description', $description, $descriptionPlaceholder, $humanViewNameSingular, $prefix, $crud)
+      </div>
+
+      <div class="form-group">
+        @jhtml('helper.enumwidgets.actionStatus', $currentActionStatus, $prefix, $crud)
       </div>
 
       @if ($isEditView)

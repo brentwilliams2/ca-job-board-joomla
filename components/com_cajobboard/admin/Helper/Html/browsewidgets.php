@@ -121,19 +121,16 @@ abstract class HelperBrowseWidgets
 
 
   /**
-	 * Method to create an HTML table header column tag for sorting by the hits model field.
+	 * Method to create an HTML table header column tag for sorting by the author name model field.
 	 *
 	 * @param   int     $widthPct   The width of the table header column
-   * @param   string  $viewName   The name of the view to build a translation key with, e.g. 'ANSWERS'
 	 *
 	 * @return  string
 	 */
-	public static function authorNameHeader($widthPct, $viewName = 'DEFAULT')
+	public static function authorNameHeader($widthPct)
 	{
-    $translationKey = 'COM_CAJOBBOARD_' . $viewName . '_TITLE';
-
     $html  = '<th width="' . $widthPct . '%" class="center header-author-name">';
-    $html .= BrowseView::sortgrid('created_by', $translationKey);
+    $html .= BrowseView::sortgrid('created_by', 'COM_CAJOBBOARD_AUTHOR');
     $html .= '</th>';
 
     return $html;

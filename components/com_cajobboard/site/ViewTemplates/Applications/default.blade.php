@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers List View Template
+ * Site Applications List View Template
  *
  * @package   Calligraphic Job Board
  * @package   Calligraphic Job Board

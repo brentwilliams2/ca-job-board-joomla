@@ -79,9 +79,10 @@ class ApplicationLetters extends BaseDataModel
     $config['idFieldName'] = 'application_letter_id';
 
     // Define a contentType to enable the Tags behaviour
-    $config['contentType'] = 'com_cajobboard.application_letters';
-
-    parent::__construct($container, $config);
+		$config['contentType'] = 'com_cajobboard.application_letters';
+		
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
@@ -92,6 +93,8 @@ class ApplicationLetters extends BaseDataModel
       //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
+
+		parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
 

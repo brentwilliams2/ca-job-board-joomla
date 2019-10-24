@@ -107,6 +107,9 @@ class Certifications extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
     // many-to-one FK to  #__cajobboard_image_objects
     $this->belongsTo('AboutImageObject', 'ImageObjects@com_cajobboard', 'about__image_object', 'image_object_id');
 
@@ -116,7 +119,8 @@ class Certifications extends BaseDataModel
 
 
   /**
-	 * Transform 'additional_type' field to a JRegistry object on bind
+	 * Transform 'additional_type' field to a JRegistry object
+   * on bind, called from databaseDataToRecordData()
 	 *
 	 * @return  \Calligraphic\Library\Platform\Registry
 	 */
@@ -129,7 +133,8 @@ class Certifications extends BaseDataModel
 
 
   /**
-	 * Transform 'additional_type' field's JRegistry object to a JSON string before save
+	 * Transform 'additional_type' field's JRegistry object to a JSON
+   * string before save, called from recordDataToDatabaseData()
 	 *
 	 * @return  string  JSON string
 	 */

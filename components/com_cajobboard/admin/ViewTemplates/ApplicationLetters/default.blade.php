@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers Admin Default View Template
+ * Admin Application Letters Default View Template
  *
  * @package   Calligraphic Job Board
  * @version   October 21, 2019
@@ -17,8 +17,8 @@ use \FOF30\Utils\SelectOptions;
 // no direct access
 defined('_JEXEC') or die;
 
-/** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
-/** @var  FOF30\View\DataView\Html                    $this */
+/** @var \Calligraphic\Cajobboard\Site\Model\ApplicationLetters  $item */
+/** @var  FOF30\View\DataView\Html                               $this */
 
 // The width of each of the table columns as a percentage
 $widthPct = array

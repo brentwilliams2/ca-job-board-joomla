@@ -60,30 +60,6 @@ abstract class DaysOfWeekEnum extends BasicEnum
 
 
   /**
-   * Get human-readable days of week as an array
-   *
-   * @param   int   $bitmaskToDecode    A bitmask value encoding one or more days, e.g. '24' for Wednesday and Thursday
-   *
-   * @return array  Returns an associative array of human-readable day names and the name's numeric enum value
-   */
-  public static function getHumanReadableDaysNamesAndValues($bitmaskToDecode)
-  {
-    $daysArray = self::getDaysNamesAndValues($bitmaskToDecode);
-
-    $newDaysArray = array();
-
-    foreach ($daysArray as $name => $value)
-    {
-      $humanReadableName = Text::_('COM_CAJOBBOARD_ENUM_DAYS_OF_WEEK_' . $name);
-
-      $newDaysArray[$humanReadableName] = $value;
-    }
-
-    return $newDaysArray;
-  }
-
-
-  /**
    * Method to convert an array of enum names of days of the week to a bitmask
    *
    * @param array $daysAsNamesArray   An array of days names, e.g. array('SATURDAY', 'SUNDAY')

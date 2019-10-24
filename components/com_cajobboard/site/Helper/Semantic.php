@@ -277,14 +277,15 @@ class Semantic
 
 
   /**
-	 * Set the metadata headers in site views (robots, author and keywords)
+	 * Set the metadata headers in site views (robots, author and keywords) on the
+   * document so that they are generated automatically in the template jdoc:head call
    *
    * <meta name="robots" content="index|noindex, follow|nofollow" />
    *
-   * index      Allow search engines to add the page to their index, so that it can be discovered by people searching. Default if tag missing.
-   * noindex    Disallow search engines from adding this page to their index, and therefore disallow them from showing it in their results.
-   * follow     Tells the search engines that it may follow links on the page, to discover other pages. Default if tag missing.
-   * nofollow   Tells the search engines robots to not follow any links on the page.
+   *   index      Allow search engines to add the page to their index, so that it can be discovered by people searching. Default if tag missing.
+   *   noindex    Disallow search engines from adding this page to their index, and therefore disallow them from showing it in their results.
+   *   follow     Tells the search engines that it may follow links on the page, to discover other pages. Default if tag missing.
+   *   nofollow   Tells the search engines robots to not follow any links on the page.
    *
    * @param   View  $view   The View object
 	 */
@@ -301,7 +302,9 @@ class Semantic
       /** @var DataModel $item */
       $item = $view->getItem();
 
-      // Set metadata tags on the document so they are generated automatically in the template jdoc:head call
+
+
+      // @TODO: This isn't fetching robots value from 'metadata' model field
 
       // Automatically cascades fetching config option if missing from item -> component -> menu item -> global
       $document->setMetaData( 'robots', $this->container->params->getConfigOption('robots', 'index, follow', $item) );
@@ -309,11 +312,19 @@ class Semantic
       /** @var \Calligraphic\Library\Platform\Registry $itemParams  */
       $itemParams = $item->getFieldValue( $item->getFieldAlias('params') );
 
+
+
+
+      // @TODO: This isn't fetching author value from 'metadata' model field
+
       // Set the 'author' metadata tags on the document so they are generated automatically if it is set in parameters
       if ( $author = $itemParams->get('author') )
       {
-        $document->setMetaData($author);
+        $document->setMetaData('author', $author);
       }
+
+
+
 
       // Set the 'keywords' metadata tags on the document so they are generated automatically if it is set in parameters
       if ( $keywords = $itemParams->metakey )
@@ -321,7 +332,7 @@ class Semantic
         $document->setMetaData('keywords', $keywords);
       }
     }
-    // use component, menu, or global parameters to set
+    // Use component, menu, or global parameters in cascading order to set
     else
     {
       // 'params' field not set on model, so set a default using cascade if missing from item -> component -> menu item -> global
@@ -346,101 +357,3 @@ class Semantic
     return $viewName == $requestedView;
   }
 }
-
-
-/*
-{
-  "Query string":
-  {
-    "option":"com_content"
-    "layout":"edit"
-    "id":"9"
-  }
-  "Form data":
-  {
-    "jform[title]":"Fair+Credit+Reporting+Act"
-    "jform[alias]":"fair-credit-reporting-act"
-    "jform[articletext]":"<p>cut<p>"
-    "jform[state]":"1"
-    "jform[catid]":"76"
-    "jform[featured]":"0"
-    "jform[access]":"1"
-    "jform[id]:["9"]
-    "jform[language]":"*"
-    "jform[note]":""
-    "jform[version_note]":""
-    "jform[com_fields][content-field-test]":""
-    "jform[publish_up]":"2019-05-10+12:34:15"
-    "jform[publish_down]":""
-    "jform[created]":"2019-05-10+12:34:15"
-    "jform[created_by]":"753"
-    "jform[created_by_alias]":""
-    "jform[modified]":"2019-09-22+14:48:46"
-    "jform[version]":"2"
-    "jform[hits]":"0"
-    "jform[metadesc]":"some+meta+descripting"
-    "jform[metakey]":"some+meta+keyworking"
-    "jform[xreference]":""
-    
-    "jform[images][image_intro]":""
-    "jform[images][float_intro]":""
-    "jform[images][image_intro_alt]":""
-    "jform[images][image_intro_caption]":""
-    "jform[images][image_fulltext]":""
-    "jform[images][float_fulltext]":""
-    "jform[images][image_fulltext_alt]":""
-    "jform[images][image_fulltext_caption]":""
-
-    "jform[urls][urla]":""
-    "jform[urls][urlatext]":""
-    "jform[urls][targeta]":""
-    "jform[urls][urlb]":""
-    "jform[urls][urlbtext]":""
-    "jform[urls][targetb]":""
-    "jform[urls][urlc]":""
-    "jform[urls][urlctext]":""
-    "jform[urls][targetc]":""
-
-    "jform[attribs][article_layout]":""
-    "jform[attribs][show_title]":""
-    "jform[attribs][link_titles]":"1"
-    "jform[attribs][show_tags]":""
-    "jform[attribs][show_intro]":""
-    "jform[attribs][info_block_position]":""
-    "jform[attribs][info_block_show_title]":""
-    "jform[attribs][show_category]":""
-    "jform[attribs][link_category]":""
-    "jform[attribs][show_parent_category]":"0"
-    "jform[attribs][link_parent_category]":""
-    "jform[attribs][show_associations]":""
-    "jform[attribs][show_author]":""
-    "jform[attribs][link_author]":""
-    "jform[attribs][show_create_date]":""
-    "jform[attribs][show_modify_date]":""
-    "jform[attribs][show_publish_date]":""
-    "jform[attribs][show_item_navigation]":""
-    "jform[attribs][show_icons]":""
-    "jform[attribs][show_print_icon]":""
-    "jform[attribs][show_email_icon]":""
-    "jform[attribs][show_vote]":""
-    "jform[attribs][show_hits]":""
-    "jform[attribs][show_noauth]":""
-    "jform[attribs][urls_position]":""
-    "jform[attribs][alternative_readmore]":""
-    "jform[attribs][article_page_title]":""
-    "jform[attribs][show_publishing_options]":""
-    "jform[attribs][show_article_options]":""
-    "jform[attribs][show_urls_images_backend]":""
-    "jform[attribs][show_urls_images_frontend]":""
-
-    "jform[metadata][robots]":"index+follow"
-    "jform[metadata][author]":"a+great+author"
-    "jform[metadata][rights]":""
-    "jform[metadata][xreference]":""
-
-    "task":"article.apply"
-    "return":""
-    "forcedLanguage":""
-    "34db9432ce2511b239bf263031ec51af":"1"
-}}
-*/

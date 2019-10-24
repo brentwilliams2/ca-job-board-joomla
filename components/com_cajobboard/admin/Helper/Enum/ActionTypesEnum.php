@@ -51,26 +51,4 @@ abstract class ActionTypesEnum extends BasicEnum
   {
     return self::getConstants();
   }
-
-
-  /**
-   * Get human-readable available aspect ratios as an array
-   *
-   * @return array  Returns an associative array of human-readable aspect ratio names and the name's numeric enum value
-   */
-  public static function getHumanReadableActionTypesConstants()
-  {
-    $actionStatusesArray = self::getConstants();
-
-    $newActionStatusesArray = array();
-
-    foreach ($actionStatusesArray as $name)
-    {
-      $humanReadableName = Text::_('COM_CAJOBBOARD_ENUM_ACTION_TYPE_' . $name);
-
-      array_push($newAspectRatiosArray, $humanReadableName);
-    }
-
-    return $newActionStatusesArray;
-  }
 }

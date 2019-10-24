@@ -33,26 +33,4 @@ abstract class VendorRoleEnum extends BasicEnum
   {
     return self::getConstants();
   }
-
-
-  /**
-   * Get human-readable available aspect ratios as an array
-   *
-   * @return array  Returns an associative array of human-readable aspect ratio names
-   */
-  public static function getHumanReadableVendorRoleNames()
-  {
-    $vendorRolesArray = self::getConstants();
-
-    $newVendorRolesArray = array();
-
-    foreach ($vendorRolesArray as $name)
-    {
-      $humanReadableName = Text::_('COM_CAJOBBOARD_ENUM_VENDOR_ROLES_' . $name);
-
-      array_push($newAspectRatiosArray, $humanReadableName);
-    }
-
-    return $newVendorRolesArray;
-  }
 }

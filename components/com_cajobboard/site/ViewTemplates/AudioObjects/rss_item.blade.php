@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers RSS Feed item view
+ * Site Audio Objects RSS Feed item view
  *
  * @package   Calligraphic Job Board
  * @version   October 21, 2019
@@ -12,8 +12,8 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                          $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\AudioObjects   $item */
 
   // Using an include so that local vars in the included file are in scope here also
   include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');

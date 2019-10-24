@@ -15,7 +15,7 @@ namespace Calligraphic\Cajobboard\Site\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
+use \FOF30\Container\Container;
 
 /*
  * Fields:
@@ -58,7 +58,7 @@ use FOF30\Container\Container;
  * @property  int			      $content_size     File size in bytes
  * @property  string	      $encoding_format  MIME format of the document, e.g. application/pdf
  */
-class DigitalDocuments extends BaseDataModel
+class DigitalDocuments extends \Calligraphic\Cajobboard\Admin\Model\DigitalDocuments
 {
 	/**
 	 * @param   Container $container The configuration variables to this model

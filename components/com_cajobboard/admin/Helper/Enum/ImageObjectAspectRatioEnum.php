@@ -79,28 +79,6 @@ abstract class ImageObjectAspectRatioEnum extends BasicEnum
 
 
   /**
-   * Get human-readable available aspect ratios as an array
-   *
-   * @return array  Returns an associative array of human-readable aspect ratio names
-   */
-  public static function getHumanReadableAspectRatioNames()
-  {
-    $aspectRatiosArray = self::getConstants();
-
-    $newAspectRatiosArray = array();
-
-    foreach ($aspectRatiosArray as $name)
-    {
-      $humanReadableName = Text::_('COM_CAJOBBOARD_ENUM_IMAGE_OBJECT_ASPECT_RATIO_' . $name);
-
-      array_push($newAspectRatiosArray, $humanReadableName);
-    }
-
-    return $newAspectRatiosArray;
-  }
-
-
-  /**
    * Get a meta-property value based on the aspect ratio name
    *
    * @param   string      $aspect     The aspect ratio name, e.g. 'STANDARD_LANDSCAPE'

@@ -1,6 +1,6 @@
 <?php
 /**
- * Comments Site RSS Feed view
+ * Certifications Site RSS Feed view
  *
  * @package   Calligraphic Job Board
  * @version   October 21, 2019

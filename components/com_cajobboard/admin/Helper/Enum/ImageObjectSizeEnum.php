@@ -42,28 +42,6 @@ abstract class ImageObjectSizeEnum extends BasicEnum
 
 
   /**
-   * Get human-readable image object sizes as an array
-   *
-   * @return array  Returns an associative array of human-readable image object sizes and the name's numeric enum value
-   */
-  public static function getHumanReadableImageObjectSizesNames()
-  {
-    $imageObjectSizesArray = self::getConstants();
-
-    $newImageObjectSizesArray = array();
-
-    foreach ($imageObjectSizesArray as $name)
-    {
-      $humanReadableName = Text::_('COM_CAJOBBOARD_ENUM_IMAGE_OBJECT_SIZE_' . $name);
-
-      array_push($newAspectRatiosArray, $humanReadableName);
-    }
-
-    return $newImageObjectSizesArray;
-  }
-
-
-  /**
    * Get the directory in Joomla!'s media/images/user_uploads directory where file resizes are stored
    *
    * @param   string  $size     The size name, e.g. 'THUMB'
