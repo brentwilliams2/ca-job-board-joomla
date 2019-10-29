@@ -4,14 +4,20 @@
 
 {DEFAULT = 1}
 
-/helper\.buttonwidgets\.addNew/ {
-  print "    @if ($canUserAdd)"
-  print "      @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)"
-  print "    @endif"
+BEGINFILE {
+  print FILENAME > "/dev/stderr"
+}
 
+/\.\/[[:alpha:]]*\/[[:alpha:]_]*\.blade\.php/ {
   DEFAULT = 0
 }
 
 DEFAULT {
   print $0
 }
+
+#ENDFILE {
+  # print ""
+#}
+
+#END {}

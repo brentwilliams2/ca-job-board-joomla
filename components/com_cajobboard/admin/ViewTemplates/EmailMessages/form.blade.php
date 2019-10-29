@@ -1,9 +1,9 @@
 <?php
  /**
-  * Email Messages Edit View Template
+  * Admin Email Messages Edit View Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version   May 1, 2018
   * @author    Calligraphic, LLC http://www.calligraphic.design
   * @copyright Copyright (C) 2018 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -16,51 +16,24 @@
   use Akeeba\Subscriptions\Admin\Helper\Select;
   use FOF30\Utils\FEFHelper\BrowseView;
 
-  /** @var  FOF30\View\DataView\Html  $this */
+  /** @var \Calligraphic\Cajobboard\Admin\Model\EmployerAggregateRatings $item */
+  $item = $this->getItem();
 
   // Maybe need a dummy record for each of the types to show in the editor, so you get a good preview of what it will look like
   // this is to edit email templates
-?>
 
-@extends('admin:com_cajobboard/Common/edit')
+  // 'key' field in Akeeba Subs:
+  // {{ BrowseView::genericSelect('key', \Akeeba\Subscriptions\Admin\Helper\Email::getEmailKeys(1), $this->getItem()->key, ['fof.autosubmit' => false, 'translate' => false]) }}
 
-@section('edit-form-body')
+  // 'language' field handling in Akeeba Subs:
+  // 		<label for="language">@fieldtitle('language')</label>
+	//	{{ BrowseView::genericSelect(
+  //      'language',
+  //      \FOF30\Utils\SelectOptions::getOptions('languages', ['none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_LANGUAGE_ALL']),
+  //      $this->getItem()->language,
+  //      ['fof.autosubmit' => false, 'translate' => false]
+  //  )}}
 
-	<div class="akeeba-form-group">
-		<label for="key">@fieldtitle('key')</label>
-		{{ BrowseView::genericSelect('key', \Akeeba\Subscriptions\Admin\Helper\Email::getEmailKeys(1), $this->getItem()->key, ['fof.autosubmit' => false, 'translate' => false]) }}
-  </div>
-
-	<div class="akeeba-form-group">
-		<label for="language">@fieldtitle('language')</label>
-		{{ BrowseView::genericSelect('language', \FOF30\Utils\SelectOptions::getOptions('languages', ['none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_LANGUAGE_ALL']), $this->getItem()->language, ['fof.autosubmit' => false, 'translate' => false]) }}
-  </div>
-
-	<div class="akeeba-form-group">
-		<label for="subscription_level_id">@fieldtitle('subscription_level_id')</label>
-		<?php echo BrowseView::modelSelect('subscription_level_id', 'Levels', $this->getItem()->subscription_level_id, ['fof.autosubmit' => false, 'none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_SUBSCRIPTION_LEVEL_ID_NONE', 'translate' => false]) ?>
-  </div>
-
-	<div class="akeeba-form-group">
-		<label for="enabled">@lang('JPUBLISHED')</label>
-		@jhtml('FEFHelper.select.booleanswitch', 'enabled', $this->getItem()->enabled)
-  </div>
-
-	<div class="akeeba-form-group">
-		<label for="subject">@fieldtitle('subject')</label>
-		<input type="text" name="subject" id="subject" value="{{{ $this->getItem()->subject }}}" />
-  </div>
-
-	<div class="akeeba-form-group">
-		<label for="body">@fieldtitle('body')</label>
-		<div class="akeeba-nofef">
-			@jhtml('FEFHelper.edit.editor', 'body', $this->getItem()->body)
-    </div>
-  </div>
-
-@stop
-
-<?php
 /*
 Your [LEVEL] subscription at [SITENAME] is now enabled
 
@@ -81,3 +54,29 @@ Your [LEVEL] subscription at [SITENAME] is now enabled
   </p>
 </div>'
 */
+
+?>
+
+@extends('admin:com_cajobboard/Common/edit')
+
+{{-----------------------------------------------------------------------------}}
+{{-- SECTION: Default edit form tab in this section ---------------------------}}
+{{-----------------------------------------------------------------------------}}
+
+@section('basic-options')
+<fieldset name="text" class="control-group">
+    <div class="controls">
+      @jhtml('helper.editorWidgets.editor', 'text', $item->text)
+    </div>
+</fieldset>
+@stop
+
+
+{{-----------------------------------------------------------------------------}}
+{{-- SECTION: Advanced options form tab in this section -----------------------}}
+{{-----------------------------------------------------------------------------}}
+
+@section('advanced-options')
+  {{-- Employer Aggregate Rating Description textbox --}}
+  @jhtml('helper.editWidgets.textbox', 'description', $item)
+@stop

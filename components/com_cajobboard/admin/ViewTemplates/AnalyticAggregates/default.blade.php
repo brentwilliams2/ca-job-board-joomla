@@ -1,6 +1,6 @@
 <?php
 /**
- * Analytic Aggregates Admin Default View Template
+ * Admin Analytic Aggregates Default View Template
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

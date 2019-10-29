@@ -7,9 +7,9 @@
  */
 
 /**
- * Email Message Templates data model SQL
+ * Data Feed Templates data model SQL
  *
- * Uses schema https://schema.org/EmailMessage
+ * Uses schema https://schema.org/DataFeed
  */
 CREATE TABLE IF NOT EXISTS `#__cajobboard_data_feed_templates` (
   data_feed_template_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
@@ -50,10 +50,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_data_feed_templates` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-
-REPLACE INTO `#__cajobboard_data_feed_templates` (`data_feed_template_id`, `name`, `slug`, `description`, `xml_template`) VALUES
-	(1, 'Indeed.com All Posts Daily', 'indeed-all-daily', 'Daily job feed for Indeed.com', '<?xml version="1.0" encoding="utf-8"?><source><publisher>[site-name]</publisher><publisherurl>[site-url]</publisherurl><lastBuildDate>[date_created]</lastBuildDate><job><title><![CDATA[title]]></title><date><![CDATA[CURRENT_TIMESTAMP]]></date><referencenumber><![CDATA[reference-id]]></referencenumber><url><![CDATA[url]]></url><company><![CDATA[company]]></company><city><![CDATA[city]]></city><state><![CDATA[state]]></state><country><![CDATA[country]]></country><postalcode><![CDATA[postal-code]]></postalcode><description><![CDATA[description]]></description><salary><![CDATA[salary]]></salary><education><![CDATA[education-level]]></education><jobtype><![CDATA[job-type]]></jobtype><category><![CDATA[keywords]]></category><experience><![CDATA[experience]]></experience></job></source>');
 
 
 /*

@@ -23,6 +23,84 @@ defined('_JEXEC') or die;
 class Inflector extends \FOF30\Inflector\Inflector
 {
 	/**
+	 * Add an uncountable word
+	 *
+	 * @param   string 		$word 	The uncountable word to add to the list.
+	 *
+	 * @return  void
+	 */
+	public function addUncountableWord($word)
+	{
+		array_push( $this->rules['uncountable'], $word );
+	}
+
+
+	/**
+	 * Returns a human-readable string from $word.
+	 *
+	 * Returns a human-readable string from $word, by replacing
+	 * underscores with a space, and by upper-casing the initial
+	 * character by default.
+	 *
+	 * @param   string $word String to "humanize"
+	 *
+	 * @return string Human-readable word
+	 */
+	public function humanize($word)
+	{
+		return ucwords( strtolower( str_replace( "_", " ", $this->underscore($word) ) ) );
+	}
+
+
+	/**
+	 * Convert a CamelCased word into a hyphenated-word
+	 *
+	 * @param   string  $word   Word to hyphenate
+	 *
+	 * @return  string  Returns the hyphenated word
+	 */
+	public function hyphenate($word)
+	{
+    $word = preg_replace('/(\s)+/', '-', $word);
+
+    $word = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '-\\1', $word));
+
+		return $word;
+	}
+
+
+	/**
+	 * Check to see if an Enlish word is plural. Over-ridden to consider uncountable
+	 * words as plural (instead of singular as in base method). Allows URLs with no
+	 * specified task to default to a 'browse' view, rather than an 'add' view.
+	 *
+	 * @param   string $string String to be checked.
+	 *
+	 * @return boolean
+	 */
+	public function isPlural($string)
+	{
+		if (in_array($string, $this->rules['uncountable']))
+		{
+			return true;
+		}
+
+		return parent::isPlural($string);
+	}
+
+
+	/**
+	 * @param string $name
+	 *
+	 * @return string  Returns the view/model name in camel-cased plural form
+	 */
+	public function normalizeMediaAssetName($name)
+	{
+    return $this->underscore( $this->pluralize($name) );
+	}
+
+
+	/**
 	 * Converts PascalCase or camelCase to snake_case, overridden to handle acronyms
 	 *
 	 * @param   string  $word  Word to camel_case
@@ -52,50 +130,5 @@ class Inflector extends \FOF30\Inflector\Inflector
     }
 
     return implode('_', $ret);
-	}
-
-
-	/**
-	 * @param string $name
-	 *
-	 * @return string  Returns the view/model name in camel-cased plural form
-	 */
-	public function normalizeMediaAssetName($name)
-	{
-    return $this->underscore( $this->pluralize($name) );
-  }
-
-
-	/**
-	 * Convert a CamelCased word into a hyphenated-word
-	 *
-	 * @param   string  $word   Word to hyphenate
-	 *
-	 * @return  string  Returns the hyphenated word
-	 */
-	public function hyphenate($word)
-	{
-    $word = preg_replace('/(\s)+/', '-', $word);
-
-    $word = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '-\\1', $word));
-
-		return $word;
-	}
-
-
-	/**
-	 * Returns a human-readable string from $word.
-	 *
-	 * Returns a human-readable string from $word, by replacing
-	 * underscores with a space, and by upper-casing the initial
-	 * character by default.
-	 *
-	 * @param   string $word String to "humanize"
-	 *
-	 * @return string Human-readable word
-	 */
-	public function humanize($word)
-	{
-		return ucwords( strtolower( str_replace( "_", " ", $this->underscore($word) ) ) );
 	}
 }

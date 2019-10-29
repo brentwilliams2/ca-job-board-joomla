@@ -26,9 +26,6 @@ class Html extends BaseHtml
 	{
     return array(
 			'Author',
-			'DigitalDocument',
-			'EmailMessageTemplate',
-			'Sender'
 		);
   }
 }

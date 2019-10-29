@@ -189,3 +189,11 @@
 
 </div>{{-- End responsive container --}}
 <div class="clearfix"></div>
+
+{{--
+  Modal templates used in common for all default_item views, only
+  take bandwidth hit of including modal HTML if user is logged in
+--}}
+@if ( !$isGuestUser )
+  @yield('report-item-modal')
+@endif

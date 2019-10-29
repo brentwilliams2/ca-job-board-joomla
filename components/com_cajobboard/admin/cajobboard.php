@@ -13,8 +13,9 @@
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
-use FOF30\Autoloader\Autoloader;
+use \FOF30\Container\Container;
+use \Joomla\CMS\Component\ComponentHelper;
+use \Joomla\CMS\Log\Log;
 
 // Load FOF
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
@@ -22,10 +23,17 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
+// Make sure Akeeba Subscriptions is installed. ComponentHelper
+// returns an \Joomla\CMS\Component\ComponentRecord object.
+if ( !ComponentHelper::getComponent('com_akeebasubs', true)->enabled )
+{
+	throw new RuntimeException('Akeeba Subscriptions is not installed', 500);
+}
+
 if(JDEBUG) {
-  JLog::addLogger(
+  Log::addLogger(
     array('text_file' => 'cajobboard.debug.php'),
-    JLog::DEBUG,
+    Log::DEBUG,
     array('cajobboard')
   );
 }

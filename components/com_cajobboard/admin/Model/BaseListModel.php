@@ -62,7 +62,7 @@ class BaseListModel extends DataModel
       $config['behaviours'] = $behaviours;
     }
 
-    /* Parent constructor */
-    parent::__construct($container, $config);
+    /* Overridden constructor */
+    $this->constructor($container, $config);
   }
 }

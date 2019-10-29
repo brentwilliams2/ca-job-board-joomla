@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Email Messages Controller
+ * Admin Email Message Template Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -21,14 +21,11 @@ namespace Calligraphic\Cajobboard\Admin\Controller;
 defined('_JEXEC') or die;
 
 use \Akeeba\Subscriptions\Admin\Helper\Email;
-use \Akeeba\Subscriptions\Admin\Model\EmailTemplates;
-use \Akeeba\Subscriptions\Admin\Model\Subscriptions;
+use \Calligraphic\Cajobboard\Admin\Controller\BaseController;
 use \FOF30\Container\Container;
-use \FOF30\Controller\DataController;
-use \FOF30\Model\DataModel;
 use \Joomla\CMS\Language\Text;
 
-class EmailTemplate extends DataController
+class EmailMessageTemplate extends BaseController
 {
 	/*
 	 * Overridden. Limit the tasks we're allowed to execute.
@@ -38,7 +35,7 @@ class EmailTemplate extends DataController
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    $this->setModelName('EmailTemplates');
+    $this->setModelName('EmailMessageTemplates');
 
 		// $this->resetPredefinedTaskList();
 
@@ -64,13 +61,13 @@ class EmailTemplate extends DataController
 
     $url = 'index.php?option=com_akeebasubs&view=EmailTemplates&task=edit&id=' . $id;
 
-    /** @var EmailTemplates $template */
+    /** @var \Calligraphic\Cajobboard\Admin\Model\EmailMessageTemplates $template */
 		$template = $this->getModel()->getClone()->savestate(false)->setIgnoreRequest(true);
 
     $template->findOrFail($id);
 
     // grab the first published level
-		/** @var DataModel $levelsModel */
+		/** @var \FOF30\Model\DataModel $levelsModel */
     $levelsModel = $this->container->factory->model('Levels')->tmpInstance();
 
     $level = $levelsModel->enabled(1)->firstOrFail();
@@ -83,7 +80,7 @@ class EmailTemplate extends DataController
     }
 
 		// get a dummy subscription
-		/** @var Subscriptions $sub */
+		/** @var \Akeeba\Subscriptions\Admin\Model\Subscriptions  $sub */
     $sub = $this->container->factory->model('Subscriptions')->tmpInstance();
 
 		$sub->akeebasubs_subscription_id = 999999;

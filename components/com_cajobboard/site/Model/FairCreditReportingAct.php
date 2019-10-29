@@ -10,7 +10,7 @@
  *
  */
 
-namespace Calligraphic\Cajobboard\Admin\Model;
+namespace Calligraphic\Cajobboard\Site\Model;
 
 // no direct access
 defined('_JEXEC') or die;

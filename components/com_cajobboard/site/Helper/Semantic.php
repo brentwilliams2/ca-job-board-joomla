@@ -55,7 +55,7 @@ class Semantic
     'Comments' => 'content',
     'DigitalDocuments' => 'content',
     'DiversityPolicies' => 'content',
-    'FCRA' => 'content',
+    'FairCreditReportingAct' => 'content',
     'ImageObjects' => 'media',
     'JobPostings' => 'content',
     'Organizations' => 'company',

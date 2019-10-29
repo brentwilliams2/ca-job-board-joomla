@@ -35,7 +35,7 @@ trait PersonalInformation
 	{
 		/** @var \JUser $user */
     $user = $container->platform->getUser();
-
+die('mark mixin');
 		if (!$user->authorise('cajobboards.pii', 'com_cajobboard'))
 		{
 			throw new \RuntimeException( Text::_('COM_CAJOBBOARD_EXCEPTION_COMMON_NO_ACL_PII'), 403 );

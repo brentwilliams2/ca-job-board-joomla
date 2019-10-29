@@ -25,8 +25,9 @@ trait ToolbarBase
 	 * @return  array  A list of all views
 	 */
 	protected function getSubmenuViews()
-	{
+	{ // COM_CAJOBBOARD_TITLE_ADDRESSREGIONS
     return array(
+      'AddressRegions',
       'AnalyticAggregates',
       'Answers',
       'ApplicationLetters',
@@ -39,24 +40,33 @@ trait ToolbarBase
       'ControlPanels',
       'CreditReports',
       'DataFeeds',
+      'DataFeedTemplates',
       'DigitalDocuments',
-      'DigitalSignatures',
       'DiversityPolicies',
       'EmailMessages',
       'EmailMessageTemplates',
-      'FCRA',
+      'EmployerAggregateRatings',
+      'EmploymentTypes',
+      'FairCreditReportingAct',
+      'GeoCoordinates',
       'ImageObjects',
       'Interviews',
+      'IssueReportCategories',
       'IssueReports',
       'JobAlerts',
       'JobPostings',
       'Messages',
+      'OccupationalCategories',
+      'OccupationalCategoryGroups',
       'Offers',
+      'OrganizationRoles',
       'Organizations',
+      'OrganizationTypes',
       'Persons',
       'Places',
       'Profiles',
       'QAPages',
+      'QuestionLists',
       'Questions',
       'References',
       'Registrations',
@@ -67,7 +77,9 @@ trait ToolbarBase
       'Schedules',
       'ScoreCards',
       'SearchResultPages',
-      'Tasks',
+      'TaskActions',
+      'TaskLists',
+      'Vendors',
       'VideoObjects',
       'WorkFlows'
     );

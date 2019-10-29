@@ -69,8 +69,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property string         $data_feed_element  A JSON configuration describing Filter parameters to apply for the JobPostings included in the feed, e.g. {"state variable":"job_posting_id","method":"between","from":"1","to":"10"}.
  *
  * SCHEMA: DataFeed(dataFeedElement) -> DataFeedItem
-  * @property string         $date_created    The data and time this data feed was last pushed to the vendor.
-
+ * @property string         $date_created    The data and time this data feed was last pushed to the vendor.
  */
 class DataFeeds extends BaseDataModel
 {

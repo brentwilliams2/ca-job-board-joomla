@@ -1,6 +1,6 @@
 <?php
  /**
-  * Site Answers List View Template
+  * Site Digital Documents List View Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019
@@ -17,7 +17,7 @@
   /** @var  FOF30\View\DataView\Html  $this */
 
   // Using an include so that local vars in the included file are in scope here also
-  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
+  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.php');
 
   // The name of the crud view
   $crud = 'browse';

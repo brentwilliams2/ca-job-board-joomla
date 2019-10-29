@@ -26,9 +26,6 @@ defined( '_JEXEC' ) or die;
 class Check extends BaseCheck
 {
   /**
-	 * Add the category id field to the fieldsSkipChecks list of the model.
-	 * it should be empty so that we can fill it in through this behaviour.
-	 *
 	 * @param   DataModel  $model
 	 */
 	public function onCheck(DataModel $model)

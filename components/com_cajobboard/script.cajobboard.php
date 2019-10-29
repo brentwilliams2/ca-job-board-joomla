@@ -100,62 +100,60 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     'ApplicationLetters',
     'Applications',
     'AudioObjects',
-    'Awards',
     'BackgroundChecks',
-    'BaseDataModel',
-    'BaseListModel',
-    'BaseTreeModel',
     'Candidates',
-    'Categories', //
+    'Categories',
     'Certifications',
-    'Comments', //
+    'Comments',
     'ControlPanels',
-    'CreditReports', //
-    'DataFeeds', //
-    'DigitalDocuments', //
-    'DigitalSignatures', //
-    'DiversityPolicies', //
-    'EmailMessageTemplates', //
+    'CreditReports',
+    'DataFeeds',
+    'DataFeedTemplates',
+    'DigitalDocuments',
+    'DiversityPolicies',
     'EmailMessages',
-    'EmployerAggregateRatings', //
-    'EmployerDepartments', //
-    'EmploymentTypes', //
-    'FCRA', //
-    'GeoCoordinates', //
+    'EmailMessageTemplates',
+    'EmployerAggregateRatings',
+    'EmploymentTypes',
+    'FairCreditReportingAct',
+    'GeoCoordinates',
     'Help',
     'ImageObjects',
-    'Interviews', //
-    'IssueReportCategories', //
-    'IssueReports', //
+    'Interviews',
+    'IssueReportCategories',
+    'IssueReports',
     'JobAlerts',
     'JobPostings',
     'Messages',
-    'OccupationalCategories', //
-    'OccupationalCategoryGroups', //
-    'Offers', //
-    'OrganizationRoles', //
-    'OrganizationTypes', //
+    'OccupationalCategories',
+    'OccupationalCategoryGroups',
+    'Offers',
+    'OrganizationRoles',
+    'OrganizationTypes',
     'Organizations',
-    'PersonallyIdentifiableInformation', //
+    'PersonallyIdentifiableInformation',
     'Persons',
     'Places',
     'Profiles',
     'QAPages',
+    'QuestionLists',
     'Questions',
     'References',
     'Registrations',
     'Reports',
-    'ResumeAlerts', //
+    'ResumeAlerts',
     'Resumes',
     'Reviews',
-    'Scheduling',
-    'ScoreCards', //
+    'Schedules',
+    'ScoreCards',
     'SearchResultPages',
     'Subscriptions',
-    'Tasks',
+    'TaskActions',
+    'TaskLists',
     'Uncategorised',
+    'Vendors',
     'VideoObjects',
-    'WorkFlows' //
+    'WorkFlows'
   );
 
 
@@ -330,6 +328,7 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
       $this->addUserGroups();
       $this->seedMessageRootRecord();
       $this->seedCommentRootRecord();
+      $this->seedDefaultRecordData();
     }
 
     return true;
@@ -693,6 +692,32 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
       );
 
       $this->setPostInstallationMessage($options);
+    }
+  }
+
+
+  /**
+   * Save default table records using the CLI Seeder system, instead of SQL INSERT queries
+   * in the installation files so that tables that have data populated from other tables
+   * (e.g. finding the proper category to enter for a 'cat_id' field) work properly.
+   *
+   * Used by: EmploymentTypes
+   *
+   * @return void
+   */
+  function seedDefaultRecordData()
+  {
+    // Make sure PHP is available as CLI
+    if ( shell_exec("command -v php") )
+    {
+      // Seed default records
+      exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php DataFeedTemplates");
+      exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php EmailMessageTemplates");
+      exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php EmploymentTypes");
+    }
+    else
+    {
+      throw new \Exception('PHP CLI is required for installation of the Job Board, and not available in the current environment');
     }
   }
 }

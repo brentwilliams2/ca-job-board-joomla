@@ -1,6 +1,6 @@
 /**
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_digital_documents` (
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
   /* FOF "magic" fields */
-  asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
+  asset_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',
   enabled TINYINT NOT NULL DEFAULT '1' COMMENT 'Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.',
   created_on DATETIME DEFAULT NULL COMMENT 'Timestamp of record creation, auto-filled by save().',

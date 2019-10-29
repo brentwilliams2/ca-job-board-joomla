@@ -55,17 +55,3 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_employment_types` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-
-/**
- * Initial employment types
- */
-INSERT INTO `#__cajobboard_employment_types` (slug, name, description, url) VALUES
-  ('full-time', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_FULL_TIME', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_FULL_TIME_DESCRIPTION', 'https://en.wikipedia.org/wiki/Full-time'),
-  ('part-time', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_PART_TIME', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_PART_TIME_DESCRIPTION', 'https://en.wikipedia.org/wiki/Part-time_contract'),
-  ('flex-time', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_FLEX-TIME', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_FLEX-TIME_DESCRIPTION', 'https://en.wikipedia.org/wiki/Flextime'),
-  ('contract', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_CONTRACT', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_CONTRACT_DESCRIPTION', 'https://en.wikipedia.org/wiki/Fixed-term_employment_contract'),
-  ('temporary', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_TEMPORARY', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_TEMPORARY_DESCRIPTION', 'https://en.wikipedia.org/wiki/Temporary_work'),
-  ('casual', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_CASUAL', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_CASUAL_DESCRIPTION', 'https://en.wikipedia.org/wiki/Casual_employment_(contract)'),
-  ('internship', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_INTERNSHIP', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_INTERNSHIP_DESCRIPTION', 'https://en.wikipedia.org/wiki/Internship'),
-  ('other', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_OTHER', 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_OTHER_DESCRIPTION', 'https://en.wiktionary.org/wiki/other');

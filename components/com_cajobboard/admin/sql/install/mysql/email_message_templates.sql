@@ -53,28 +53,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_message_templates` (
   DEFAULT COLLATE = utf8_unicode_ci;
 
 
-REPLACE INTO `#__cajobboard_email_message_templates` (`email_message_template_id`, `name`, `slug`, `description`, `subject`, `body`) VALUES
-	(1, 'analytics_report', 'analytics-report', 'Analytics reports template', 'Your [SITENAME] report for [TIMEPERIOD]', '<div style=\"background-color: #e0e0e0; padding: 10px 20px;\">\r\n<div style=\"background-color: #f9f9f9; border-radius: 10px; padding: 5px 10px;\">\r\n<p>Hello [FIRSTNAME],</p>\r\n<p>Attached is your <span style=\"line-height: 1.3em;\">[TIMEPERIOD] </span><span style=\"line-height: 1.3em;\">report</span></p>\r\n</div>\r\n<p style=\"font-size: x-small; color: #667;\">You are receiving this automatic email message because you have set up automatic report generation on <em>[SITENAME]</em>. <span style=\"line-height: 1.3em;\">Do not reply to this email, it is sent from an unmonitored email address.</span></p>\r\n</div>'),
-  (2, 'new_comment_posted_notification', 'new-comment-posted-notification', 'New comment posted notification template', 'subject', 'body'),
-  (3, 'new_question_posted_notification', 'new-question-posted-notification', 'New question posted notification template', 'subject', 'body'),
-  (4, 'new_answer_posted_notification', 'new-answer-posted-notification', 'New answer posted notification template', 'subject', 'body'),
-  (5, 'new_employer_review_received_notification', 'new-employer-review-received-notification', 'New employer review posted notification template', 'subject', 'body'),
-  (6, 'job_post_alert', 'job-post-alert', 'Job posting alert template', 'subject', 'body'),
-  (7, 'resume_alert', 'resume-alert', 'Resume alert template', 'subject', 'body'),
-  (8, 'new_message_received_notification', 'new-message-received-notification', 'New user message notification template', 'subject', 'body'),
-  (9, 'fair_credit_reporting_act_notice', 'fair-credit-reporting-act-notice', 'FCRA notice sent when credit check is done', 'subject', 'body'),
-  (10, 'new_application_received_notification', 'new-application-received-notification', 'New application received for a job posting template', 'subject', 'body'),
-  (11, 'gdpr_notice', 'gdpr-notice', 'GDPR user data removal notification template', 'subject', 'body'),
-  (12, 'complete_job_seeker_profile_request', 'complete-job-seeker-profile-request', 'Reminders to complete a job seeker profile', 'subject', 'body'),
-  (13, 'connectors_job_post_alert', 'connectors-job-post-alert', 'Connectors job posting alert template', 'subject', 'body'),
-  (14, 'recommendation_request', 'recommendation-request', 'Recommendation request template', 'subject', 'body'),
-  (15, 'recommendation_follow_up', 'recommendation-follow-up', 'Recommendation follow up template', 'subject', 'body'),
-  (16, 'reference_request', 'reference-request', 'Reference request template', 'subject', 'body'),
-  (17, 'reference_follow_up', 'reference-follow-up', 'Reference follow up template', 'subject', 'body'),
-  (18, 'ats_scheduling_reminder', 'ats-scheduling-reminder', 'ATS scheduling reminder template', 'subject', 'body'),
-  (19, 'ats_workflow_notice', 'ats-workflow-notice', 'ATS workflow notices template, e.g. when a scorecard is marked complete for a candidate, a background check completed, a reference received for a candidate', 'subject', 'body');
-
-
 /*
  * Create content types for email message templates, mapping fields to the UCM standard fields for history feature
  *

@@ -3,7 +3,7 @@
  * Answers Admin Edit View Template
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -16,6 +16,8 @@
 
   /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
   $item = $this->getItem();
+
+  // @fieldtitle('field_name') yields FEFHelper\BrowseView::fieldLabel{$expression}
 ?>
 
 @extends('admin:com_cajobboard/Common/edit')

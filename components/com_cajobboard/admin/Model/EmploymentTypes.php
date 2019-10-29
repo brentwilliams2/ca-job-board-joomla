@@ -68,28 +68,20 @@ class EmploymentTypes extends BaseDataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.employment_types';
 
-    parent::__construct($container, $config);
-
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
-      //'Access',     // Filter access to items based on viewing access levels
-      //'Assets',     // Add Joomla! ACL assets support
-      //'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
+      'Access',     // Filter access to items based on viewing access levels
+      'Assets',     // Add Joomla! ACL assets support
       //'ContentHistory', // Add Joomla! content history support
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      //'Publish',    // Set the publish_on field for new records
-      //'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
+
+    parent::__construct($container, $config);
   }
 
 	/**

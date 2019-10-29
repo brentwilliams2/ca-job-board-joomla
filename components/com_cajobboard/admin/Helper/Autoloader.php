@@ -13,7 +13,7 @@
 // no direct access
 defined( '_JEXEC' ) or die;
 
-$autoloader = FOF30\Autoloader\Autoloader::getInstance();
+$autoloader = \FOF30\Autoloader\Autoloader::getInstance();
 
 // Add Admin Helper namespace
 $adminHelperNamespace = 'Calligraphic\\Cajobboard\\Admin\\Helper\\';
@@ -58,6 +58,24 @@ $siteRepositoryNamespace = 'Calligraphic\\Cajobboard\\Admin\\Model\\Behaviour\\'
 if (!$autoloader->hasMap($siteRepositoryNamespace))
 {
   $autoloader->addMap($siteRepositoryNamespace, JPATH_COMPONENT_ADMINISTRATOR . '/Model/Behaviour');
+}
+
+
+// Add Akeeba Subscriptions Admin namespace
+$adminAkeebaSubsNamespace = 'Akeeba\\Subscriptions\\Admin\\';
+
+if (!$autoloader->hasMap($adminAkeebaSubsNamespace))
+{
+  $autoloader->addMap($adminAkeebaSubsNamespace, JPATH_ADMINISTRATOR . '/components/com_akeebasubs');
+}
+
+
+// Add Akeeba Subscriptions Site namespace
+$siteAkeebaSubsNamespace = 'Akeeba\\Subscriptions\\Site\\';
+
+if (!$autoloader->hasMap($siteAkeebaSubsNamespace))
+{
+  $autoloader->addMap($siteAkeebaSubsNamespace, JPATH_SITE . '/components/com_akeebasubs');
 }
 
 

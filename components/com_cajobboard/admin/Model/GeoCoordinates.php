@@ -23,6 +23,7 @@ use \FOF30\Model\DataModel;
  *
  * UCM
  * @property int            $geo_coordinates_id   Surrogate primary key.
+ *
  * SCHEMA: GeoCoordinates
  * @property  string	      $latitude             latitude of a place
  * @property  string	      $longitude            longitude of a place
@@ -56,17 +57,20 @@ class GeoCoordinates extends DataModel
 	 */
 	public function __construct(Container $container, array $config = array())
 	{
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
-    $config['behaviours'] = array(
-      'Filter'
-    );
-
     // override default table names and primary key id
 		$config['tableName'] = '#__cajobboard_geo_coordinates';
     $config['idFieldName'] = 'geo_coordinates_id';
 
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.geo_coordinates';
+
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
+
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+
+    );
 
     /* Overridden constructor */
     $this->constructor($container, $config);

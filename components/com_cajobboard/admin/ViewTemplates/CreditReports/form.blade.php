@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers Admin Edit View Template
+ * Credit Reports Admin Edit View Template
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -14,8 +14,11 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
+  /** @var \Calligraphic\Cajobboard\Admin\Model\CreditReports $item */
   $item = $this->getItem();
+
+  // Using an include so that local vars in the included file are in scope here also
+  include(JPATH_COMPONENT_ADMINISTRATOR . '/ViewTemplates/CreditReports/local_vars.php');
 ?>
 
 @extends('admin:com_cajobboard/Common/edit')
@@ -38,13 +41,8 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('advanced-options')
-  {{-- Answer Description textbox --}}
+  {{-- Credit Report Description textbox --}}
   @jhtml('helper.editWidgets.textbox', 'description', $item)
 
-
-  {{-- Answer Upvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'upvote_count', $item)
-
-  {{-- Answer Downvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'downvote_count', $item)
+  @jhtml('helper.enumwidgets.actionStatus', $currentActionStatus)
 @stop

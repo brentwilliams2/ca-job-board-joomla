@@ -79,9 +79,9 @@ class Categories extends CliApplication
   /**
    * Initialize the array representing the model fields
    *
-   * @param   array   $categoryName   An array of Category table properties and values to enter for a record
+   * @param   string   $categoryName   The name of the category, in CamelCased format
    *
-   * @return  void
+   * @return  array   An array of Category table properties and values to enter for a record
    */
   public function getFieldArray($categoryName)
   {

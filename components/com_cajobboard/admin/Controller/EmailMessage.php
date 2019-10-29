@@ -21,7 +21,7 @@ use \Calligraphic\Cajobboard\Admin\Model\Exception\EmailNoSendByUser;
 use \FOF30\Container\Container;
 use \Joomla\CMS\Language\Text;
 
-class EmailMessages extends BaseController
+class EmailMessage extends BaseController
 {
 	/*
 	 * Overridden. Limit the tasks that are allowed to execute.
@@ -39,7 +39,7 @@ class EmailMessages extends BaseController
 
     $this->addPredefinedTaskList(array(
       'addByPersonId'
-		));
+    ));
   }
 
 
@@ -48,7 +48,7 @@ class EmailMessages extends BaseController
 	 *
 	 * @return  void
 	 */
-  protected function addByPersonId()
+  public function addByPersonId()
   {
     $recipientId = $this->input->get('recipient_id', '0');
 
@@ -74,12 +74,12 @@ class EmailMessages extends BaseController
 
       if (!$userInfo->name)
       {
-        throw new InvalidField(Text::_('COM_CAJOBBOARD_EXCEPTION_CONTROLLER_EMAIL_MESSAGES_NO_NAME_IN_ADD_BY_PERSONS_ID_FIELD_INVALID'))
+        throw new InvalidField(Text::_('COM_CAJOBBOARD_EXCEPTION_CONTROLLER_EMAIL_MESSAGES_NO_NAME_IN_ADD_BY_PERSONS_ID_FIELD_INVALID'));
       }
 
       if (!$userInfo->email)
       {
-        throw new InvalidField(Text::_('COM_CAJOBBOARD_EXCEPTION_CONTROLLER_EMAIL_MESSAGES_NO_EMAIL_IN_ADD_BY_PERSONS_ID_FIELD_INVALID'))
+        throw new InvalidField(Text::_('COM_CAJOBBOARD_EXCEPTION_CONTROLLER_EMAIL_MESSAGES_NO_EMAIL_IN_ADD_BY_PERSONS_ID_FIELD_INVALID'));
       }
 
       $model = $this->getModel();

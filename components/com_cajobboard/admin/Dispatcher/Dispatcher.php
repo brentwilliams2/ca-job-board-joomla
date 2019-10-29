@@ -159,15 +159,25 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 */
 	public function initInflectorVocab()
 	{
-    $irregularWords = array(
-      'FairCreditReportingAct' => 'FairCreditReportingAct',
-      'PersonallyIdentifiableInformation' => 'PersonallyIdentifiableInformation',
-      'Person' => 'Persons'
+    $irregularPluralFormWords = array(
+      'Person' => 'Persons',
     );
 
-    foreach ($irregularWords as $singular => $plural)
+    foreach ($irregularPluralFormWords as $singular => $plural)
     {
       $this->container->inflector->addWord($singular, $plural);
+    }
+
+    // Base Inflector class keeps separate caches for singular / plural forms and
+    // uncountable words (even if singular and plural forms match)
+    $uncountableWords = array(
+      'FairCreditReportingAct',
+      'PersonallyIdentifiableInformation',
+    );
+
+    foreach ($uncountableWords as $word)
+    {
+      $this->container->inflector->addUncountableWord($word);
     }
   }
 

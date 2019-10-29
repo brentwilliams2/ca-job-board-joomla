@@ -70,14 +70,6 @@ class DigitalDocumentsTemplate extends CommonTemplate
   }
 
 
-  /**
-   * over-ridden from CommonTemplate
-   */
-  public function cat_id ($config, $faker)
-  {
-    return;
-  }
-
  /**
   * Loads all values at once with real values (from image file)
   */

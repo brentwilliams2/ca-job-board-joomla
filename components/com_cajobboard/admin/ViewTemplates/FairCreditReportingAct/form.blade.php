@@ -1,9 +1,9 @@
 <?php
 /**
- * Answers Admin Edit View Template
+ * Admin Fair Credit Reporting Acts Edit View Template
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -14,7 +14,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
+  /** @var \Calligraphic\Cajobboard\Admin\Model\FairCreditReportingActs $item */
   $item = $this->getItem();
 ?>
 
@@ -38,13 +38,6 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('advanced-options')
-  {{-- Answer Description textbox --}}
+  {{-- Fair Credit Reporting Act Description textbox --}}
   @jhtml('helper.editWidgets.textbox', 'description', $item)
-
-
-  {{-- Answer Upvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'upvote_count', $item)
-
-  {{-- Answer Downvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'downvote_count', $item)
 @stop

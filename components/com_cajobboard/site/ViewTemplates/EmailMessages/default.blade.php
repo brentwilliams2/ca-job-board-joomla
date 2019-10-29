@@ -1,9 +1,9 @@
 <?php
  /**
-  * Email Messages Browse View Template
+  * Site Email Messages Browse View Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version   May 1, 2018
   * @author    Calligraphic, LLC http://www.calligraphic.design
   * @copyright Copyright (C) 2018 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -13,141 +13,59 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  use \Calligraphic\Cajobboard\Admin\Model\EmailTemplates;
-  use \FOF30\Utils\FEFHelper\BrowseView;
-  use \FOF30\Utils\SelectOptions;
+  use \Joomla\CMS\Language\Text;
 
-  /**
-   * @var  FOF30\View\DataView\Html $this
-   * @var  EmailTemplates           $row
-   * @var  EmailTemplates           $model
-   */
-  $model = $this->getModel();
+  /** @var  FOF30\View\DataView\Html  $this */
 
-  $emailKeys = \Akeeba\Subscriptions\Admin\Helper\Email::getEmailKeys(1);
+  // Using an include so that local vars in the included file are in scope here also
+  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.php');
 
-  // Probably need to remove "new" button from toolbar, works weird in Akeeba Subs
+  // The name of the crud view
+  $crud = 'browse';
+
+  $noItemsFoundMssg = Text::sprintf('COM_CAJOBBOARD_NO_ITEMS_FOUND', $humanViewNamePlural);
 ?>
 
-@extends('admin:com_akeebasubs/Common/browse')
+@include('site:com_cajobboard/Common/Modal/report_item_modal')
 
-@section('browse-filters')
+@section('header')
+  <div class="well @jhtml('helper.commonwidgets.getAttributeClass', 'header', $prefix, $crud)">
+    <span class="h4 pull-left">@lang('COM_CAJOBBOARD_' . $transKey . '_PAGE_TITLE')</span>
 
-  <div class="akeeba-filter-element akeeba-form-group">
-    {{ BrowseView::modelFilter('subscription_level_id', 'title', 'Levels')  }}
+    @if ($this->paginationHelper->shouldDisplayLimitBox())
+      <span class="pagination-select pull-right">
+        @include('site:com_cajobboard/Common/pagination_results_limit')
+      </span>
+    @endif
+
+    @if ($canUserAdd)
+      @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)
+    @endif
+
+    <div class="clearfix"></div>
   </div>
+@show
 
-  <div class="akeeba-filter-element akeeba-form-group">
-    @selectfilter('language', SelectOptions::getOptions('languages'))
+@section('item')
+  <div class="container-fluid @jhtml('helper.commonwidgets.getAttributeClass', 'list', $prefix, $crud)">
+    @each('site:com_cajobboard/' . $viewName . '/default_item', $this->items, 'item', 'text|' . $noItemsFoundMssg)
   </div>
+  <div class="clearfix"></div>
+@show
 
-  <div class="akeeba-filter-element akeeba-form-group">
-    @selectfilter('key', $emailKeys)
-  </div>
+@section('footer')
+  @if ($this->paginationHelper->shouldDisplayLimitBox())
+    <div class="@jhtml('helper.commonwidgets.getAttributeClass', 'footer', $prefix, $crud)">
+      {{ $this->pagination->getPaginationLinks('joomla.pagination.links') }}
+    </div>
+  @endif
+@show
 
-  <div class="akeeba-filter-element akeeba-form-group">
-    @searchfilter('subject')
-  </div>
 
-  <div class="akeeba-filter-element akeeba-form-group">
-    {{ BrowseView::publishedFilter('enabled', 'JENABLED') }}
-  </div>
-
-@stop
-
-@section('browse-table-header')
-
-  {{-- ### HEADER ROW ### --}}
-  <tr>
-
-    {{-- Drag'n'drop reordering --}}
-    <th width="20">
-        @jhtml('FEFHelper.browse.orderfield', 'ordering')
-    </th>
-
-    {{-- Row select --}}
-    <th width="20">
-        @jhtml('FEFHelper.browse.checkall')
-    </th>
-
-    {{-- Level --}}
-    <th>
-        @sortgrid('subscription_level_id')
-    </th>
-    {{-- Language --}}
-    <th>
-        @sortgrid('language')
-    </th>
-
-    {{-- Key --}}
-    <th>
-        @sortgrid('key')
-    </th>
-
-    {{-- Subject --}}
-    <th>
-        @sortgrid('subject')
-    </th>
-
-    {{-- Enabled --}}
-    <th width="60">
-        @sortgrid('enabled', 'JENABLED')
-    </th>
-
-  </tr>
-
-@stop
-
-@section('browse-table-body-withrecords')
-  {{-- Table body shown when records are present. --}}
-  <?php $i = 0; ?>
-
-  @foreach($this->items as $row)
-
-    <tr>
-
-        {{-- Drag'n'drop reordering --}}
-        <td>
-            @jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
-        </td>
-
-        {{-- Row select --}}
-        <td>
-            @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
-        </td>
-
-        {{-- Level --}}
-        <td>
-            {{{ \FOF30\Utils\FEFHelper\BrowseView::modelOptionName($row->subscription_level_id, 'Levels', ['none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_SUBSCRIPTION_LEVEL_ID_NONE']) }}}
-        </td>
-
-        {{-- Language --}}
-        <td>
-            {{{ BrowseView::getOptionName($row->language, \FOF30\Utils\SelectOptions::getOptions('languages', ['none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_LANGUAGE_ALL'])) }}}
-        </td>
-
-        {{-- Key --}}
-        <td>
-            <a href="@route(BrowseView::parseFieldTags('index.php?option=com_akeebasubs&view=EmailTemplates&task=edit&id=[ITEM:ID]', $row))">
-                {{{ BrowseView::getOptionName($row->getFieldValue('key'), $emailKeys) }}}
-            </a>
-            <br/>
-            <small>( <em>{{{ $row->key }}}</em> )</small>
-        </td>
-
-        {{-- Subject --}}
-        <td>
-            <a href="@route(BrowseView::parseFieldTags('index.php?option=com_akeebasubs&view=EmailTemplates&task=edit&id=[ITEM:ID]', $row))">
-                {{{ $row->subject }}}
-            </a>
-        </td>
-
-        {{-- Enabled --}}
-        <td>
-            @jhtml('FEFHelper.browse.published', $row->enabled, $i)
-        </td>
-
-    </tr>
-
-  @endforeach
-@stop
+{{--
+  Modal templates used in common for all default_item views, only
+  take bandwidth hit of including modal HTML if user is logged in
+--}}
+@if ( !$isGuestUser )
+  @yield('report-item-modal')
+@endif

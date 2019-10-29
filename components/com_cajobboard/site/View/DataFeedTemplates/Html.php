@@ -19,5 +19,13 @@ defined('_JEXEC') or die;
 
 class Html extends BaseHtml
 {
-
+	/**
+	 * Overridden. Executes before rendering the page for the Browse task.
+	 */
+	protected function getBrowseViewEagerRelations()
+	{
+    return array(
+			'Author'
+		);
+  }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers Admin Edit View Template
+ * Admin Employer Aggregate Ratings Edit View Template
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018
@@ -14,7 +14,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
+  /** @var \Calligraphic\Cajobboard\Admin\Model\EmployerAggregateRatings $item */
   $item = $this->getItem();
 ?>
 
@@ -27,7 +27,7 @@
 @section('basic-options')
   <fieldset name="text" class="control-group">
       <div class="controls">
-        @jhtml('helper.editorWidgets.editor', 'text', $item->text)
+        Implement
       </div>
   </fieldset>
 @stop
@@ -38,13 +38,6 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('advanced-options')
-  {{-- Answer Description textbox --}}
+  {{-- Employer Aggregate Rating Description textbox --}}
   @jhtml('helper.editWidgets.textbox', 'description', $item)
-
-
-  {{-- Answer Upvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'upvote_count', $item)
-
-  {{-- Answer Downvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'downvote_count', $item)
 @stop

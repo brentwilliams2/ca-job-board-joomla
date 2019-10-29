@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers RSS Feed item view
+ * Site Digital Documents RSS Feed item view
  *
  * @package   Calligraphic Job Board
  * @version   September 12, 2019
@@ -40,7 +40,7 @@
 
   <title><![CDATA[{{ $title }}]]></title>
 
-  <description><![CDATA[{{ $text }}]]></description>
+  <description><![CDATA[{{ $description }}]]></description>
 
   @if ( isset($tags) )
     <tags><![CDATA[{{ $tags }}]]></tags>

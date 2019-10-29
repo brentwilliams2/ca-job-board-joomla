@@ -1,10 +1,10 @@
 <?php
 /**
- * Site common local variables template. This file is intended to be included into
+ * Site Employment Types local variables template. This file is intended to be included into
  * Blade templates to provide convenient local variables in the template function's scope.
  *
  * @package   Calligraphic Job Board
- * @version   September 12, 2019
+ * @version   October 26, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -33,28 +33,12 @@
  * @param  string                 $title                  Sanitized string from 'title' model property alias
  * @param  string                 $description            Sanitized description of the item
  * @param  string                 $description_intro      Sanitized short introductory text, often used for social share descriptions
- * @param  string                 $text                   Sanitized string from 'text' model property alias (used in few models)
- * @param  string                 $hits                   The number of hits the item has received
- *
- * Job Board fields, only set when field present on model
- * @param  int                    $downvoteCount          The downvote count for the item
- * @param  int                    $downvoteAction         A URL to downvote this item using XHR
- * @param  int                    $upvoteCount            The downvote count for the item
- * @param  int                    $upvoteAction           A URL to upvote this item using XHR
  *
  * Form and anchor URL local variables
  * @param  string                 $itemViewLink           A URL to the individual (item) view of this item
  * @param  string                 $editViewLink           A URL to the edit view of this item
  * @param  string                 $removeAction           A URL to delete and redirect from this item
  * @param  string                 $rawPostAction          A URL to post the form to
- *
- * 'Author' "magic" variable for relation to Persons, used in many models
- * @param  \StdClass              $author                 An object to hold author property values
- * @param  int                    $author->id             The primary key value (id) for the author's Joomla! Users (Persons) model field
- * @param  string                 $author->name           The name of the author
- * @param  string                 $author->avatarUri      A URL to the avatar image for the author
- * @param  string                 $author->profileLink    A URL to the author's Profiles page item view
- * @param  string                 $author->lastSeen       A formatted string built from the author's Joomla! Users (Persons) model 'last_seen' field
  */
 
   // no direct access
@@ -121,65 +105,22 @@
       $modifiedOn = $container->Format->getCreatedOnText( $item->getFieldValue( $item->getFieldAlias('modified_on') ));
     }
 
-    if ( $item->hasField( $item->getFieldAlias('featured') ))
-    {
-      $featured = $item->getFieldValue( $item->getFieldAlias('featured') ) ? 'featured' : '';
-    }
-
     if ( $item->hasField( $item->getFieldAlias('title') ))
     {
       $titlePlaceholder = Text::sprintf('COM_CAJOBBOARD_TITLE_EDIT_PLACEHOLDER', $humanViewNameSingular);
-      $title = InputFilter::getInstance()->clean( $item->getFieldValue( $item->getFieldAlias('title')), 'html');
+      $title = InputFilter::getInstance()->clean( Text::_($item->getFieldValue( $item->getFieldAlias('title'))), 'html');
     }
 
     if ( $item->hasField( $item->getFieldAlias('description') ))
     {
       $descriptionPlaceholder = Text::sprintf('COM_CAJOBBOARD_DESCRIPTION_EDIT_PLACEHOLDER', $humanViewNameSingular);
-      $description = InputFilter::getInstance()->clean( $item->getFieldValue( $item->getFieldAlias('description')), 'html');
+      $description = InputFilter::getInstance()->clean( Text::_($item->getFieldValue( $item->getFieldAlias('description'))), 'html');
     }
 
     if ( $item->hasField( $item->getFieldAlias('description_intro') ))
     {
       $descriptionIntroPlaceholder = Text::sprintf('COM_CAJOBBOARD_DESCRIPTION_INTRO_EDIT_PLACEHOLDER', $humanViewNameSingular);
-      $descriptionIntro = InputFilter::getInstance()->clean( $item->getFieldValue( $item->getFieldAlias('description_intro')), 'html');
-    }
-
-    if ( $item->hasField( $item->getFieldAlias('text') ))
-    {
-      $textPlaceholder = Text::sprintf('COM_CAJOBBOARD_TEXT_EDIT_PLACEHOLDER', $humanViewNameSingular);
-      $text = InputFilter::getInstance()->clean( $item->getFieldValue( $item->getFieldAlias('text')), 'html');
-    }
-
-    if ( $item->hasField( $item->getFieldAlias('hits') ))
-    {
-      $hits = $container->Format->getCreatedOnText( $item->getFieldValue( $item->getFieldAlias('hits') ));
-    }
-
-    // @TODO: Implement $image field local variable
-
-    // @TODO: Implement $tags field local variable
-
-
-    /**
-     * Job Board fields, only set when field present on model
-     */
-
-    if ( $item->hasField( $item->getFieldAlias('downvote_count') ))
-    {
-      $downvoteCount = $item->getFieldValue( $item->getFieldAlias('downvote_count') );
-
-      $downvoteAction = $container->template->route(
-        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=downvote_count&tmpl=json&id='. $itemId
-      );
-    }
-
-    if ( $item->hasField( $item->getFieldAlias('upvote_count') ))
-    {
-      $upvoteCount = $item->getFieldValue( $item->getFieldAlias('upvote_count') );
-
-      $upvoteAction = $container->template->route(
-        $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=upvote_count&tmpl=json&id='. $itemId
-      );
+      $descriptionIntro = InputFilter::getInstance()->clean( Text::_($item->getFieldValue( $item->getFieldAlias('description_intro'))), 'html');
     }
 
 
@@ -216,28 +157,4 @@
     $deleteAction = $container->template->route(
       $siteUrl . 'index.php?option=com_cajobboard&view=' . $this->getName() . '&task=remove&id=' . $itemId
     );
-
-
-    /**
-     * 'Author' "magic" variable for relation to Persons, used in many models
-     */
-
-    if ( isset($item->Author) )
-    {
-      $author = new \StdClass;
-      $author->id = $item->Author->getId();
-      $author->name = $item->Author->getFieldValue('name');
-      // Container has User helper utility class
-      $author->avatarUri = $container->User->getAvatar($author->id);
-      $author->profileLink = $container->User->getLinkToUserProfile($author->id);
-      $author->lastSeen = $container->User->lastSeen( $item->Author->getFieldValue('lastvisitDate') );
-    }
   }
-
-  /*
-    Limit access to personally identifiable information:
-
-    @if ($container->platform->getUser()->authorise('com_cajobboard.pii', 'com_cajobboard'))
-      protected content
-    @endif
-   */

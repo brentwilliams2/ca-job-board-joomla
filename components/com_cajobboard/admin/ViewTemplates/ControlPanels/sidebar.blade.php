@@ -3,7 +3,7 @@
   * Admin Control Panel Sidebar Menu Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version   May 1, 2018
   * @author    Calligraphic, LLC http://www.calligraphic.design
   * @copyright Copyright (C) 2018 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -18,8 +18,6 @@
   $root = Uri::base(false);
 
   $sidebarLinks = $this->container->toolbar->getLinks();
-
-
 ?>
 
 <div class="control-panel-sidebar-nav">

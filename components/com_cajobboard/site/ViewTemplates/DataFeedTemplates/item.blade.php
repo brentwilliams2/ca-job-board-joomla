@@ -1,6 +1,6 @@
 <?php
  /**
-  * Site Answers Item View Template
+  * Site Data Feed Templates Item View Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019
@@ -12,12 +12,12 @@
    // no direct access
   defined('_JEXEC') or die;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                              $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\DataFeedTemplates  $item */
   $item = $this->getItem();
 
   // Using an include so that local vars in the included file are in scope here also
-  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
+  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.php');
 
   // The name of the crud view
    $crud = 'item';
@@ -28,11 +28,11 @@
 {{--
   Responsive container for desktop and mobile
 --}}
-<div class="row media {{ $featured }} @jhtml('helper.commonwidgets.getAttributeClass', 'item', $prefix, $crud)">
+<div class="row media @jhtml('helper.commonwidgets.getAttributeClass', 'item', $prefix, $crud)">
 
   @jhtml('helper.itemwidgets.title', $title, $prefix, $crud)
 
-  @jhtml('helper.itemwidgets.text', $text, $prefix, $crud)
+  @jhtml('helper.commonwidgets.description', $description, $prefix, $crud)
 
   <div>
     @jhtml('helper.commonwidgets.createdOn', $createdOn, $prefix, $crud)
@@ -44,8 +44,6 @@
     @jhtml('helper.commonwidgets.authorAvatar', $author, $prefix, $crud)
 
     @jhtml('helper.commonwidgets.authorName', $author, $prefix, $crud)
-
-    @jhtml('helper.commonwidgets.authorLastSeen', $author, $prefix, $crud)
   </div>
 
   <div class="clearfix"></div>
@@ -54,14 +52,18 @@
     @jhtml('helper.buttonwidgets.delete', $humanViewNameSingular, $canUserEdit, $itemId, $prefix, $crud)
     @jhtml('helper.buttonwidgets.edit', $humanViewNameSingular, $canUserEdit, $editViewLink, $prefix, $crud)
     @jhtml('helper.buttonwidgets.report', $humanViewNameSingular, $prefix, $crud)
-    @jhtml('helper.buttonwidgets.downvote_count', $downvoteCount, $isGuestUser, $itemId, $prefix, $crud)
-    @jhtml('helper.buttonwidgets.upvote_count', $upvoteCount, $isGuestUser, $itemId, $prefix, $crud)
   </div>
 </div>{{-- End responsive container --}}
 
 {{-- Forms with CSRF field for actions --}}
 @jhtml('helper.buttonwidgets.deleteActionCsrfField', $deleteAction, $itemId)
-@jhtml('helper.buttonwidgets.downvoteActionCsrfField', $downvoteAction, $itemId)
-@jhtml('helper.buttonwidgets.upvoteActionCsrfField', $upvoteAction, $itemId)
 
 <div class="clearfix"></div>
+
+{{--
+  Modal templates used in common for all default_item views, only
+  take bandwidth hit of including modal HTML if user is logged in
+--}}
+@if ( !$isGuestUser )
+  @yield('report-item-modal')
+@endif

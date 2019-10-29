@@ -15,8 +15,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
-use \Calligraphic\Cajobboard\Admin\Model\BaseListModel;
+use \FOF30\Container\Container;
+use \FOF30\Model\DataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 
 /**
  * Model class for Job Board Employer_Aggregate_Ratings
@@ -47,16 +48,22 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseListModel;
  * @property int      $cat_id                     Category ID for this content item.
  * @property int      $hits                       Number of hits the content item has received on the site.
  * @property int      $featured                   Whether this content item is featured or not.
+ *
  * SCHEMA: EmployerAggregateRating
- * @property  Organizations	$ItemReviewed 	      The employer whose reviews and ratings are being aggregated for, FK to #__cajobboard_organizations
  * @property  int		  $rating_count 	            The count of total number of ratings.
  * @property  int		  $review_count 	            The count of total number of reviews.
  *
  * SCHEMA: Rating
  * @property  int		  $rating_value               The total rating sum for this employer. Get average by dividing with rating_count. Default worstRating 1 and bestRating 5 assumed.
  */
-class EmployerAggregateRatings extends BaseListModel
+class EmployerAggregateRatings extends DataModel
 {
+  // Traits to include in the class
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;    // Convenient assertions, e.g. for use in validation / check methods
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;   // Refactored base-class constructor, called from __construct method
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Patches;       // Over-ridden FOF30 DataModel methods (some with PRs)
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;    // Provides over-ridden 'check' method
+
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -72,21 +79,19 @@ class EmployerAggregateRatings extends BaseListModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.employer_aggregate_ratings';
 
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
+
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
       'Check',      // Validation checks for model, over-rideable per model
       //'ContentHistory', // Add Joomla! content history support
       'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
       //'Tags'        // Add Joomla! Tags support
     );
 

@@ -84,7 +84,7 @@
           type="text"
           name="name"
           id="name"
-          value="{{{ $item->name }}}"
+          value="{{{ Text::_($item->name) }}}"
           size="40"
           required="required"
           aria-required="true"

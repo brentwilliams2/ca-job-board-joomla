@@ -673,9 +673,12 @@ abstract class HelperBrowseWidgets
 	 */
 	public static function title($title, $text)
 	{
+    $title = Text::_($title);
+
     if (!$title)
     {
       $titleArray = explode(' ', $text);
+
       $title = Text::_('COM_CAJOBBOARD_TITLE_EMPTY') . ' ' . implode(' ', array_slice($titleArray, 0, 7));
     }
 

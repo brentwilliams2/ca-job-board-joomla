@@ -1,12 +1,9 @@
 <?php
-// @TODO: Use this as a value for 'text' or 'description' so that things like Applications can have a file or multimedia attachment
-// @TODO: This is the place for PDF files, like images -> ImageObjects?
-
 /**
  * Admin Digital Documents Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -79,7 +76,8 @@ class DigitalDocuments extends BaseDataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.digital_documents';
 
-    parent::__construct($container, $config);
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
@@ -90,6 +88,8 @@ class DigitalDocuments extends BaseDataModel
       //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
+
+    parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
 

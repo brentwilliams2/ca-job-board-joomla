@@ -1,6 +1,6 @@
 <?php
 /**
- * Answers Admin Edit View Template
+ * Admin Candidates Edit View Template
  *
  * @package   Calligraphic Job Board
  * @version   October 21, 2019
@@ -14,7 +14,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
+  /** @var \Calligraphic\Cajobboard\Admin\Model\Candidates $item */
   $item = $this->getItem();
 ?>
 
@@ -38,13 +38,6 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('advanced-options')
-  {{-- Answer Description textbox --}}
+  {{-- Candidate Description textbox --}}
   @jhtml('helper.editWidgets.textbox', 'description', $item)
-
-
-  {{-- Answer Upvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'upvote_count', $item)
-
-  {{-- Answer Downvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'downvote_count', $item)
 @stop

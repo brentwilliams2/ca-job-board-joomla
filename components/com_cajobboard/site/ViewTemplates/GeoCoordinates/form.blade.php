@@ -1,6 +1,6 @@
 <?php
  /**
-  * Site Answers Edit View Template
+  * Site Geo Coordinates Edit View Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019
@@ -14,12 +14,12 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                            $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\GeoCoordinates   $item */
   $item = $this->getItem();
 
   // Using an include so that local vars in the included file are in scope here also
-  include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');
+  include(JPATH_COMPONENT . '/ViewTemplates/GeoCoordinates/local_vars.php');
 
   // The name of the crud view
   $crud = 'edit';
@@ -32,31 +32,11 @@
 --}}
 @section('answer-edit-container')
   <form action="{{ $postAction }}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
-    <div class="row media {{ $featured }} @jhtml('helper.commonwidgets.getAttributeClass', 'container', $prefix, $crud)">
+    <div class="row media @jhtml('helper.commonwidgets.getAttributeClass', 'container', $prefix, $crud)">
 
       <header class="form-header well @jhtml('helper.commonwidgets.getAttributeClass', 'header', $prefix, $crud)">
         @jhtml('helper.editwidgets.header', $isEditView, $humanViewNameSingular, $prefix, $crud)
       </header>
-
-      <div class="form-group">
-        @jhtml('helper.editwidgets.title', $title, $titlePlaceholder, $humanViewNameSingular, $prefix, $crud)
-      </div>
-
-      <div class="form-group">
-        @jhtml('helper.editwidgets.text', $text, $textPlaceholder, $humanViewNameSingular, $prefix, $crud)
-      </div>
-
-      @if ($isEditView)
-        <div class="form-group">
-          @jhtml('helper.editwidgets.createdOn', $createdOn, $prefix, $crud)
-        </div>
-
-        @if ( isset($modifiedOn) )
-          <div class="form-group">
-            @jhtml('helper.editwidgets.modifiedOn', $modifiedOn, $prefix, $crud)
-          </div>
-        @endif
-      @endif
 
       @jhtml('helper.buttonwidgets.submit', $prefix, $crud)
 
@@ -76,3 +56,11 @@
     @jhtml('helper.buttonwidgets.deleteActionCsrfField', $deleteAction, $itemId)
   @endif
 @show
+
+{{--
+  Modal templates used in common for all default_item views, only
+  take bandwidth hit of including modal HTML if user is logged in
+--}}
+@if ( !$isGuestUser )
+  @yield('report-item-modal')
+@endif

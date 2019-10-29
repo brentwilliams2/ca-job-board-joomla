@@ -369,7 +369,7 @@ EOT;
 	public static function textbox($fieldName, $item)
 	{
     $uppercaseFieldName = strtoupper($fieldName);
-    $fieldValue = $item->$fieldName;
+    $fieldValue = Text::_($item->$fieldName);
 
     $tooltipTitle = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_TOOLTIP_TITLE');
     $tooltipText = Text::_('COM_CAJOBBOARD_' . $uppercaseFieldName . '_FIELD_TOOLTIP_TEXT');

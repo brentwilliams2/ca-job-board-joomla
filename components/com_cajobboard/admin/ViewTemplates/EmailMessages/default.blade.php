@@ -1,11 +1,11 @@
 <?php
  /**
-  * Email Messages Browse View Template
+  * Admin Email Messages Browse View Template
   *
   * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
+  * @version   October 26, 2019
   * @author    Calligraphic, LLC http://www.calligraphic.design
-  * @copyright Copyright (C) 2018 Calligraphic, LLC
+  * @copyright Copyright (C) 2019 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
   *
   */
@@ -13,141 +13,101 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  use \Calligraphic\Cajobboard\Admin\Model\EmailTemplates;
   use \FOF30\Utils\FEFHelper\BrowseView;
   use \FOF30\Utils\SelectOptions;
 
-  /**
-   * @var  FOF30\View\DataView\Html $this
-   * @var  EmailTemplates           $row
-   * @var  EmailTemplates           $model
-   */
-  $model = $this->getModel();
+/** @var \Calligraphic\Cajobboard\Site\Model\EmployerAggregateRatings   $item */
+/** @var  FOF30\View\DataView\Html                                      $this */
 
-  $emailKeys = \Akeeba\Subscriptions\Admin\Helper\Email::getEmailKeys(1);
-
-  // Probably need to remove "new" button from toolbar, works weird in Akeeba Subs
+// The width of each of the table columns as a percentage
+$widthPct = array
+(
+  '#1'  => '1',  // Drag-and-drop icons in record fields for ordering browse records
+  '#2'  => '1',  // "select all" checkbox to apply Toolbar actions to all records
+  '#3'  => '8',  // Filter on whether records are published, unpublished, or both
+  '#4'  => '35', // Employer Aggregate Rating title
+  '#5'  => '10', // Access, e.g. "public"
+  '#6'  => '10', // Author name
+  '#7'  => '10', // Language
+  '#8'  => '10', // Date Created
+  '#9'  => '5',  // Hits counter
+)
 ?>
 
-@extends('admin:com_akeebasubs/Common/browse')
+@extends('admin:com_cajobboard/Common/browse')
 
-@section('browse-filters')
-
-  <div class="akeeba-filter-element akeeba-form-group">
-    {{ BrowseView::modelFilter('subscription_level_id', 'title', 'Levels')  }}
-  </div>
-
-  <div class="akeeba-filter-element akeeba-form-group">
-    @selectfilter('language', SelectOptions::getOptions('languages'))
-  </div>
-
-  <div class="akeeba-filter-element akeeba-form-group">
-    @selectfilter('key', $emailKeys)
-  </div>
-
-  <div class="akeeba-filter-element akeeba-form-group">
-    @searchfilter('subject')
-  </div>
-
-  <div class="akeeba-filter-element akeeba-form-group">
-    {{ BrowseView::publishedFilter('enabled', 'JENABLED') }}
-  </div>
-
-@stop
+{{-------------------------------------------------------------------------------------}}
+{{-- SECTION: Table column headers and filters displayed above the data columns -------}}
+{{-------------------------------------------------------------------------------------}}
 
 @section('browse-table-header')
-
-  {{-- ### HEADER ROW ### --}}
   <tr>
+    {{-- COLUMN #1: Drag-and-drop icons in record fields for ordering browse records. DB Table must have `ordering` field to support. --}}
+    @jhtml('helper.browseWidgets.orderingHeader', $widthPct['#1'])
 
-    {{-- Drag'n'drop reordering --}}
-    <th width="20">
-        @jhtml('FEFHelper.browse.orderfield', 'ordering')
-    </th>
+    {{-- COLUMN #2: "select all" checkbox to apply Toolbar actions to all records. --}}
+    @jhtml('helper.browseWidgets.selectAllHeader', $widthPct['#2'])
 
-    {{-- Row select --}}
-    <th width="20">
-        @jhtml('FEFHelper.browse.checkall')
-    </th>
+    {{-- COLUMN #3: Filter on whether records are published, unpublished, or both. --}}
+    @jhtml('helper.browseWidgets.publishedHeader', $widthPct['#3'])
 
-    {{-- Level --}}
-    <th>
-        @sortgrid('subscription_level_id')
-    </th>
-    {{-- Language --}}
-    <th>
-        @sortgrid('language')
-    </th>
+    {{-- COLUMN #4: Employer Aggregate Rating title, allows sorting ASC / DESC by clicking the field name in the column header. --}}
+    @jhtml('helper.browseWidgets.titleHeader', $widthPct['#4'], $this->getName() )
 
-    {{-- Key --}}
-    <th>
-        @sortgrid('key')
-    </th>
+    {{-- COLUMN #5: Access, e.g. "public" --}}
+    @jhtml('helper.browseWidgets.accessHeader', $widthPct['#5'])
 
-    {{-- Subject --}}
-    <th>
-        @sortgrid('subject')
-    </th>
+    {{-- COLUMN #6: Author name, allows sorting ASC / DESC by clicking the field name in the column header. --}}
+    @jhtml('helper.browseWidgets.authorNameHeader', $widthPct['#6'])
 
-    {{-- Enabled --}}
-    <th width="60">
-        @sortgrid('enabled', 'JENABLED')
-    </th>
+    {{-- COLUMN #7: Language --}}
+    @jhtml('helper.browseWidgets.languageHeader', $widthPct['#7'])
 
+    {{-- COLUMN #8: Date Created --}}
+    @jhtml('helper.browseWidgets.createdOnHeader', $widthPct['#8'])
+
+    {{-- COLUMN #9: Hits counter --}}
+    @jhtml('helper.browseWidgets.hitsHeader', $widthPct['#9'])
   </tr>
-
 @stop
+
+{{-------------------------------------------------------------------------------------}}
+{{-- SECTION: Table body shown when records are present -------------------------------}}
+{{-------------------------------------------------------------------------------------}}
 
 @section('browse-table-body-withrecords')
   {{-- Table body shown when records are present. --}}
   <?php $i = 0; ?>
 
-  @foreach($this->items as $row)
-
+  @foreach($this->items as $item)
+    <?php ++$i; ?>
     <tr>
+      {{-- COLUMN #1: Drag-and-drop icon in record field for ordering browse records. --}}
+      @jhtml('helper.browseWidgets.orderingField', $widthPct['#1'], $item)
 
-        {{-- Drag'n'drop reordering --}}
-        <td>
-            @jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
-        </td>
+      {{-- COLUMN #2: "select" checkbox to apply Toolbar actions to this record. --}}
+      @jhtml('helper.browseWidgets.selectAllField', $widthPct['#2'], $item, $i)
 
-        {{-- Row select --}}
-        <td>
-            @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
-        </td>
+      {{-- COLUMN #3: Icon (checkmark or "X") to show whether record is in published or unpublished state. --}}
+      @jhtml('helper.browseWidgets.publishedField', $widthPct['#3'], $item, $i)
 
-        {{-- Level --}}
-        <td>
-            {{{ \FOF30\Utils\FEFHelper\BrowseView::modelOptionName($row->subscription_level_id, 'Levels', ['none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_SUBSCRIPTION_LEVEL_ID_NONE']) }}}
-        </td>
+      {{-- COLUMN #4: Employer Aggregate Rating title and category --}}
+      @jhtml('helper.browseWidgets.titleField', $widthPct['#4'], $item)
 
-        {{-- Language --}}
-        <td>
-            {{{ BrowseView::getOptionName($row->language, \FOF30\Utils\SelectOptions::getOptions('languages', ['none' => 'COM_AKEEBASUBS_EMAILTEMPLATES_FIELD_LANGUAGE_ALL'])) }}}
-        </td>
+      {{-- COLUMN #5: Access, e.g. 'Published' --}}
+      @jhtml('helper.browseWidgets.accessField', $widthPct['#5'], $item)
 
-        {{-- Key --}}
-        <td>
-            <a href="@route(BrowseView::parseFieldTags('index.php?option=com_akeebasubs&view=EmailTemplates&task=edit&id=[ITEM:ID]', $row))">
-                {{{ BrowseView::getOptionName($row->getFieldValue('key'), $emailKeys) }}}
-            </a>
-            <br/>
-            <small>( <em>{{{ $row->key }}}</em> )</small>
-        </td>
+      {{-- COLUMN #6: Author name --}}
+      @jhtml('helper.browseWidgets.authorNameField', $widthPct['#6'], $item)
 
-        {{-- Subject --}}
-        <td>
-            <a href="@route(BrowseView::parseFieldTags('index.php?option=com_akeebasubs&view=EmailTemplates&task=edit&id=[ITEM:ID]', $row))">
-                {{{ $row->subject }}}
-            </a>
-        </td>
+      {{-- COLUMN #7: Language --}}
+      @jhtml('helper.browseWidgets.languageField', $widthPct['#7'], $item)
 
-        {{-- Enabled --}}
-        <td>
-            @jhtml('FEFHelper.browse.published', $row->enabled, $i)
-        </td>
+      {{-- COLUMN #8: Date Created --}}
+      @jhtml('helper.browseWidgets.createdOnField', $widthPct['#8'], $item)
 
+      {{-- COLUMN #9: Hits Counter --}}
+      @jhtml('helper.browseWidgets.hitsField', $widthPct['#9'], $item)
     </tr>
-
   @endforeach
 @stop

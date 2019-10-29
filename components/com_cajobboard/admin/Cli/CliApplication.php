@@ -162,6 +162,9 @@ class CliApplication extends JApplicationCli
     // cases where the CLI script accesses models directly without going through a
     // controller. This access instantiates the dispatcher to make those services available.
     $this->container->dispatcher;
+
+    // Load translation files, HTML views do this in the onBeforeDispatch event
+    $this->container->Language->loadViewTranslations();
   }
 
   //-----------------------------------------------------------------------
