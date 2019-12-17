@@ -27,6 +27,7 @@ class Html extends BaseHtml
     return array(
 			'AboutQuestionList',
 			'Answers',
+			'Author',
 			'MainEntityOfPage',
 			'Questions'
 		);

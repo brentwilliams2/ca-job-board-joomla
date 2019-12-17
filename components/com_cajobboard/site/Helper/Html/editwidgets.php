@@ -24,6 +24,36 @@ use \Joomla\CMS\Language\Text;
 abstract class HelperEditwidgets
 {
   /**
+   * Method to create an HTML element tag to edit an item's 'category' model field
+	 *
+   * @param   string    $category                 The category description of the item.
+   * @param   string    $categoryPlaceholder      Place-holder text to use if on an 'add' view
+   * @param   string    $humanViewNameSingular    A human-readable singularlized view name, e.g. 'Job Posting'
+   * @param 	string 		$prefix                   A prefix to prepend to a class attribute, e.g. 'prefix-edit-link' and 'prefix-edit-btn' classes
+   * @param 	string    $crud                     The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
+	 *
+	 * @return  string
+	 */
+	public static function bespokeCategory($category, $categoryPlaceholder, $humanViewNameSingular, $prefix = null, $crud = null)
+	{
+    $class  = Utility::getAttributeClass('category', $prefix, $crud);
+
+    $html  = '<div class="' . $class . '">';
+    $html .= '<h4>';
+    $html .= '<label for="category">';
+    $html .= Text::sprintf('COM_CAJOBBOARD_CATEGORY_EDIT_LABEL', $humanViewNameSingular);
+    $html .= '</label>';
+    $html .= '</h4>';
+    $html .= '<textarea name="category" id="' . $prefix . '-category" class="form-control" rows="8" placeholder="' . $categoryPlaceholder . '">';
+    $html .= $category;
+    $html .= '</textarea>';
+    $html .= '</div>';
+
+    return $html;
+  }
+
+
+  /**
    * Method to create an HTML element tag for an item's 'title' model field,
 	 * wrapped in an anchor tag to that item's item view.
 	 *
@@ -204,6 +234,36 @@ abstract class HelperEditwidgets
     $html .= '</label>';
     $html .= '</h4>';
     $html .= '<input type="text" class="form-control" name="name" id="' . $prefix . '-title-input" value="' . $title . '" placeholder="' . $titlePlaceholder . '"/>';
+    $html .= '</div>';
+
+    return $html;
+  }
+
+
+  /**
+   * Method to create an HTML element tag to edit an item's 'url' model field
+	 *
+   * @param   string    $url                      The url of the item, already sanitized.
+   * @param   string    $urlPlaceholder           Place-holder text to use if on an 'add' view
+   * @param   string    $humanViewNameSingular    A human-readable singularlized view name, e.g. 'Job Posting'
+   * @param 	string 		$prefix                   A prefix to prepend to a class attribute, e.g. 'prefix-edit-link' and 'prefix-edit-btn' classes
+   * @param 	string    $crud                     The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
+	 *
+	 * @return  string
+	 */
+	public static function url($url, $urlPlaceholder, $humanViewNameSingular, $prefix = null, $crud = null)
+	{
+    $class  = Utility::getAttributeClass('url', $prefix, $crud);
+
+    $html  = '<div class="' . $class . '">';
+    $html .= '<h4>';
+    $html .= '<label for="url">';
+    $html .= Text::sprintf('COM_CAJOBBOARD_DESCRIPTION_EDIT_LABEL', $humanViewNameSingular);
+    $html .= '</label>';
+    $html .= '</h4>';
+    $html .= '<textarea name="url" id="' . $prefix . '-url" class="form-control" rows="8" placeholder="' . $urlPlaceholder . '">';
+    $html .= $url;
+    $html .= '</textarea>';
     $html .= '</div>';
 
     return $html;

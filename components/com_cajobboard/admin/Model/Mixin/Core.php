@@ -11,19 +11,25 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Mixin;
 
-use \Calligraphic\Cajobboard\Admin\Model\Exception\NoPermissions;
-use \FOF30\Model\DataModel\Exception\RecordNotLoaded;
-use \Joomla\CMS\Language\Text;
-
 // no direct access
 defined('_JEXEC') or die;
 
 trait Core
 {
-  // @TODO: File PR to add getKnownFields getter to DataModel.
+  /**
+   * The short names of behaviours that have been attached to the BehaviourDispatcher.
+   * Can be nested e.g. 'Check\\Image'. Notice that the forward slash has been escaped,
+   * the behaviour is added or checked as 'Check/Image'.
+   *
+   * @var array
+   */
+  protected $attachedBehaviourShortNames = array();
+
 
   /*
    * Getter for known model fields, intended for use in site model behaviors.
+   *
+   * @TODO: File PR to add getKnownFields getter to DataModel.
    *
    * Core DataModel class has setter for known fields but no getter.
    */
@@ -31,6 +37,82 @@ trait Core
 	{
     return $this->knownFields;
   }
+
+
+	/**
+	 * Adds a behaviour by its name. Over-ridden to:
+   *
+   *   1. Escape forward slashes in the behaviour name, so that short names can be used
+   *      for behaviour names that are hierarchical like 'Check/Image';
+   *
+   *   2. Maintain a cache of behaviours by their short name that have been attached to
+   *      the BehaviourDispatcher , so that they can be quickly looked up in the TableFields
+   *      helper for making table metadata ('hits', 'featured', 'language', 'ordering', and
+   *      'version' fields) available based on whether the related behaviour is enabled or not.
+   *
+   * It will search the following classes, in this order:
+   *
+	 *   \component_namespace\Model\modelName\Behaviour\behaviourName
+	 *   \component_namespace\Model\Behaviour\behaviourName
+	 *   \FOF30\Model\DataModel\Behaviour\behaviourName
+   *
+	 * where:
+   *
+	 *   component_namespace  is the namespace of the component as defined in the container
+	 *   modelName            is the model's name, first character uppercase, e.g. Baz
+	 *   behaviourName        is the $behaviour parameter, first character uppercase, e.g. Something
+	 *
+	 * @param   string $behaviour   The behaviour's name, in short form. Can be nested e.g. 'Check/Image'
+	 *
+	 * @return  $this  Self, for chaining
+	 */
+	public function addBehaviour($behaviour)
+	{
+    $behaviour = str_replace( '/', '\\', $behaviour);
+
+		$prefixes = array(
+			$this->container->getNamespacePrefix() . 'Model\\Behaviour\\' . ucfirst($this->getName()),
+			$this->container->getNamespacePrefix() . 'Model\\Behaviour',
+			'\\FOF30\\Model\\DataModel\\Behaviour',
+    );
+
+		foreach ($prefixes as $prefix)
+		{
+      $className = $prefix . '\\' . ucfirst($behaviour);
+
+			if (class_exists($className, true) && !$this->behavioursDispatcher->hasObserverClass($className))
+			{
+				/** @var Observer $o */
+        $observer = new $className($this->behavioursDispatcher);
+
+        $this->behavioursDispatcher->attach($observer);
+
+        array_push($this->attachedBehaviourShortNames, $behaviour);
+
+				return $this;
+			}
+    }
+
+		return $this;
+  }
+
+
+	/**
+	 * Check if a Behaviour observer object is already registered with the behaviour dispatcher.
+   * The \FOF30\Event\Dispatcher has a hasObserver() method to do this but it uses reflection, and
+   * the routine is called repeatedly in the TableFields helper.
+	 *
+	 * @param   string $behaviour   The behaviour's name, in short form. Can be nested e.g. 'Check/Image'
+	 *
+	 * @return  boolean
+	 */
+	public function hasBehaviour($behaviour)
+	{
+    // Handle escaping nested behaviour names
+    $behaviour = str_replace( '/', '\\', $behaviour);
+
+		return in_array($behaviour, $this->attachedBehaviourShortNames);
+	}
 
 
   /**

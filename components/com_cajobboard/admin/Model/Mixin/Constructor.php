@@ -37,7 +37,7 @@ trait Constructor
     $this->setValidContainer();
 
 		// Set the model's name from $config
-		if (isset($config['name']))
+		if ( !empty($config['name']) )
 		{
 			$this->name = $config['name'];
     }
@@ -50,13 +50,13 @@ trait Constructor
     $this->setModelState($config);
 
 		// Set the internal state marker
-		if (!empty($config['use_populate']))
+		if ( !empty($config['use_populate']) )
 		{
 			$this->_state_set = true;
     }
 
 		// Set the internal state marker
-		if (!empty($config['ignore_request']))
+		if ( !empty($config['ignore_request']) )
 		{
 			$this->_ignoreRequest = true;
 		}
@@ -65,27 +65,37 @@ trait Constructor
     $this->dbo = $container->db;
 
     // Table name and primary key field name are mandatory configuration options for job board models
+    if ( empty($config['tableName']) )
+		{
+      throw new \Exception( "Error: No 'tableName' value for \$config set in model " . $this->getName() );
+    }
+
     $this->tableName = $config['tableName'];
+
+    if ( empty($config['idFieldName']) )
+		{
+      throw new \Exception( "Error: No 'idFieldName' value for \$config set in model " . $this->getName() );
+    }
 
     $this->idFieldName = $config['idFieldName'];
 
     $this->setupAutoChecks($config);
 
-    // must be called after primary key field name is set
+    $this->setConfiguredBehaviours($config);
+
+    // must be called after primary key field name is set and behaviours configured
     $this->knownFields = $this->getTableFields();
 
-    if (isset($config['aliasFields']))
+    if ( !empty($config['aliasFields']) )
     {
       $this->aliasFields = $config['aliasFields'];
     }
-
-    $this->setConfiguredBehaviours($config);
 
     $this->setupViewLevelAccessControl();
 
     $this->setupACL();
 
-    if (isset($config['contentType']))
+    if ( !empty($config['contentType']) )
     {
       $this->contentType = $config['contentType'];
     }
@@ -228,11 +238,8 @@ trait Constructor
       }
     }
 
-    // Add extra behaviours
-    foreach (array('Created', 'Modified', 'Filters') as $behaviour)
-    {
-      $this->addBehaviour($behaviour);
-    }
+    // Add 'Filters' behaviour as default for all data models
+    $this->addBehaviour('Filters');
   }
 
 

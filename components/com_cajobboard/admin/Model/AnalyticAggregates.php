@@ -15,9 +15,10 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
 
 /**
  * Fields:
@@ -51,18 +52,9 @@ use \FOF30\Model\DataModel;
  *
  * @property JSON           $structured_value             The values for this analytic aggregate, in a JSON string.
  */
-class AnalyticAggregates extends DataModel
+class AnalyticAggregates extends BaseDataModel implements Core, Extended
 {
   /* Traits to include in the class */
-
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Asset;                // Joomla! role-based access control handling
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Comments;             // 'saveComment' method
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Core;                 // Utility methods
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Count;                // Overridden count() method to cache value
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\FieldStateMachine;    // Toggle method for boolean fields
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
 
   // Transformations for model properties (attributes) to an appropriate data type (e.g.
   // Registry objects). Validation checks and setting attribute values from state should
@@ -90,15 +82,29 @@ class AnalyticAggregates extends DataModel
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
 
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
     $config['behaviours'] = array(
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Ordering',   // Order items owned by featured status and then descending by date
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+
+      /* Core UCM field behaviours */
+
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      'Locked',             // Add 'locked_on' and 'locked_by' fields to skip fields check
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Note',               // Add 'note' field to skip fields check
+      'Ordering',           // Order items owned by featured status and then descending by date
+      'Params',             // Add 'params' field to skip fields check
+      'Slug',               // Backfill the slug field with the 'title' property or its fieldAlias if empty
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Patches.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+      'Check/Title',        // Check length and titlecase the 'metadata' JSON field on record save
 
       /* Model property (attribute) Behaviours for validation and setting value from state */
+
       'DescriptionIntro',   // Check the length of the 'description__intro' field
     );
 

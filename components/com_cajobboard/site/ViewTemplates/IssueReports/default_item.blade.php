@@ -1,6 +1,6 @@
 <?php
  /**
-  * Site Answers List View Item Template
+  * Site Issue Reports List View Item Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019
@@ -12,8 +12,8 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
-  /** @var  FOF30\View\DataView\Html                    $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\IssueReports   $item */
+  /** @var  FOF30\View\DataView\Html                          $this */
 
   // Using an include so that local vars in the included file are in scope here also
   include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.php');
@@ -25,7 +25,7 @@
 {{--
   Responsive container for desktop and mobile
 --}}
-<div class="row media {{ $featured }} @jhtml('helper.commonwidgets.getAttributeClass', 'list-item', $prefix, $crud)">
+<div class="row media @jhtml('helper.commonwidgets.getAttributeClass', 'list-item', $prefix, $crud)">
   @jhtml('helper.browsewidgets.title', $title, $itemViewLink, $prefix, $crud)
 
   @jhtml('helper.browsewidgets.text', $text, $prefix, $crud)
@@ -50,14 +50,10 @@
     @jhtml('helper.buttonwidgets.delete', $humanViewNameSingular, $canUserEdit, $itemId, $prefix, $crud)
     @jhtml('helper.buttonwidgets.edit', $humanViewNameSingular, $canUserEdit, $editViewLink, $prefix, $crud)
     @jhtml('helper.buttonwidgets.report', $humanViewNameSingular, $prefix, $crud)
-    @jhtml('helper.buttonwidgets.downvote_count', $downvoteCount, $isGuestUser, $itemId, $prefix, $crud)
-    @jhtml('helper.buttonwidgets.upvote_count', $upvoteCount, $isGuestUser, $itemId, $prefix, $crud)
   </div>
 </div>{{-- End responsive container --}}
 
 {{-- Forms with CSRF field for actions --}}
 @jhtml('helper.buttonwidgets.deleteActionCsrfField', $deleteAction, $itemId)
-@jhtml('helper.buttonwidgets.downvoteActionCsrfField', $downvoteAction, $itemId)
-@jhtml('helper.buttonwidgets.upvoteActionCsrfField', $upvoteAction, $itemId)
 
 <div class="clearfix"></div>

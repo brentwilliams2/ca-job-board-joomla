@@ -3,7 +3,7 @@
  * Admin Question and Answer Pages Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -94,15 +94,18 @@ class QAPages extends BaseDataModel
      * Set up relations
      */
 
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+    // Many-to-one FK to  #__cajobboard_organizations
+    $this->belongsTo('About', 'Organizations@com_cajobboard', 'about__organization', 'organization_id');
+
     // one-to-many FK to #__cajobboard_answers, key in foreign table
     // Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages' in View/Html file
     $this->hasMany('Answers', 'Answers@com_cajobboard', 'q_a_page_id', 'about__foreign_model_id');
 
     // one-to-one FK to  #__cajobboard_questions
     $this->hasOne('Question', 'Questions@com_cajobboard', 'main_entity_of_page', 'question_id');
-
-    // Many-to-one FK to  #__cajobboard_organizations
-    $this->belongsTo('About', 'Organizations@com_cajobboard', 'about__organization', 'organization_id');
   }
 
   /*

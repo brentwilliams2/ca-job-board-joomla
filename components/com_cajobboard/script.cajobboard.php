@@ -710,10 +710,23 @@ class com_cajobboardInstallerScript extends FOF30\Utils\InstallScript\Component
     // Make sure PHP is available as CLI
     if ( shell_exec("command -v php") )
     {
+      $seeds = array(
+        'AddressRegions',
+        'DataFeedTemplates',
+        'EmailMessageTemplates',
+        'EmploymentTypes',
+        'IssueReportCategories',
+        'OccupationalCategories',
+        'OccupationalCategoryGroups',
+        'OrganizationRoles',
+        'OrganizationTypes',
+      );
+
       // Seed default records
-      exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php DataFeedTemplates");
-      exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php EmailMessageTemplates");
-      exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php EmploymentTypes");
+      foreach ($seeds as $seed)
+      {
+        exec("php " . JPATH_ADMINISTRATOR . "/components/com_cajobboard/Cli/Seeder/PopulateSampleData.php " . $seed);
+      }
     }
     else
     {

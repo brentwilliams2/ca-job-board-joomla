@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_issue_reports` (
   issue_report_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Surrogate primary key', /* FK to #__cajobboard_ucm(id) */
   slug CHAR(255) NOT NULL COMMENT 'alias for SEF URL',
 
+  /** @TODO: do we need fields like 'featured', 'hits', 'ordering'? Do other models like CreditReports need them? Which other ones? */
+
   /* FOF "magic" fields */
   asset_id	INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Enable record-level access control.', /* FK to the #__assets */
   access INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'The Joomla! view access level.',

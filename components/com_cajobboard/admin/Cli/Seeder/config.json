@@ -46,6 +46,7 @@
     "VideoObjects": 5
   },
   "models": [
+    "AddressRegions",
     "AnalyticAggregates",
     "Answers",
     "ApplicationLetters",
@@ -70,6 +71,8 @@
     "JobAlerts",
     "JobPostings",
     "Messages",
+    "OccupationalCategories",
+    "OccupationalCategoryGroups",
     "Offers",
     "Organizations",
     "Places",

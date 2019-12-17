@@ -16,6 +16,9 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Social;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 
 /**
@@ -23,6 +26,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  *
  * @property int      $job_employment_type_id   Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
+ *
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
  * @property int      $access                     The Joomla! view access level.
@@ -33,6 +37,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $modified_by                User ID who modified the record, auto-filled by save(), touch().
  * @property string   $locked_on                  Timestamp of record locking, auto-filled by lock(), unlock().
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
+ *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
@@ -46,12 +51,13 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $cat_id                     Category ID for this item.
  * @property int      $hits                       Number of hits the item has received on the site.
  * @property int      $featured                   Whether this item is featured or not.
+ *
  * SCHEMA: Thing
  * @property string   $name                       Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)
  * @property string   $description                Detailed description about type of employment
  * @property string   $url                        Link to schema for type of employment, e.g. wikipedia page on Full Time
  */
-class EmploymentTypes extends BaseDataModel
+class EmploymentTypes extends BaseDataModel implements Core, Extended, Social
 {
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -73,32 +79,38 @@ class EmploymentTypes extends BaseDataModel
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      //'ContentHistory', // Add Joomla! content history support
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
-      //'Tags'        // Add Joomla! Tags support
+
+      /* Core UCM field behaviours */
+
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      //'ContentHistory',     // Add Joomla! content history support
+      'Enabled',            // Filter access to items based on enabled status
+      'Featured',           // Add support for featured items
+      'Language',           // Filter front-end access to items based on language
+      'Locked',             // Add 'locked_on' and 'locked_by' fields to skip fields check
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Note',               // Add 'note' field to skip fields check
+      'Ordering',           // Order items owned by featured status and then descending by date
+      //'Own',                // Filter access to items owned by the currently logged in user only
+      'Params',             // Add 'params' field to skip fields check
+      //'PII',                // Filter access for items that have Personally Identifiable Information.
+      'Publish',            // Set the 'publish_on' field for new records
+      'Slug',               // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags',               // Add Joomla! Tags support
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Core.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+      'Check/Metadata',     // Set the 'metadata' JSON field on record save
+
+      /* Model property (attribute) Behaviours for validation and setting value from state */
+
+      'DescriptionIntro',   // Check the length of the 'description__intro' field
     );
 
     parent::__construct($container, $config);
-  }
-
-	/**
-	 * Perform checks on data for validity
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_TITLE');
-    $this->assertNotEmpty($this->description, 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_DESCRIPTION');
-    $this->assertNotEmpty($this->url, 'COM_CAJOBBOARD_EMPLOYMENT_TYPE_ERR_URL');
-
-		parent::check();
-
-    return $this;
   }
 }

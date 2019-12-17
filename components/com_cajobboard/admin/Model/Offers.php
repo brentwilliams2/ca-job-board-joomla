@@ -64,8 +64,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class Offers extends BaseDataModel
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -75,9 +73,6 @@ class Offers extends BaseDataModel
 	public function __construct(Container $container, array $config = array())
 	{
     /* Set up config before parent constructor */
-
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'BackgroundChecks', array('typeAlias' => 'com_cajobboard.offers'));
 
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_offers';
@@ -104,6 +99,9 @@ class Offers extends BaseDataModel
     /* Set up relations after parent constructor */
 
     // table field for belongsTo relation is in this model's table
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
     // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('AboutPerson', 'Persons@com_cajobboard', 'about__person', 'id');

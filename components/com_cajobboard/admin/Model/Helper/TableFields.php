@@ -12,28 +12,10 @@
 
 namespace Calligraphic\Cajobboard\Admin\Model\Helper;
 
-use \Calligraphic\Cajobboard\Admin\Model\AddressRegions;
-use \Calligraphic\Cajobboard\Admin\Model\AnalyticAggregates;
-use \Calligraphic\Cajobboard\Admin\Model\BaseListModel;
-use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
-use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
-use \Calligraphic\Cajobboard\Admin\Model\Categories;
-use \Calligraphic\Cajobboard\Admin\Model\DataFeedTemplates;
-use \Calligraphic\Cajobboard\Admin\Model\EmailMessages;
-use \Calligraphic\Cajobboard\Admin\Model\EmailMessageTemplates;
-use \Calligraphic\Cajobboard\Admin\Model\EmployerAggregateRatings;
-use \Calligraphic\Cajobboard\Admin\Model\GeoCoordinates;
-use \Calligraphic\Cajobboard\Admin\Model\IssueReportCategories;
-use \Calligraphic\Cajobboard\Admin\Model\Messages;
-use \Calligraphic\Cajobboard\Admin\Model\OrganizationRoles;
-use \Calligraphic\Cajobboard\Admin\Model\OrganizationTypes;
-use \Calligraphic\Cajobboard\Admin\Model\Persons;
-use \Calligraphic\Cajobboard\Admin\Model\Profiles;
-use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
-
 // no direct access
 defined('_JEXEC') or die;
+
+use \FOF30\Container\Container;
 
 class TableFields
 {
@@ -46,31 +28,11 @@ class TableFields
 
 
   /**
-	 * Models that use content history and have a 'version' field
+	 * A cache of table field metadata, keyed by the CamelCased model name
 	 *
 	 * @var array
 	 */
-  private $historyEnabledModels = array(
-    'Answers',
-    'ApplicationLetters',
-    'AudioObjects',
-    'Certifications',
-    'Comments',
-    'DigitalDocuments',
-    'EmailMessageTemplates',
-    'ImageObjects',
-    'Interviews',
-    'IssueReports',
-    'JobPostings',
-    'Messages',
-    'Offers',
-    'Places',
-    'Questions',
-    'References',
-    'Reviews',
-    'Vendors',
-    'VideoObjects'
-  );
+  protected static $cachedModelMetadata = array();
 
 
   /**
@@ -87,77 +49,60 @@ class TableFields
   /**
    * Setup the knownFields model property of database table metadata
    *
-   * @param   DataModel   $model   The data model to load field metadata for
+   * @param   \FOF30\Model\DataModel   $model   The data model to load field metadata for
    *
    * @return  array  An array of the field metadata.
    */
   public function getTableFieldsMetadata($model)
   {
-    $modelMetadata = $this->container->inflector->underscore ( $model->getName() ) . 'TableFieldMetadata';
+    $modelName = $model->getName();
 
-    // Don't use common fields for models that don't implement all Joomla! UCM fields and *DON'T* use content history
-    if (
-      $model instanceof AddressRegions ||
-      $model instanceof AnalyticAggregates ||
-      $model instanceof Categories ||
-      $model instanceof EmailMessages ||
-      $model instanceof EmployerAggregateRatings ||
-      $model instanceof GeoCoordinates ||
-      $model instanceof IssueReportCategories ||
-      $model instanceof OrganizationRoles ||
-      $model instanceof OrganizationTypes ||
-      $model instanceof Persons ||
-      $model instanceof Profiles
-    )
+    if ( array_key_exists($modelName, self::$cachedModelMetadata) )
     {
-      return array_merge(
-        $this->getPrimaryKeyTableFieldMetadata($model),
-        $this->$modelMetadata()
-      );
+      return self::$cachedModelMetadata[$modelName];
     }
 
-
-    // Don't use common fields for models that don't implement all Joomla! UCM fields and *DO* use content history
-    if (
-      $model instanceof DataFeedTemplates ||
-      $model instanceof EmailMessageTemplates
-    )
+    // Special models that should provide all of their own fields, e.g. wrappers
+    // for Joomla's '#__content' table that uses aliases for core UCM fields and
+    // don't benefit much from 
+    if ( $model instanceof \Calligraphic\Cajobboard\Admin\Model\DiversityPolicies )
     {
-      return array_merge(
-        $this->getPrimaryKeyTableFieldMetadata($model),
-        $this->getContentHistoryFieldMetadata($model),
-        $this->$modelMetadata()
-      );
+      return $this->$modelMetadata();
     }
 
+    $modelMetadata = $this->container->inflector->underscore($modelName) . 'TableFieldMetadata';
 
-    // Plain-vanilla base class instances with full Joomla! UCM fields
-    if (
-      $model instanceof BaseListModel ||
-      $model instanceof BaseDataModel
-    )
+    $fields = array_merge(
+      $this->getPrimaryKeyTableFieldMetadata($model),
+      $this->getOtherUcmTableFieldMetadata($model),
+      $this->$modelMetadata()
+    );
+
+    if ( $model instanceof \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core )
     {
-      return array_merge(
-        $this->getPrimaryKeyTableFieldMetadata($model),
-        $this->ucmTableFieldMetadata(),
-        $this->getContentHistoryFieldMetadata($model),
-        $this->$modelMetadata()
-      );
+      $fields = array_merge( $fields, $this->getCoreUcmTableFieldMetadata() );
     }
 
-    if ($model instanceof BaseTreeModel)
+    if ( $model instanceof \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended )
     {
-      return array_merge(
-        $this->getPrimaryKeyTableFieldMetadata($model),
-        $this->ucmTableFieldMetadata(),
-        $this->getContentHistoryFieldMetadata($model),
-        $this->ucmTreeTableFieldMetadata(),
-        $this->$modelMetadata()
-      );
+      $fields = array_merge( $fields, $this->getExtendedTableFieldMetadata() );
     }
 
-    throw new \Exception('Could not match the table type in admin\Model\Helper\TableFields, type: ' . $modelMetadata);
+    if ( $model instanceof \Calligraphic\Cajobboard\Admin\Model\Interfaces\Social )
+    {
+      $fields = array_merge( $fields, $this->getSocialUcmTableFieldMetadata() );
+    }
+
+    if ( $model instanceof \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel )
+    {
+      $fields = array_merge( $fields, $this->getTreeUcmTableFieldMetadata() );
+    }
+
+    self::$cachedModelMetadata[$modelName] = $fields;
+
+    return self::$cachedModelMetadata[$modelName];
   }
+
 
   /**
    * Primary key field can vary between models
@@ -167,71 +112,189 @@ class TableFields
     $idField = $model->getIdFieldName();
 
     return array (
-      $idField => (object) ['Field' => 'job_posting_id', 'Type' => 'bigint(20) unsigned',  'Null' => 'NO',   'Default' => NULL]
+      $idField => (object) ['Field' => $idField, 'Type' => 'bigint(20) unsigned',  'Null' => 'NO',   'Default' => NULL]
     );
   }
 
-  /*
-    @TODO: Tables that probably don't need 'hits', 'featured', etc.:
-
-    employment_types
-    fair_credit_reporting_act
-    job_alerts
-    occupational_categories
-    occupational_category_groups
-    analytic_aggregates (don't need enabled, published_on, published_by, meta keys, language)
-    email_messages (don't need locked_on, locked_by, meta fields, xreference, hits, featured)
-  */
-
 
   /**
-   * 'version' field for content history
+   * Check various private lists of models to selectively add some UCM fields, e.g.
+   * 'featured', 'hits', 'language', 'ordering', and 'version'
    */
-  private function getContentHistoryFieldMetadata($model)
+  private function getOtherUcmTableFieldMetadata($model)
   {
-    if ( in_array($model->getName(), $this->historyEnabledModels) )
+    $extendedFields = array();
+
+    // 'Asset' behaviour and UCM field
+    if ( $model->hasBehaviour('Assets') )
     {
-      return array (
-        'version' => (object) ['Field' => 'version',  'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Default' => '1']
-      );
+      $extendedFields = array_merge ($extendedFields, array (
+        'asset_id' => (object) ['Field' => 'asset_id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Default' => '0']
+      ));
     }
 
-    return array();
+    // 'Access' behaviour and UCM field
+    if ( $model->hasBehaviour('Access') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'access' => (object) ['Field' => 'access', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Default' => '1']
+      ));
+    }
+
+    // 'Category' behaviour and UCM field
+    if ( $model->hasBehaviour('Category') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'cat_id' => (object) ['Field' => 'cat_id', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Default' => '0']
+      ));
+    }
+
+    // 'Created' behaviour and UCM field
+    if ( $model->hasBehaviour('Created') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'created_on' => (object) ['Field' => 'created_on', 'Type' => 'datetime', 'Null' => 'YES', 'Default' => NULL],
+        'created_by' => (object) ['Field' => 'created_by', 'Type' => 'int(11)', 'Null' => 'NO', 'Default' => '0']
+      ));
+    }
+
+    // 'ContentHistory' behaviour and UCM field
+    if ( $model->hasBehaviour('ContentHistory') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'version' => (object) ['Field' => 'version',  'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Default' => '1']
+      ));
+    }
+
+    // 'Enabled' behaviour and UCM field
+    if ( $model->hasBehaviour('Enabled') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'enabled' => (object) ['Field' => 'enabled', 'Type' => 'tinyint(4)', 'Null' => 'NO', 'Default' => '1']
+      ));
+    }
+
+    // 'Featured' behaviour and UCM field
+    if ( $model->hasBehaviour('Featured') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'featured' => (object) ['Field' => 'featured', 'Type' => 'tinyint(3) unsigned', 'Null' => 'NO', 'Default' => '0']
+      ));
+    }
+
+    // 'Hits' behaviour and UCM field
+    if ( $model->hasBehaviour('Hits') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'hits' => (object) ['Field' => 'hits', 'Type' => 'int(10) unsigned', 'Null' => 'NO', 'Default' => '0']
+      ));
+    }
+
+    // 'Language' behaviour and UCM field
+    if ( $model->hasBehaviour('Language') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'language' => (object) ['Field' => 'language', 'Type' => 'char(7)', 'Null' => 'NO', 'Default' => '*']
+      ));
+    }
+
+    // 'Locked' behaviour and UCM field
+    if ( $model->hasBehaviour('Locked') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'locked_on' => (object) ['Field' => 'locked_on', 'Type' => 'datetime', 'Null' => 'YES', 'Default' => NULL],
+        'locked_by' => (object) ['Field' => 'locked_by', 'Type' => 'int(11)', 'Null' => 'YES', 'Default' => '0']
+      ));
+    }
+
+    // 'Modified' behaviour and UCM field
+    if ( $model->hasBehaviour('Modified') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'modified_on' => (object) ['Field' => 'modified_on', 'Type' => 'datetime', 'Null' => 'YES', 'Default' => NULL],
+        'modified_by' => (object) ['Field' => 'modified_by', 'Type' => 'int(11)', 'Null' => 'YES', 'Default' => '0']
+      ));
+    }
+
+    // 'Ordering' behaviour and UCM field
+    if ( $model->hasBehaviour('Ordering') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'ordering' => (object) ['Field' => 'ordering',  'Type' => 'int(11)',  'Null' => 'NO',  'Default' => '0']
+      ));
+    }
+
+    // 'Params' behaviour and UCM field
+    if ( $model->hasBehaviour('Params') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'params' => (object) ['Field' => 'params',  'Type' => 'text',  'Null' => 'YES',  'Default' => NULL]
+      ));
+    }
+
+    // 'Publish' behaviour and UCM field
+    if ( $model->hasBehaviour('Publish') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'publish_up' => (object) ['Field' => 'publish_up', 'Type' => 'datetime', 'Null' => 'YES', 'Default' => NULL],
+        'publish_down' => (object) ['Field' => 'publish_down', 'Type' => 'datetime', 'Null' => 'YES', 'Default' => NULL]
+      ));
+    }
+    elseif ( $model->hasBehaviour('PublishUp') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'publish_up' => (object) ['Field' => 'publish_up', 'Type' => 'datetime', 'Null' => 'YES', 'Default' => NULL]
+      ));
+    }
+
+    // 'Slug' behaviour and UCM field
+    if ( $model->hasBehaviour('Slug') )
+    {
+      $extendedFields = array_merge ($extendedFields, array (
+        'slug' => (object) ['Field' => 'slug', 'Type' => 'char(255)', 'Null' => 'NO', 'Default' => NULL]
+      ));
+    }
+
+    return $extendedFields;
   }
 
 
   /**
 	 * Database table field metadata for UCM and core Joomla! schemas
 	 */
-  private function ucmTableFieldMetadata()
+  private function getCoreUcmTableFieldMetadata()
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'slug'              => (object) ['Field' => 'slug',           'Type' => 'char(255)',            'Null' => 'NO',   'Default' => NULL],
+        'note'              => (object) ['Field' => 'note',           'Type' => 'varchar(255)',         'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'          => (object) ['Field' => 'asset_id',       'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '0'],
+    );
+  }
+
+
+  /**
+   * Get table metadata for fields used in standardized descriptive text, e.g. 'name', 'description', and 'description__intro'
+   */
+  private function getExtendedTableFieldMetadata()
+  {
+    return array (
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'            => (object) ['Field' => 'access',         'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '1'],
+        'name'              => (object) ['Field' => 'name',                'Type' => 'varchar(255)',         'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'enabled'           => (object) ['Field' => 'enabled',        'Type' => 'tinyint(4)',           'Null' => 'NO',   'Default' => '1'],
+        'description'       => (object) ['Field' => 'description',         'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_on'        => (object) ['Field' => 'created_on',     'Type' => 'datetime',             'Null' => 'YES',  'Default' => NULL],
+        'description__intro' => (object) ['Field' => 'description__intro', 'Type' => 'varchar(280)',         'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_by'        => (object) ['Field' => 'created_by',     'Type' => 'int(11)',              'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_on'       => (object) ['Field' => 'modified_on',    'Type' => 'datetime',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_by'       => (object) ['Field' => 'modified_by',    'Type' => 'int(11)',              'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_on'         => (object) ['Field' => 'locked_on',      'Type' => 'datetime',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_by'         => (object) ['Field' => 'locked_by',      'Type' => 'int(11)',              'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_up'        => (object) ['Field' => 'publish_up',     'Type' => 'datetime',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_down'      => (object) ['Field' => 'publish_down',   'Type' => 'datetime',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'ordering'          => (object) ['Field' => 'ordering',       'Type' => 'int(11)',              'Null' => 'NO',   'Default' => '0'],
+    );
+  }
+
+
+  /**
+   * Get table metadata for HTML header fields such as 'metadata'
+   */
+  private function getSocialUcmTableFieldMetadata()
+  {
+    return array (
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'metadata'          => (object) ['Field' => 'metadata',       'Type' => 'json',                 'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -241,24 +304,6 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'xreference'        => (object) ['Field' => 'xreference',     'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'            => (object) ['Field' => 'params',         'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'language'          => (object) ['Field' => 'language',       'Type' => 'char(7)',              'Null' => 'NO',   'Default' => '*'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'cat_id'            => (object) ['Field' => 'cat_id',         'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'hits'              => (object) ['Field' => 'hits',           'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'featured'          => (object) ['Field' => 'featured',       'Type' => 'tinyint(3) unsigned',  'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'              => (object) ['Field' => 'note',           'Type' => 'varchar(255)',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'name'              => (object) ['Field' => 'name',           'Type' => 'varchar(255)',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description'       => (object) ['Field' => 'description',    'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description__intro' => (object) ['Field' => 'description__intro', 'Type' => 'varchar(280)',    'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }
 
@@ -266,7 +311,7 @@ class TableFields
   /**
 	 * Database table field metadata for hierarchical schema
 	 */
-  private function ucmTreeTableFieldMetadata()
+  private function getTreeUcmTableFieldMetadata()
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -287,8 +332,6 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'name'                  => (object) ['Field' => 'name',                   'Type' => ' varchar(64) not null',     'Null' => 'YES',       'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'item_list_element'     => (object) ['Field' => 'item_list_element',      'Type' => ' varchar(6) not null',      'Null' => 'YES',       'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
@@ -303,38 +346,6 @@ class TableFields
   private function analytic_aggregatesTableFieldMetadata()
   {
     return array(
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'slug'                         => (object) ['Field' => 'slug',                         'Type' => 'char(255)',        'Null' => 'NO',   'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'                     => (object) ['Field' => 'asset_id',                     'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'                       => (object) ['Field' => 'access',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_on'                   => (object) ['Field' => 'created_on',                   'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_by'                   => (object) ['Field' => 'created_by',                   'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_on'                  => (object) ['Field' => 'modified_on',                  'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_by'                  => (object) ['Field' => 'modified_by',                  'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_on'                    => (object) ['Field' => 'locked_on',                    'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_by'                    => (object) ['Field' => 'locked_by',                    'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'ordering'                     => (object) ['Field' => 'ordering',                     'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'                       => (object) ['Field' => 'params',                       'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'name'                         => (object) ['Field' => 'name',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description'                  => (object) ['Field' => 'description',                  'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description__intro'           => (object) ['Field' => 'description__intro',           'Type' => 'varchar(280)',     'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'about__foreign_model_id'      => (object) ['Field' => 'about__foreign_model_id',      'Type' => 'bigint(20)',       'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -477,8 +488,6 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'          => (object) ['Field' => 'asset_id',       'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'parent_id'         => (object) ['Field' => 'parent_id',      'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'lft'               => (object) ['Field' => 'lft',            'Type' => 'int(11)',              'Null' => 'NO',   'Default' => '0'],
@@ -495,8 +504,6 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'alias'             => (object) ['Field' => 'alias',          'Type' => 'varchar(400)',         'Null' => 'NO',   'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'              => (object) ['Field' => 'note',           'Type' => 'varchar(255)',         'Null' => 'NO',   'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'description'       => (object) ['Field' => 'description',    'Type' => 'text',                 'Null' => 'NO',   'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'published'         => (object) ['Field' => 'published',      'Type' => 'tinyint(1) ',          'Null' => 'NO',   'Default' => '0'],
@@ -505,16 +512,6 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'checked_out_time'  => (object) ['Field' => 'checked_out_time', 'Type' => 'datetime',           'Null' => 'NO',   'Default' => '0000-00-00 00:00:00'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'            => (object) ['Field' => 'access',         'Type' => 'int(11) unsigned',     'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'            => (object) ['Field' => 'params',         'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'metadata'          => (object) ['Field' => 'metadata',       'Type' => 'json',                 'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'metakey'           => (object) ['Field' => 'metakey',        'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'metadesc'          => (object) ['Field' => 'metadesc',       'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'created_user_id'   => (object) ['Field' => 'created_user_id', 'Type' => 'int(10) unsigned',    'Null' => 'YES',  'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'created_time'      => (object) ['Field' => 'created_time',   'Type' => 'datetime ',            'Null' => 'NO',   'Default' => '0'],
@@ -522,10 +519,6 @@ class TableFields
         'modified_user_id'  => (object) ['Field' => 'modified_user_id', 'Type' => 'int(10) unsigned',   'Null' => 'YES',  'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'modified_time'     => (object) ['Field' => 'modified_time',  'Type' => 'datetime ',            'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'hits'              => (object) ['Field' => 'hits',           'Type' => 'int(10) unsigned',     'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'language'          => (object) ['Field' => 'language',       'Type' => 'char(7)',              'Null' => 'NO',   'Default' => '*'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'version'           => (object) ['Field' => 'version',        'Type' => 'int(10) unsigned',     'Null' => 'YES',  'Default' => '1'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -634,46 +627,6 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'slug'                         => (object) ['Field' => 'slug',                         'Type' => 'char(255)',        'Null' => 'NO',   'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'                     => (object) ['Field' => 'asset_id',                     'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'                       => (object) ['Field' => 'access',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'enabled'                      => (object) ['Field' => 'enabled',                      'Type' => 'tinyint(4)',       'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_on'                   => (object) ['Field' => 'created_on',                   'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_by'                   => (object) ['Field' => 'created_by',                   'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_on'                  => (object) ['Field' => 'modified_on',                  'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_by'                  => (object) ['Field' => 'modified_by',                  'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_on'                    => (object) ['Field' => 'locked_on',                    'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_by'                    => (object) ['Field' => 'locked_by',                    'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_up'                   => (object) ['Field' => 'publish_up',                   'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_down'                 => (object) ['Field' => 'publish_down',                 'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'ordering'                     => (object) ['Field' => 'ordering',                     'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'                       => (object) ['Field' => 'params',                       'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'language'                     => (object) ['Field' => 'language',                     'Type' => 'char(7)',          'Null' => 'NO',   'Default' => '*'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'name'                         => (object) ['Field' => 'name',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description'                  => (object) ['Field' => 'description',                  'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description__intro'           => (object) ['Field' => 'description__intro',           'Type' => 'varchar(280)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'xml_template'                 => (object) ['Field' => 'xml_template',                 'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
@@ -701,15 +654,74 @@ class TableFields
 
   /**
 	 * Diversity Policies
+   * 
+   * @TODO: Move to a #__content table field metadata function if #__content used again
 	 */
   private function diversity_policiesTableFieldMetadata()
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'text'              => (object) ['Field' => 'text',           'Type' => 'text',                 'Null' => 'YES',  'Default' => NULL],
+        'id'                          => (object) ['Field' => 'content_size',             'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'image'             => (object) ['Field' => 'image',          'Type' => 'json',                 'Null' => 'YES',  'Default' => NULL],
+        'asset_id'                    => (object) ['Field' => 'image',                    'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'title'                       => (object) ['Field' => 'title',                    'Type' => 'varchar(255)',             'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'alias'                       => (object) ['Field' => 'alias',                    'Type' => 'varchar(400)',           'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'introtext'                   => (object) ['Field' => 'introtext',                'Type' => 'mediumtext',             'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'fulltext'                    => (object) ['Field' => 'fulltext',                 'Type' => 'mediumtext',             'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'state'                       => (object) ['Field' => 'state',                    'Type' => 'tinyint(3)',             'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'catid'                       => (object) ['Field' => 'catid',                    'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'created'                     => (object) ['Field' => 'created',                  'Type' => 'datetime',               'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'created_by'                  => (object) ['Field' => 'created_by',               'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'created_by_alias'            => (object) ['Field' => 'created_by_alias',         'Type' => 'varchar(255)',           'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'modified'                    => (object) ['Field' => 'modified',                 'Type' => 'datetime',               'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'modified_by'                 => (object) ['Field' => 'modified_by',              'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'checked_out'                 => (object) ['Field' => 'checked_out',              'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'checked_out_time'            => (object) ['Field' => 'checked_out_time',         'Type' => 'datetime',               'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'publish_up'                  => (object) ['Field' => 'publish_up',               'Type' => 'datetime',               'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'publish_down'                => (object) ['Field' => 'publish_down',             'Type' => 'datetime',               'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'images'                      => (object) ['Field' => 'images',                   'Type' => 'text',                   'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'urls'                        => (object) ['Field' => 'urls',                     'Type' => 'text',                   'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'attribs'                     => (object) ['Field' => 'attribs',                  'Type' => 'varchar(5120)',          'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'version'                     => (object) ['Field' => 'version',                  'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 1],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'ordering'                    => (object) ['Field' => 'ordering',                 'Type' => 'int(11)',                'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'metakey'                     => (object) ['Field' => 'metakey',                  'Type' => 'text',                   'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'metadesc'                    => (object) ['Field' => 'metadesc',                 'Type' => 'text',                   'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'access'                      => (object) ['Field' => 'access',                   'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'hits'                        => (object) ['Field' => 'hits',                     'Type' => 'int(10) unsigned',       'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'metadata'                    => (object) ['Field' => 'metadata',                 'Type' => 'text',                   'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'featured'                    => (object) ['Field' => 'featured',                 'Type' => 'tinyint(3)',             'Null' => 'NO',   'Default' => 0],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'language'                    => (object) ['Field' => 'language',                 'Type' => 'char(7)',                'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'xreference'                  => (object) ['Field' => 'xreference',               'Type' => 'varchar(50)',            'Null' => 'NO',   'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     );
   }
 
@@ -722,34 +734,6 @@ class TableFields
   private function email_messagesTableFieldMetadata()
   {
     return array(
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'slug'                         => (object) ['Field' => 'slug',                         'Type' => 'char(255)',        'Null' => 'NO',   'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'                     => (object) ['Field' => 'asset_id',                     'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'                       => (object) ['Field' => 'access',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'enabled'                      => (object) ['Field' => 'enabled',                      'Type' => 'tinyint(4)',       'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_on'                   => (object) ['Field' => 'created_on',                   'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_by'                   => (object) ['Field' => 'created_by',                   'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_on'                  => (object) ['Field' => 'modified_on',                  'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_by'                  => (object) ['Field' => 'modified_by',                  'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'                       => (object) ['Field' => 'params',                       'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'language'                     => (object) ['Field' => 'language',                     'Type' => 'char(7)',          'Null' => 'NO',   'Default' => '*'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'name'                         => (object) ['Field' => 'name',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description'                  => (object) ['Field' => 'description',                  'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'text'                         => (object) ['Field' => 'text',                         'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -784,46 +768,6 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'slug'                         => (object) ['Field' => 'slug',                         'Type' => 'char(255)',        'Null' => 'NO',   'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'                     => (object) ['Field' => 'asset_id',                     'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'                       => (object) ['Field' => 'access',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'enabled'                      => (object) ['Field' => 'enabled',                      'Type' => 'tinyint(4)',       'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_on'                   => (object) ['Field' => 'created_on',                   'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_by'                   => (object) ['Field' => 'created_by',                   'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_on'                  => (object) ['Field' => 'modified_on',                  'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_by'                  => (object) ['Field' => 'modified_by',                  'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_on'                    => (object) ['Field' => 'locked_on',                    'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_by'                    => (object) ['Field' => 'locked_by',                    'Type' => 'int(11)',          'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_up'                   => (object) ['Field' => 'publish_up',                   'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_down'                 => (object) ['Field' => 'publish_down',                 'Type' => 'datetime',         'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'ordering'                     => (object) ['Field' => 'ordering',                     'Type' => 'int(11)',          'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'                       => (object) ['Field' => 'params',                       'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'language'                     => (object) ['Field' => 'language',                     'Type' => 'char(7)',          'Null' => 'NO',   'Default' => '*'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned', 'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'note'                         => (object) ['Field' => 'note',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'name'                         => (object) ['Field' => 'name',                         'Type' => 'varchar(255)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description'                  => (object) ['Field' => 'description',                  'Type' => 'text',             'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'description__intro'           => (object) ['Field' => 'description__intro',           'Type' => 'varchar(280)',     'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'subject'                      => (object) ['Field' => 'subject',                      'Type' => 'text',            'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'body'                         => (object) ['Field' => 'body',                         'Type' => 'text',            'Null' => 'YES',    'Default' => NULL],
@@ -834,48 +778,12 @@ class TableFields
 
   /**
 	 * Employer Aggregate Ratings
+   *
+   * @TODO: Why wouldn't these have a slug? no 'language', 'note', 'name', 'description', or 'description__intro' fields
 	 */
   private function employer_aggregate_ratingsTableFieldMetadata()
   {
     return array(
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'asset_id'                     => (object) ['Field' => 'asset_id',                     'Type' => 'int(10) unsigned',  'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'access'                       => (object) ['Field' => 'access',                       'Type' => 'int(10) unsigned',  'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'enabled'                      => (object) ['Field' => 'enabled',                     'Type' => 'tinyint(4)',         'Null' => 'NO',   'Default' => '1'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-      'created_on'                     => (object) ['Field' => 'created_on',                   'Type' => 'datetime',          'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'created_by'                   => (object) ['Field' => 'created_by',                   'Type' => 'int(11)',           'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_on'                  => (object) ['Field' => 'modified_on',                  'Type' => 'datetime',          'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'modified_by'                  => (object) ['Field' => 'modified_by',                  'Type' => 'int(11)',           'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_on'                    => (object) ['Field' => 'locked_on',                    'Type' => 'datetime',          'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'locked_by'                    => (object) ['Field' => 'locked_by',                    'Type' => 'int(11)',           'Null' => 'YES',  'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_up'                   => (object) ['Field' => 'publish_up',                   'Type' => 'datetime',          'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'publish_down'                 => (object) ['Field' => 'publish_down',                 'Type' => 'datetime',          'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'metadata'                     => (object) ['Field' => 'metadata',                     'Type' => 'json',              'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'metakey'                      => (object) ['Field' => 'metakey',                      'Type' => 'text',              'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'metadesc'                     => (object) ['Field' => 'metadesc',                     'Type' => 'text',              'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'xreference'                   => (object) ['Field' => 'xreference',                   'Type' => 'text',              'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'                       => (object) ['Field' => 'params',                       'Type' => 'text',              'Null' => 'YES',  'Default' => NULL],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'cat_id'                       => (object) ['Field' => 'cat_id',                       'Type' => 'int(10) unsigned',  'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'hits'                         => (object) ['Field' => 'hits',                         'Type' => 'int(10) unsigned',  'Null' => 'NO',   'Default' => '0'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'featured'                     => (object) ['Field' => 'featured',                  'Type' => 'tinyint(3) unsigned',  'Null' => 'NO',   'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'item_reviewed'                => (object) ['Field' => 'item_reviewed',                'Type' => 'int(11)',           'Null' => 'NO',   'Default' => '0'],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1025,6 +933,8 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'about'                   => (object) ['Field' => 'about',                    'Type' => 'bigint(20) unsigned',      'Null' => 'YES',    'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'geo_coordinate'          => (object) ['Field' => 'geo_coordinate',           'Type' => 'bigint(20) unsigned',      'Null' => 'YES',    'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'geo_radius'              => (object) ['Field' => 'geo_radius',               'Type' => 'int unsigned',             'Null' => 'YES',    'Default' => NULL],
@@ -1130,6 +1040,8 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'group'             => (object) ['Field' => 'group',          'Type' => 'bigint(20) unsigned',                 'Null' => 'NO',           'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'image'             => (object) ['Field' => 'image',          'Type' => 'json',                                'Null' => 'YES',          'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }
 
@@ -1141,9 +1053,11 @@ class TableFields
   {
     return array(
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'url'               => (object) ['Field' => 'url',            'Type' => 'varchar(2083)',                      'Null' => 'YES',          'Default' => NULL],
+        'url'               => (object) ['Field' => 'url',            'Type' => 'varchar(2083)',                       'Null' => 'YES',          'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'group'             => (object) ['Field' => 'group',          'Type' => 'char(96)',                           'Null' => 'NO',           'Default' => NULL],
+        'group'             => (object) ['Field' => 'group',          'Type' => 'char(96)',                            'Null' => 'NO',           'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'image'             => (object) ['Field' => 'image',          'Type' => 'json',                                'Null' => 'YES',          'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }
@@ -1293,8 +1207,6 @@ class TableFields
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'activation'        => (object) ['Field' => 'activation',     'Type' => 'varchar(100)',         'Null' => 'NO',   'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        'params'            => (object) ['Field' => 'params',         'Type' => 'text',                 'Null' => 'NO',   'Default' => '{}'],
-      //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'lastResetTime'     => (object) ['Field' => 'lastResetTime',  'Type' => 'text',                 'Null' => 'NO',   'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'resetCount'        => (object) ['Field' => 'resetCount',     'Type' => 'int(11)',              'Null' => 'NO',   'Default' => '0'],
@@ -1375,6 +1287,8 @@ class TableFields
         'main_entity_of_page'          => (object) ['Field' => 'main_entity_of_page',        'Type' => 'bigint(20) unsigned',  'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
         'about__organization'          => (object) ['Field' => 'about__organization',        'Type' => 'bigint(20) unsigned',  'Null' => 'YES',  'Default' => NULL],
+      //------------------------------------------------------------------------------------------------------------------------------------------------------------
+        'image'                        => (object) ['Field' => 'image',                      'Type' => 'json',                 'Null' => 'YES',  'Default' => NULL],
       //------------------------------------------------------------------------------------------------------------------------------------------------------------
     );
   }

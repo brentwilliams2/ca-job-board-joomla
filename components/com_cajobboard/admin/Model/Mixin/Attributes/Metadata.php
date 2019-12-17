@@ -61,3 +61,4 @@ trait Metadata
     return $this->transformRegistryToJson($value);
   }
 }
+

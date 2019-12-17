@@ -147,10 +147,11 @@ class BaseTemplate extends \ArrayObject
 
     $ret = $matches[0];
 
-    foreach ($ret as &$match) {
+    foreach ($ret as &$match)
+    {
       $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
     }
 
     return implode('-', $ret);
-	}
+  }
 }

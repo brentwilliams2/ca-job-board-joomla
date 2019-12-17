@@ -35,6 +35,7 @@ class Metadata extends Observer
 	 */
 	public function onCheck(DataModel $model)
 	{
+    // iterates through registry object, calling methods in the pattern 'checkForValidMYFIELDField()' for each public property on registry
     $this->executeCheck($model, 'metadata');
   }
 

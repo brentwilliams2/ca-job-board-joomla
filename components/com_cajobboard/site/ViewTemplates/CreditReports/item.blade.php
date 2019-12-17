@@ -28,7 +28,7 @@
 {{--
   Responsive container for desktop and mobile
 --}}
-<div class="row media {{ $featured }} @jhtml('helper.commonwidgets.getAttributeClass', 'item', $prefix, $crud)">
+<div class="row media @jhtml('helper.commonwidgets.getAttributeClass', 'item', $prefix, $crud)">
 
   @jhtml('helper.itemwidgets.title', $title, $prefix, $crud)
 

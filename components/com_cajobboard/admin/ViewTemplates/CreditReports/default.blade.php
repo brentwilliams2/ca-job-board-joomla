@@ -61,14 +61,8 @@ $widthPct = array
     {{-- COLUMN #6: Author name, allows sorting ASC / DESC by clicking the field name in the column header. --}}
     @jhtml('helper.browseWidgets.authorNameHeader', $widthPct['#6'])
 
-    {{-- COLUMN #7: Language --}}
-    @jhtml('helper.browseWidgets.languageHeader', $widthPct['#7'])
-
     {{-- COLUMN #8: Date Created --}}
     @jhtml('helper.browseWidgets.createdOnHeader', $widthPct['#8'])
-
-    {{-- COLUMN #9: Hits counter --}}
-     @jhtml('helper.browseWidgets.hitsHeader', $widthPct['#9'])
   </tr>
 @stop
 
@@ -102,14 +96,8 @@ $widthPct = array
       {{-- COLUMN #6: Author name --}}
       @jhtml('helper.browseWidgets.authorNameField', $widthPct['#6'], $item)
 
-      {{-- COLUMN #7: Language --}}
-      @jhtml('helper.browseWidgets.languageField', $widthPct['#7'], $item)
-
       {{-- COLUMN #8: Date Created --}}
       @jhtml('helper.browseWidgets.createdOnField', $widthPct['#8'], $item)
-
-      {{-- COLUMN #9: Hits Counter --}}
-      @jhtml('helper.browseWidgets.hitsField', $widthPct['#9'], $item)
     </tr>
   @endforeach
 @stop

@@ -11,7 +11,7 @@
 
 namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates\Mixins;
 
-use \Joomla\Registry\Registry;
+use \Calligraphic\Library\Platform\Registry;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -21,7 +21,7 @@ trait Image
 	/**
 	 * A description of the item.
 	 *
-	 * @var    \Joomla\Registry\Registry
+	 * @var    Registry
    */
   public $image;
 
@@ -31,22 +31,22 @@ trait Image
    */
   public function image ($config, $faker)
   {
-      $this->image = new Registry();
+    $this->image = new Registry();
 
-      $imageArray = array (
-      'image_intro' => 'images\/sampledata\/fruitshop\/apple.jpg',
-      'float_intro' => 'right',
-      'image_intro_alt' => 'Sample intro image alt get',
-      'image_intro_caption' => 'A job board image',
-      'image_fulltext' => 'images\/sampledata\/parks\/banner_cradle.jpg',
-      'float_fulltext' => '',
-      'image_fulltext_alt' => 'Sample fulltext image alt text',
-      'image_fulltext_caption' => 'a park!'
-      );
+    $imageArray = array (
+    'image_intro' => 'images\/sampledata\/fruitshop\/apple.jpg',
+    'float_intro' => 'right',
+    'image_intro_alt' => 'Sample intro image alt get',
+    'image_intro_caption' => 'A job board image',
+    'image_fulltext' => 'images\/sampledata\/parks\/banner_cradle.jpg',
+    'float_fulltext' => '',
+    'image_fulltext_alt' => 'Sample fulltext image alt text',
+    'image_fulltext_caption' => 'a park!'
+    );
 
-      foreach ($imageArray as $path => $value)
-      {
-        $this->image->set($path, $value);
-      }
+    foreach ($imageArray as $path => $value)
+    {
+      $this->image->set($path, $value);
+    }
   }
 }

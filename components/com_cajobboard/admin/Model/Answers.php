@@ -15,17 +15,22 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Social;
+use \FOF30\Container\Container;
 
 /**
  * Fields:
  *
  * UCM
+ *
  * @property int            $answer_id        Surrogate primary key.
  * @property string         $slug             Alias for SEF URL.
  *
  * FOF "magic" fields
+ *
  * @property int            $asset_id           FK to the #__assets table for access control purposes.
  * @property int            $access             The Joomla! view access level.
  * @property int            $enabled            Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
@@ -37,6 +42,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int            $locked_by          User ID who locked the record, auto-filled by lock(), unlock().
  *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
+ *
  * @property string         $publish_up       Date and time to change the state to published, schema.org alias is datePosted.
  * @property string         $publish_down     Date and time to change the state to unpublished.
  * @property int            $version          Version of this item.
@@ -54,17 +60,29 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  *
  * SCHEMA: Thing
  * @property string         $name             A title to use for the answer.
+ *
  * @property string         $description      A description of the answer.
  * @property string         $description__intro   Short description of the item, used for the text shown on social media via shares and search engine results.
  * @property Registry       $image                Image metadata for social share and page header images.
  *
  * SCHEMA: Answer
+ *
  * @property int            $upvote_count     Upvote count for this item.
  * @property int            $downvote_count   Downvote count for this item.
  */
-class Answers extends BaseDataModel
+class Answers extends BaseDataModel implements Core, Extended, Social
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
+  /* Traits to include in the class */
+
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Comments;             // 'saveComment' method
+
+  // Transformations for model properties (attributes) to an appropriate data type (e.g.
+  // Registry objects). Validation checks and setting attribute values from state should
+  // be done in Behaviours (which can be enabled and overridden per model).
+
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Image;     // Attribute getter / setter
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Metadata;  // Attribute getter / setter
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Params;    // Attribute getter / setter
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -76,9 +94,6 @@ class Answers extends BaseDataModel
 	{
     /* Set up config before parent constructor */
 
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'Answers', array('typeAlias' => 'com_cajobboard.answers'));
-
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_answers';
     $config['idFieldName'] = 'answer_id';
@@ -89,14 +104,41 @@ class Answers extends BaseDataModel
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
 
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
     $config['behaviours'] = array(
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      //'ContentHistory', // Add Joomla! content history support
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
-      //'Tags'        // Add Joomla! Tags support
+
+      /* Core UCM field behaviours */
+
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      //'ContentHistory',     // Add Joomla! content history support
+      'Enabled',            // Filter access to items based on enabled status
+      'Featured',           // Add support for featured items
+      'Hits',               // Add tracking for number of item views
+      'Language',           // Filter front-end access to items based on language
+      'Locked',             // Add 'locked_on' and 'locked_by' fields to skip fields check
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Note',               // Add 'note' field to skip fields check
+      'Ordering',           // Order items owned by featured status and then descending by date
+      //'Own',                // Filter access to items owned by the currently logged in user only
+      'Params',             // Add 'params' field to skip fields check
+      //'PII',                // Filter access for items that have Personally Identifiable Information.
+      'Publish',            // Set the 'publish_on' field for new records
+      'Slug',               // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags',               // Add Joomla! Tags support
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Patches.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+      'Check/Image',        // Set the 'image' JSON field on record save
+      'Check/Metadata',     // Set the 'metadata' JSON field on record save
+      'Check/Title',        // Check length and titlecase the 'metadata' JSON field on record save
+
+      /* Model property (attribute) Behaviours for validation and setting value from state */
+
+      'DescriptionIntro',   // Check the length of the 'description__intro' field
     );
 
     /* Parent constructor */

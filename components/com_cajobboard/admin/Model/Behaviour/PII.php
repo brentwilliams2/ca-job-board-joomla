@@ -40,12 +40,6 @@ class PII extends Observer
 		/** @var Container $container */
     $container = $model->getContainer();
 
-		// Only apply the check in the backend. In the frontend I have different kinds of access control.
-		if (!$container->platform->isBackend())
-		{
-			return true;
-    }
-
 		/** @var \JUser $user */
     $user = $container->platform->getUser();
 

@@ -1,6 +1,6 @@
 <?php
  /**
-  * Site Answers Edit View Template
+  * Site Interviews Edit View Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019
@@ -14,8 +14,8 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                        $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\Interviews   $item */
   $item = $this->getItem();
 
   // Using an include so that local vars in the included file are in scope here also
@@ -43,7 +43,7 @@
       </div>
 
       <div class="form-group">
-        @jhtml('helper.editwidgets.text', $text, $textPlaceholder, $humanViewNameSingular, $prefix, $crud)
+        @jhtml('helper.editwidgets.description', $description, $descriptionPlaceholder, $humanViewNameSingular, $prefix, $crud)
       </div>
 
       @if ($isEditView)

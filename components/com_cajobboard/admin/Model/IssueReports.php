@@ -22,10 +22,12 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * Fields:
  *
  * UCM
+ *
  * @property int      $issue_report_id            Surrogate primary key.
  * @property string   $slug                       Alias for SEF URL
  *
  * FOF "magic" fields
+ *
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
  * @property int      $access                     The Joomla! view access level.
  * @property int      $enabled                    Publish status: -2 for trashed and marked for deletion, -1 for archived, 0 for unpublished, and 1 for published.
@@ -37,6 +39,7 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
  *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
+ *
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
  * @property int      $version                    Version of this item.
@@ -52,10 +55,12 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * @property int      $featured                   Whether this content item is featured or not.
  *
  * SCHEMA: Thing
+ *
  * @property string   $name                       A title or header for this report.
  * @property string   $description                A short description of this report.
  *
  * SCHEMA: CreativeWork
+ *
  * @property string   $about__model               The foreign model name the item of this report refers to, e.g. Answers.
  * @property int      $about__id                  The primary key of the foreign model the item of this report refers to.
  */
@@ -83,17 +88,9 @@ class IssueReports extends BaseDataModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
       //'ContentHistory', // Add Joomla! content history support
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
 

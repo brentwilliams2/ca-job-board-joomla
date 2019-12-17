@@ -3,7 +3,7 @@
  * Admin Alerts Model
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   May 1, 2018
  * @author    Calligraphic, LLC http://www.calligraphic.design
  * @copyright Copyright (C) 2018 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -50,18 +50,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing
  * @property string         $name             A title to use for the alert.
  * @property string         $description      A description of the alert.
- *
- * SCHEMA: https://schema.org/GeoCoordinates
- * @property  GeoCoordinates $geo_coordinate  The geographic coordinates of the center of the job seeker's search radius, FK to #__cajobboard_geo_coordinates
- *
- * SCHEMA: https://schema.org/geoRadius
- * @property int            $geo_radius       The distance in miles to search for jobs from the job seeker's search radius center point.
- *
- * SCHEMA: https://schema.org/occupationalCategory
- * @property OccupationalCategories $occupational_category   A category describing the job, FK to #__cajobboard_occupational_categories
- *
- * SCHEMA: https://schema.org/keywords
- * @property JSON           $keywords         Used to filter jobs shown for this alert. Should be a case-insensitive array of keywords, e.g. [ "great customers", "friendly", "fun" ]
  */
 class JobAlerts extends BaseDataModel
 {
@@ -89,16 +77,9 @@ class JobAlerts extends BaseDataModel
     $config['behaviours'] = array(
       'Access',     // Filter access to items based on viewing access levels
       'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Check',      // Validation checks for model, over-rideable per model
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      'Ordering',   // Order items owned by featured status and then descending by date
+      //'ContentHistory', // Add Joomla! content history support
       //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
 
@@ -115,38 +96,6 @@ class JobAlerts extends BaseDataModel
 
     // one-to-one FK to #__cajobboard_occupational_categories
     $this->inverseSideOfHasOne('OccupationalCategories', 'OccupationalCategories@com_cajobboard', 'occupational_category', 'occupational_category_id');
-  }
-
-  /**
-	 *
-	 */
-	public function doSomethingGeoRelated()
-	{
-    // @TODO: Creates alert for jobs within X miles for same job category
-  }
-
-
-  /**
-	 *
-	 */
-	public function getCityCenter()
-  {
-    /*
-      1. Job seeker / employer enters a city name via a text input rather than a drop-down box of cities to select from.
-      2. They are offered suggestions as they type, like the way Google's search feature works.
-      3. A map shows with a pin over where I think they're talking about.
-      4. If it's wrong (two towns with the same name for example), they can click on the map and I'll detect the closest town name.
-      5. I use a default radius (maybe 20 miles?) for them, and they can change the radius if they want.
-    */
-  }
-
-
-  /**
-	 * Purge old job alerts
-	 */
-	public function purgeExpiredJobAlerts($duration)
-	{
-    // @TODO: Purge job alerts that are older than $duration
   }
 
 
@@ -197,16 +146,34 @@ class JobAlerts extends BaseDataModel
 
 
   /**
-	 * @throws    \RuntimeException when the assertion fails
 	 *
-	 * @return    $this   For chaining.
 	 */
-	public function check()
+	public function doSomethingGeoRelated()
 	{
-    $this->assertNotEmpty($this->name, 'COM_CAJOBBOARD_JOB_ALERTS_TITLE_ERR');
+    // @TODO: Creates alert for jobs within X miles for same job category
+  }
 
-		parent::check();
 
-    return $this;
+  /**
+	 *
+	 */
+	public function getCityCenter()
+  {
+    /*
+      1. Job seeker / employer enters a city name via a text input rather than a drop-down box of cities to select from.
+      2. They are offered suggestions as they type, like the way Google's search feature works.
+      3. A map shows with a pin over where I think they're talking about.
+      4. If it's wrong (two towns with the same name for example), they can click on the map and I'll detect the closest town name.
+      5. I use a default radius (maybe 20 miles?) for them, and they can change the radius if they want.
+    */
+  }
+
+
+  /**
+	 * Purge old job alerts
+	 */
+	public function purgeExpiredJobAlerts($duration)
+	{
+    // @TODO: Purge job alerts that are older than $duration
   }
 }

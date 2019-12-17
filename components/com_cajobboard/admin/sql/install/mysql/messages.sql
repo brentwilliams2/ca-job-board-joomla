@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_messages` (
   publish_down DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to unpublished.',
   version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
   ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
+
+/** @TODO: does this model need th epublic fields, like metadata? Hits and featured? */
+
   metadata JSON COMMENT 'JSON encoded metadata field for this item.',
   metakey TEXT COMMENT 'Meta keywords for this item.',
   metadesc TEXT COMMENT 'Meta description for this item.',

@@ -16,7 +16,12 @@
  */
 
 // Generic dependencies
-const freader = require("fs");
+const filesys = require('fs');
+
+const es = require('event-stream');
+
+// Get UID and GID from system username and groupname
+const userid = require('userid');
 
 // delete utility compatible with Gulp
 const del = require('del');
@@ -39,11 +44,14 @@ const rename = require('gulp-rename');
 // Concat multiple files into one file
 const concat = require('gulp-concat');
 
+// Change file permissions
+const chmod = require('gulp-chmod');
+
 // Prevent pipe breaking caused by errors from gulp plugins
 const plumber = require('gulp-plumber');
 
 // Async logger for use with plumber
-const notify = require("gulp-notify");
+const notify = require('gulp-notify');
 
 // Console log entries, prefixed with a timestamp
 const log = require('fancy-log');
@@ -84,7 +92,7 @@ const esLintOptions = {
 const uglify = require('gulp-uglify');
 
 // Load config
-const config = JSON.parse( freader.readFileSync('./gulp-config.json') );
+const config = JSON.parse( filesys.readFileSync('./gulp-config.json') );
 
 // Environmental variables that should be set for the shell
 const joomlaDir = process.env.CA_DIRECTORY_TO_JOOMLA;
@@ -92,6 +100,14 @@ const repoDir   = process.env.CA_DIRECTORY_TO_REPO;
 
 // For setting USER:GROUP in Rsync
 config.chown    = process.env.CA_JOOMLA_USER_GROUP;
+
+// For use with gulp-chown
+const ownerName = config.chown ? config.chown.split(':')[0] : null;
+const groupName = config.chown ? config.chown.split(':')[1] : null;
+
+// For use with gulp-chmod
+const fileMode = 0o664;
+const directoryMode = 0o775;
 
 /*
  * Terminate on unhandled promise rejection
@@ -140,7 +156,12 @@ function watchRepoPhp () {
       .pipe(rename(function (path) {
         path.dirname = phpJoomlaRelDir;
       }))
-      .pipe( dest(joomlaDir))
+      .pipe(chmod(fileMode, directoryMode))
+      .pipe(dest(joomlaDir))
+      .pipe(es.map( (file, callback) => {
+        filesys.chown(file.path, userid.uid(ownerName), userid.gid(groupName),
+          (err) => callback(err, file));
+      }))
       // Log it to console
       .on('end', function() { log( colors.green('Copied: ' + joomlaDir + phpJoomlaRelDir + '/' + Vinyl.basename)) });
   });
@@ -168,12 +189,17 @@ function watchRepoScss () {
         path.dirname = repoCssDir;
         path.extname = ".css";
       }))
+      .pipe(chmod(fileMode, directoryMode))
       .pipe( dest('/', { sourcemaps: '.' }) )
       // save the file in the Joomla! live site CSS directory
       .pipe(rename(function (path) {
         path.dirname = joomlaCssDir;
       }))
       .pipe( dest('/'))
+      .pipe(es.map( (file, callback) => {
+        filesys.chown(file.path, userid.uid(ownerName), userid.gid(groupName),
+          (err) => callback(err, file));
+      }))
       // Log it to console
       .on('end', function() {
         log( colors.green('Compiled: /' + repoCssDir + Vinyl.stem + '.css'));
@@ -213,7 +239,12 @@ function watchRepoJs () {
       .pipe(rename(function (path) {
         path.dirname = jsJoomlaRelDir;
       }))
+      .pipe(chmod(fileMode, directoryMode))
       .pipe( dest(joomlaDir))
+      .pipe(es.map( (file, callback) => {
+        filesys.chown(file.path, userid.uid(ownerName), userid.gid(groupName),
+          (err) => callback(err, file));
+      }))
       // Log it to console
       .on('end', function() { log( colors.green('Copied: ' + joomlaDir + jsJoomlaRelDir + '/' + Vinyl.basename)) });
   });
@@ -230,6 +261,11 @@ function watchRepoOther () {
       .pipe( plumber({ errorHandler: onError }) )
       .pipe(rename(function (path) {
         path.dirname = otherJoomlaRelDir;
+      }))
+      .pipe(chmod(fileMode, directoryMode))
+      .pipe(es.map( (file, callback) => {
+        filesys.chown(file.path, userid.uid(ownerName), userid.gid(groupName),
+          (err) => callback(err, file));
       }))
       .pipe( dest(joomlaDir))
       // Log it to console

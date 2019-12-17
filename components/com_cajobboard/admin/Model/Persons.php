@@ -16,13 +16,10 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 defined( '_JEXEC' ) or die;
 
 use \Calligraphic\Cajobboard\Admin\Helper\MessageCounts;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\UserGroupInvalid;
 use \Calligraphic\Cajobboard\Admin\Model\Exception\UserSaveFailure;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
-use \FOF30\Platform\PlatformInterface;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\User\User;
 use \Joomla\CMS\User\UserHelper;
 
@@ -64,38 +61,31 @@ use \Joomla\CMS\User\UserHelper;
  * @method  $this  otep()           otep(string $v)
  * @method  $this  requireReset()   requireReset(bool $v)
  */
-class Persons extends DataModel
+class Persons extends BaseDataModel
 {
-  /* Traits to include in the class */
-
-	use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;	// Refactored base-class constructor, called from __construct method
-	use \Calligraphic\Cajobboard\Admin\Model\Mixin\TableFields;	// Use an array of table fields instead of database reads on each table
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Count;				// Overridden count() method to cache value
-
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
-	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
    */
 	public function __construct(Container $container, array $config = array())
 	{
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
-    $config['behaviours'] = array(
-      'Filter'
-    );
-
 		$config['tableName'] = '#__users';
     $config['idFieldName'] = 'id';
 
     // Define a contentType to enable the Tags behaviour
 		$config['contentType'] = 'com_cajobboard.persons';
 
-		// Do not run automatic value validation of data before saving it.
-		$config['autoChecks'] = false;
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
 
-		/* Overridden constructor */
-    $this->constructor($container, $config);
+    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    $config['behaviours'] = array(
+			'Params',             // Add 'params' field to skip fields check
+      'Check',							// Validation checks for model
+    );
+
+		/* Parent constructor */
+    parent::__construct($container, $config);
 
 		// belongsToMany relation uses a join table
 

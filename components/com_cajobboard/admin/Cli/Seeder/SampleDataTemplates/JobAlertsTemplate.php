@@ -74,14 +74,14 @@ class JobAlertsTemplate extends CommonTemplate
   // $this->belongsTo('About', 'Persons@com_cajobboard', 'about', 'id');
   public function about ($config, $faker)
   {
-    $this->about = $config->relationMapper->getFKValue('BelongsTo', $config, false, $faker, 'Persons');
+    $this->about = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
   }
 
 
   // $this->inverseSideOfHasOne('GeoCoordinates', 'GeoCoordinates@com_cajobboard', 'geo_coordinate', 'geo_coordinate_id');
   public function geo_coordinate ($config, $faker)
   {
-    $this->geo_coordinate = $config->relationMapper->getFKValue('BelongsTo', $config, false, $faker, 'GeoCoordinates');
+    $this->geo_coordinate = $config->relationMapper->getFKValue('BelongsTo', $config, true, $faker, 'GeoCoordinates');
   }
 
 

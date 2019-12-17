@@ -30,6 +30,9 @@ defined( '_JEXEC' ) or die;
  */
 class Check extends Observer
 {
+  /* Trait methods to include in class */
+  use \Calligraphic\Cajobboard\Admin\Model\Behaviour\Mixin\Assertions;
+
   /**
    * Models that should require search-engine friendly page titles, e.g. sixty characters or less
    */
@@ -50,6 +53,8 @@ class Check extends Observer
     $this->checkForEmptyRequiredFields($model);
 
     $this->checkForSearchEngineFriendlyTitle($model);
+
+    // @TODO: add behaviour for checking length of 'note' field and validity of 'params' field if either are present
   }
 
 

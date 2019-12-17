@@ -1,36 +1,68 @@
 <?php
- /**
-  * Question and Answer Pages List View Template
-  *
-  * @package   Calligraphic Job Board
-  * @version   0.1 May 1, 2018
-  * @author    Calligraphic, LLC http://www.calligraphic.design
-  * @copyright Copyright (C) 2018 Calligraphic, LLC
-  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
-  *
-  */
+/**
+ * QA Page List View Template
+ *
+ * @package   Calligraphic Job Board
+ * @version   October 31, 2019
+ * @author    Calligraphic, LLC http://www.calligraphic.design
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
 
-  // no direct access
-  defined('_JEXEC') or die;
+// no direct access
+defined('_JEXEC') or die;
 
-  // collection of review postings model objects for this list view
-  $items = $this->getItems();
+/** @var  FOF30\View\DataView\Html  $this */
+
+// Using an include so that local vars in the included file are in scope here also
+include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.php');
+
+// The name of the crud view
+$crud = 'browse';
+
+$noItemsFoundMssg = Text::sprintf('COM_CAJOBBOARD_NO_ITEMS_FOUND', $humanViewNamePlural);
 ?>
 
-@section('header')
-  <h4>Question and Answer Pages</h4>
-@show
+@include('site:com_cajobboard/Common/Modal/report_item_modal')
 
-@section('sidebar')
-  <p></p>
+@section('header')
+<div class="well @jhtml('helper.commonwidgets.getAttributeClass', 'header', $prefix, $crud)">
+  <span class="h4 pull-left">@lang('COM_CAJOBBOARD_' . $transKey . '_PAGE_TITLE')</span>
+
+  @if ($this->paginationHelper->shouldDisplayLimitBox())
+    <span class="pagination-select pull-right">
+      @include('site:com_cajobboard/Common/pagination_results_limit')
+    </span>
+  @endif
+
+  @if ($canUserAdd)
+    @jhtml('helper.buttonwidgets.addNew', $this, $prefix, $crud)
+  @endif
+
+  <div class="clearfix"></div>
+</div>
 @show
 
 @section('item')
-  <div class="container-fluid qapages-list">
-    @each('site:com_cajobboard/QAPages/default_item', $items, 'item', 'text|COM_CAJOBBOARD_QAPAGES_NO_QAPAGES_FOUND')
-  </div>
+<div class="container-fluid @jhtml('helper.commonwidgets.getAttributeClass', 'list', $prefix, $crud)">
+  @each('site:com_cajobboard/' . $viewName . '/default_item', $this->items, 'item', 'text|' . $noItemsFoundMssg)
+</div>
+<div class="clearfix"></div>
 @show
 
 @section('footer')
-  <p></p>
+@if ($this->paginationHelper->shouldDisplayLimitBox())
+  <div class="@jhtml('helper.commonwidgets.getAttributeClass', 'footer', $prefix, $crud)">
+    {{ $this->pagination->getPaginationLinks('joomla.pagination.links') }}
+  </div>
+@endif
 @show
+
+
+{{--
+Modal templates used in common for all default_item views, only
+take bandwidth hit of including modal HTML if user is logged in
+--}}
+@if ( !$isGuestUser )
+@yield('report-item-modal')
+@endif

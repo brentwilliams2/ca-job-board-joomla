@@ -3,9 +3,9 @@
  * Trait to patch the base archive method until PR merged.
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   October 30, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -19,19 +19,6 @@ defined('_JEXEC') or die;
 
 trait Patches
 {
-  /**
-	 * Adds a behaviour by its name. Over-ridden to escape forward slashes in the behaviour name.
-	 *
-	 * @param   string  $behaviour    The behaviour's name
-	 *
-	 * @return  $this  Self, for chaining
-	 */
-	public function addBehaviour($behaviour)
-	{
-    return parent::addBehaviour( str_replace( '/', '\\', $behaviour) );
-	}
-
-
 	/**
 	 * Over-ridden method to archive the record, i.e. set enabled to -1.
 	 *

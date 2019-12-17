@@ -17,8 +17,8 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
-use FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
+use \FOF30\Container\Container;
 
 /**
  * Fields:
@@ -53,6 +53,15 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseTreeModel;
  */
 class Categories extends BaseTreeModel
 {
+  /* Traits to include in the class */
+
+  // Transformations for model properties (attributes) to an appropriate data type (e.g.
+  // Registry objects). Validation checks and setting attribute values from state should
+  // be done in Behaviours (which can be enabled and overridden per model).
+
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Metadata;  // Attribute getter / setter
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Params;    // Attribute getter / setter
+
   /*
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -64,26 +73,50 @@ class Categories extends BaseTreeModel
 		$config['tableName'] = '#__categories';
     $config['idFieldName'] = 'id';
 
-
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.categories';
 
-    parent::__construct($container, $config);
-
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
-    $config['behaviours'] = array(
-      //'Access',     // Filter access to items based on viewing access levels
-      //'Assets',     // Add Joomla! ACL assets support
-      //'Check',      // Validation checks for model, over-rideable per model
-      'Language',   // Filter front-end access to items based on language
-      'Metadata',   // Set the 'metadata' JSON field on record save
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information
-      //'Publish',    // Set the publish_on field for new records
-      //'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
+    // Set field aliases: $alias => $realName
+    $config['aliasFields'] = array(
+      'created_by' => 'created_user_id',
+      'created_on' => 'created_time',
+      'enabled' => 'published',
+      'locked_by' => 'checked_out_time',
+      'locked_on' => 'checked_out',
+      'modified_by' => 'modified_user_id',
+      'modified_on' => 'modified_time',
+      'slug' => 'alias',
     );
 
-		// Do not run automatic value validation of data before saving it.
-    $this->autoChecks = false;
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
+    $config['behaviours'] = array(
+
+      /* Core UCM field behaviours */
+
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      'ContentHistory',     // Add Joomla! content history support
+      'Enabled',            // Filter access to items based on enabled status
+      'Hits',               // Add tracking for number of item views
+      'Language',           // Filter front-end access to items based on language
+      'Locked',             // Add 'locked_on' and 'locked_by' fields to skip fields check
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Note',               // Add 'note' field to skip fields check
+      //'Own',                // Filter access to items owned by the currently logged in user only
+      'Params',             // Add 'params' field to skip fields check
+      //'PII',                // Filter access for items that have Personally Identifiable Information.
+      'Slug',               // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags',               // Add Joomla! Tags support
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Patches.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+      'Check/Metadata',     // Set the 'metadata' JSON field on record save
+      'Check/Title',        // Check length and titlecase the 'metadata' JSON field on record save
+    );
+
+    parent::__construct($container, $config);
   }
 }

@@ -17,10 +17,10 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
-use \FOF30\Model\DataModel\Exception\NoAssetKey;
 
 /**
  * Fields:
@@ -54,17 +54,9 @@ use \FOF30\Model\DataModel\Exception\NoAssetKey;
  * SCHEMA: none (internal use only)
  * @property string         $xml_template     XML template with shortcodes to generate from the data feed.
  */
-class DataFeedTemplates extends DataModel
+class DataFeedTemplates extends BaseDataModel implements Core, Extended
 {
   /* Traits to include in the class */
-
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Asset;                // Joomla! role-based access control handling
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;          // Refactored base-class constructor, called from __construct method
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Core;                 // Utility methods
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\JsonData;             // Methods for transforming between JSON-encoded strings and Registry objects
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Patches;              // Over-ridden FOF30 DataModel methods (some with PRs)
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\TableFields;          // Use an array of table fields instead of database reads on each table
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;           // Provides over-ridden 'check' method
 
   // Transformations for model properties (attributes) to an appropriate data type (e.g.
   // Registry objects). Validation checks and setting attribute values from state should
@@ -82,9 +74,6 @@ class DataFeedTemplates extends DataModel
 	{
     /* Set up config before parent constructor */
 
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'Answers', array('typeAlias' => 'com_cajobboard.answers'));
-
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_data_feed_templates';
     $config['idFieldName'] = 'data_feed_template_id';
@@ -95,22 +84,30 @@ class DataFeedTemplates extends DataModel
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
 		$config['aliasFields'] = array('title' => 'name');
 
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
     $config['behaviours'] = array(
-			//'ContentHistory', // Add Joomla! content history support
-			'Filters',		// Filter behaviour
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      'Category',   // Set category in new records
-      'Enabled',    // Filter access to items based on enabled status
-      'Language',   // Filter front-end access to items based on language
-      'Publish',    // Set the publish_on field for new records
-      'Slug',       // Backfill the slug field with the 'title' property or its fieldAlias if empty
 
-      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Patches.php */
+      /* Core UCM field behaviours */
 
-      'Check',            // Validation checks for model, over-rideable per model
-      'Check/Title',      // Check length and titlecase the 'metadata' JSON field on record save
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      //'ContentHistory',     // Add Joomla! content history support
+      'Enabled',            // Filter access to items based on enabled status
+      'Language',           // Filter front-end access to items based on language
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Ordering',           // Order items owned by featured status and then descending by date
+      //'Own',                // Filter access to items owned by the currently logged in user only
+      //'PII',                // Filter access for items that have Personally Identifiable Information.
+      'Publish',            // Set the 'publish_on' field for new records
+      'Slug',               // Backfill the slug field with the 'title' property or its fieldAlias if empty
+      //'Tags'                // Add Joomla! Tags support
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Core.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+      'Check/Title',        // Check length and titlecase the 'metadata' JSON field on record save
 
       /* Model property (attribute) Behaviours for validation and setting value from state */
 

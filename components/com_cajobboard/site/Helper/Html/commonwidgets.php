@@ -90,6 +90,27 @@ abstract class helperCommonwidgets
 	}
 
 
+	/**
+	 * Method to create an HTML element tag for an item's 'category' model field.
+	 *
+   * @param   string    $category   The category name of the item, already sanitized.
+   * @param 	string 		$prefix   	A prefix to prepend to a class attribute, e.g. 'prefix-edit-link' and 'prefix-edit-btn' classes
+   * @param 	string    $crud     	The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
+	 *
+	 * @return  string
+	 */
+	public static function bespokeCategory($category, $prefix = null, $crud = null)
+	{
+    $class  = Utility::getAttributeClass('category', $prefix, $crud);
+
+		$html  = '<p class="' . $class . '">';
+		$html .= Text::_($category);
+    $html .= '</p>';
+
+    return $html;
+  }
+
+
   /**
 	 * Method to create an HTML element tag from an item's $createdOn local variable.
 	 *
@@ -148,6 +169,27 @@ abstract class helperCommonwidgets
 
 		$html  = '<p class="' . $class . '">';
 		$html .= $descriptionIntro;
+    $html .= '</p>';
+
+    return $html;
+	}
+
+
+	/**
+	 * Method to create an HTML element tag for an item's 'url' model field.
+	 *
+   * @param   string    $url   		The url of the item, already sanitized.
+   * @param 	string 		$prefix   A prefix to prepend to a class attribute, e.g. 'prefix-edit-link' and 'prefix-edit-btn' classes
+   * @param 	string    $crud    	The name of the crud view, e.g. 'browse', 'read', 'edit', 'add'
+	 *
+	 * @return  string
+	 */
+	public static function url($url, $prefix = null, $crud = null)
+	{
+    $class  = Utility::getAttributeClass('url', $prefix, $crud);
+
+		$html  = '<p class="' . $class . '">';
+		$html .= $url;
     $html .= '</p>';
 
     return $html;

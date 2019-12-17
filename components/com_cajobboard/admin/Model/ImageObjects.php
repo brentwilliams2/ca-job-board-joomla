@@ -69,7 +69,7 @@ use \FOF30\Container\Container;
  * SCHEMA: ImageObject
  * @property  string	      $caption          Caption for the property image
  * @property  string	      $exif_data        JSON-encoded exif data for this image
- * 
+ *
  * SCHEMA: Thing(additionalType) -> https://calligraphic.design/schema/AspectRatios
  * @property  string	      $aspect_ratio     An aspect ratio describing this image, using ENUM constants from Admin\Helper\Enum\ImageObjectSizeEnum
  */
@@ -81,6 +81,7 @@ class ImageObjects extends BaseDataModel
 	 * @var  string|null
 	 */
 	protected static $isXRedirectAvailable = null;
+
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -97,7 +98,8 @@ class ImageObjects extends BaseDataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.image_objects';
 
-    parent::__construct($container, $config);
+    // Set an alias for the title field for DataModel's check() method's slug field auto-population
+    $config['aliasFields'] = array('title' => 'name');
 
     // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
     $config['behaviours'] = array(
@@ -108,6 +110,8 @@ class ImageObjects extends BaseDataModel
       //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
       //'Tags'        // Add Joomla! Tags support
     );
+
+    parent::__construct($container, $config);
 
     /* Set up relations after parent constructor */
 

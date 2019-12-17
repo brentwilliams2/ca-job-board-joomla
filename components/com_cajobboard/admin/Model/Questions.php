@@ -100,18 +100,14 @@ class Questions extends BaseDataModel
      * Set up relations
      */
 
-    // table field for belongsTo relation is in this model's table
+    // one-to-one FK to  #__cajobboard_answers
+    $this->inverseSideOfHasOne('AcceptedAnswer', 'Answers@com_cajobboard', 'accepted_answer', 'answer_id');
 
     // many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
     // many-to-one FK to  #__organizations
     $this->belongsTo('Publisher', 'Organizations@com_cajobboard', 'publisher', 'organization_id');
-
-    // table field for inverseSideOfHasOne relation is in this model's table
-
-    // one-to-one FK to  #__cajobboard_answers
-    $this->inverseSideOfHasOne('AcceptedAnswer', 'Answers@com_cajobboard', 'accepted_answer', 'answer_id');
   }
 
 	/**

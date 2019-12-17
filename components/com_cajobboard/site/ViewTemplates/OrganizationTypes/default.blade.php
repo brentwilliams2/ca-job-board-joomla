@@ -1,6 +1,6 @@
 <?php
  /**
-  * Site Answers List View Template
+  * Site Organization Types List View Template
   *
   * @package   Calligraphic Job Board
   * @version   September 12, 2019

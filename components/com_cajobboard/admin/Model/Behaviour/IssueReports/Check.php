@@ -22,6 +22,9 @@ defined( '_JEXEC' ) or die;
 
 class Check extends BaseCheck
 {
+  /* Trait methods to include in class */
+  use \Calligraphic\Cajobboard\Admin\Model\Behaviour\Mixin\Assertions;
+
   /**
 	 * Add the category id field to the fieldsSkipChecks list of the model.
 	 * it should be empty so that we can fill it in through this behaviour.
@@ -32,8 +35,6 @@ class Check extends BaseCheck
 	{
     parent::onCheck($model);
 
-    $this->assertNotEmpty( $model->getFieldValue('name'),         'COM_CAJOBBOARD_ISSUE_REPORT_ERR_TITLE');
-    $this->assertNotEmpty( $model->getFieldValue('description'),  'COM_CAJOBBOARD_ISSUE_REPORT_ERR_DESCRIPTION');
     $this->assertNotEmpty( $model->getFieldValue('about__model'), 'COM_CAJOBBOARD_ISSUE_REPORT_ERR_ABOUT_MODEL');
     $this->assertNotEmpty( $model->getFieldValue('about__id'),    'COM_CAJOBBOARD_ISSUE_REPORT_ERR_ABOUT_ID');
     $this->assertNotEmpty( $model->getFieldValue('category'),     'COM_CAJOBBOARD_ISSUE_REPORT_ERR_REASON_CATEGORY');

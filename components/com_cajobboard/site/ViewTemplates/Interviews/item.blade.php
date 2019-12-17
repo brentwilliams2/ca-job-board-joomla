@@ -1,9 +1,9 @@
 <?php
  /**
-  * Site Answers Item View Template
+  * Site Interviews Item View Template
   *
   * @package   Calligraphic Job Board
-  * @version   September 12, 2019
+  * @version   October 31, 2019
   * @author    Calligraphic, LLC http://www.calligraphic.design
   * @copyright Copyright (C) 2019 Calligraphic, LLC
   * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -12,8 +12,8 @@
    // no direct access
   defined('_JEXEC') or die;
 
-  /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var  FOF30\View\DataView\Html                        $this */
+  /** @var \Calligraphic\Cajobboard\Site\Model\Interviews   $item */
   $item = $this->getItem();
 
   // Using an include so that local vars in the included file are in scope here also
@@ -32,7 +32,7 @@
 
   @jhtml('helper.itemwidgets.title', $title, $prefix, $crud)
 
-  @jhtml('helper.itemwidgets.text', $text, $prefix, $crud)
+  @jhtml('helper.commonwidgets.description', $description, $prefix, $crud)
 
   <div>
     @jhtml('helper.commonwidgets.createdOn', $createdOn, $prefix, $crud)
@@ -54,15 +54,11 @@
     @jhtml('helper.buttonwidgets.delete', $humanViewNameSingular, $canUserEdit, $itemId, $prefix, $crud)
     @jhtml('helper.buttonwidgets.edit', $humanViewNameSingular, $canUserEdit, $editViewLink, $prefix, $crud)
     @jhtml('helper.buttonwidgets.report', $humanViewNameSingular, $prefix, $crud)
-    @jhtml('helper.buttonwidgets.downvote_count', $downvoteCount, $isGuestUser, $itemId, $prefix, $crud)
-    @jhtml('helper.buttonwidgets.upvote_count', $upvoteCount, $isGuestUser, $itemId, $prefix, $crud)
   </div>
 </div>{{-- End responsive container --}}
 
 {{-- Forms with CSRF field for actions --}}
 @jhtml('helper.buttonwidgets.deleteActionCsrfField', $deleteAction, $itemId)
-@jhtml('helper.buttonwidgets.downvoteActionCsrfField', $downvoteAction, $itemId)
-@jhtml('helper.buttonwidgets.upvoteActionCsrfField', $upvoteAction, $itemId)
 
 <div class="clearfix"></div>
 

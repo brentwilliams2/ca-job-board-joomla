@@ -65,8 +65,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class References extends BaseDataModel
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
-
   // To handle user uploading PDF or Image files:
   use \Calligraphic\Cajobboard\Admin\Model\Mixin\MediaUploads;
 

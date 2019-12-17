@@ -82,14 +82,26 @@ class BaseHtml extends Html
 
 
 	/**
-	 *  View code to execute before rendering the page for the 'read' task.
+	 * Load an item into the view and increment the 'hits' field on appropriate
+	 * reads e.g. item views only, because browse views don't count as a hit.
 	 */
 	protected function onBeforeRead()
 	{
-    $status = parent::onBeforeRead();
+		/** @var \FOF30\Model\DataModel $model */
+		$model = $this->getModel();
 
-		return $status;
-  }
+		// Load the model into the view
+		$this->item = $model->findOrFail();
+
+		$hitsField= $this->item->getFieldAlias('hits');
+
+    if ( $this->item->hasField($hitsField) )
+    {
+			$hits = $this->item->getFieldValue('hits');
+
+			$this->item->save( array('hits' => $hits++) );
+		}
+	}
 
 
 	/**

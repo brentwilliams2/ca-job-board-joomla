@@ -249,12 +249,13 @@ class Params extends \FOF30\Params\Params
       return $params->get($option, $default);
     }
 
+    $jsonObject = json_decode($params);
+
     // Handle if the 'params' field hasn't been transformed from JSON yet by attribute getter, e.g. when called as CLI
     if
     (
-      is_string($params) &&
-      $jsonObject = json_decode($params) &&
-      property_exists($option, $jsonObject) &&
+      is_object($jsonObject) &&
+      property_exists($jsonObject, $option) &&
       !empty($jsonObject->$option)
     )
     {

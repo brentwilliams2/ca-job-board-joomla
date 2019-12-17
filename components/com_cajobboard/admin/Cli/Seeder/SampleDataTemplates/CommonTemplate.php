@@ -48,6 +48,13 @@ class CommonTemplate extends BaseTemplate
    */
   public $enabled;
 
+  /**
+	 * Order to display item in
+	 *
+	 * @var    int
+   */
+  public $ordering;
+
 	/**
 	 * JSON encoded metadata field for this item.
 	 *
@@ -229,6 +236,11 @@ class CommonTemplate extends BaseTemplate
   public function xreference ($config, $faker)
   {
     $this->xreference = null;
+  }
+
+  public function ordering ($config, $faker)
+  {
+    $this->ordering = $config->item_id;
   }
 
   public function params ($config, $faker)

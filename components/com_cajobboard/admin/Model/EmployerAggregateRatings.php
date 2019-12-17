@@ -15,15 +15,18 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Social;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
-use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
 
 /**
  * Model class for Job Board Employer_Aggregate_Ratings
  *
  * @property int      $employer_aggregate_rating_id  Surrogate primary key
  * @property string   $slug                       Alias for SEF URL
+ *
  * FOF "magic" fields
  * @property int      $asset_id                   FK to the #__assets table for access control purposes.
  * @property int      $access                     The Joomla! view access level.
@@ -34,6 +37,7 @@ use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
  * @property int      $modified_by                User ID who modified the record, auto-filled by save(), touch().
  * @property string   $locked_on                  Timestamp of record locking, auto-filled by lock(), unlock().
  * @property int      $locked_by                  User ID who locked the record, auto-filled by lock(), unlock().
+ *
  * SCHEMA: Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour
  * @property string   $publish_up                 Date and time to change the state to published, schema.org alias is datePosted.
  * @property string   $publish_down               Date and time to change the state to unpublished.
@@ -48,6 +52,7 @@ use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
  * @property int      $cat_id                     Category ID for this content item.
  * @property int      $hits                       Number of hits the content item has received on the site.
  * @property int      $featured                   Whether this content item is featured or not.
+ * @property string   $note                       A note to save with this item for use in the back-end interface.
  *
  * SCHEMA: EmployerAggregateRating
  * @property  int		  $rating_count 	            The count of total number of ratings.
@@ -56,13 +61,16 @@ use \Calligraphic\Cajobboard\Admin\Model\Helper\TableFields;
  * SCHEMA: Rating
  * @property  int		  $rating_value               The total rating sum for this employer. Get average by dividing with rating_count. Default worstRating 1 and bestRating 5 assumed.
  */
-class EmployerAggregateRatings extends DataModel
+class EmployerAggregateRatings extends BaseDataModel implements Core, Social	  // Social is for metadata fields
 {
-  // Traits to include in the class
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;    // Convenient assertions, e.g. for use in validation / check methods
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;   // Refactored base-class constructor, called from __construct method
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Patches;       // Over-ridden FOF30 DataModel methods (some with PRs)
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Validation;    // Provides over-ridden 'check' method
+  /* Traits to include in the class */
+
+  // Transformations for model properties (attributes) to an appropriate data type (e.g.
+  // Registry objects). Validation checks and setting attribute values from state should
+  // be done in Behaviours (which can be enabled and overridden per model).
+
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Metadata;  // Attribute getter / setter
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Params;    // Attribute getter / setter
 
   /*
 	 * @param   Container $container The configuration variables to this model
@@ -79,20 +87,31 @@ class EmployerAggregateRatings extends DataModel
     // Define a contentType to enable the Tags behaviour
     $config['contentType'] = 'com_cajobboard.employer_aggregate_ratings';
 
-    // Set an alias for the title field for DataModel's check() method's slug field auto-population
-    $config['aliasFields'] = array('title' => 'name');
-
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
     $config['behaviours'] = array(
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      'Check',      // Validation checks for model, over-rideable per model
-      //'ContentHistory', // Add Joomla! content history support
-      'Enabled',    // Filter access to items based on enabled status
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
-      'Publish',    // Set the publish_on field for new records
-      //'Tags'        // Add Joomla! Tags support
+
+      /* Core UCM field behaviours */
+
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      'Enabled',            // Filter access to items based on enabled status
+      'Featured',           // Add support for featured items
+      'Hits',               // Add tracking for number of item views
+      'Locked',             // Add 'locked_on' and 'locked_by' fields to skip fields check
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Note',               // Add 'note' field to skip fields check
+      //'Own',                // Filter access to items owned by the currently logged in user only
+      'Params',             // Add 'params' field to skip fields check
+      //'PII',                // Filter access for items that have Personally Identifiable Information.
+      'Publish',            // Set the 'publish_on' field for new records
+      //'Tags',               // Add Joomla! Tags support
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Patches.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+      'Check/Metadata'      // Set the 'metadata' JSON field on record save
     );
 
     parent::__construct($container, $config);

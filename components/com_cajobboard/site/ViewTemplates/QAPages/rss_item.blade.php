@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Answers RSS Feed item view
+ * Site QA Pages RSS Feed item view
  *
  * @package   Calligraphic Job Board
  * @version   September 12, 2019
@@ -13,7 +13,7 @@
   defined('_JEXEC') or die;
 
   /** @var  FOF30\View\DataView\Html                    $this */
-  /** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
+  /** @var \Calligraphic\Cajobboard\Site\Model\QAPages  $item */
 
   // Using an include so that local vars in the included file are in scope here also
   include(JPATH_COMPONENT . '/ViewTemplates/Common/common_local_vars.blade.php');

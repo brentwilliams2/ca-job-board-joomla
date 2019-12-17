@@ -25,6 +25,7 @@ class Html extends BaseHtml
 	protected function getBrowseViewEagerRelations()
 	{
     return array(
+			'Author',
 			'AboutPerson',
 			'IncludesObjectDigitalDocument',
 			'IncludesObjectEmailMessage',

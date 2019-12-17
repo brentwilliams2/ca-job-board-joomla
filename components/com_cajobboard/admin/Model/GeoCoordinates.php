@@ -15,8 +15,8 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined( '_JEXEC' ) or die;
 
+use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
 use \FOF30\Container\Container;
-use \FOF30\Model\DataModel;
 
 /*
  * Fields:
@@ -28,13 +28,8 @@ use \FOF30\Model\DataModel;
  * @property  string	      $latitude             latitude of a place
  * @property  string	      $longitude            longitude of a place
  */
-class GeoCoordinates extends DataModel
+class GeoCoordinates extends BaseDataModel
 {
-  /* Traits to include in the class */
-
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Constructor;  // Refactored base-class constructor, called from __construct method
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\TableFields;  // Use an array of table fields instead of database reads on each table
-
   /**
    * Latitude
    *
@@ -42,12 +37,14 @@ class GeoCoordinates extends DataModel
    */
   private $latitude;
 
+
   /**
    * Longitude
    *
    * @property string
    */
   private $longitude;
+
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -67,9 +64,9 @@ class GeoCoordinates extends DataModel
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
 
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
     $config['behaviours'] = array(
-
+      'Check', // Validation checks for model
     );
 
     /* Overridden constructor */
@@ -167,36 +164,6 @@ class GeoCoordinates extends DataModel
   }
 
 
-  /**
-	 * Perform checks on data for validity.
-   *
-   * Called from save() and updateUcmContent() after those methods call bind().
-	 *
-	 * @return  static  Self, for chaining
-	 *
-	 * @throws \RuntimeException  When the data bound to this record is invalid
-	 */
-	public function check()
-	{
-    $this->assertNotEmpty($this->longitude, 'COM_CAJOBBOARD_GEO_COORDINATES_ERR_LONGITUDE');
-    $this->assertNotEmpty($this->latitude, 'COM_CAJOBBOARD_GEO_COORDINATES_ERR_LATITUDE');
-
-    if ( !function_exists ('bccomp') )
-    {
-      throw new \Exception('The BCMATH module is not installed, and necessary for the job board to handle geospatial coordinates.');
-    }
-
-    $this->assert( bccomp($this->getLatitude(), '90.000000', 6) < 1, 'COM_CAJOBBOARD_GEO_COORDINATES_ERR_LATITUDE' );
-    $this->assert( bccomp('-90.000000', $this->getLatitude(), 6) < 1, 'COM_CAJOBBOARD_GEO_COORDINATES_ERR_LATITUDE' );
-    $this->assert( bccomp($this->getLongitude(), '180.000000', 6) < 1, 'COM_CAJOBBOARD_GEO_COORDINATES_ERR_LONGITUDE' );
-    $this->assert( bccomp('-180.000000', $this->getLongitude(), 6) < 1, 'COM_CAJOBBOARD_GEO_COORDINATES_ERR_LONGITUDE' );
-
-		parent::check();
-
-    return $this;
-  }
-
-
 	/**
 	 * Save a record, creating it if it doesn't exist or updating it if it exists. By default it uses the currently set data,
 	 * unless you provide a $data array. Overridden to use SQL SET instead of VALUES syntax, required for MySQL's GEOMETRY
@@ -283,16 +250,5 @@ class GeoCoordinates extends DataModel
     $this->triggerEvent('onAfterSave');
 
 		return $this;
-  }
-
-
-  /**
-	 * Overridden, called by Joomla! to update the UCM content
-	 *
-	 * @return  bool
-	 */
-	public function updateUcmContent()
-	{
-    throw new \Exception('updateUcmContent() method called in GeoCoordinates DataModel, GEOM handling not implemented for this method.');
   }
 }

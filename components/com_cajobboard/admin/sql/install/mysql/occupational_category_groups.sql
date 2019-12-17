@@ -58,19 +58,3 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_occupational_category_groups` (
   ENGINE=innoDB
   DEFAULT CHARACTER SET = utf8
   DEFAULT COLLATE = utf8_unicode_ci;
-
-
-/**
- * Initial occupational groups
- */
-INSERT INTO `#__cajobboard_occupational_category_groups` (occupational_category_group_id, slug, `group`, description, url) VALUES
-  (1, 'construction', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_CONSTRUCTION', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_CONSTRUCTION_DESCRIPTION', 'https://en.wikipedia.org/wiki/Construction'),
-  (2, 'facilities', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FACILITIES', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FACILITIES_DESCRIPTION', 'https://en.wikipedia.org/wiki/Facility_management'),
-  (3, 'finance', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FINANCE', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_FINANCE_DESCRIPTION', 'https://en.wikipedia.org/wiki/Accounting'),
-  (4, 'human-resources', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_HR', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_HR_DESCRIPTION', 'https://en.wikipedia.org/wiki/Human_resource_management'),
-  (5, 'information-technology', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_IT', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_IT_DESCRIPTION', 'https://en.wikipedia.org/wiki/Information_technology'),
-  (6, 'leasing', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_LEASING', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_LEASING_DESCRIPTION', 'https://en.wikipedia.org/wiki/Letting_agent'),
-  (7, 'marketing', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MARKETING', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MARKETING_DESCRIPTION', 'https://en.wikipedia.org/wiki/Marketing'),
-  (8, 'office', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OFFICE', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OFFICE_DESCRIPTION', 'https://en.wikipedia.org/wiki/Office_administration'),
-  (9, 'management', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MGMT', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_MGMT_DESCRIPTION', 'https://en.wikipedia.org/wiki/Management'),
-  (10, 'other', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OTHER', 'COM_CAJOBBOARD_JOB_OCCUPATIONAL_GROUP_OTHER_DESCRIPTION', 'https://en.wiktionary.org/wiki/other');

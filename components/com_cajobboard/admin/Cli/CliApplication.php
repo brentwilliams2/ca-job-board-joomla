@@ -87,6 +87,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_cajobboard/vendor/autoload.p
 use \FOF30\Container\Container;
 use \Joomla\Registry\Registry;
 use \Joomla\CMS\Input\Cli;
+use \Joomla\CMS\Menu\AbstractMenu;
 use \Calligraphic\Cajobboard\Admin\Cli\Seeder\Exception\CliApplicationException;
 
 
@@ -260,6 +261,26 @@ class CliApplication extends JApplicationCli
   {
       return trim(fgets(STDIN));
   }
+
+
+  /** Provide HTTP methods that may be called from plugins */
+
+  public function getMenu($name = 'site', $options = array())
+  {
+    return AbstractMenu::getInstance($name, $options);
+  }
+
+
+  public function getUserStateFromRequest($key, $request, $default = null, $type = 'none')
+  {
+    return $default;
+  }
+
+
+	public function getCfg($varname, $default = null)
+	{
+		return $default;
+	}
 }
 // END class CliApplication
 

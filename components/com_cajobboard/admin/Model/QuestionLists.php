@@ -97,11 +97,14 @@ class QuestionLists extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
-    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
-    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'question_list_id', 'question_id', '#__cajobboard_question_lists_questions');
-
     // Many-to-one FK to  #__cajobboard_organizations
     $this->belongsTo('AboutOrganization', 'Organizations@com_cajobboard', 'about__organization', 'organization_id');
+
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
+    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
+    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'question_list_id', 'question_id', '#__cajobboard_question_lists_questions');
   }
 
   // @TODO: Need ability to mark questions as "must-have", so candidates can be rejected if they don't have it

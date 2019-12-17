@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_employer_aggregate_ratings` (
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
   hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
+  note TEXT COMMENT 'A note to save with this digital document in the back-end interface.',
 
   /* SCHEMA: EmployerAggregateRating */
   item_reviewed 	INT UNSIGNED COMMENT 'The employer whose reviews and ratings are being aggregated for.', /* FK to #__cajobboard_organizations */

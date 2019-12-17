@@ -79,8 +79,6 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  */
 class Vendors extends BaseDataModel
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
-
 	/**
 	 * @param   Container $container The configuration variables to this model
 	 * @param   array     $config    Configuration values for this model
@@ -90,9 +88,6 @@ class Vendors extends BaseDataModel
 	public function __construct(Container $container, array $config = array())
 	{
     /* Set up config before parent constructor */
-
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'Vendors', array('typeAlias' => 'com_cajobboard.vendors'));
 
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_vendors';

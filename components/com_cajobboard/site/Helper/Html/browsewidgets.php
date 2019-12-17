@@ -62,7 +62,7 @@ abstract class helperBrowsewidgets
 
     $html  = '<h4>';
 		$html .= '<a class="' . $class . '" href="' . $itemViewLink . '">';
-		$html .= $title;
+		$html .= Text::_($title);
     $html .= '</a>';
     $html .= '</h4>';
 

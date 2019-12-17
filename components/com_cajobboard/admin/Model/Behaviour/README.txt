@@ -1,3 +1,5 @@
+Be sure to extend Model Behaviours in the front-end (Site), the CLI will access them as Site for the namespace
+
 To override validation behaviour for a particular model, create a directory
 named named after the model in the 'Behaviour' directory and create a file with
 the same file name as this behaviour ('Check.php'). The model file cannot go in

@@ -60,7 +60,7 @@ abstract class HelperBrowseWidgets
 	public static function accessField($widthPct, $item)
 	{
     $html  = '<td width="' . $widthPct . '%" class="center row-access">';
-    $html .= HelperCommonWidgets::access($item->access);
+    $html .= HelperCommonWidgets::access( $item->getFieldValue( $item->getFieldAlias('access') ) );
     $html .= '</td>';
 
     return $html;
@@ -160,6 +160,48 @@ abstract class HelperBrowseWidgets
   }
 
 
+  /**
+	 * Method to create an HTML table header column tag for sorting by 'category' model fields.
+	 *
+	 * @param   int     $widthPct   The width of the table header column
+   * @param   string  $viewName   The name of the view to build a translation key with, e.g. 'ANSWER'
+	 *
+	 * @return  string
+	 */
+	public static function bespokeCategoryHeader($widthPct)
+	{
+    $html  = '<th width="' . $widthPct . '%" class="header-title">';
+    $html .= BrowseView::sortgrid('url', 'COM_CAJOBBOARD_CATEGORY_LABEL');
+    $html .= '</th>';
+
+    return $html;
+  }
+
+
+  /**
+	 * Method to create an HTML table element tag for 'category' model fields.
+	 *
+	 * @param   int   $widthPct   The width of the element's table column
+   * @param   \FOF30\Model\DataModel  $item The instance item model
+	 *
+	 * @return  string
+	 */
+	public static function bespokeCategoryField($widthPct, $item)
+	{
+    $route = 'index.php?option=com_cajobboard&view=' . $item->getName() . '&task=edit&id=[ITEM:ID]';
+    $parsedRoute = BrowseView::parseFieldTags($route, $item);
+    $sefURL = $item->getContainer()->template->route($parsedRoute);
+
+    $html  = '<td width="' . $widthPct . '%" class="row-title">';
+    $html .= '<a href="' . $sefURL . '">';
+    $html .= Text::_( $item->getFieldValue( $item->getFieldAlias('category') ) );
+    $html .= '</a>';
+    $html .= '</td>';
+
+    return $html;
+  }
+
+
  /**
   * Blocked button for the Persons admin page
   *
@@ -246,7 +288,7 @@ abstract class HelperBrowseWidgets
 	public static function createdOnField($widthPct, $item)
 	{
     $html  = '<td width="' . $widthPct . '%" class="center row-created">';
-    $html .= $item->getContainer()->Format->date($item->created_on);
+    $html .= $item->getContainer()->Format->date( $item->getFieldValue( $item->getFieldAlias('created_on') ) );
     $html .= '</td>';
 
     return $html;
@@ -311,7 +353,7 @@ abstract class HelperBrowseWidgets
 	public static function hitsField($widthPct, $item)
 	{
     $html  = '<td width="' . $widthPct . '%" class="center row-hits">';
-    $html .= HelperCommonWidgets::hits($item->hits);
+    $html .= HelperCommonWidgets::hits( $item->getFieldValue( $item->getFieldAlias('hits') ) );
     $html .= '</td>';
 
     return $html;
@@ -346,7 +388,7 @@ abstract class HelperBrowseWidgets
 	public static function languageField($widthPct, $item)
 	{
     $html  = '<td width="' . $widthPct . '%" class="center row-language">';
-    $html .= self::language($item->language);
+    $html .= self::language( $item->getFieldValue( $item->getFieldAlias('language') ) );
     $html .= '</td>';
 
     return $html;
@@ -383,6 +425,7 @@ abstract class HelperBrowseWidgets
         $label = $languageOption->text;
       }
     }
+
     $html = '<label for="languages">' . $label . '</label>';
 
 		return $html;
@@ -474,9 +517,9 @@ abstract class HelperBrowseWidgets
 	{
     $html  = '<td width="' . $widthPct . '%" class="center row-published">';
     $html .= '<div class="btn-group">';
-    $html .= self::published($item->enabled, $i);
-    $html .= self::featured($item->featured, $i);
-    $html .= self::publishedDropdown($item->enabled, $item->name, $i);
+    $html .= self::published( $item->getFieldValue( $item->getFieldAlias('enabled') ), $i);
+    $html .= self::featured( $item->getFieldValue( $item->getFieldAlias('featured') ), $i);
+    $html .= self::publishedDropdown( $item->getFieldValue( $item->getFieldAlias('enabled') ), $item->getFieldValue( $item->getFieldAlias('name') ), $i);
     $html .= '</div>';
     $html .= '</td>';
 
@@ -641,7 +684,6 @@ abstract class HelperBrowseWidgets
 	 */
 	public static function titleField($widthPct, $item)
 	{
-  
     $route = 'index.php?option=com_cajobboard&view=' . $item->getName() . '&task=edit&id=[ITEM:ID]';
     $parsedRoute = BrowseView::parseFieldTags($route, $item);
     $sefURL = $item->getContainer()->template->route($parsedRoute);
@@ -649,11 +691,11 @@ abstract class HelperBrowseWidgets
     $html  = '<td width="' . $widthPct . '%" class="row-title">';
     $html .= '<div>';
     $html .= '<a href="' . $sefURL . '">';
-    $html .= self::title($item->name, $item->text);
+    $html .= self::title( $item->getFieldValue( $item->getFieldAlias('title') ), $item->getFieldValue( $item->getFieldAlias('text') ) );
     $html .= '</a>';
-    $html .= self::alias($item->slug);
+    $html .= self::alias( $item->getFieldValue( $item->getFieldAlias('slug') ) );
     $html .= '</div>';
-    $html .= self::category($item->cat_id);
+    $html .= self::category( $item->getFieldValue( $item->getFieldAlias('cat_id') ) );
     $html .= '</td>';
 
     return $html;
@@ -687,5 +729,41 @@ abstract class HelperBrowseWidgets
     // @TODO: wrap in <span></span>
 
     return $title;
+  }
+
+
+  /**
+	 * Method to create an HTML table header column tag for sorting by 'url' model fields.
+	 *
+	 * @param   int     $widthPct   The width of the table header column
+   * @param   string  $viewName   The name of the view to build a translation key with, e.g. 'ANSWER'
+	 *
+	 * @return  string
+	 */
+	public static function urlHeader($widthPct)
+	{
+    $html  = '<th width="' . $widthPct . '%" class="header-title">';
+    $html .= BrowseView::sortgrid('url', 'COM_CAJOBBOARD_URL_LABEL');
+    $html .= '</th>';
+
+    return $html;
+  }
+
+
+  /**
+	 * Method to create an HTML table element tag for 'url' model fields.
+	 *
+	 * @param   int   $widthPct   The width of the element's table column
+   * @param   \FOF30\Model\DataModel  $item The instance item model
+	 *
+	 * @return  string
+	 */
+	public static function urlField($widthPct, $item)
+	{
+    $html  = '<td width="' . $widthPct . '%" class="row-title">';
+    $html .= $item->getFieldValue( $item->getFieldAlias('url') );
+    $html .= '</td>';
+
+    return $html;
   }
 }

@@ -14,6 +14,7 @@ namespace Calligraphic\Cajobboard\Admin\Cli\Seeder\SampleDataTemplates;
 use \Faker;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\User\UserHelper;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -83,8 +84,14 @@ class EmploymentTypesTemplate extends CommonTemplate
   }
 
 
+  public function created_by ($config, $faker)
+  {
+    $this->created_by = UserHelper::getUserId('admin');
+  }
+
+
   /**
-   * Return metadata for an image file saved on disk in the media/images/user_uploads directory
+   * Return metadata for an employment type
    *
    * NOTE: The number of records to generate in config.json for this template
    *       must match the number of elements in the returned array here

@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_messages` (
   modified_by INT DEFAULT '0' COMMENT 'User ID who modified the record, auto-filled by save(), touch().',
 
   /* Joomla UCM fields, used by Joomla!s UCM when using the FOF ContentHistory behaviour */
+  publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
   language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the email message or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_email_messages` (
 
   /* SCHEMA: Thing */
   description TEXT COMMENT 'Note for internal use concerning this e-mail.',
+  description__intro VARCHAR(280) COMMENT 'Short description of the item.',
   name VARCHAR(255) COMMENT 'Subject field of the e-mail. Aliased by title property.',
 
   /* SCHEMA: CreativeWork */

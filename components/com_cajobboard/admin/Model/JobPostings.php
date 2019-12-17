@@ -97,9 +97,6 @@ class JobPostings extends BaseDataModel
 	{
     /* Set up config before parent constructor */
 
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'JobPostings', array('typeAlias' => 'com_cajobboard.jobpostings'));
-
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_job_postings';
     $config['idFieldName'] = 'job_posting_id';

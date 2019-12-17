@@ -305,12 +305,10 @@ class PopulateSampleData extends CliApplication
 
             $data = $template->generate($userConfigClone, $this->seed++);
 
-            $model->bind($data);
-
-            $model->store();
+            $model->save($data);
 
             // Add the new user ID to our list of existing users
-            array_push($this->users[$userType]['existing'], $model->id);
+            array_push( $this->users[$userType]['existing'], $model->getId() );
 
             $isUserConfigDirty = true;
           }

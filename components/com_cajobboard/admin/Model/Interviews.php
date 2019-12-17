@@ -95,17 +95,19 @@ class Interviews extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
-    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
-    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'interview_id', 'question_id', '#__cajobboard_interviews_questions');
+    // Many-to-one FK to  #__cajobboard_question_list
+    $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
 
-    // one-to-many FK to #__cajobboard_answers, key in foreign table
     // Answers table uses STI, so need to filter on 'about__foreign_model_name' = 'QAPages' in Html/View file. Note we've stuffed an 'is_required' field into the join table.
     $this->hasMany('Answers', 'Answers@com_cajobboard', 'application_id', 'about__foreign_model_name');
+
+    // one-to-one FK to  #__cajobboard_persons
+    $this->hasOne('Author', 'Persons@com_cajobboard', 'created_by', 'id');
 
     // Many-to-one FK to  #__cajobboard_persons
     $this->belongsTo('MainEntityOfPage', 'Persons@com_cajobboard', 'main_entity_of_page', 'id');
 
-    // Many-to-one FK to  #__cajobboard_question_list
-    $this->belongsTo('AboutQuestionList', 'QuestionLists@com_cajobboard', 'about__question_list', 'question_list_id');
+    // many-to-many FK to #__cajobboard_questions using join table #__cajobboard_q_a_pages_questions
+    $this->belongsToMany('Questions', 'Questions@com_cajobboard', 'interview_id', 'question_id', '#__cajobboard_interviews_questions');
   }
 }

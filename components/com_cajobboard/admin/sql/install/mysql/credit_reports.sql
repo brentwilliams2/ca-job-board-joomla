@@ -30,16 +30,8 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_credit_reports` (
   publish_up DATETIME DEFAULT NULL COMMENT 'Date and time to change the state to published, schema.org alias is datePosted.',
   publish_down DATETIME COMMENT 'Date and time to change the state to unpublished.',
   version INT UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Version of this item.',
-  ordering INT NOT NULL DEFAULT '0' COMMENT 'Order this record should appear in for sorting.',
-  metadata JSON COMMENT 'JSON encoded metadata field for this item.',
-  metakey TEXT COMMENT 'Meta keywords for this item.',
-  metadesc TEXT COMMENT 'Meta descriptionfor this item.',
-  xreference TEXT COMMENT 'A reference to enable linkages to external data sets, used to output a meta tag like FB open graph.',
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
-  language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the article or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
-  hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
-  featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note TEXT COMMENT 'A note to save with this digital document in the back-end interface.',
 
   /* SCHEMA: Thing */

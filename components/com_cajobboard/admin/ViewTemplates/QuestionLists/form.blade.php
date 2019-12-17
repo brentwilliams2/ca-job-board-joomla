@@ -1,11 +1,11 @@
 <?php
 /**
- * Answers Admin Edit View Template
+ * Question Lists Admin Edit View Template
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   October 31, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -14,7 +14,7 @@
   // no direct access
   defined('_JEXEC') or die;
 
-  /** @var \Calligraphic\Cajobboard\Admin\Model\Answers $item */
+  /** @var \Calligraphic\Cajobboard\Admin\Model\QuestionLists $item */
   $item = $this->getItem();
 ?>
 
@@ -38,13 +38,6 @@
 {{-----------------------------------------------------------------------------}}
 
 @section('advanced-options')
-  {{-- Answer Description textbox --}}
+  {{-- QuestionList Description textbox --}}
   @jhtml('helper.editWidgets.textbox', 'description', $item)
-
-
-  {{-- Answer Upvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'upvote_count', $item)
-
-  {{-- Answer Downvote count input box --}}
-  @jhtml('helper.editWidgets.inputNumber', 'downvote_count', $item)
 @stop

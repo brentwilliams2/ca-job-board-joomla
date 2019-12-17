@@ -15,8 +15,11 @@ namespace Calligraphic\Cajobboard\Admin\Model;
 // no direct access
 defined('_JEXEC') or die;
 
-use \FOF30\Container\Container;
 use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Core;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Extended;
+use \Calligraphic\Cajobboard\Admin\Model\Interfaces\Social;
+use \FOF30\Container\Container;
 
 /**
  * Fields:
@@ -69,9 +72,18 @@ use \Calligraphic\Cajobboard\Admin\Model\BaseDataModel;
  * SCHEMA: Thing(potentialAction) -> Action(result) -> CreativeWork
  * @property string         $result__encoding_format    MIME format of the document, e.g. application/pdf.
  */
-class FairCreditReportingAct extends BaseDataModel
+class FairCreditReportingAct extends BaseDataModel implements Core, Extended, Social	  // Social is for metadata fields, Extended is Job Board UCM fields (name, description, description__intro)
 {
-  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Assertions;
+  /* Traits to include in the class */
+
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Comments;             // 'saveComment' method
+
+  // Transformations for model properties (attributes) to an appropriate data type (e.g.
+  // Registry objects). Validation checks and setting attribute values from state should
+  // be done in Behaviours (which can be enabled and overridden per model).
+
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Metadata;  // Attribute getter / setter
+  use \Calligraphic\Cajobboard\Admin\Model\Mixin\Attributes\Params;    // Attribute getter / setter
 
 	/**
 	 * @param   Container $container The configuration variables to this model
@@ -83,9 +95,6 @@ class FairCreditReportingAct extends BaseDataModel
 	{
     /* Set up config before parent constructor */
 
-    // @TODO: Add this to call the content history methods during create, save and delete operations. CHECK SYNTAX
-    // JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'BackgroundChecks', array('typeAlias' => 'com_cajobboard.fcra'));
-
     // Not using convention for table names or primary key field
 		$config['tableName'] = '#__cajobboard_fair_credit_reporting_act';
     $config['idFieldName'] = 'fair_credit_reporting_act_id';
@@ -96,13 +105,32 @@ class FairCreditReportingAct extends BaseDataModel
     // Set an alias for the title field for DataModel's check() method's slug field auto-population
     $config['aliasFields'] = array('title' => 'name');
 
-    // Add behaviours to the model. Filters, Created, and Modified behaviours are added automatically.
+    // Add behaviours to the model. 'Filters' behaviour added by default in addBehaviour() method.
     $config['behaviours'] = array(
-      'Access',     // Filter access to items based on viewing access levels
-      'Assets',     // Add Joomla! ACL assets support
-      //'Own',        // Filter access to items owned by the currently logged in user only
-      //'PII',        // Filter access for items that have Personally Identifiable Information. ONLY for ATS screens, use view template PII access control for individual fields
-      //'Tags'        // Add Joomla! Tags support
+
+      /* Core UCM field behaviours */
+
+      'Access',             // Filter access to items based on viewing access levels
+      'Assets',             // Add Joomla! ACL assets support
+      'Category',           // Set category in new records
+      'Created',            // Update the 'created_by' and 'created_on' fields for new records
+      'Enabled',            // Filter access to items based on enabled status
+      'Language',           // Filter front-end access to items based on language
+      'Modified',           // Update the 'modified_by' and 'modified_on' fields for new records
+      'Note',               // Add 'note' field to skip fields check
+      //'Own',                // Filter access to items owned by the currently logged in user only
+      'Params',             // Add 'params' field to skip fields check
+      //'PII',                // Filter access for items that have Personally Identifiable Information.
+      'PublishUp',          // Set the 'publish_on' field for new records, for models that lack a 'publish_down' field
+      'Slug',               // Backfill the slug field with the 'title' property or its fieldAlias if empty
+
+      /* Validation checks. Single slash is escaped to a double slash in over-ridden addBehaviour() method in Model/Mixin/Patches.php */
+
+      'Check',              // Validation checks for model, over-rideable per model
+
+      /* Model property (attribute) Behaviours for validation and setting value from state */
+
+      'DescriptionIntro',   // Check the length of the 'description__intro' field
     );
 
     /* Parent constructor */

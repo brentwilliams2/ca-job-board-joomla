@@ -1,6 +1,6 @@
 <?php
 /**
- * Administrator Employer Controller
+ * Administrator Application Controller
  *
  * @package   Calligraphic Job Board
  * @version   0.1 May 1, 2018

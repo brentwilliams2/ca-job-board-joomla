@@ -33,7 +33,7 @@
 --}}
 @section('answer-edit-container')
   <form action="{{ $postAction }}" method="post" name="siteForm" id="siteForm" class="cajobboard-form">
-    <div class="row media {{ $featured }} @jhtml('helper.commonwidgets.getAttributeClass', 'container', $prefix, $crud)">
+    <div class="row media @jhtml('helper.commonwidgets.getAttributeClass', 'container', $prefix, $crud)">
 
       <header class="form-header well @jhtml('helper.commonwidgets.getAttributeClass', 'header', $prefix, $crud)">
         @jhtml('helper.editwidgets.header', $isEditView, $humanViewNameSingular, $prefix, $crud)

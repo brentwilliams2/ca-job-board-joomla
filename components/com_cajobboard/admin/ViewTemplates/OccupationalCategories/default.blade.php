@@ -1,11 +1,11 @@
 <?php
 /**
- * Answers Admin Default View Template
+ * Occupational Categories Admin Default View Template
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   October 31, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * see /Calligraphic/Cajobboard/Helper/Html/browsewidget.php for Helper widgets
@@ -17,8 +17,8 @@ use \FOF30\Utils\SelectOptions;
 // no direct access
 defined('_JEXEC') or die;
 
-/** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
-/** @var  FOF30\View\DataView\Html                    $this */
+/** @var \Calligraphic\Cajobboard\Site\Model\OccupationalCategories   $item */
+/** @var  FOF30\View\DataView\Html                                    $this */
 
 // The width of each of the table columns as a percentage
 $widthPct = array

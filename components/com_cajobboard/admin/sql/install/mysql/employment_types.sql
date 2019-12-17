@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `#__cajobboard_employment_types` (
   params TEXT COMMENT 'JSON encoded parameters for the content item.',
   language CHAR(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the article or * for all languages.',
   cat_id INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Category ID for this content item.',
-  hits INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of hits the content item has received on the site.',
   featured TINYINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Whether this content item is featured or not.',
   note VARCHAR(255) COMMENT 'A note to save with this job posting in the back-end interface.',
 

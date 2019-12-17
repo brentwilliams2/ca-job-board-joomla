@@ -1,11 +1,11 @@
 <?php
 /**
- * Answers Admin Default View Template
+ * Interviews Admin Default View Template
  *
  * @package   Calligraphic Job Board
- * @version   0.1 May 1, 2018
+ * @version   October 31, 2019
  * @author    Calligraphic, LLC http://www.calligraphic.design
- * @copyright Copyright (C) 2018 Calligraphic, LLC
+ * @copyright Copyright (C) 2019 Calligraphic, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * see /Calligraphic/Cajobboard/Helper/Html/browsewidget.php for Helper widgets
@@ -17,8 +17,8 @@ use \FOF30\Utils\SelectOptions;
 // no direct access
 defined('_JEXEC') or die;
 
-/** @var \Calligraphic\Cajobboard\Site\Model\Answers  $item */
-/** @var  FOF30\View\DataView\Html                    $this */
+/** @var \Calligraphic\Cajobboard\Site\Model\Interviews   $item */
+/** @var  FOF30\View\DataView\Html                        $this */
 
 // The width of each of the table columns as a percentage
 $widthPct = array
@@ -26,7 +26,7 @@ $widthPct = array
   '#1'  => '1',  // Drag-and-drop icons in record fields for ordering browse records
   '#2'  => '1',  // "select all" checkbox to apply Toolbar actions to all records
   '#3'  => '8',  // Filter on whether records are published, unpublished, or both
-  '#4'  => '35', // Answer title
+  '#4'  => '35', // Interview title
   '#5'  => '10', // Access, e.g. "public"
   '#6'  => '10', // Author name
   '#7'  => '10', // Language
@@ -52,7 +52,7 @@ $widthPct = array
     {{-- COLUMN #3: Filter on whether records are published, unpublished, or both. --}}
     @jhtml('helper.browseWidgets.publishedHeader', $widthPct['#3'])
 
-    {{-- COLUMN #4: Answer title, allows sorting ASC / DESC by clicking the field name in the column header. --}}
+    {{-- COLUMN #4: Interview title, allows sorting ASC / DESC by clicking the field name in the column header. --}}
     @jhtml('helper.browseWidgets.titleHeader', $widthPct['#4'], $this->getName() )
 
     {{-- COLUMN #5: Access, e.g. "public" --}}
@@ -93,7 +93,7 @@ $widthPct = array
       {{-- COLUMN #3: Icon (checkmark or "X") to show whether record is in published or unpublished state. --}}
       @jhtml('helper.browseWidgets.publishedField', $widthPct['#3'], $item, $i)
 
-      {{-- COLUMN #4: Answer title and category --}}
+      {{-- COLUMN #4: Interview title and category --}}
       @jhtml('helper.browseWidgets.titleField', $widthPct['#4'], $item)
 
       {{-- COLUMN #5: Access, e.g. 'Published' --}}

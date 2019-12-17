@@ -20,24 +20,8 @@ use Faker;
 // no direct access
 defined('_JEXEC') or die;
 
-class EmployerAggregateRatingsTemplate extends BaseTemplate
+class EmployerAggregateRatingsTemplate extends CommonTemplate
 {
-  /**
-	 * Date the item was created
-	 *
-	 * @var    \DateTime
-   */
-  public $created_on;
-
-
-  /**
-	 * Userid of the creator of this item.
-	 *
-	 * @var    \Joomla\CMS\User\User
-   */
-  public $created_by;
-
-
 	/**
 	 * The employer whose reviews and ratings are being aggregated for, FK to #__cajobboard_organizations
 	 *
@@ -74,21 +58,6 @@ class EmployerAggregateRatingsTemplate extends BaseTemplate
   /**
 	 * Setters for QAPage fields
    */
-
-
-  public function created_by ($config, $faker)
-  {
-    $this->created_by = $config->userIds[$faker->numberBetween( 0, count($config->userIds) - 1 )];
-  }
-
-  public function created_on ($config, $faker)
-  {
-    $dateTime = $faker->dateTimeBetween($startDate = '-5 years', $endDate = 'now', $timezone = null);
-
-    $this->created_on = $dateTime->format('Y-m-d H:i:s');
-    $this->publish_up = $dateTime->format('Y-m-d H:i:s');
-  }
-
 
   // $this->hasOne('ItemReviewed', 'Organizations@com_cajobboard', 'item_reviewed', 'organization_id');
   public function item_reviewed ($config, $faker)

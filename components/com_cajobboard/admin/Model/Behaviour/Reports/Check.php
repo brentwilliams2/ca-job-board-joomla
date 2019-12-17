@@ -22,6 +22,9 @@ defined( '_JEXEC' ) or die;
 
 class Check extends BaseCheck
 {
+  /* Trait methods to include in class */
+  use \Calligraphic\Cajobboard\Admin\Model\Behaviour\Mixin\Assertions;
+
   /**
 	 * Add the category id field to the fieldsSkipChecks list of the model.
 	 * it should be empty so that we can fill it in through this behaviour.

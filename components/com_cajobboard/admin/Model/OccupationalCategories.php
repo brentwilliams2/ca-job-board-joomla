@@ -87,6 +87,9 @@ class OccupationalCategories extends BaseDataModel
 
     /* Set up relations after parent constructor */
 
+    // many-to-one FK to  #__cajobboard_persons
+    $this->belongsTo('Author', 'Persons@com_cajobboard', 'created_by', 'id');
+
     // many-to-one FK to #__cajobboard_occupational_category_group
     $this->belongsTo('OccupationalCategoryGroup', 'OccupationalCategoryGroups@com_cajobboard', 'group', 'occupational_category_group_id');
   }
